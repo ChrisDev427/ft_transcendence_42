@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ft_transcendence - 42</title>
+  
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/14273d579a.js" crossorigin="anonymous"></script>
+</head>
+<style>
+  .bg-blue {
+    background-color: #213876;
+  }
+  .cl-gray {
+    color: #555454;
+  }
+  .cl-white {
+    color: #ffffff;
+  }
+  .cl-blue {
+    color: #213876;
+  }
+  
+  .headband-tp {
+    background-color: #213876;
+    padding: 30px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px ;
+  }
+  .headband-bt {
+    background-color: #213876;
+    padding: 60px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px ;
+  }
+  
+  .custom-icon:hover {
+      color: #0099ff; 
+  }
+
+  .hover-logo {
+    display: none;
+  }
+  .image-container:hover .normal-logo {
+    display: none;
+  }
+
+  .image-container:hover .hover-logo {
+    display: inline-block; /* ou display: block; selon le besoin */
+  }
+
+
+
+</style>
+<body>
+  <!-- <a href="../index.html" class="btn bg-primary text-white position-fixed mt-3 ms-3" data-bs-toggle="tooltip"
+     data-bs-placement="right" title="Ne pas inclure dans l'intégration">Retour</a> -->
+  <header class="py-5">
+    <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/Users/chris/Desktop/ft_transcendence/index.html">
+          <span class="bg-blue bg-gradient p-1 rounded-3 cl-white">42</span>ft_transcendence
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link cl-gray fw-light" href="#play-pong">Play Pong</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link cl-gray fw-light" href="#register">Sign in</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link cl-gray fw-light" href="#tournament">Tournament</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link cl-gray fw-light" cl-gray href="#about-the-team">About the team</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+<!-- main section -->
+    <section id="main">
+      <div class="container-fluid ">
+
+        <div class="headband-tp">
+          <div class="col-12">
+            <h2 class="fw-bold text-center text-light">ft_transcendence_42</h2>
+          </div>
+        </div>
+       
+        <div class="row py-3 gy-md-0">
+          <div class="col-12 col-md-5 col-lg-5 col-xl-5 my-auto d-flex flex-column align-items-center">
+            <h4 class="fw-bold text-center py-3 cl-blue">Welcome !</h4>
+            
+            <p class="fw-lighter text-center my-4">This is the last common core project at school 42.<br/>
+                It implements a multiplayer platform for the game of Pong.<br/>
+                The project aims to develop skills in web programming, database, security and communication between the frontend and backend.<br/>
+                Players can register, create tournaments, and play Pong against other users.<br/>
+                The goal is to create a robust and secure real-time gaming experience.
+            </p>
+            <button type="button" class="btn btn-primary bg-blue text-light mt-1 py-2">Play Pong ?</button>
+          </div>
+          <div class="col-12 col-md-7 col-lg-7 col-xl-7 d-flex mt-3 align-items-center">
+            <img src="img/img42_sec1.jpeg" alt="img_42" class="w-100" style="border-radius: 10px;">
+          </div>
+        </div>
+       
+        <div class="headband-bt mt-3"></div>
+        
+      </div>
+    </section>
+
+<!-- Play Pong section -->
+    <section id="play-pong" class="py-5">
+      <div class="container">
+        <div class="row py-4">
+          <div class="col-12">
+            <img src="img/img_pong.png" alt="img_42" class="w-100 rounded">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Register section -->
+    <section id="register" class="py-5">
+      <div class="container py-5">
+        <h3 class="fw-bold cl-blue">Sign in ...</h3>
+
+        <div class="row">
+          <div class="col-12 col-lg-7 my-auto d-flex flex-column align-items-center">
+            <img src="img/img-register2.jpg" alt="Image player" width="100%">
+          </div>
+          <div class="col-12 col-lg-5">
+
+            <form class="row g-2 fw-light cl-blue ">
+
+              <div class="col-6 col-lg-6">
+                <label for="firstname" class="form-label">First name</label>
+                <input type="text" class="form-control" name="firstname" id="firstname">
+              </div>
+
+              <div class="col-6 col-lg-6">
+                <label for="lastname" class="form-label">Last name</label>
+                <input type="text" class="form-control" name="lastname" id="lastname" required>
+              </div>
+            
+              <div class="col-5 col-lg-5">
+                <label for="username" class="form-label">Username</label>
+                <div class="input-group">
+                  <span class="input-group-text cl-blue" id="inputGroupPrepend2">@</span>
+                  <input type="text" class="form-control" id="username"  aria-describedby="inputGroupPrepend2" required>
+                </div>
+              </div>
+              
+              <div class="col-7 col-lg-7">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+              </div>
+               
+              <div class="col-6">
+               <label for="password" class="form-label">Password</label>
+               <input type="password" class="form-control" id="password">
+              </div>
+            
+              <div class="col-12">
+                <div class="form-check">
+                  <label class="form-check-label" for="checkmeout">Check me out</label>
+                  <input type="checkbox" class="form-check-input" id="checkmeout">
+                </div>
+              </div>
+
+              <div class="col-12">
+                <button class="btn btn-primary w-100" type="submit">Submit</button>
+              </div>
+                 
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tournament section -->
+    <section id="tournament" class="py-5">
+      <div class="container py-5">
+        <div class="row py-4 bg-secondary">
+          <div class="col-12 my-auto d-flex flex-column align-items-center">
+            <p>Tournament Part...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About the team section -->
+    <section id="about-the-team" class="py-5">
+      <div class="container py-5">
+        <div class="row ">
+          <div class="col-12">
+            <h2 class="fw-bold cl-blue">The team...</h2>
+          </div>
+        </div>
+          <div class="row py-4">
+          <div class="col-12 col-md-4">
+            <img src="img/img_chris.png" alt="img_chris" class="w-100 border border-1 border-dark" style="border-radius: 10px;">
+            <h4 class="fw-bold text-center cl-blue">Christophe MASSA</h4>
+            <ul class="list-inline text-center fs-4 cl-blue">
+              <a href="https://www.linkedin.com/in/christophe-massa-2406b4273/" target="_blank" rel="nofollow" class="cl-blue">
+                <li class="list-inline-item fs-4 ms-2"><i class="bi bi-linkedin custom-icon"></i></li>
+              </a>
+              <a href="mailto:chrisdev427@gmail.com" target="_blank" rel="nofollow" class="cl-blue">
+                <li class="list-inline-item fs-3 ms-3"><i class="bi bi-envelope-fill custom-icon"></i></li>
+              </a>
+            </ul>
+            <p class="fw-lighter text-center my-4">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+          <div class="col-12 col-md-4">
+            <img src="img/img_axel.png" alt="img_axel" class="w-100 border border-1 border-dark" style="border-radius: 10px;">
+            <h4 class="fw-bold text-center cl-blue">Axel FERNANDEZ</h4>
+            <ul class="list-inline text-center fs-4 cl-blue">
+              <a href="https://www.linkedin.com/in/axelfernandez06/" target="_blank" rel="nofollow" class="cl-blue">
+                <li class="list-inline-item fs-4 ms-2"><i class="bi bi-linkedin custom-icon"></i></li>
+              </a>
+              <a href="mailto:axe06@hotmail.fr" target="_blank" rel="nofollow" class="cl-blue">
+                <li class="list-inline-item fs-3 ms-3"><i class="bi bi-envelope-fill custom-icon"></i></li>
+              </a>
+            </ul>
+            <p class="fw-lighter text-center my-4">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+          <div class="col-12 col-md-4">
+            <img src="img/img_scrat.png" alt="img_axel" class="w-100 border border-1 border-dark" style="border-radius: 10px;">
+            <h4 class="fw-bold text-center cl-blue">Scrat</h4>
+          
+            <ul class="list-inline text-center cl-blue">
+              <li class="list-inline-item fs-4"><i class="bi bi-linkedin custom-icon"></i></li>
+              <li class="list-inline-item fs-3 ms-3"><i class="bi bi-envelope-fill custom-icon"></i></li>
+            </ul>
+            <p class="fw-lighter text-center my-4">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-top">
+    <div class="container py-4">
+      <div class="row">
+        <div class="col-6 col-md-3 text-start image-container">
+          <a href="https://42nice.fr/" target="_blank" rel="nofollow">
+            <img src="img/42Nice-logo-blue.png" alt="logo_42" class="w-50 w-md-100 custom-logo normal-logo">
+            <img src="img/42Nice-logo-light-blue.png" alt="logo_42" class="w-50 w-md-100 custom-logo hover-logo">
+          </a>
+        </div>
+        <div class="col-6 col-md-9 text-start my-auto d-flex flex-column align-items-end">
+          <ul class="list-inline">
+            <a href="https://www.linkedin.com/company/42nice/" target="_blank" rel="nofollow" class="cl-blue">
+              <li class="list-inline-item fs-4 ms-2"><i class="bi bi-linkedin custom-icon"></i></li>
+            </a>
+            <a href="https://www.instagram.com/42Nice/?hl=fr" target="_blank" rel="nofollow" class="cl-blue">
+              <li class="list-inline-item fs-4 ms-2"><i class="bi bi-instagram custom-icon"></i></li>
+            </a>
+            <a href="https://twitter.com/42NiceSud" target="_blank" rel="nofollow" class="cl-blue">
+              <li class="list-inline-item fs-4 ms-2"><i class="bi bi-twitter custom-icon"></i></li>
+            </a>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Script js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script src="../js/script.js"></script>
+  </footer>
+</body>
+
+</html>
