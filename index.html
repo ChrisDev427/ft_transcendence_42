@@ -29,6 +29,16 @@
     color: #213876;
   }
   
+   .bg-sign-in {
+    background-image: url('img/img-register2_blur.png');
+    
+    background-size: cover;
+    border-radius: 15px;
+    backdrop-filter: blur(6px);
+    
+     padding: 30px; 
+   
+  } 
   .headband-tp {
     background-color: #213876;
     padding: 30px;
@@ -78,7 +88,7 @@
               <a class="nav-link cl-gray fw-light" href="#play-pong">Play Pong</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link cl-gray fw-light" href="#register">Sign in</a>
+              <a class="nav-link cl-gray fw-light" href="#sign-in">Sign in/up</a>
             </li>
             <li class="nav-item">
               <a class="nav-link cl-gray fw-light" href="#tournament">Tournament</a>
@@ -113,7 +123,9 @@
                 Players can register, create tournaments, and play Pong against other users.<br/>
                 The goal is to create a robust and secure real-time gaming experience.
             </p>
-            <button type="button" class="btn btn-primary bg-blue text-light mt-1 py-2">Play Pong ?</button>
+            <a href="#play-pong">
+              <button type="button" class="btn btn-primary bg-blue text-light mt-1 py-2">Play Pong ?</button>
+            </a>
           </div>
           <div class="col-12 col-md-7 col-lg-7 col-xl-7 d-flex mt-3 align-items-center">
             <img src="img/img42_sec1.jpeg" alt="img_42" class="w-100" style="border-radius: 10px;">
@@ -136,64 +148,6 @@
       </div>
     </section>
 
-    <!-- Register section -->
-    <section id="register" class="py-5">
-      <div class="container py-5">
-        <h3 class="fw-bold cl-blue">Sign in ...</h3>
-
-        <div class="row">
-          <div class="col-12 col-lg-7 my-auto d-flex flex-column align-items-center">
-            <img src="img/img-register2.jpg" alt="Image player" width="100%">
-          </div>
-          <div class="col-12 col-lg-5">
-
-            <form class="row g-2 fw-light cl-blue ">
-
-              <div class="col-6 col-lg-6">
-                <label for="firstname" class="form-label">First name</label>
-                <input type="text" class="form-control" name="firstname" id="firstname">
-              </div>
-
-              <div class="col-6 col-lg-6">
-                <label for="lastname" class="form-label">Last name</label>
-                <input type="text" class="form-control" name="lastname" id="lastname" required>
-              </div>
-            
-              <div class="col-5 col-lg-5">
-                <label for="username" class="form-label">Username</label>
-                <div class="input-group">
-                  <span class="input-group-text cl-blue" id="inputGroupPrepend2">@</span>
-                  <input type="text" class="form-control" id="username"  aria-describedby="inputGroupPrepend2" required>
-                </div>
-              </div>
-              
-              <div class="col-7 col-lg-7">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-              </div>
-               
-              <div class="col-6">
-               <label for="password" class="form-label">Password</label>
-               <input type="password" class="form-control" id="password">
-              </div>
-            
-              <div class="col-12">
-                <div class="form-check">
-                  <label class="form-check-label" for="checkmeout">Check me out</label>
-                  <input type="checkbox" class="form-check-input" id="checkmeout">
-                </div>
-              </div>
-
-              <div class="col-12">
-                <button class="btn btn-primary w-100" type="submit">Submit</button>
-              </div>
-                 
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Tournament section -->
     <section id="tournament" class="py-5">
       <div class="container py-5">
@@ -208,53 +162,118 @@
     <!-- About the team section -->
     <section id="about-the-team" class="py-5">
       <div class="container py-5">
-        <div class="row ">
-          <div class="col-12">
-            <h2 class="fw-bold cl-blue">The team...</h2>
-          </div>
-        </div>
+        <h2 class="fw-bold cl-blue">The team ...</h2>
           <div class="row py-4">
-          <div class="col-12 col-md-4">
-            <img src="img/img_chris.png" alt="img_chris" class="w-100 border border-1 border-dark" style="border-radius: 10px;">
-            <h4 class="fw-bold text-center cl-blue">Christophe MASSA</h4>
-            <ul class="list-inline text-center fs-4 cl-blue">
-              <a href="https://www.linkedin.com/in/christophe-massa-2406b4273/" target="_blank" rel="nofollow" class="cl-blue">
-                <li class="list-inline-item fs-4 ms-2"><i class="bi bi-linkedin custom-icon"></i></li>
-              </a>
-              <a href="mailto:chrisdev427@gmail.com" target="_blank" rel="nofollow" class="cl-blue">
-                <li class="list-inline-item fs-3 ms-3"><i class="bi bi-envelope-fill custom-icon"></i></li>
-              </a>
-            </ul>
-            <p class="fw-lighter text-center my-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
-          <div class="col-12 col-md-4">
-            <img src="img/img_axel.png" alt="img_axel" class="w-100 border border-1 border-dark" style="border-radius: 10px;">
-            <h4 class="fw-bold text-center cl-blue">Axel FERNANDEZ</h4>
-            <ul class="list-inline text-center fs-4 cl-blue">
-              <a href="https://www.linkedin.com/in/axelfernandez06/" target="_blank" rel="nofollow" class="cl-blue">
-                <li class="list-inline-item fs-4 ms-2"><i class="bi bi-linkedin custom-icon"></i></li>
-              </a>
-              <a href="mailto:axe06@hotmail.fr" target="_blank" rel="nofollow" class="cl-blue">
-                <li class="list-inline-item fs-3 ms-3"><i class="bi bi-envelope-fill custom-icon"></i></li>
-              </a>
-            </ul>
-            <p class="fw-lighter text-center my-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
-          <div class="col-12 col-md-4">
-            <img src="img/img_scrat.png" alt="img_axel" class="w-100 border border-1 border-dark" style="border-radius: 10px;">
-            <h4 class="fw-bold text-center cl-blue">Scrat</h4>
+            <div class="col-12 col-md-4">
+              <img src="img/img_chris.png" alt="img_chris" class="w-100 border border-1 border-dark" style="border-radius: 10px;">
+              <h4 class="fw-bold text-center cl-blue">Christophe MASSA</h4>
+              <ul class="list-inline text-center fs-4 cl-blue">
+                <a href="https://www.linkedin.com/in/christophe-massa-2406b4273/" target="_blank" rel="nofollow" class="cl-blue">
+                  <li class="list-inline-item fs-4 ms-2"><i class="bi bi-linkedin custom-icon"></i></li>
+                </a>
+                <a href="mailto:chrisdev427@gmail.com" target="_blank" rel="nofollow" class="cl-blue">
+                  <li class="list-inline-item fs-3 ms-3"><i class="bi bi-envelope-fill custom-icon"></i></li>
+                </a>
+              </ul>
+              <p class="fw-lighter text-center my-4">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+            </div>
+
+            <div class="col-12 col-md-4">
+              <img src="img/img_axel.png" alt="img_axel" class="w-100 border border-1 border-dark" style="border-radius: 10px;">
+              <h4 class="fw-bold text-center cl-blue">Axel FERNANDEZ</h4>
+              <ul class="list-inline text-center fs-4 cl-blue">
+                <a href="https://www.linkedin.com/in/axelfernandez06/" target="_blank" rel="nofollow" class="cl-blue">
+                  <li class="list-inline-item fs-4 ms-2"><i class="bi bi-linkedin custom-icon"></i></li>
+                </a>
+                <a href="mailto:axe06@hotmail.fr" target="_blank" rel="nofollow" class="cl-blue">
+                  <li class="list-inline-item fs-3 ms-3"><i class="bi bi-envelope-fill custom-icon"></i></li>
+                </a>
+              </ul>
+              <p class="fw-lighter text-center my-4">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+            </div>
+
+            <div class="col-12 col-md-4">
+              <img src="img/img_scrat.png" alt="img_axel" class="w-100 border border-1 border-dark" style="border-radius: 10px;">
+              <h4 class="fw-bold text-center cl-blue">Scrat</h4>
           
-            <ul class="list-inline text-center cl-blue">
-              <li class="list-inline-item fs-4"><i class="bi bi-linkedin custom-icon"></i></li>
-              <li class="list-inline-item fs-3 ms-3"><i class="bi bi-envelope-fill custom-icon"></i></li>
-            </ul>
-            <p class="fw-lighter text-center my-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+              <ul class="list-inline text-center cl-blue">
+                <li class="list-inline-item fs-4"><i class="bi bi-linkedin custom-icon"></i></li>
+                <li class="list-inline-item fs-3 ms-3"><i class="bi bi-envelope-fill custom-icon"></i></li>
+              </ul>
+              <p class="fw-lighter text-center my-4">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+            </div>
+          </div>
+      </div>
+    </section>
+
+    <!-- Sign up section -->
+    <section id="sign-in" class="py-5">
+      <div class="container  bg-sign-in">
+        <!-- <h2 class="fw-bold cl-blue">Sign up ...</h2> -->
+        <div class="row fw-bold text-light p-5">
+
+          <div class="col-12 col-lg-4 my-auto d-flex flex-column align-items-center">
+            <form>
+              <div>
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+              </div>
+              <div>
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password">
+              </div>
+              <div>
+                <button class="btn btn-primary w-100 mt-3" type="submit">Sign in</button>
+              </div>
+            </form>
+          </div>
+          <div class="col-12 col-lg-3"></div>
+          
+          <div class="col-12 col-lg-4 mt-5 mt-lg-0 my-auto d-flex flex-column align-items-center">
+
+            <form>
+              <div>
+                <label for="firstname" class="form-label">First name</label>
+                <input type="text" class="form-control" name="firstname" id="firstname">
+              </div>
+              
+              <div>
+                <label for="lastname" class="form-label">Last name</label>
+                <input type="text" class="form-control" name="lastname" id="lastname" required>
+              </div>
+              
+              <div>
+                <label for="username" class="form-label">Username</label>
+                <div class="input-group">
+                  <span class="input-group-text cl-blue" id="inputGroupPrepend2">@</span>
+                  <input type="text" class="form-control" id="username"  aria-describedby="inputGroupPrepend2" required>
+                </div>
+              </div>
+              
+              <div>
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+              </div>
+              
+              <div>
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password">
+              </div>
+            
+              <div class="form-check">
+                <label class="form-check-label" for="checkmeout">Check me out</label>
+                <input type="checkbox" class="form-check-input" id="checkmeout">
+              </div>
+            
+              <button class="btn btn-primary w-100" type="submit">Sign up</button>
+            
+            </form>
           </div>
         </div>
       </div>
