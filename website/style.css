@@ -1,0 +1,50 @@
+
+/* .title {
+  color: #ffffff;
+  font-family: 'DM Serif Display', serif; 
+  font-size: 35px ;
+}
+.bg-blue-navbar {
+  background-color: #293b6b;
+} */
+
+.cl-gray {
+  color: #878585;
+}
+.cl-white {
+  color: #ffffff;
+}
+.cl-blue {
+  color: #173da5;
+}
+.cl-text {
+  color: #888888;
+}
+.bg-blur {
+  backdrop-filter: blur(80px);
+  border-radius: 10px;
+}
+.custom-icon {
+  color: #36caf1; /* Couleur par défaut */
+  transition: color 0.4s ease; /* Transition de couleur sur 0.3 secondes avec une fonction d'accélération */
+}
+.custom-icon:hover {
+    color: #004ac0; 
+}
+.custom-icon-footer {
+  color: #ffffff; /* Couleur par défaut */
+  transition: color 0.4s ease; /* Transition de couleur sur 0.3 secondes avec une fonction d'accélération */
+}
+.custom-icon-footer:hover {
+    color: #004ac0; 
+}
+
+.hover-logo {
+  display: none;
+}
+.image-container:hover .normal-logo {
+  display: none;
+}
+.image-container:hover .hover-logo {
+  display: inline-block; /* ou display: block; selon le besoin */
+}
