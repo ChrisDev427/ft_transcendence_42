@@ -1,33 +1,31 @@
 
 
 
-
-
-
+// printConsoleInfos();
 // Fonction principale de mise à jour et de rendu
 function run() {
     
+    if(!start) {return;}
+  
     serve();
     printGame();
     printInfos();
-
     // Updating paddles position based on key presses
-    if(start) {
-
-        if (arrowUpPressed && rightPaddleY > 0) {
-            rightPaddleY -= level + 1.8;
-        } else if (arrowDownPressed && rightPaddleY + paddleHeight < canvas.height) {
-            rightPaddleY += level + 1.8;
-        }
-        if(twoPlayer || tournament) {
-
-            if (wKeyPressed && leftPaddleY > 0) {
-                leftPaddleY -= level + 1.8;
-            } else if (sKeyPressed && leftPaddleY + paddleHeight < canvas.height) {
-                leftPaddleY += level + 1.8;
-            }
+   
+    if (arrowUpPressed && rightPaddleY > 0) {
+        rightPaddleY -= level + 1.8;
+    } else if (arrowDownPressed && rightPaddleY + paddleHeight < canvas.height) {
+        rightPaddleY += level + 1.8;
+    }
+    if(twoPlayer) {
+        if (wKeyPressed && leftPaddleY > 0) {
+            leftPaddleY -= level + 1.8;
+        } else if (sKeyPressed && leftPaddleY + paddleHeight < canvas.height) {
+            leftPaddleY += level + 1.8;
         }
     }
+    
+   
         
     // Ball Update Position
     ballX += ballSpeedX;
@@ -45,12 +43,18 @@ function run() {
         ballY < rightPaddleY + paddleHeight
     ) {
         ballSpeedX = -ballSpeedX;
+        paddleFX.play();
     } else if (ballX + ballSize > canvas.width) { // Right Wall Bounce
-        playerLeftScore++;
+        leftPlayerScore++;
         ballLaunched = false;
         spaceBarPressed = false;
         leftPaddleHand = true;
         rightPaddleHand = false;
+        if(leftPlayerScore < 10) {
+            pointFX.play();
+        } else {
+            applauseFX.play();
+        }
         leftPaddleY = (canvas.height - paddleHeight) / 2;
         rightPaddleY = (canvas.height - paddleHeight) / 2;
         
@@ -62,12 +66,19 @@ function run() {
         ballY < leftPaddleY + paddleHeight
     ) {
         ballSpeedX = -ballSpeedX;
+        paddleFX.play();
     } else if (ballX + ballSize < 0) { // Left Wall Bounce
-        playerRightScore++;
+        rightPlayerScore++;
         ballLaunched = false;
         spaceBarPressed = false;
         leftPaddleHand = false;
         rightPaddleHand = true;
+        if(rightPlayerScore < 10) {
+            pointFX.play();
+        } else {
+            applauseFX.play();
+        }
+
         leftPaddleY = (canvas.height - paddleHeight) / 2;
         rightPaddleY = (canvas.height - paddleHeight) / 2;
 
@@ -77,8 +88,10 @@ function run() {
     // Appeler la fonction update à la prochaine frame
     requestAnimationFrame(run);
 }
-// Set Players Names
-setPlayerNameToPrint();
-setHandToStart();
-// Lancer le jeu en appelant la fonction update
-run();
+printGame();
+
+// // Set Players Names
+// setPlayerNameToPrint();
+// setHandToStart();
+// // Lancer le jeu en appelant la fonction update
+// run();
