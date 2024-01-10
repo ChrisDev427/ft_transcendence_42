@@ -1,5 +1,5 @@
 function printConsoleInfos() {
-
+    console.log("------ Game logs ----------------------------------");
     console.log("Left Player Name : " + leftPlayerName);
     console.log("Right Player Name : " + rightPlayerName);
     console.log("Paddles Height : " + paddleHeight);
@@ -24,6 +24,11 @@ function printConsoleInfos() {
     console.log("One Player : " + onePlayer);
     console.log("Two Player : " + twoPlayer);
     console.log("Tournament : " + tournament);
+    console.log("Local : " + playLocal);
+    console.log("Online : " + playOnline);
+
+
+    console.log("\n");
 }
 
 function printGame() {
@@ -60,13 +65,13 @@ function printWinner() {
     ctx.font = "130px Calibri";
     ctx.fillStyle = themeColor[theme].winPrint;
     if(rightPlayerScore === 10) {
-        const lines = [" " + rightPlayerNamePrint, "WIN !"];
+        const lines = [" " + rightPlayerNamePrint, "WON !"];
         for (let i = 0; i < lines.length; i++) {
             ctx.fillText(lines[i], canvas.width - 440, canvas.height - 410 + i * 130);
         }
     }
     if(leftPlayerScore === 10) {
-        const lines = [" " + leftPlayerNamePrint, "WIN !"];
+        const lines = [" " + leftPlayerNamePrint, "WON !"];
         for (let i = 0; i < lines.length; i++) {
             ctx.fillText(lines[i], canvas.width - 1000, canvas.height - 410 + i * 130);
         }

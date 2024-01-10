@@ -4,6 +4,8 @@ let     theme = 1;
 let     start = false;
 let     onePlayer = false, twoPlayer = false, tournament = false;
 let     level;
+let     playLocal = false;
+let     playOnline = false;
 let     ballLaunched = false;
 let     leftPlayerScore = 0, rightPlayerScore = 0;
 let     ballSpeedX, ballSpeedY;
