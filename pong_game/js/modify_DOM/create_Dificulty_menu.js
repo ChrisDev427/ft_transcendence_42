@@ -5,7 +5,7 @@ function create_Dificulty_menu () {
     // Création de l'élément div principal
     let containerDiv = document.createElement('div');
     containerDiv.id = 'menu';
-    containerDiv.className = 'container rounded shadow bg-secondary bg-opacity-10 mt-3 py-3';
+    containerDiv.className = 'container rounded-4 shadow bg-secondary bg-opacity-10 mt-3 py-3';
 
 
     // Text part

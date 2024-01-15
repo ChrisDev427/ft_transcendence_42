@@ -58,52 +58,54 @@ function printGame() {
     ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2);
     ctx.fill();
     ctx.closePath();
+   
 }
 
 function printWinner() {
 
-    ctx.font = "130px Calibri";
+    ctx.font = '130px "Bagel Fat One", sans-serif';
     ctx.fillStyle = themeColor[theme].winPrint;
     if(rightPlayerScore === 10) {
-        const lines = [" " + rightPlayerNamePrint, "WON !"];
-        for (let i = 0; i < lines.length; i++) {
-            ctx.fillText(lines[i], canvas.width - 440, canvas.height - 410 + i * 130);
-        }
+       
+        ctx.fillText("Win!",  680, 400);
     }
     if(leftPlayerScore === 10) {
-        const lines = [" " + leftPlayerNamePrint, "WON !"];
-        for (let i = 0; i < lines.length; i++) {
-            ctx.fillText(lines[i], canvas.width - 1000, canvas.height - 410 + i * 130);
-        }
+        
+        ctx.fillText("Win!", 140, 400);
     }
     leftPlayerNamePrint = "";
     rightPlayerNamePrint = "";
-    start = false;
+
+    if(tournament) {
+        ManageTournament();
+    }
 }
 
 function printInfos() {
-
+    
     // Print score
-    ctx.font = "90px Calibri";
+    ctx.font = '90px "Bagel Fat One", sans-serif';
     if( leftPlayerScore < 10) {
-
-        ctx.fillText(leftPlayerScore, (canvas.width / 2) - 65, 75);
+        
+        ctx.fillText(leftPlayerScore, 465, 80);
     } else {
-        ctx.fillText(leftPlayerScore, (canvas.width / 2) - 110, 75);
+        ctx.fillText(leftPlayerScore, 420, 80);
     }
-    ctx.fillText(rightPlayerScore, canvas.width - (canvas.width / 2) + 20, 75);
-
+    ctx.fillText(rightPlayerScore, 580, 80);
+    
     if (leftPlayerScore === 10 || rightPlayerScore === 10) {
+        start = false;
         printWinner();
     }
 
     // Print Players Name 
     ctx.fillStyle = themeColor[theme].playersName; 
     ctx.globalAlpha = 0.2;
-    ctx.font = "90px Calibri"; 
+    // ctx.font = "90px Calibri"; 
     ctx.fillText(leftPlayerNamePrint, 30, 105);
-    ctx.fillText(rightPlayerNamePrint, canvas.width - 220, canvas.height - 40);
+    ctx.fillText(rightPlayerNamePrint, canvas.width - 235, canvas.height - 40);
     ctx.globalAlpha = 1.0;
+    
 }
 
 function serve() {
@@ -132,25 +134,23 @@ function serve() {
     }
 }
 
-// Cut the name if is length > 5
-function setPlayerNameToPrint() {
+// Cut the name if is length > 3
+function setPlayerNameToPrint(leftName, rightName) {
 
-    if (leftPlayerName.length > 3) {
-        leftPlayerNamePrint = leftPlayerName.substring(0, 3);
+    if (leftName.length > 3) {
+        leftPlayerNamePrint = leftName.substring(0, 3);
         leftPlayerNamePrint = leftPlayerNamePrint.toUpperCase();
     }
     else {
-        leftPlayerNamePrint = leftPlayerName;
+        leftPlayerNamePrint = leftName;
         leftPlayerNamePrint = leftPlayerNamePrint.toUpperCase(leftPlayerNamePrint);
-
     }
-    if (rightPlayerName.length > 3) {
-        rightPlayerNamePrint = rightPlayerName.substring(0, 3);
+    if (rightName.length > 3) {
+        rightPlayerNamePrint = rightName.substring(0, 3);
         rightPlayerNamePrint = rightPlayerNamePrint.toUpperCase();
-
     }
     else {
-        rightPlayerNamePrint = rightPlayerName;
+        rightPlayerNamePrint = rightName;
         rightPlayerNamePrint = rightPlayerNamePrint.toUpperCase();
     }
 }

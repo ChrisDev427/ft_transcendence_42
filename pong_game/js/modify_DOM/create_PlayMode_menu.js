@@ -3,7 +3,7 @@ function create_PlayMode_menu() {
     // Création de l'élément div principal
     let containerDiv = document.createElement('div');
     containerDiv.id = 'menu';
-    containerDiv.className = 'container rounded shadow bg-secondary bg-opacity-10 mt-3 py-3';
+    containerDiv.className = 'container rounded-4 shadow bg-secondary bg-opacity-10 mt-3 py-3';
 
     // Text part
     let row_1Div = document.createElement('div');
@@ -31,13 +31,17 @@ function create_PlayMode_menu() {
     buttonsDiv.className = 'col-12 d-flex justify-content-center';
     
     // Création des boutons
-    let onePlayerButton = document.createElement('button');
-    onePlayerButton.type = 'button';
-    onePlayerButton.className = 'btn btn-outline-info';
-    onePlayerButton.id = 'onePlayerButton';
-    onePlayerButton.setAttribute('data-bs-toggle', 'button');
-    onePlayerButton.setAttribute('autocomplete', 'off');
-    onePlayerButton.textContent = 'One Player';
+    if(playLocal) {
+
+        let onePlayerButton = document.createElement('button');
+        onePlayerButton.type = 'button';
+        onePlayerButton.className = 'btn btn-outline-info';
+        onePlayerButton.id = 'onePlayerButton';
+        onePlayerButton.setAttribute('data-bs-toggle', 'button');
+        onePlayerButton.setAttribute('autocomplete', 'off');
+        onePlayerButton.textContent = 'One Player';
+        buttonsDiv.appendChild(onePlayerButton);
+    }
     
     let twoPlayersButton = document.createElement('button');
     twoPlayersButton.type = 'button';
@@ -46,6 +50,7 @@ function create_PlayMode_menu() {
     twoPlayersButton.setAttribute('data-bs-toggle', 'button');
     twoPlayersButton.setAttribute('aria-pressed', 'true');
     twoPlayersButton.textContent = 'Two Players';
+    buttonsDiv.appendChild(twoPlayersButton);
     
     let tournamentButton = document.createElement('button');
     tournamentButton.type = 'button';
@@ -54,6 +59,7 @@ function create_PlayMode_menu() {
     tournamentButton.setAttribute('data-bs-toggle', 'button');
     tournamentButton.setAttribute('autocomplete', 'off');
     tournamentButton.textContent = 'Tournament';
+    buttonsDiv.appendChild(tournamentButton);
     
     let validButton = document.createElement('button');
     validButton.type = 'button';
@@ -62,12 +68,9 @@ function create_PlayMode_menu() {
     validButton.setAttribute('data-bs-toggle', 'button');
     validButton.setAttribute('aria-pressed', 'true');
     validButton.textContent = '>';
-    
-    // Ajout des boutons à l'élément div des boutons
-    buttonsDiv.appendChild(onePlayerButton);
-    buttonsDiv.appendChild(twoPlayersButton);
-    buttonsDiv.appendChild(tournamentButton);
     buttonsDiv.appendChild(validButton);
+    
+    
     
     // Ajout de l'élément div des boutons à l'élément div principal
     rowDiv.appendChild(buttonsDiv);
@@ -77,11 +80,15 @@ function create_PlayMode_menu() {
 
     // Ajout de l'élément div principal à la section spécifiée
     mySection.appendChild(containerDiv);
-    init_PlayMode_buttons();
+    if(playLocal) {
+        init_PlayMode_local_buttons();
+    } else {
+        init_PlayMode_online_buttons();
+    }
     
 }
 
-function init_PlayMode_buttons() {
+function init_PlayMode_local_buttons() {
 
     const onePlayerButton = document.getElementById("onePlayerButton");
     const twoPlayersButton = document.getElementById("twoPlayersButton");
@@ -134,6 +141,51 @@ function init_PlayMode_buttons() {
         }
         if(tournament) {
             create_Tournament_menu();
+        }
+        
+    });
+}
+
+function init_PlayMode_online_buttons() {
+
+    //******* MODE ONLINE A DEFINIR *******
+
+    const twoPlayersButton = document.getElementById("twoPlayersButton");
+    const tournamentButton = document.getElementById("tournamentButton");
+    const validButton = document.getElementById("validButton");
+
+    twoPlayersButton.addEventListener("click", function() {
+      
+        twoPlayersButton.classList.add("active");
+        tournamentButton.classList.remove("active");
+        validButton.classList.remove("disabled", "btn-outline-info");
+        validButton.classList.add("btn-info")
+        
+        onePlayer = false;
+        twoPlayer = true;
+        tournament = false;
+    });
+
+    tournamentButton.addEventListener("click", function() {
+        
+        twoPlayersButton.classList.remove("active");
+        tournamentButton.classList.add("active");
+        validButton.classList.remove("disabled", "btn-outline-info");
+        validButton.classList.add("btn-info")
+        
+        onePlayer = false;
+        twoPlayer = false;
+        tournament = true;
+    });
+
+    validButton.addEventListener("click", function() {
+        removeContent();
+        
+        if(twoPlayer) {
+            // create_TwoPlayers_menu();
+        }
+        if(tournament) {
+            // create_Tournament_menu();
         }
         
     });

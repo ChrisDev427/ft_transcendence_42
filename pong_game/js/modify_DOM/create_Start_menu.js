@@ -3,7 +3,7 @@ function create_Start_menu() {
     // Création de l'élément div principal
     let containerDiv = document.createElement('div');
     containerDiv.id = 'menu';
-    containerDiv.className = 'container rounded shadow bg-secondary bg-opacity-10 mt-3 py-3';
+    containerDiv.className = 'container rounded-4 shadow bg-secondary bg-opacity-10 mt-3 py-3';
 
     let rowDiv = document.createElement('div');
     rowDiv.className = 'row mb-3 mt-2';
@@ -16,8 +16,8 @@ function create_Start_menu() {
     validButton.type = 'button';
     validButton.className = 'btn btn-sm btn-success shadow mt-2 w-25 py-4';
     validButton.id = 'validButton';
-    validButton.setAttribute('data-bs-toggle', 'button');
-    validButton.setAttribute('aria-pressed', 'true');
+    // validButton.setAttribute('data-bs-toggle', 'button');
+    // validButton.setAttribute('aria-pressed', 'true');
     validButton.textContent = 'Start';
 
     // Ajout du bouton a buttonDiv
@@ -42,7 +42,7 @@ function init_Start_button() {
         removeContent();
         start = true;
         // Set Players Names
-        setPlayerNameToPrint();
+        setPlayerNameToPrint(leftPlayerName, rightPlayerName);
         setHandToStart();
         printConsoleInfos();
        

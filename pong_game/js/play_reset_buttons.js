@@ -1,21 +1,22 @@
 // PLAY - RESET -BUTTONS- ******************************************************
 const playButton = document.getElementById("playButton");
-const resetButton = document.getElementById("resetButton");
+const quitButton = document.getElementById("quitButton");
 
 playButton.addEventListener("click", function() {
     playButton.classList.add("disabled");
-    resetButton.classList.remove("disabled");
+    quitButton.classList.remove("disabled");
     create_Dificulty_menu();
 });
-resetButton.addEventListener("click", function() {
-    resetButton.classList.add("disabled");
+quitButton.addEventListener("click", function() {
     playButton.classList.remove("disabled");
+    quitButton.classList.add("disabled");
     reset();
 });
 
 function reset() {
 
     removeContent();
+    resetTournament();
     onePlayer = false;
     twoPlayer = false;
     tournament = false;

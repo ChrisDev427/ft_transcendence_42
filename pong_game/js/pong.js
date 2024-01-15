@@ -5,7 +5,12 @@
 // Fonction principale de mise à jour et de rendu
 function run() {
     
-    if(!start) {return;}
+    if(!start) {
+        // if(tournament) {
+        //     nextMatch();
+        // }
+        return;
+    }
   
     serve();
     printGame();
@@ -17,7 +22,7 @@ function run() {
     } else if (arrowDownPressed && rightPaddleY + paddleHeight < canvas.height) {
         rightPaddleY += level + 1.8;
     }
-    if(twoPlayer) {
+    if(twoPlayer || tournament) {
         if (wKeyPressed && leftPaddleY > 0) {
             leftPaddleY -= level + 1.8;
         } else if (sKeyPressed && leftPaddleY + paddleHeight < canvas.height) {
@@ -25,8 +30,6 @@ function run() {
         }
     }
     
-   
-        
     // Ball Update Position
     ballX += ballSpeedX;
     ballY += ballSpeedY;

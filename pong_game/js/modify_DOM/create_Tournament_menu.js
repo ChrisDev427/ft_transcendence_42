@@ -3,7 +3,7 @@ function create_Tournament_menu() {
     // Création de l'élément div principal
     let containerDiv = document.createElement('div');
     containerDiv.id = 'menu';
-    containerDiv.className = 'container rounded shadow bg-secondary bg-opacity-10 mt-3 py-3';
+    containerDiv.className = 'container rounded-4 shadow bg-secondary bg-opacity-10 mt-3 py-3';
 
     // Text part
     let row_1Div = document.createElement('div');
@@ -35,58 +35,31 @@ function create_Tournament_menu() {
     fourPlayersButton.type = 'button';
     fourPlayersButton.className = 'btn btn-outline-info mx-1';
     fourPlayersButton.id = 'fourPlayersButton';
-    fourPlayersButton.setAttribute('data-bs-toggle', 'button');
-    fourPlayersButton.setAttribute('autocomplete', 'off');
     fourPlayersButton.textContent = '4';
     
     let heightPlayersButton = document.createElement('button');
     heightPlayersButton.type = 'button';
     heightPlayersButton.className = 'btn btn-outline-info mx-1';
     heightPlayersButton.id = 'heightPlayersButton';
-    heightPlayersButton.setAttribute('data-bs-toggle', 'button');
-    heightPlayersButton.setAttribute('aria-pressed', 'true');
     heightPlayersButton.textContent = '8';
-
-    let twelvePlayersButton = document.createElement('button');
-    twelvePlayersButton.type = 'button';
-    twelvePlayersButton.className = 'btn btn-outline-info mx-1';
-    twelvePlayersButton.id = 'twelvePlayersButton';
-    twelvePlayersButton.setAttribute('data-bs-toggle', 'button');
-    twelvePlayersButton.setAttribute('aria-pressed', 'true');
-    twelvePlayersButton.textContent = '12';
 
     let sixteenPlayersButton = document.createElement('button');
     sixteenPlayersButton.type = 'button';
     sixteenPlayersButton.className = 'btn btn-outline-info mx-1';
     sixteenPlayersButton.id = 'sixteenPlayersButton';
-    sixteenPlayersButton.setAttribute('data-bs-toggle', 'button');
-    sixteenPlayersButton.setAttribute('aria-pressed', 'true');
     sixteenPlayersButton.textContent = '16';
-
-    let twentyPlayersButton = document.createElement('button');
-    twentyPlayersButton.type = 'button';
-    twentyPlayersButton.className = 'btn btn-outline-info mx-1';
-    twentyPlayersButton.id = 'twentyPlayersButton';
-    twentyPlayersButton.setAttribute('data-bs-toggle', 'button');
-    twentyPlayersButton.setAttribute('aria-pressed', 'true');
-    twentyPlayersButton.textContent = '20';
-    
-    
     
     let validButton = document.createElement('button');
     validButton.type = 'button';
     validButton.className = 'btn btn-outline-info disabled mx-1';
     validButton.id = 'validButton';
-    validButton.setAttribute('data-bs-toggle', 'button');
-    validButton.setAttribute('aria-pressed', 'true');
+
     validButton.textContent = '>';
     
     // Ajout des boutons à l'élément div des boutons
     buttonsDiv.appendChild(fourPlayersButton);
     buttonsDiv.appendChild(heightPlayersButton);
-    buttonsDiv.appendChild(twelvePlayersButton);
     buttonsDiv.appendChild(sixteenPlayersButton);
-    buttonsDiv.appendChild(twentyPlayersButton);
     
     buttonsDiv.appendChild(validButton);
     
@@ -106,57 +79,36 @@ function init_Tournament_buttons() {
 
     const fourPlayersButton = document.getElementById("fourPlayersButton");
     const heightPlayersButton = document.getElementById("heightPlayersButton");
-    const twelvePlayersButton = document.getElementById("twelvePlayersButton");
     const sixteenPlayersButton = document.getElementById("sixteenPlayersButton");
-    const twentyPlayersButton = document.getElementById("twentyPlayersButton");
     const validButton = document.getElementById("validButton");
     
     fourPlayersButton.addEventListener("click", function() {
         fourPlayersButton.classList.add("active");
         heightPlayersButton.classList.remove("active");
-        twelvePlayersButton.classList.remove("active");
         sixteenPlayersButton.classList.remove("active");
-        twentyPlayersButton.classList.remove("active");
         validButton.classList.remove("disabled", "btn-outline-info");
         validButton.classList.add("btn-info")
 
         tournamentSise = 4;
-          
         
+          
     });
 
     heightPlayersButton.addEventListener("click", function() {
         fourPlayersButton.classList.remove("active");
         heightPlayersButton.classList.add("active");
-        twelvePlayersButton.classList.remove("active");
         sixteenPlayersButton.classList.remove("active");
-        twentyPlayersButton.classList.remove("active");
         validButton.classList.remove("disabled", "btn-outline-info");
         validButton.classList.add("btn-info")
 
         tournamentSise = 8;
-        
-      
-    });
-    twelvePlayersButton.addEventListener("click", function() {
-        fourPlayersButton.classList.remove("active");
-        heightPlayersButton.classList.remove("active");
-        twelvePlayersButton.classList.add("active");
-        sixteenPlayersButton.classList.remove("active");
-        twentyPlayersButton.classList.remove("active");
-        validButton.classList.remove("disabled", "btn-outline-info");
-        validButton.classList.add("btn-info")
-
-        tournamentSise = 12;
         
         
     });
     sixteenPlayersButton.addEventListener("click", function() {
         fourPlayersButton.classList.remove("active");
         heightPlayersButton.classList.remove("active");
-        twelvePlayersButton.classList.remove("active");
         sixteenPlayersButton.classList.add("active");
-        twentyPlayersButton.classList.remove("active");
         validButton.classList.remove("disabled", "btn-outline-info");
         validButton.classList.add("btn-info")
 
@@ -164,21 +116,6 @@ function init_Tournament_buttons() {
         
         
     });
-    twentyPlayersButton.addEventListener("click", function() {
-        fourPlayersButton.classList.remove("active");
-        heightPlayersButton.classList.remove("active");
-        twelvePlayersButton.classList.remove("active");
-        sixteenPlayersButton.classList.remove("active");
-        twentyPlayersButton.classList.add("active");
-        validButton.classList.remove("disabled", "btn-outline-info");
-        validButton.classList.add("btn-info")
-
-        tournamentSise = 20;
-        
-        
-    });
-
-    
 
     validButton.addEventListener("click", function() {
 
@@ -186,6 +123,5 @@ function init_Tournament_buttons() {
         create_Tournament_setPlayers_menu();
         // printTournamentLogs();
        
-        
     });
 }
