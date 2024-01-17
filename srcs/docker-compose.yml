@@ -14,6 +14,8 @@ services:
         condition: service_healthy
     ports:
      - "8000:8000"
+    volumes:
+      - ./requirements/backend/django/ft_transcendence:/app
     networks:
      - pong
     env_file: .env
@@ -35,6 +37,22 @@ services:
       timeout: 5s
       retries: 5
 
+  nginx:
+    image: nginx:latest
+    container_name: nginx_container
+    restart: always
+    ports:
+      - "80:80"
+      #- "443:443"
+    networks:
+      - pong
+    volumes:
+       - ./requirements/frontend/nginx/conf/nginx.conf:/etc/nginx/conf.d/default.conf
+       - ./requirements/frontend/nginx/utils/:/usr/share/nginx/html
+    depends_on:
+      - django
+    env_file: .env
+
 networks:
   pong:
     name: pong
@@ -47,4 +65,4 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/Users/axelfernandez/ecole42/cursus42/ft_transcendence/srcs/requirements/backend/postgresql/DB/'
+      device: '/Users/axelfernandez/ecole42/cursus42/ft_transcendence_42/srcs/requirements/backend/postgresql/DB/'

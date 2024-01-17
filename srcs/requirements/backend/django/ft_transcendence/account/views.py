@@ -16,7 +16,6 @@ from django.core.files.storage import default_storage
 from rest_framework.parsers import MultiPartParser
 
 class UserRegisterView(APIView):
-    @csrf_exempt
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -28,6 +27,8 @@ class UserRegisterView(APIView):
             user = User.objects.create_user(
                 username = serializer.validated_data.get('username'),
                 password = serializer.validated_data.get('password'),
+                first_name = serializer.validated_data.get('first_name'),
+                last_name = serializer.validated_data.get('last_name'),
                 email=email,
             )
             UserProfile.objects.create(user=user)

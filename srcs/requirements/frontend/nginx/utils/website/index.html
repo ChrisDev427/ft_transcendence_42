@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ft_transcendence - 42</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+  <!-- Style -->
+  <link rel="stylesheet" href="style.css">
+  <
+  <!-- font -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Serif+Display&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <header class="py-4">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">
+          <span class="bg-gradient p-1 rounded text-secondary">42</span>ft_transcendence
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link fw-light" href="#playPong">Play Pong</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link fw-light" href="#signIn">Sign In</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fw-light" href="#signUp">Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fw-light" href="#aboutTheTeam">About the team</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="main">
+      <div class="container p-md-3 rounded shadow" >
+        <div class="row">
+          <div class="col-12  ">
+            <h1 class="display-1 text-info text-center fw-bold mt-2">ft_transcendence</h1>
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-8 d-flex justify-content-center mx-auto">
+            <img class="w-75" style="opacity: 70%;" src="img/img-cartoon.png" alt="img-cartoon">
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-lg-9">
+            <H3 class="display-6 text-center text-md-end  fw-bold py-2">Welcome to ft_transcendence</H3>
+            <H4 class="text-center text-md-end text-secondary fw-bold ">The last common core project at school 42</H4>
+            <p class="lead fs-5 text-center text-secondary">The ft_transcendence project is a complex and ambitious endeavor aiming
+              to create an online gaming platform based on table tennis (ping-pong). It is a large-scale project implementing diverse
+              features, ranging from user management to real-time table tennis matches.
+              It is a versatile project that combines aspects of web development, real-time functionality, and tournament management
+              to craft an immersive and competitive online gaming experience centered around table tennis. It challenges students' skills
+              in software development, database design, security, and the integration of modern technologies.
+            </p>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <div class="col d-flex justify-content-center mt-4 mb-2 mb-lg-5">
+              <a class="btn btn-info text-light shadow p-4 w-75" href="#playPong">Play Pong</a>
+              <!-- <button type="button" class="btn btn-info text-light shadow p-4 w-100" onclick="showSection('playPong')">Play Pong</button> -->
+            </div>
+            <div class="col d-flex justify-content-center mb-2">
+              <a class="btn btn-outline-info  shadow p-2 w-75" href="#signIn">Sign In</a>
+              <!-- <button type="button" class="btn btn-outline-info  shadow p-2 w-100" onclick="showSection('signIn')">Sign In</button> -->
+            </div>
+            <div class="col d-flex justify-content-center mb-2">
+              <a class="btn btn-outline-info  shadow p-2 w-75" href="#signUp">Sign Up</a>
+              <!-- <button type="button" class="btn btn-outline-info  shadow p-2 w-100" onclick="showSection('signUp')">Sign Up</button> -->
+            </div>
+            <div class="col d-flex justify-content-center ">
+              <a class="btn btn-outline-info  shadow p-2 w-75 mb-4" href="#aboutTheTeam">About the team</a>
+              <!-- <button type="button" class="btn btn-outline-info  shadow p-2 w-100" onclick="showSection('aboutTheTeam')">About the team</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="playPong" class="py-5">
+        <div class="container bg-secondary  rounded-4 p-2 p-md-4 shadow-lg " style="width: 100%; max-width: 900px;">
+            <div class="row">
+                <canvas id="pongCanvas" width="1100" height="700" ></canvas>
+            </div>
+            <div class="row mt-2 mt-md-4 mx-auto">
+                <div class="col-4 d-flex justify-content-center">
+                    <button type="button" class="btn btn-info p-md-3 rounded-4" id="playButton" data-bs-toggle="button" autocomplete="off">Play</button>
+                </div>
+                <div class="col-4 d-flex justify-content-center align-items-center">
+
+                    <h5 style="font-family: 'Bagel Fat One', sans-serif; text-shadow: 5px 5px 10px rgba(62, 62, 62, 0.5);" class="text-info display-6">PONG</h5>
+
+                </div>
+                <div class="col-4 d-flex justify-content-center">
+                    <button type="button" class="btn btn-danger p-md-3 rounded-4 disabled" id="quitButton" data-bs-toggle="button" autocomplete="off">Quit</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <section id="aboutTheTeam">
+      <div class="container" style="margin-bottom: 60px;">
+        <h1 class="display-3 fw-bold mt-3 text-info text-center">The team</h1>
+        <div class="row py-2  d-flex justify-content-evenly">
+          <div class="col-12 col-lg-3  pt-4 rounded shadow">
+            <img src="img/img-chris.jpg" alt="img_chris" class="w-50  d-block mx-auto m-4 shadow-lg" style="border-radius: 8px;">
+            <h4 class="fw-bold text-center cl-text">Christophe MASSA</h4>
+            <ul class="list-inline text-center fs-4">
+              <li class="list-inline-item">
+                <a class="text-info" href="https://github.com/ChrisDev427" target="_blank" rel="nofollow">
+                  <i class="bi-github custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="https://www.linkedin.com/in/christophe-massa-2406b4273/" target="_blank" rel="nofollow">
+                  <i class="bi-linkedin custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="mailto:chrisdev427@gmail.com" target="_blank" rel="nofollow">
+                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
+                </a>
+              </li>
+            </ul>
+            <p class="fw-light text-center text-secondary my-4 p-2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+
+          <div class="col-12 col-lg-3 m-5 m-lg-0 pt-4 rounded shadow">
+            <img src="img/img-axel.jpg" alt="img_axel" class="w-50  d-block mx-auto m-4 shadow-lg" style="border-radius: 8px;">
+            <h4 class="fw-bold text-center cl-text">Axel FERNANDEZ</h4>
+            <ul class="list-inline text-center fs-4">
+              <li class="list-inline-item">
+                <a class="text-info" href="https://github.com/AxelFdez" target="_blank" rel="nofollow">
+                  <i class="bi-github custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="https://www.linkedin.com/in/axelfernandez06/" target="_blank" rel="nofollow">
+                  <i class="bi-linkedin custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="mailto:axe06@hotmail.fr" target="_blank" rel="nofollow">
+                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
+                </a>
+              </li>
+            </ul>
+            <p class="fw-light text-center text-secondary my-4 p-2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+
+          <div class="col-12 col-lg-3  pt-4 rounded shadow">
+            <img src="img/img-axel.jpg" alt="img_axel" class="w-50 border border-1 border-dark d-block mx-auto m-4" style="border-radius: 5px;">
+            <h4 class="fw-bold text-center cl-text">Scrat</h4>
+            <ul class="list-inline text-center fs-4">
+              <li class="list-inline-item">
+                <a class="text-info" href="" target="_blank" rel="nofollow">
+                  <i class="bi-github custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="" target="_blank" rel="nofollow">
+                  <i class="bi-linkedin custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="" target="_blank" rel="nofollow">
+                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
+                </a>
+              </li>
+            </ul>
+            <p class="fw-light text-center text-secondary my-4 p-2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="signIn">
+      <div class="container p-3">
+        <div class="row fw-light text-secondary">
+          <h1 class="display-3 fw-bold text-info text-center">Sign In</h1>
+          <div class="col-md-5 col-lg-4 my-4 mx-auto">
+            <form method="POST" class="shadow p-3 rounded text-center" id="signin-form">
+                <label for="Username" class="form-label">Username</label>
+                <input type="Username" class="form-control mb-3 border-info" id="username" name="username">
+
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control mb-3 border-info" id="password" name="password">
+
+                <button class="btn btn-info text-white w-100 mt-3" type="submit">Sign in</button>
+            </form>
+          </div>
+    </section>
+    <section id="signUp">
+      <div class="container p-3">
+        <h1 class="display-3 fw-bold text-info text-center">Sign Up</h1>
+        <div class="row fw-light text-secondary">
+          <div class="col-7 col-md-5  my-4 mx-auto ">
+            <form method="post" class="shadow p-3 rounded" id="signup-form">
+                <label for="firstname" class="form-label">First name</label>
+                <input type="text" class="form-control mb-3 border-info" name="first_name" id="firstname">
+
+                <label for="lastname" class="form-label">Last name</label>
+                <input type="text" class="form-control mb-3 border-info" name="last_name" id="lastname" required>
+
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control mb-3 border-info" id="email" name="email" aria-describedby="emailHelp">
+
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control mb-3 border-info" id="username" name="username" aria-describedby="inputGroupPrepend2" required>
+
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control mb-3 border-info" id="password" name="password">
+
+                <button class="btn btn-info text-white w-100 mt-3" type="submit">Sign up</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+      //const csrfToken = getCookie('csrftoken');
+      document.getElementById('signup-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        fetch('http://localhost:8000/api/account/register/', {
+        method: 'POST',
+        body: new FormData(e.target)
+        })
+        .then(response => {
+          if (response.status === 201) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
+            const alerte = alert('Inscription réussie !');
+            setTimeout(function(){
+              alerte.close();
+            }, 2000);
+             // Vous pouvez personnaliser le message ou rediriger l'utilisateur ici
+            window.location.replace('index.html');
+          } else {
+            alert('Erreur lors de l\'inscription : ' + response.status);
+            e.target.reset();
+            // Gérer les erreurs d'inscription ici, par exemple en affichant un message d'erreur
+          }
+        })
+        .catch(error => {
+          console.error('Erreur lors de la soumission du formulaire :', error);
+        });
+      });
+      document.getElementById('signin-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        fetch('http://localhost:8000/api/account/login/', {
+        method: 'POST',
+        body: new FormData(e.target)
+        })
+        .then(response => {
+          if (response.status === 200) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
+            const alerte = alert('authentification réussie !');
+            setTimeout(function(){
+              alerte.close();
+            }, 2000);
+            const auth_token = response.access;
+            const refresh_token = response.refresh;
+            console.log(auth_token);
+             // Vous pouvez personnaliser le message ou rediriger l'utilisateur ici
+            window.location.replace('index.html');
+          } else {
+            alert('Erreur lors de l\'authentification : ' + response.status);
+            e.target.reset();
+            // Gérer les erreurs d'inscription ici, par exemple en affichant un message d'erreur
+          }
+        })
+        .catch(error => {
+          console.error('Erreur lors de la soumission du formulaire :', error);
+        });
+      });
+    </script>
+  </main>
+
+  <footer class="bg-info fixed-bottom">
+    <div class="container py-1 mt-2">
+      <div class="row">
+        <div class="col-6 col-md-3 text-start image-container ">
+          <a href="https://42nice.fr/" target="_blank" rel="nofollow">
+            <img src="img/42Nice-logo-white.png" alt="logo_42" class="w-50 w-md-100 custom-logo normal-logo">
+            <img src="img/42Nice-logo-blue.png" alt="logo_42" class="w-50 w-md-100 custom-logo hover-logo">
+          </a>
+        </div>
+        <div class="col-6 col-md-9 text-start my-auto d-flex flex-column align-items-end">
+          <ul class="list-inline text-center fs-4">
+            <li class="list-inline-item">
+              <a class="text-white" href="https://www.linkedin.com/company/42nice/" target="_blank" rel="nofollow">
+              <i class="bi-linkedin custom-icon-footer p-2"></i>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a class="text-white" href="https://www.instagram.com/42Nice/?hl=fr" target="_blank" rel="nofollow">
+              <i class="bi-instagram  custom-icon-footer p-2"></i>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a class="text-white" href="https://twitter.com/42NiceSud" target="_blank" rel="nofollow">
+              <i class="bi-twitter custom-icon-footer  p-2 fs-3"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+    <script src="./js/handleButtons.js"></script>
+
+    <script src="pong_game/js/gameConfig.js"></script>
+    <script src="pong_game/js/modify_DOM/create_Dificulty_menu.js"></script>
+    <script src="pong_game/js/modify_DOM/create_OnePlayer_menu.js"></script>
+    <script src="pong_game/js/modify_DOM/create_TwoPlayers_menu.js"></script>
+    <script src="pong_game/js/modify_DOM/create_Local_Online_menu.js"></script>
+    <script src="pong_game/js/modify_DOM/create_PlayMode_menu.js"></script>
+    <script src="pong_game/js/modify_DOM/create_Tournament_menu.js"></script>
+    <script src="pong_game/js/modify_DOM/create_Tournament_setPlayers_menu.js"></script>
+    <script src="pong_game/js/modify_DOM/create_Start_menu.js"></script>
+    <script src="pong_game/js/modify_DOM/create_alert.js"></script>
+    <script src="pong_game/js/modify_DOM/create_MatchMaking_menu.js"></script>
+    <script src="pong_game/js/modify_DOM/removeContent.js"></script>
+    <script src="pong_game/js/tournament/tournament_config.js"></script>
+    <script src="pong_game/js/play_reset_buttons.js"></script>
+    <script src="pong_game/js/utils.js"></script>
+    <script src="pong_game/js/inputUtils.js"></script>
+    <script src="pong_game/js/pong.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

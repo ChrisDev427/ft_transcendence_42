@@ -3,3 +3,4 @@ djangorestframework
 psycopg2
 djangorestframework-simplejwt
 Pillow
+django-cors-headers
