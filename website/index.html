@@ -8,20 +8,18 @@
   <title>ft_transcendence - 42</title>
   
   <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  
+  <!-- Style -->
   <link rel="stylesheet" href="style.css">
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/14273d579a.js" crossorigin="anonymous"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <
+  <!-- font -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Serif+Display&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <!-- <a href="../index.html" class="btn bg-primary text-white position-fixed mt-3 ms-3" data-bs-toggle="tooltip"
-     data-bs-placement="right" title="Ne pas inclure dans l'intégration">Retour</a> -->
+
   <header class="py-4">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info">
       <div class="container">
@@ -37,13 +35,13 @@
               <a class="nav-link fw-light" href="#play-pong">Play Pong</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link fw-light" href="#sign-in">Sign in/up</a>
+              <a class="nav-link fw-light" href="#signIn">Sign In</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fw-light" href="#tournament">Tournament</a>
+              <a class="nav-link fw-light" href="#signUp">Sign Up</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fw-light" href="#about-the-team">About the team</a>
+              <a class="nav-link fw-light" href="#aboutTheTeam">About the team</a>
             </li>
           </ul>
         </div>
@@ -52,215 +50,196 @@
   </header>
 
   <main>
-<!-- main section -->
     <section id="main">
-      <div class="container p-5 mt-4">
-        <div class="row d-flex justify-content-center">
-
-          <div class="col-12 w-auto p-md-4">
-            <h4 class="cl-gray text-center fw-lighter" style="margin: -20px; margin-left: 1px;"><em>Welcome to</em></h4>
-            <h1 class="display-1 text-info" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">ft_transcendence</h1>
-            <h6 class="cl-gray text-start fw-light text-end" style="margin-top: -20px; ">42 final project</h6>
+      <div class="container p-md-3 rounded shadow" >
+        <div class="row">
+          <div class="col-12  ">
+            <h1 class="display-1 text-info text-center fw-bold mt-2">ft_transcendence</h1>
           </div>
-          <div class="row mt-lg-5">
-
-            <div class="col-lg-7 d-flex align-items-center">
-              <img class="w-100" style="opacity: 70%;" src="img/img-cartoon.png" alt="img-cartoon">
+        </div>
+        <div class="row ">
+          <div class="col-8 d-flex justify-content-center mx-auto">
+            <img class="w-75" style="opacity: 70%;" src="img/img-cartoon.png" alt="img-cartoon">
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-lg-9">
+            <H3 class="display-6 text-center text-md-end  fw-bold py-2">Welcome to ft_transcendence</H3>
+            <H4 class="text-center text-md-end text-secondary fw-bold ">The last common core project at school 42</H4>
+            <p class="lead fs-5 text-center text-secondary">The ft_transcendence project is a complex and ambitious endeavor aiming
+              to create an online gaming platform based on table tennis (ping-pong). It is a large-scale project implementing diverse
+              features, ranging from user management to real-time table tennis matches.
+              It is a versatile project that combines aspects of web development, real-time functionality, and tournament management
+              to craft an immersive and competitive online gaming experience centered around table tennis. It challenges students' skills
+              in software development, database design, security, and the integration of modern technologies.
+            </p>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <div class="col d-flex justify-content-center mt-4 mb-2 mb-lg-5">
+              <a class="btn btn-info text-light shadow p-4 w-75" href="#playPong">Play Pong</a>
+              <!-- <button type="button" class="btn btn-info text-light shadow p-4 w-100" onclick="showSection('playPong')">Play Pong</button> -->
             </div>
-            <div class="col-lg-5 d-flex align-items-center justify-content-center">
-              <p class="fs-4 text-center text-secondary" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">This is the last common core project at school 42.<br/>
-                It implements a multiplayer platform for the game of Pong.<br/>
-                The project aims to develop skills in web programming,<br>database, security and communication between the frontend and backend.<br/>
-                Players can register, create tournaments, and play Pong against other users.<br/>
-                The goal is to create a robust and secure real-time gaming experience.
-              </p>
+            <div class="col d-flex justify-content-center mb-2">
+              <a class="btn btn-outline-info  shadow p-2 w-75" href="#signIn">Sign In</a>
+              <!-- <button type="button" class="btn btn-outline-info  shadow p-2 w-100" onclick="showSection('signIn')">Sign In</button> -->
             </div>
-            <div class="col-12 mt-lg-5 mb-lg-5 d-flex justify-content-center">
-              
-              <a href="#play-pong">
-                <button type="button" class="btn btn-info text-light mt-2 shadow px-4 py-3">Play Pong ?</button>
-              </a>
+            <div class="col d-flex justify-content-center mb-2">
+              <a class="btn btn-outline-info  shadow p-2 w-75" href="#signUp">Sign Up</a>
+              <!-- <button type="button" class="btn btn-outline-info  shadow p-2 w-100" onclick="showSection('signUp')">Sign Up</button> -->
+            </div>
+            <div class="col d-flex justify-content-center ">
+              <a class="btn btn-outline-info  shadow p-2 w-75 mb-4" href="#aboutTheTeam">About the team</a>
+              <!-- <button type="button" class="btn btn-outline-info  shadow p-2 w-100" onclick="showSection('aboutTheTeam')">About the team</button> -->
             </div>
           </div>
         </div>
       </div>
     </section>
-
-    <div class="container p-5"></div>
-
-    <section id="play-pong" class="py-5">
-      <div class="container">
-        <div class="row py-4">
-          <div class="col-12">
-            <img src="img/img_pong.png" alt="img_42" class="w-100 rounded">
+    <section id="playPong" class="py-5 border">
+        <div class="container bg-secondary  rounded-4 p-2 p-md-4 shadow-lg " style="width: 100%; max-width: 900px;">
+            <div class="row">
+                <canvas id="pongCanvas" width="1100" height="700" ></canvas>
+            </div>
+            <div class="row mt-2 mt-md-4 mx-auto">
+                <div class="col-4 d-flex justify-content-center">
+                    <button type="button" class="btn btn-info p-md-3 rounded-4" id="playButton" data-bs-toggle="button" autocomplete="off">Play</button>
+                </div>
+                <div class="col-4 d-flex justify-content-center align-items-center">
+                    
+                    <h5 style="font-family: 'Bagel Fat One', sans-serif; text-shadow: 5px 5px 10px rgba(62, 62, 62, 0.5);" class="text-info display-6">PONG</h5>
+                    
+                </div>
+                <div class="col-4 d-flex justify-content-center">
+                    <button type="button" class="btn btn-danger p-md-3 rounded-4 disabled" id="quitButton" data-bs-toggle="button" autocomplete="off">Quit</button>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    <section id="aboutTheTeam">
+      <div class="container" style="margin-bottom: 60px;">
+        <h1 class="display-3 fw-bold mt-3 text-info text-center">The team</h1>
+        <div class="row py-2  d-flex justify-content-evenly"> 
+          <div class="col-12 col-lg-3  pt-4 rounded shadow">
+            <img src="img/img-chris.jpg" alt="img_chris" class="w-50  d-block mx-auto m-4 shadow-lg" style="border-radius: 8px;">
+            <h4 class="fw-bold text-center cl-text">Christophe MASSA</h4>
+            <ul class="list-inline text-center fs-4">
+              <li class="list-inline-item">
+                <a class="text-info" href="https://github.com/ChrisDev427" target="_blank" rel="nofollow">
+                  <i class="bi-github custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="https://www.linkedin.com/in/christophe-massa-2406b4273/" target="_blank" rel="nofollow">
+                  <i class="bi-linkedin custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="mailto:chrisdev427@gmail.com" target="_blank" rel="nofollow">
+                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
+                </a>
+              </li>
+            </ul>
+            <p class="fw-light text-center text-secondary my-4 p-2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+            
+          <div class="col-12 col-lg-3 m-5 m-lg-0 pt-4 rounded shadow">
+            <img src="img/img-axel.jpg" alt="img_axel" class="w-50  d-block mx-auto m-4 shadow-lg" style="border-radius: 8px;">
+            <h4 class="fw-bold text-center cl-text">Axel FERNANDEZ</h4>
+            <ul class="list-inline text-center fs-4">
+              <li class="list-inline-item">
+                <a class="text-info" href="https://github.com/AxelFdez" target="_blank" rel="nofollow">
+                  <i class="bi-github custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="https://www.linkedin.com/in/axelfernandez06/" target="_blank" rel="nofollow">
+                  <i class="bi-linkedin custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="mailto:axe06@hotmail.fr" target="_blank" rel="nofollow">
+                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
+                </a>
+              </li>
+            </ul>
+            <p class="fw-light text-center text-secondary my-4 p-2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+            
+          <div class="col-12 col-lg-3  pt-4 rounded shadow">
+            <img src="img/img-axel.jpg" alt="img_axel" class="w-50 border border-1 border-dark d-block mx-auto m-4" style="border-radius: 5px;">
+            <h4 class="fw-bold text-center cl-text">Scrat</h4>
+            <ul class="list-inline text-center fs-4">
+              <li class="list-inline-item">
+                <a class="text-info" href="" target="_blank" rel="nofollow">
+                  <i class="bi-github custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="" target="_blank" rel="nofollow">
+                  <i class="bi-linkedin custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="" target="_blank" rel="nofollow">
+                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
+                </a>
+              </li>
+            </ul>
+            <p class="fw-light text-center text-secondary my-4 p-2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- Tournament section -->
-    <section id="tournament" class="py-5">
-      <div class="container py-5">
-        <div class="row py-4 bg-secondary">
-          <div class="col-12 my-auto d-flex flex-column align-items-center">
-            <p>Tournament Part...</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- About the team section -->
-    <section id="about-the-team" class="py-5">
-      <div class="container-fluid w-75 py-5">
-        <div class="row py-5 d-flex justify-content-evenly">
-            <h2 class="fw-bold text-info mb-5">The team ...</h2>
-
-            <div class="col-12 col-lg-3 my-4 my-lg-0 shadow">
-              <img src="img/img-chris.jpg" alt="img_chris" class="w-50  d-block mx-auto m-4 shadow-lg" style="border-radius: 8px;">
-              <h4 class="fw-bold text-center cl-text">Christophe MASSA</h4>
-              <ul class="list-inline text-center fs-4">
-                <li class="list-inline-item">
-                  <a class="text-info" href="https://github.com/ChrisDev427" target="_blank" rel="nofollow">
-                  <i class="bi-github custom-icon p-2"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a class="text-info" href="https://www.linkedin.com/in/christophe-massa-2406b4273/" target="_blank" rel="nofollow">
-                  <i class="bi-linkedin custom-icon p-2"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a class="text-info" href="mailto:chrisdev427@gmail.com" target="_blank" rel="nofollow">
-                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
-                  </a>
-                </li>
-              </ul>
-              <p class="fw-light text-center text-secondary my-4 p-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-            
-            <div class="col-12 col-lg-3 my-4 my-lg-0 shadow">
-              <img src="img/img-axel.jpg" alt="img_axel" class="w-50  d-block mx-auto m-4 shadow-lg" style="border-radius: 8px;">
-              <h4 class="fw-bold text-center cl-text">Axel FERNANDEZ</h4>
-              <ul class="list-inline text-center fs-4">
-                <li class="list-inline-item">
-                  <a class="text-info" href="https://github.com/AxelFdez" target="_blank" rel="nofollow">
-                  <i class="bi-github custom-icon p-2"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a class="text-info" href="https://www.linkedin.com/in/axelfernandez06/" target="_blank" rel="nofollow">
-                  <i class="bi-linkedin custom-icon p-2"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a class="text-info" href="mailto:axe06@hotmail.fr" target="_blank" rel="nofollow">
-                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
-                  </a>
-                </li>
-              </ul>
-              <p class="fw-light text-center text-secondary my-4 p-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-            
-            <div class="col-12 col-lg-3 my-4 my-lg-0 shadow">
-              <img src="img/img_scrat.png" alt="img_axel" class="w-50 border border-1 border-dark d-block mx-auto m-4" style="border-radius: 5px;">
-              <h4 class="fw-bold text-center cl-text">Scrat</h4>
-              <ul class="list-inline text-center fs-4">
-                <li class="list-inline-item">
-                  <a class="text-info" href="" target="_blank" rel="nofollow">
-                  <i class="bi-github custom-icon p-2"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a class="text-info" href="" target="_blank" rel="nofollow">
-                  <i class="bi-linkedin custom-icon p-2"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a class="text-info" href="" target="_blank" rel="nofollow">
-                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
-                  </a>
-                </li>
-              </ul>
-              <p class="fw-light text-center text-secondary my-4 p-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-            
-
-          </div>
-      </div>
-    </section>
-
-    <!-- Sign up section -->
-    <section id="sign-in">
-      <div class="container py-5 mb-5">
+    </section> 
+    <section id="signIn">
+      <div class="container p-3">
         <div class="row fw-light text-secondary">
-          <h2 class=" fw-bold text-info text-center">Sign in / Sign up</h2>
-          <div class="col-md-5 col-lg-4 my-4 mx-auto ">
-            <form class="shadow p-3 rounded">
-              <div>
+          <h1 class="display-3 fw-bold text-info text-center">Sign In</h1>
+          <div class="col-md-5 col-lg-4 my-4 mx-auto">
+            <form class="shadow p-3 rounded text-center">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control mb-3" id="email" aria-describedby="emailHelp">
-              </div>
-              <div>
+                <input type="email" class="form-control mb-3 border-info" id="email" aria-describedby="emailHelp">
+
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control mb-3" id="password">
-              </div>
-              <div>
+                <input type="password" class="form-control mb-3 border-info" id="password">
+
                 <button class="btn btn-info text-white w-100 mt-3" type="submit">Sign in</button>
-              </div>
             </form>
           </div>
-          <!-- <div class="col-12 col-md-2"></div> -->
-        </div>
-          
-          <div class="col-md-8 mx-auto fw-light text-secondary">
-
-            <form class="shadow p-3 mt-4 rounded">
-              <div class="row">
-
-                <div class="col-6">
-                  <label for="firstname" class="form-label">First name</label>
-                  <input type="text" class="form-control mb-3" name="firstname" id="firstname">
-                </div>
-                
-                <div class="col-6">
-                  <label for="lastname" class="form-label">Last name</label>
-                  <input type="text" class="form-control mb-3" name="lastname" id="lastname" required>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-7">
-                  <label for="email" class="form-label">Email address</label>
-                  <input type="email" class="form-control mb-3" id="email" aria-describedby="emailHelp">
-                </div>
-                <div class="col-5">
-                  <label for="username" class="form-label">Username</label>
-                  <input type="text" class="form-control mb-3" id="username"  aria-describedby="inputGroupPrepend2" required>
-                </div>
-              </div>
+    </section> 
+    <section id="signUp">
+      <div class="container p-3">
+        <h1 class="display-3 fw-bold text-info text-center">Sign Up</h1>
+        <div class="row fw-light text-secondary">
+          <div class="col-7 col-md-5  my-4 mx-auto ">
+            <form class="shadow p-3 rounded">
+                <label for="firstname" class="form-label">First name</label>
+                <input type="text" class="form-control mb-3 border-info" name="firstname" id="firstname">
+            
+                <label for="lastname" class="form-label">Last name</label>
+                <input type="text" class="form-control mb-3 border-info" name="lastname" id="lastname" required>
               
-              <div class="col-6">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control mb-3 border-info" id="email" aria-describedby="emailHelp">
+              
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control mb-3 border-info" id="username"  aria-describedby="inputGroupPrepend2" required>
+            
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control mb-3" id="password">
-              </div>
-            
-              <div class="form-check">
-                <label class="form-check-label" for="checkmeout">Check me out</label>
-                <input type="checkbox" class="form-check-input" id="checkmeout">
-              </div>
-            
-              <button class="btn btn-info text-white w-100 mt-3" type="submit">Sign up</button>
-            
+                <input type="password" class="form-control mb-3 border-info" id="password">
+                
+                <button class="btn btn-info text-white w-100 mt-3" type="submit">Sign up</button>
             </form>
           </div>
+        </div>
       </div>
     </section>
-
   </main>
 
   <footer class="bg-info fixed-bottom">
@@ -293,12 +272,30 @@
         </div>
       </div>
     </div>
-    <!-- Script js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
-    <!-- <script src="../js/script.js"></script> -->
   </footer>
+    
+    <script src="./js/handleButtons.js"></script>
+
+    <script src="../pong_game/js/gameConfig.js"></script>
+    <script src="../pong_game/js/modify_DOM/create_Dificulty_menu.js"></script>
+    <script src="../pong_game/js/modify_DOM/create_OnePlayer_menu.js"></script>
+    <script src="../pong_game/js/modify_DOM/create_TwoPlayers_menu.js"></script>
+    <script src="../pong_game/js/modify_DOM/create_Local_Online_menu.js"></script>
+    <script src="../pong_game/js/modify_DOM/create_PlayMode_menu.js"></script>
+    <script src="../pong_game/js/modify_DOM/create_Tournament_menu.js"></script>
+    <script src="../pong_game/js/modify_DOM/create_Tournament_setPlayers_menu.js"></script>
+    <script src="../pong_game/js/modify_DOM/create_Start_menu.js"></script>
+    <script src="../pong_game/js/modify_DOM/create_alert.js"></script>
+    <script src="../pong_game/js/modify_DOM/create_MatchMaking_menu.js"></script>
+    <script src="../pong_game/js/modify_DOM/removeContent.js"></script>
+    <script src="../pong_game/js/tournament/tournament_config.js"></script>
+    <script src="../pong_game/js/play_reset_buttons.js"></script>
+    <script src="../pong_game/js/utils.js"></script>
+    <script src="../pong_game/js/inputUtils.js"></script>
+    <script src="../pong_game/js/pong.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
 </body>
 
 </html>

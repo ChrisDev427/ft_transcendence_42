@@ -76,7 +76,7 @@ function create_Dificulty_menu () {
     row_2Div.appendChild(buttonsDiv);
     containerDiv.appendChild(row_2Div);
     // Récupération de la section par son ID
-    let mySection = document.getElementById('play-pong');
+    let mySection = document.getElementById('playPong');
 
     // Ajout de l'élément div principal à la section spécifiée
     mySection.appendChild(containerDiv);

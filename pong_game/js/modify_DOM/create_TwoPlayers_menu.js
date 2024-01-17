@@ -77,7 +77,7 @@ function create_TwoPlayers_menu() {
     containerDiv.appendChild(buttonDiv);
 
     // Récupération de la section par son ID
-    let mySection = document.getElementById('play-pong');
+    let mySection = document.getElementById('playPong');
     // Ajout de l'élément div principal à la section spécifiée
     mySection.appendChild(containerDiv);
     init_TwoPlayers_buttons();

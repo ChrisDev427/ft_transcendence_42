@@ -76,7 +76,7 @@ function create_PlayMode_menu() {
     rowDiv.appendChild(buttonsDiv);
     containerDiv.appendChild(rowDiv);
     // Récupération de la section par son ID
-    let mySection = document.getElementById('play-pong');
+    let mySection = document.getElementById('playPong');
 
     // Ajout de l'élément div principal à la section spécifiée
     mySection.appendChild(containerDiv);

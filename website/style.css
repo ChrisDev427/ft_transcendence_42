@@ -7,7 +7,26 @@
 .bg-blue-navbar {
   background-color: #293b6b;
 } */
+h1 {
+  font-family: 'Bagel Fat One', sans-serif;
+ 
+}
+h3 {
+  font-family: Cambria;
+}
+h4 {
+  font-family: Cambria;
+}
+section {
+  margin-bottom: 100px;
+}
+input[type="text"]::placeholder {
 
+  color: rgba(0, 179, 255, 0.351);
+}
+.hidden-element {
+  display: none;
+}
 .cl-gray {
   color: #878585;
 }
