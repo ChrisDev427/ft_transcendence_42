@@ -1,0 +1,50 @@
+services:
+  django:
+    image: django:v1
+    container_name: django_container
+    build: ./requirements/backend/django
+    restart: on-failure
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py shell < create_superuser.py &&
+             python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    ports:
+     - "8000:8000"
+    networks:
+     - pong
+    env_file: .env
+
+  postgresql:
+    image: postgres:15.5
+    container_name: postgresql_container
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - pong
+    volumes:
+      - DB:/var/lib/postgresql/data
+    env_file: .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+
+networks:
+  pong:
+    name: pong
+    driver: bridge
+
+volumes:
+  DB:
+    name: DB
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/Users/axelfernandez/ecole42/cursus42/ft_transcendence/srcs/requirements/backend/postgresql/DB/'
