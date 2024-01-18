@@ -9,18 +9,18 @@ function hideCurrentSection() {
 }
 
 function showSection(sectionId) {
-    let aboutTheTeam = document.getElementById(sectionId);
+    let targetSection = document.getElementById(sectionId);
     
     hideCurrentSection();
     // Si sectionId est vide, affichez la section principale par défaut
     if (!sectionId) {
         // Remplacez 'main' par l'ID de votre section principale
-        aboutTheTeam = document.getElementById('main');
-        aboutTheTeam.classList.remove('hidden-element');
+        targetSection = document.getElementById('main');
+        targetSection.classList.remove('hidden-element');
 
         location.hash = ''; // Supprime le hash de l'URL
     } else {
-        aboutTheTeam.classList.remove('hidden-element');
+        targetSection.classList.remove('hidden-element');
         location.hash = '#' + sectionId;
     }
     setTimeout(() => {

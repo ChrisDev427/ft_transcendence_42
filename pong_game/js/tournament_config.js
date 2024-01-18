@@ -1,5 +1,6 @@
-let tournamentSise =  0;
+let tournamentSize =  0;
 let matchNumber = 0;
+let tourNumber = 0;
 let tournamentWinnerName = "";
 let tournament_PlayerName_left = "";
 let tournament_PlayerName_right = "";
@@ -13,8 +14,9 @@ const playerObj = {
 };
 
 function resetTournament() {
-    tournamentSise =  0;
+    tournamentSize =  0;
     matchNumber = 0;
+    tourNumber = 0;
     tournamentWinnerName = "";
     tournament_PlayerName_left = "";
     tournament_PlayerName_right = "";
@@ -24,7 +26,7 @@ function printTournamentLogs() {
 
     console.log("------ Tournament logs ----------------------------");
     
-    console.log("Tournament Size : " + tournamentSise);
+    console.log("Tournament Size : " + tournamentSize);
     for(let i = 0; i < tournamentPlayers.length; i++) {
         console.log(tournamentPlayers[i]);
     }
@@ -37,7 +39,7 @@ function matchMakingLogs() {
 
     console.log("------ Match Making -------------------------------");
     
-    console.log("Tournament Size : " + tournamentSise);
+    console.log("Tournament Size : " + tournamentSize);
 
     for(let i = 0; i < tournamentPlayers.length; i++) {
         if(tournamentPlayers[i].in === true) {

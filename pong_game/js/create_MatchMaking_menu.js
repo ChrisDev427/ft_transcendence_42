@@ -1,9 +1,24 @@
 function create_MatchMaking_menu() {
 
+    tourNumber++;
     // Création de l'élément div container
     let containerDiv = document.createElement('div');
     containerDiv.id = 'menu';
-    containerDiv.className = 'container bg-info bg-opacity-50 py-3 mt-3  w-auto rounded-4 shadow-lg';
+    containerDiv.className = 'container bg-secondary bg-opacity-25 py-3 mt-3  w-auto rounded-4 shadow-lg';
+    containerDiv.style.cssText = 'width: 100%; max-width: 900px;';
+
+    // Création de l'élément div pour le bouton Start Tournament
+    let buttonDiv = document.createElement('div');
+    buttonDiv.className = 'd-flex justify-content-center';
+    buttonDiv.id = 'buttonDiv';
+    // Creation du bouton
+    let startTournamentButton = document.createElement('button');
+    startTournamentButton.type = 'button';
+    startTournamentButton.classList = 'btn btn-info shadow text-white';
+    startTournamentButton.id = 'startTournamentButton';
+    startTournamentButton.textContent = 'Start Tour ' + tourNumber;
+    buttonDiv.appendChild(startTournamentButton);
+    containerDiv.appendChild(buttonDiv);
 
     // Table part
     let rowDiv = document.createElement('div');
@@ -12,7 +27,7 @@ function create_MatchMaking_menu() {
     containerDiv.appendChild(rowDiv);
     
     let table = document.createElement('table');
-    table.classList = 'table table-sm table-hover mt-4 mb-3 text-center w-75 shadow';
+    table.classList = 'table table-sm table-hover mt-2 mb-3 text-center w-75 shadow';
     table.id = 'table';
     rowDiv.appendChild(table);
 
@@ -74,21 +89,6 @@ function create_MatchMaking_menu() {
             }
         }
     }
-    
-    // Création de l'élément div pour le bouton Start Tournament
-    let buttonDiv = document.createElement('div');
-    buttonDiv.className = 'd-flex justify-content-center';
-    buttonDiv.id = 'buttonDiv';
-    buttonDiv.style.height = '80px';
-    // Creation du bouton
-    let startTournamentButton = document.createElement('button');
-    startTournamentButton.type = 'button';
-    startTournamentButton.className = 'btn btn-sm btn-success shadow p-3 my-2';
-    startTournamentButton.id = 'startTournamentButton';
-    startTournamentButton.textContent = 'Start';
-    buttonDiv.appendChild(startTournamentButton);
-    containerDiv.appendChild(buttonDiv);
-
     // Récupération de la section par son ID
     let mySection = document.getElementById('playPong');
     // Ajout de l'élément div principal à la section spécifiée
@@ -102,8 +102,7 @@ function init_StartTournament_button() {
     startTournamentButton.addEventListener("click", function() {
         
         startTournamentButton.remove();
-        // startTournament = true;
-        // tourNumber++;
+     
         create_PlayMatch_button();
     });
 }
@@ -115,7 +114,7 @@ function create_PlayMatch_button() {
     let buttonDiv = document.getElementById('buttonDiv');
     let playMatchButton = document.createElement('button');
     playMatchButton.type = 'button';
-    playMatchButton.className = 'btn btn-sm btn-success shadow p-3 my-2';
+    playMatchButton.classList = 'btn btn-info shadow text-white';
     playMatchButton.id = 'playMatchButton';
     playMatchButton.textContent = 'Play Match';
     buttonDiv.appendChild(playMatchButton);
@@ -136,28 +135,22 @@ function init_PlayMatch_button() {
         scoreValue.textContent = 'playing';
         playMatchButton.remove();
         
+        printTournamentLogs();
         
         start = true;
-    printTournamentLogs();
-        
         matchMaking_selectPlayersToPrint();
         setHandToStart();
         run();
-    
-
     });
 }
 
-
-
 function create_NextTour_button() {
 
-    // matchNumber++;
     // Creation du bouton
     let buttonDiv = document.getElementById('buttonDiv');
     let nextTourButton = document.createElement('button');
     nextTourButton.type = 'button';
-    nextTourButton.className = 'btn btn-sm btn-success shadow p-3 my-2';
+    nextTourButton.className = 'btn btn-info shadow text-white';
     nextTourButton.id = 'nextTourButton';
     nextTourButton.textContent = 'Next Tour';
     buttonDiv.appendChild(nextTourButton);
@@ -170,10 +163,8 @@ function init_NextTour_button() {
     nextTourButton.addEventListener("click", function() {
         let deleteMenu = document.getElementById('menu');
         deleteMenu.remove();
-        // nextTourButton.remove();
+
         create_MatchMaking_menu();
-        
-        
     });
 }
 
@@ -227,7 +218,6 @@ function endOfTournament() {
 
     let getElement = document.getElementById('rowDiv');
     getElement.appendChild(colDiv);
-
 }
 
 function ManageTournament() {

@@ -22,7 +22,7 @@ function run() {
     } else if (arrowDownPressed && rightPaddleY + paddleHeight < canvas.height) {
         rightPaddleY += level + 1.8;
     }
-    if(twoPlayer || tournament) {
+    if(twoPlayers || tournament) {
         if (wKeyPressed && leftPaddleY > 0) {
             leftPaddleY -= level + 1.8;
         } else if (sKeyPressed && leftPaddleY + paddleHeight < canvas.height) {
