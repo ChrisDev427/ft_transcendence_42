@@ -14,6 +14,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.http import HttpResponse
 from django.core.files.storage import default_storage
 from rest_framework.parsers import MultiPartParser
+from django.utils import timezone
+from django.core.mail import send_mail
+import random
 
 class UserRegisterView(APIView):
     def post(self, request):
@@ -32,7 +35,7 @@ class UserRegisterView(APIView):
                 email=email,
             )
             UserProfile.objects.create(user=user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response("User created", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class AllUserView(APIView):
@@ -63,6 +66,10 @@ class ProfileView(APIView):
 
     def patch(self, request):
         user = request.user
+        if request.data.get('password'):
+            user.set_password(request.data.get('password'))
+            user.save()
+            return Response("password updated", status=status.HTTP_200_OK)
         user_profile = UserProfile.objects.filter(user=user).first()  # Obtenez le profil de l'utilisateur
         serializer = UserProfileSerializer(user_profile, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
@@ -70,7 +77,7 @@ class ProfileView(APIView):
             serializer = UserSerializer(user, data=request.data, partial=True, context={'request': request})
             if serializer.is_valid():
                 serializer.save()
-            return Response(serializer.data)
+            return Response("user updated", status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
@@ -87,6 +94,27 @@ class getProfileView(APIView):
         serializer = UserProfileSerializer(user_profile)
         return Response(serializer.data)
 
+class SendOTPView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(username=username, password=password)
+        verification_code = "".join([str(random.randint(0, 9)) for i in range(6)])
+        try :
+            user_profile = UserProfile.objects.filter(user=user).first()
+            user_profile.otp = str(verification_code)
+            user_profile.opt_expiration = timezone.now() + timezone.timedelta(minutes=5)
+            user_profile.save()
+            send_mail(
+                'OTP',
+                'Your OTP is ' + user_profile.otp,
+                'axesnake@hotmail.fr',
+                ['Axe06@hotmail.fr'], #user_profile__user.email
+                fail_silently=False,
+            )
+        except UserProfile.DoesNotExist:
+            return Response("message:","user not found", status=status.HTTP_404_NOT_FOUND)
+        return Response({'detail': 'Verification code sent successfully.'}, status=status.HTTP_204_NO_CONTENT)
 
 class LoginView(TokenObtainPairView):
 
@@ -95,12 +123,26 @@ class LoginView(TokenObtainPairView):
         if response.status_code == 200:
             username = request.data.get('username')
             password = request.data.get('password')
+            otp = request.data.get('otp')
             user = authenticate(username=username, password=password)
-            if user is not None:
+            if user is None:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            try:
                 user_profile = UserProfile.objects.filter(user=user).first()
-                if user_profile:
-                    user_profile.is_connected = True
-                    user_profile.save()
+                print(user_profile)
+                if user_profile.two_fa:
+                    if not otp:
+                        return Response("message:","otp needed", status=status.HTTP_401_UNAUTHORIZED)
+                    if user_profile.otp != otp:
+                        return Response("message:","otp not match", status=status.HTTP_401_UNAUTHORIZED)
+                    elif user_profile.opt_expiration < timezone.now():
+                        return Response("message:","otp expired", status=status.HTTP_401_UNAUTHORIZED)
+                    elif user_profile.otp == otp:
+                        user_profile.otp = '0'
+                user_profile.is_connected = True
+                user_profile.save()
+            except UserProfile.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
         return response
 
 class LogoutView(APIView):
@@ -109,7 +151,7 @@ class LogoutView(APIView):
         user_profile = UserProfile.objects.filter(user=user).first()
         user_profile.is_connected = False
         user_profile.save()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response("user logout", status=status.HTTP_204_NO_CONTENT)
 
 class isIngame(APIView):
     permission_classes = [permissions.IsAuthenticated]

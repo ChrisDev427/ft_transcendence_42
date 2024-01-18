@@ -15,7 +15,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ['user', 'avatar', 'bio', 'games_id', 'win', 'lose']
+        fields = ['user', 'avatar', 'bio', 'games_id', 'win', 'lose', 'mobile_number', 'is_connected', 'is_ingame', 'friends', 'two_fa', ]
 
 class UpdateAvatarSerializer(serializers.ModelSerializer):
     class Meta:

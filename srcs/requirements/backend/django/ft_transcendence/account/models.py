@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+	two_fa = models.BooleanField(default=False)
+	otp = models.CharField(max_length=16, blank=True, null=True)
+	opt_expiration = models.DateTimeField(blank=True, null=True)
+	mobile_number = models.CharField(max_length=15, blank=True)
 	is_connected = models.BooleanField(default=False)
 	avatar = models.ImageField(upload_to='avatar/', default='/api/account/profile/avatar/defaultPic.png')
 	bio = models.TextField(max_length=420, blank=True)

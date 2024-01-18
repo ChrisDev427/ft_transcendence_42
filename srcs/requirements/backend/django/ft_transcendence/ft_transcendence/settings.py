@@ -93,8 +93,8 @@ DATABASES = {
         'NAME': os.environ.get('POSTGRES_DB'),
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': 'postgresql_container',
-		#'HOST': 'localhost',
+        #'HOST': 'postgresql_container',
+		'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -131,6 +131,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+TWILIO_SID = os.environ.get('TWILIO_SID')
+TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+TWILIO_SERVICE_ID = os.environ.get('TWILIO_SERVICE_ID')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -159,3 +162,10 @@ SIMPLE_JWT = {
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # SECURE_SSL_REDIRECT = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'axesnake@hotmail.fr'
+EMAIL_HOST_PASSWORD = 'splintersnake25'

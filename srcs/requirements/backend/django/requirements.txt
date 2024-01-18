@@ -1,8 +1,8 @@
-Django==4.2
+Django==3.2.4
 djangorestframework
 psycopg2
-djangorestframework-simplejwt
+djangorestframework-simplejwt==4.6
 Pillow
 django-cors-headers
-django-restframework-2fa
 twilio
+phonenumbers
