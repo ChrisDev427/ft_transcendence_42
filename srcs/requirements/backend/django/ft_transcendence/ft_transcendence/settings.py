@@ -55,6 +55,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+ # CORS settings (Cross-Origin Resource Sharing)
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost',
 ]
@@ -118,8 +120,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -131,9 +131,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-TWILIO_SID = os.environ.get('TWILIO_SID')
-TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
-TWILIO_SERVICE_ID = os.environ.get('TWILIO_SERVICE_ID')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -145,6 +142,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Rest framework settings
+
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
@@ -153,19 +152,29 @@ REST_FRAMEWORK = {
     )
 }
 
+ # JWT settings
+
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 	'UPDATE_LAST_LOGIN': True,
 }
 
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# SECURE_SSL_REDIRECT = True
+ # 2fa settings
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-mail.outlook.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'axesnake@hotmail.fr'
-EMAIL_HOST_PASSWORD = 'splintersnake25'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+TWILIO_SID = os.environ.get('TWILIO_SID')
+TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+TWILIO_SERVICE_ID = os.environ.get('TWILIO_SERVICE_ID')
+
+
+
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# SECURE_SSL_REDIRECT = True

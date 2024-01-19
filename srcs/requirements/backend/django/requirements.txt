@@ -1,8 +1,8 @@
 Django==3.2.4
 djangorestframework
-psycopg2
+psycopg2 # for postgres
 djangorestframework-simplejwt==4.6
-Pillow
-django-cors-headers
-twilio
-phonenumbers
+Pillow # for image upload
+django-cors-headers # for cors
+twilio # for sms
+phonenumbers # for phone number validation

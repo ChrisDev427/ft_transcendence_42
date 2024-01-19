@@ -102,18 +102,18 @@ class SendOTPView(APIView):
         verification_code = "".join([str(random.randint(0, 9)) for i in range(6)])
         try :
             user_profile = UserProfile.objects.filter(user=user).first()
-            user_profile.otp = str(verification_code)
-            user_profile.opt_expiration = timezone.now() + timezone.timedelta(minutes=5)
-            user_profile.save()
-            send_mail(
-                'OTP',
-                'Your OTP is ' + user_profile.otp,
-                'axesnake@hotmail.fr',
-                ['Axe06@hotmail.fr'], #user_profile__user.email
-                fail_silently=False,
-            )
         except UserProfile.DoesNotExist:
             return Response("message:","user not found", status=status.HTTP_404_NOT_FOUND)
+        user_profile.otp = str(verification_code)
+        user_profile.opt_expiration = timezone.now() + timezone.timedelta(minutes=5)
+        user_profile.save()
+        send_mail(
+            'OTP',
+            'Your OTP is ' + user_profile.otp,
+            'axesnake@hotmail.fr',
+            ['Axe06@hotmail.fr'], #user_profile__user.email
+            fail_silently=False,
+        )
         return Response({'detail': 'Verification code sent successfully.'}, status=status.HTTP_204_NO_CONTENT)
 
 class LoginView(TokenObtainPairView):
