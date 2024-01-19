@@ -95,8 +95,7 @@ DATABASES = {
         'NAME': os.environ.get('POSTGRES_DB'),
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        #'HOST': 'postgresql_container',
-		'HOST': 'localhost',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -155,7 +154,7 @@ REST_FRAMEWORK = {
  # JWT settings
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 	'UPDATE_LAST_LOGIN': True,
 }

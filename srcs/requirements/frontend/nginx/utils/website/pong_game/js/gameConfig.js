@@ -2,7 +2,7 @@ const   canvas = document.getElementById("pongCanvas");
 const   ctx = canvas.getContext("2d");
 let     theme = 1;
 let     start = false;
-let     onePlayer = false, twoPlayer = false, tournament = false;
+let     onePlayer = false, twoPlayers = false, tournament = false;
 let     level;
 let     playLocal = false;
 let     playOnline = false;
@@ -88,18 +88,8 @@ window.addEventListener("keydown", (event) => {
     }
 });
 
-// // key 'p'
-// window.addEventListener("keydown", (event) => {
-//     if (event.key === "p") {
-        
-//         if(!pKey)
-//             pKey = true;
-//         else
-//             pKey = false;
-//     }
-// });
 
-// Theme changing 1, 2, 3, 4, 5, 6 
+// Theme changing 1, 2, 3
 window.addEventListener("keydown", (event) => {
     switch(event.key) {
         case "1":
@@ -110,15 +100,6 @@ window.addEventListener("keydown", (event) => {
             break;
         case "3":
             theme = 2;
-            break;
-        case "4":
-            theme = 3;
-            break;
-        case "5":
-            theme = 4;
-            break;
-        case "6":
-            theme = 5;
             break;
     }
 });
@@ -150,28 +131,4 @@ const themeColor = [
       ball:         "#00EAFF",
       winPrint:     "#11D300",
       midLine:      "#00EEFF" },
-    // theme 3
-    { field:        "#05FF00",
-      paddle:       "#004AFF",
-      score:        "#0042FF",
-      playersName:  "#0042FF",
-      ball:         "#004AFF",
-      winPrint:     "#11D300",
-      midLine:      "#fff" },
-    // theme 4
-    { field:        "#B7B7B7",
-      paddle:       "#004AFF",
-      score:        "#004AFF",
-      playersName:  "#fff",
-      ball:         "#004AFF",
-      winPrint:     "#11D300",
-      midLine:      "#fff" },
-    // theme 4
-    { field:        "#FF00F3",
-      paddle:       "#004AFF",
-      score:        "#004AFF",
-      playersName:  "#004AFF",
-      ball:         "#004AFF",
-      winPrint:     "#11D300",
-      midLine:      "#fff" },
 ];

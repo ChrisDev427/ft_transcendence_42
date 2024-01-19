@@ -25,7 +25,7 @@ input[type="text"]::placeholder {
   color: rgba(0, 179, 255, 0.351);
 }
 .hidden-element {
-  display: none;
+  display: none !important;
 }
 .cl-gray {
   color: #878585;

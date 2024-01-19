@@ -6,3 +6,5 @@ Pillow # for image upload
 django-cors-headers # for cors
 twilio # for sms
 phonenumbers # for phone number validation
+pyotp # for otp application authenticator
+```

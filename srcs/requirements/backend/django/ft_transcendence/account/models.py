@@ -4,9 +4,6 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-	two_fa = models.BooleanField(default=False)
-	otp = models.CharField(max_length=16, blank=True, null=True)
-	opt_expiration = models.DateTimeField(blank=True, null=True)
 	mobile_number = models.CharField(max_length=15, blank=True)
 	is_connected = models.BooleanField(default=False)
 	avatar = models.ImageField(upload_to='avatar/', default='/api/account/profile/avatar/defaultPic.png')
@@ -16,6 +13,10 @@ class UserProfile(models.Model):
 	win = models.IntegerField(default=0)
 	lose = models.IntegerField(default=0)
 	friends = models.ManyToManyField('self', blank=True)
+	two_fa = models.BooleanField(default=False)
+	otp = models.CharField(max_length=64, blank=True, null=True)
+	opt_expiration = models.DateTimeField(blank=True, null=True)
+	totp_secret = models.CharField(max_length=64, blank=True, null=True)
 
 	# def __str__(self):
 	# 	return self.user.username

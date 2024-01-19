@@ -22,7 +22,7 @@ function printConsoleInfos() {
     console.log("Ball Launched : " + ballLaunched);
     console.log("Theme : " + theme);
     console.log("One Player : " + onePlayer);
-    console.log("Two Player : " + twoPlayer);
+    console.log("Two Player : " + twoPlayers);
     console.log("Tournament : " + tournament);
     console.log("Local : " + playLocal);
     console.log("Online : " + playOnline);
@@ -175,4 +175,29 @@ function drawPaddles(x, y, largeur, hauteur, rayon) {
     ctx.arcTo(x, y, x + largeur, y, rayon);
     ctx.closePath();
     ctx.fill();
+}
+
+function resetGameValues() {
+
+    resetTournament();
+    onePlayer = false;
+    twoPlayers = false;
+    tournament = false;
+
+    leftPlayerScore = 0;
+    rightPlayerScore = 0;
+
+    leftPlayerName = "";
+    rightPlayerName = "";
+
+    start = false;
+    level = 0;
+    leftPaddleY = (canvas.height - paddleHeight) / 2;
+    rightPaddleY = (canvas.height - paddleHeight) / 2;
+    
+    ballX = 0;
+    ballY = 0;
+    printConsoleInfos();
+    printGame();
+
 }
