@@ -87,32 +87,56 @@ function printInfos() {
     ctx.font = '90px "Bagel Fat One", sans-serif';
     if( leftPlayerScore < 10) {
         
-        ctx.fillText(leftPlayerScore, 465, 80);
+        ctx.fillText(leftPlayerScore, 465, 85);
     } else {
-        ctx.fillText(leftPlayerScore, 420, 80);
+        ctx.fillText(leftPlayerScore, 420, 85);
     }
-    ctx.fillText(rightPlayerScore, 580, 80);
+    ctx.fillText(rightPlayerScore, 580, 85);
     
     if (leftPlayerScore === 10 || rightPlayerScore === 10) {
         start = false;
         printWinner();
     }
-
+    
+    
+    
     // Print Players Name 
     ctx.fillStyle = themeColor[theme].playersName; 
     ctx.globalAlpha = 0.2;
-    // ctx.font = "90px Calibri"; 
-    ctx.fillText(leftPlayerNamePrint, 30, 105);
-    ctx.fillText(rightPlayerNamePrint, canvas.width - 235, canvas.height - 40);
+    ctx.fillText(leftPlayerNamePrint, 20, 85);
+    ctx.fillText(rightPlayerNamePrint, 900, 85);
     ctx.globalAlpha = 1.0;
+    
+    // Print Commands CTRL
+    if(connectedFrom_desktop) {
+
+        
+        ctx.globalAlpha = 0.2;
+        ctx.font = '40px "Bagel Fat One", sans-serif';
+        ctx.fillText('UP = Q', 20, 635);
+        ctx.fillText('DN = A', 20, 680);
+        ctx.fillText('UP = P', 970, 635);
+        ctx.fillText('DN = L', 970, 680);
+        ctx.globalAlpha = 1.0;
+        if (!ballLaunched && leftPlayerScore === 0 && rightPlayerScore === 0) {
+            // Print PRESS SPACE TO LAUNCH
+            ctx.fillStyle = themeColor[theme].field;
+            ctx.fillRect(540, 297, 20, 80);    
+            ctx.fillStyle = themeColor[theme].playersName; 
+            ctx.font = '35px "Bagel Fat One", sans-serif';
+            ctx.fillText('PRESS SPACE TO LAUNCH', 335, 350);
+        }
+    }
+
     
 }
 
 function serve() {
-
+    
     // Si la balle n'a pas été lancée et la barre d'espace est enfoncée, lancez la balle
-
+    
     if (!ballLaunched) {
+        
         
         if(rightPaddleHand) {
             ballX = canvas.width - 25;
