@@ -13,7 +13,7 @@
 
   <!-- Style -->
   <link rel="stylesheet" href="style.css">
-  <
+
   <!-- font -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Serif+Display&display=swap" rel="stylesheet">
@@ -21,26 +21,26 @@
 
 <body>
 
-  <header class="py-2 mb-4">
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info ">
+  <header class="pb-5 mb-4">
+    <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark bg-info">
       <div class="container">
-        <a class="navbar-brand fw-bold btn" onclick="showSection('main')">ft_transcendence</a>
+        <a class="navbar-brand fw-bold btn" onclick="showSection('main')">ft_transcendence42</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a class="nav-link cl-gray fw-light" href="#gameMenu">Play Pong</a>
+              <a class="nav-link fw-bold" href="#gameMenu">Play Pong</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link cl-gray fw-light" href="#signIn">Sign In</a>
+              <a class="nav-link fw-bold" href="#signIn">Sign In</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link cl-gray fw-light" href="#signUp">Sign Up</a>
+              <a class="nav-link fw-bold" href="#signUp">Sign Up</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link cl-gray fw-light" cl-gray href="#aboutTheTeam">About the team</a>
+              <a class="nav-link fw-bold" cl-gray href="#aboutTheTeam">About the team</a>
             </li>
           </ul>
         </div>
@@ -115,22 +115,52 @@
     </section>
 
     <section id="playPong">
-        <div class="container bg-secondary bg-opacity-50 rounded-4 p-2 p-md-3 mt-5 shadow-lg " style="width: 100%; max-width: 900px;">
+          <div id="gameDiv" class="container bg-info bg-opacity-100 rounded-4 p-2 p-md-3 mt-5 shadow-lg" style="max-width: 900px;">
             <div class="row">
+
+
                 <canvas id="pongCanvas" width="1100" height="700" ></canvas>
+
             </div>
-            <div class="row mt-2 mt-md-4 mx-auto">
-                <div class="col-4 d-flex justify-content-center"></div>
-                <div class="col-4 d-flex justify-content-center align-items-center">
-                  <h5 style="font-family: 'Bagel Fat One', sans-serif; text-shadow: 5px 5px 10px rgba(62, 62, 62, 0.5);" class="text-info display-3">PONG</h5>
+            <div class="row mt-4 mb-2 d-flex justify-content-center">
+
+
+              <!-- ctrl mobile left -->
+              <div class="col-4 my-auto hidden-element" id="mobileCtrlLeft">
+                <div class="col d-flex justify-content-center">
+                  <button type="button" class="btn btn-outline-light fw-bold mb-2 rounded-3 w-50" id="upLeftBtn">&uarr;</button>
                 </div>
-                <div class="col-4 d-flex justify-content-end align-items-center">
-                  <button type="button" class="btn btn-sm btn-danger fw-bold p-1 w-25 rounded-2" id="quitGameBtn">Quit</button>
+                <div class="col d-flex justify-content-center">
+                  <button type="button" class="btn btn-outline-light fw-bold mt-1 rounded-3 w-50" id="dnLeftBtn">&darr;</button>
                 </div>
+              </div>
+
+
+              <!-- text PONG & quit btn -->
+              <div class="col-4">
+                <div class="col-12 d-flex justify-content-center">
+                  <h1 class="text-light display-3">PONG</h1>
+                </div>
+                <div class="col-12 d-flex">
+                  <button type="button" class="btn btn-sm btn-outline-light fw-bold mx-auto" id="quitGameBtn">Quit</button>
+                </div>
+              </div>
+
+              <!-- ctrl mobile right -->
+              <div class="col-4 my-auto hidden-element" id="mobileCtrlRight">
+                <div class="col d-flex justify-content-center">
+                  <button type="button" class="btn btn-outline-light fw-bold mb-2 rounded-3 w-50" id="upRightBtn">&uarr;</button>
+                </div>
+                <div class="col d-flex justify-content-center">
+                  <button type="button" class="btn btn-outline-light fw-bold mt-1 rounded-3 w-50" id="dnRightBtn">&darr;</button>
+                </div>
+              </div>
             </div>
 
         </div>
     </section>
+
+
     <section id="aboutTheTeam" >
       <div class="container p-3" >
         <h1 class="display-1 fw-bold  text-info text-center">The team</h1>
@@ -311,7 +341,7 @@
     </script>
   </main>
 
-  <footer class="bg-info fixed-bottom">
+  <footer id="footer" class="bg-info fixed-bottom" >
     <div class="container">
       <div class="row">
         <div class="col-6 p-1 image-container">
@@ -343,13 +373,14 @@
     </div>
   </footer>
 
-    <script src="./js/handleWebsiteButtons.js"></script>
+    <script src="./js/websiteUtils.js"></script>
+    <script src="./js/websiteConfig.js"></script>
     <script src="./pong_game/js/handle_UI.js"></script>
     <script src="./pong_game/js/gameConfig.js"></script>
     <script src="./pong_game/js/create_gameSettings_menu.js"></script>
     <script src="./pong_game/js/create_MatchMaking_menu.js"></script>
     <script src="./pong_game/js/tournament_config.js"></script>
-    <script src="./pong_game/js/utils.js"></script>
+    <script src="./pong_game/js/gameUtils.js"></script>
     <script src="./pong_game/js/inputUtils.js"></script>
     <script src="./pong_game/js/pong.js"></script>
 

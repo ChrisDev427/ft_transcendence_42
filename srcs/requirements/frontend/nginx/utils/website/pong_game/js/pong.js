@@ -17,15 +17,15 @@ function run() {
     printInfos();
     // Updating paddles position based on key presses
    
-    if (arrowUpPressed && rightPaddleY > 0) {
+    if (p_keyPressed && rightPaddleY > 0) {
         rightPaddleY -= level + 1.8;
-    } else if (arrowDownPressed && rightPaddleY + paddleHeight < canvas.height) {
+    } else if (l_keyPressed && rightPaddleY + paddleHeight < canvas.height) {
         rightPaddleY += level + 1.8;
     }
     if(twoPlayers || tournament) {
-        if (wKeyPressed && leftPaddleY > 0) {
+        if (q_keyPressed && leftPaddleY > 0) {
             leftPaddleY -= level + 1.8;
-        } else if (sKeyPressed && leftPaddleY + paddleHeight < canvas.height) {
+        } else if (a_keyPressed && leftPaddleY + paddleHeight < canvas.height) {
             leftPaddleY += level + 1.8;
         }
     }

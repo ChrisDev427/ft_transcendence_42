@@ -169,9 +169,9 @@ function initPlayBtn() {
                 tournamentPlayers.push({...playerObj, name: playerName});
             }
             matchMakingLogs();
-            create_MatchMaking_menu();
             hideCurrentSection();
             showSection('playPong');
+            create_MatchMaking_menu();
             reset_UI();
             removeInput();
             return;
