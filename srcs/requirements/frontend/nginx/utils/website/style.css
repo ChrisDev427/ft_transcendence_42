@@ -4,6 +4,10 @@ h1 {
   font-family: 'Bagel Fat One', sans-serif;
  
 }
+h5 {
+  font-family: 'Bagel Fat One', sans-serif;
+ 
+}
 h3 {
   font-family: Cambria;
 }
@@ -19,6 +23,9 @@ input[type="text"]::placeholder {
 }
 .hidden-element {
   display: none !important;
+}
+.cl-green {
+  color: #00ff00;
 }
 .cl-gray {
   color: #878585;

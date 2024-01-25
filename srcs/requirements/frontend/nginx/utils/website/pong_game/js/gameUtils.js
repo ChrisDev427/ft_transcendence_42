@@ -77,7 +77,10 @@ function printWinner() {
     rightPlayerNamePrint = "";
 
     if(tournament) {
-        ManageTournament();
+        setTimeout(function () {
+            ManageTournament();
+          }, 2500);
+        
     }
 }
 

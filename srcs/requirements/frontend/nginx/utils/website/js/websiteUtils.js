@@ -48,17 +48,17 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Navbar close auto
-document.addEventListener('DOMContentLoaded', function () {
-    const navLinks = document.querySelectorAll('.navbar-nav a');
+// document.addEventListener('DOMContentLoaded', function () {
+//     const navLinks = document.querySelectorAll('.navbar-nav a');
 
-    navLinks.forEach(function (link) {
-        link.addEventListener('click', function () {
-            // Ferme le menu
-            const navbarToggler = document.querySelector('.navbar-toggler');
-            if (navbarToggler && !navbarToggler.classList.contains('collapsed')) {
-                navbarToggler.click();
-            }
-        });
-    });
-});
+//     navLinks.forEach(function (link) {
+//         link.addEventListener('click', function () {
+//             // Ferme le menu
+//             const navbarToggler = document.querySelector('.navbar-toggler');
+//             if (navbarToggler && !navbarToggler.classList.contains('collapsed')) {
+//                 navbarToggler.click();
+//             }
+//         });
+//     });
+// });
 
