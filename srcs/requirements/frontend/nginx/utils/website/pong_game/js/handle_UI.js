@@ -139,7 +139,7 @@ function initPlayBtn() {
             rightPlayerName = playerName.value;
         }
 
-        if(twoPlayers) {
+        else if(twoPlayers) {
             const playerName_1 = document.getElementById("playerName_1");
             const playerName_2 = document.getElementById("playerName_2");
            
@@ -153,7 +153,7 @@ function initPlayBtn() {
             leftPlayerName = playerName_1.value;
             rightPlayerName = playerName_2.value;
         }
-        if(tournament) {
+        else if(tournament) {
             console.log('tournament condition');
             for(let i = 0; i < tournamentSize; i++) {
                 
@@ -183,6 +183,7 @@ function initPlayBtn() {
         printConsoleInfos();
         hideCurrentSection();
         showSection('playPong');
+        // document.getElementById('gameDiv').classList.remove('hidden-element');
         reset_UI();
         removeInput();
         run();

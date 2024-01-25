@@ -93,6 +93,7 @@ function create_MatchMaking_menu() {
     let mySection = document.getElementById('playPong');
     // Ajout de l'élément div principal à la section spécifiée
     mySection.appendChild(containerDiv);
+    document.getElementById('gameDiv').classList.add('hidden-element');
 
     init_StartTournament_button();
 }

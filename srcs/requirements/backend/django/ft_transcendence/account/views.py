@@ -3,23 +3,20 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer, UserProfileSerializer, UpdateAvatarSerializer
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .models import UserProfile
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.http import HttpResponse
 from django.core.files.storage import default_storage
 from rest_framework.parsers import MultiPartParser
 from django.utils import timezone
 from django.core.mail import send_mail
-import random, os
 from twilio.rest import Client
+from django.conf import settings
 
-import pyotp
+import pyotp, uuid, random, os
 
 def enable_2fa_authenticator(user_profile):
     user_profile.totp_secret = pyotp.random_base32()
@@ -39,15 +36,17 @@ def verify_twilio_otp(user_profile, submitted_code):
         code=submitted_code
         )
         if verification_check.status == 'approved':
-         return True  # Le code OTP est correct
+         return True
         else:
-         return False  # Le code OTP est incorrect
+         return False
 
 class UserRegisterView(APIView):
+    permission_classes = [permissions.AllowAny]
     def post(self, request):
+
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            email = serializer.validated_data.get('email')
+            email = str.lower(serializer.validated_data.get('email'))
             if User.objects.filter(email=email).exists():
                 return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
             elif email == None:
@@ -58,10 +57,31 @@ class UserRegisterView(APIView):
                 first_name = serializer.validated_data.get('first_name'),
                 last_name = serializer.validated_data.get('last_name'),
                 email=email,
+                is_active=False,
             )
-            UserProfile.objects.create(user=user)
+            user_profile = UserProfile.objects.create(user=user)
+            user_profile.otp = uuid.uuid4().hex
+            user_profile.save()
+            send_mail(
+            'NO-REPLY:Verify your mail address',
+            f'Click to verify: {settings.SITE_URL + "#verify-email?token=" + user_profile.otp}',
+            os.environ.get('EMAIL_HOST_USER'),
+            [user.email],
+            fail_silently=False,
+)
             return Response("User created", status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class VerifyEmailView(APIView):
+    def get(self, request, *args, **kwargs):
+        token = request.GET.get('token', None)
+        user_profile = get_object_or_404(UserProfile, otp=token)
+        user_profile.user.is_active = True
+        user_profile.user.save()
+        user_profile.otp = None
+        user_profile.save()
+        return Response("Email verified", status=status.HTTP_200_OK)
 
 class AllUserView(APIView):
     def get(self, request):
@@ -95,7 +115,7 @@ class ProfileView(APIView):
             user.set_password(request.data.get('password'))
             user.save()
             return Response("password updated", status=status.HTTP_200_OK)
-        user_profile = UserProfile.objects.filter(user=user).first()  # Obtenez le profil de l'utilisateur
+        user_profile = UserProfile.objects.filter(user=user).first()
         serializer = UserProfileSerializer(user_profile, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
             serializer.save()
@@ -111,7 +131,7 @@ class ProfileView(APIView):
 
     def delete(self, request):
         user = request.user
-        user_profile = UserProfile.objects.filter(user=user).first()  # Obtenez le profil de l'utilisateur
+        user_profile = UserProfile.objects.filter(user=user).first()
         if user_profile:
             user_profile.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -182,6 +202,8 @@ class LoginView(TokenObtainPairView):
             user = authenticate(username=username, password=password)
             if user is None:
                 return Response(status=status.HTTP_404_NOT_FOUND)
+            elif not user.is_active:
+                return Response({"message:","email not verified"}, status=status.HTTP_401_UNAUTHORIZED)
             try:
                 user_profile = UserProfile.objects.filter(user=user).first()
             except UserProfile.DoesNotExist:
@@ -201,7 +223,8 @@ class LoginView(TokenObtainPairView):
                     user_profile.otp = None
             user_profile.is_connected = True
             user_profile.save()
-        return response
+            profile_serializer = UserProfileSerializer(user_profile, context={'request': request})
+        return Response({**response.data, **profile_serializer.data}, status=status.HTTP_200_OK)
 
 class LogoutView(APIView):
     def get(self, request):
@@ -256,3 +279,4 @@ class UpdateAvatarView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors ,status=status.HTTP_400_NO_CONTENT)
+

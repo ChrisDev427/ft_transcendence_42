@@ -7,3 +7,4 @@ django-cors-headers # for cors
 twilio # for sms
 phonenumbers # for phone number validation
 pyotp # for otp application authenticator
+django-oauth-toolkit # for oauth2

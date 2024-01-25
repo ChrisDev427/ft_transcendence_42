@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 	'rest_framework_simplejwt',
 	'account',
 	'game',
+	'oauth2_provider',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +65,8 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_HEADERS = [
     'Authorization',
 ]
+
+SITE_URL = 'http://localhost'
 
 ROOT_URLCONF = 'ft_transcendence.urls'
 
@@ -148,6 +151,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 	'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+		'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     )
 }
 
