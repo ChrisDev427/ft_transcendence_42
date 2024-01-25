@@ -285,6 +285,29 @@
         </div>
       </div>
     </section>
+    <section id="email-verify">
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.substr(1);
+            const hashParts = hash.split('?');
+            let token = null;
+            if (hashParts.length > 1) {
+                const params = new URLSearchParams(hashParts[1]);
+                token = params.get('token');
+            }
+            fetch('http://localhost:8000/api/account/register/verify?token=' + token, {method: 'GET'})
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    document.getElementById('email-verify').innerHTML = data.message;
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    document.getElementById('email-verify').innerHTML = 'Erreur lors de la vérification de l\'email';
+                });
+        });
+    </script>
+    </section>
     <script>
       //const csrfToken = getCookie('csrftoken');
       document.getElementById('signup-form').addEventListener('submit', function (e) {
@@ -303,6 +326,7 @@
             window.location.replace('index.html');
           } else {
             alert('Erreur lors de l\'inscription : ' + response.status);
+            console.log(response);
             e.target.reset();
             // Gérer les erreurs d'inscription ici, par exemple en affichant un message d'erreur
           }
@@ -319,7 +343,7 @@
         })
         .then(response => {
           if (response.status === 200) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
-            const alerte = alert('authentification réussie !');
+            const alerte = alert('authentification réussie zregrezgerz !');
             setTimeout(function(){
               alerte.close();
             }, 2000);

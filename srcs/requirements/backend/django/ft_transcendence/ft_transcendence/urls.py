@@ -29,6 +29,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 	path('api/account/', include('account.urls')),
 	path('api/game/', include('game.urls')),
+	path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]
 
 #urlpatterns += router.urls
