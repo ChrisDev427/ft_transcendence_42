@@ -65,4 +65,4 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/Users/axelfernandez/ecole42/cursus42/ft_transcendence_42/srcs/requirements/backend/postgresql/DB/'
+      device: 'requirements/backend/postgresql/DB/'

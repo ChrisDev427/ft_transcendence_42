@@ -3,8 +3,8 @@ function create_MatchMaking_menu() {
     tourNumber++;
     // Création de l'élément div container
     let containerDiv = document.createElement('div');
-    containerDiv.id = 'menu';
-    containerDiv.className = 'container bg-secondary bg-opacity-25 py-3 mt-3  w-auto rounded-4 shadow-lg';
+    containerDiv.id = 'matchMakingTable';
+    containerDiv.className = 'container bg-secondary bg-opacity-25 pt-4 pb-5 mt-5 w-auto rounded-4 shadow-lg';
     containerDiv.style.cssText = 'width: 100%; max-width: 900px;';
 
     // Création de l'élément div pour le bouton Start Tournament
@@ -27,7 +27,7 @@ function create_MatchMaking_menu() {
     containerDiv.appendChild(rowDiv);
     
     let table = document.createElement('table');
-    table.classList = 'table table-sm table-hover mt-2 mb-3 text-center w-75 shadow';
+    table.classList = 'table table-sm table-hover mt-4 mb-3 text-center w-75 shadow';
     table.id = 'table';
     rowDiv.appendChild(table);
 
@@ -140,6 +140,8 @@ function init_PlayMatch_button() {
         start = true;
         matchMaking_selectPlayersToPrint();
         setHandToStart();
+        document.getElementById('matchMakingTable').classList.add('hidden-element');
+        document.getElementById('gameDiv').classList.remove('hidden-element');
         run();
     });
 }
@@ -161,7 +163,7 @@ function create_NextTour_button() {
 function init_NextTour_button() {
     let nextTourButton = document.getElementById("nextTourButton");
     nextTourButton.addEventListener("click", function() {
-        let deleteMenu = document.getElementById('menu');
+        let deleteMenu = document.getElementById('matchMakingTable');
         deleteMenu.remove();
 
         create_MatchMaking_menu();
@@ -198,7 +200,7 @@ function endOfTournament() {
     let buttonDiv = document.getElementById('buttonDiv');
     buttonDiv.remove();
 
-    let menuDiv = document.getElementById('menu');
+    let menuDiv = document.getElementById('matchMakingTable');
     menuDiv.classList.remove('bg-info', 'bg-opacity-50');
     menuDiv.classList.add('bg-secondary' , 'bg-opacity-10');
 
@@ -214,14 +216,33 @@ function endOfTournament() {
     textDiv.style.textShadow = '5px 5px 10px rgba(62, 62, 62, 0.3)';
     textDiv.textContent = 'The Winner is ' + tournamentWinnerName;
 
-    colDiv.appendChild(textDiv);
+    let quitBtnDiv = document.createElement('div');
+    quitBtnDiv.classList = 'col-12 d-flex';
+    let quitBtn = document.createElement('button');
+    quitBtn.classList = 'btn btn-sm btn-outline-info fw-bold mx-auto';
+    quitBtn.type = 'button';
+    quitBtn.id = 'quitTournamentBtn';
+    quitBtn.textContent = 'Quit Tournament';
+    quitBtnDiv.append(quitBtn);
 
+
+    colDiv.appendChild(textDiv);
+    
     let getElement = document.getElementById('rowDiv');
     getElement.appendChild(colDiv);
+    getElement.appendChild(quitBtnDiv);
+
+    document.getElementById('quitTournamentBtn').addEventListener('click', function() {
+        resetGameValues();
+        showSection('main');
+        document.getElementById('matchMakingTable').remove();
+    });
 }
 
 function ManageTournament() {
-
+    
+    document.getElementById('matchMakingTable').classList.remove('hidden-element');
+    document.getElementById('gameDiv').classList.add('hidden-element');
     // Modif de la ligne score
     let scoreValue = document.getElementById('scoreLine' + matchNumber);
     scoreValue.classList.add('text-info')
