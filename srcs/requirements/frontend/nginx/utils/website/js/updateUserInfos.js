@@ -118,3 +118,67 @@ function handleInfos_createForm() {
         document.getElementById('infosProfile').classList.remove('hidden-element');
    });
 }
+
+function handleEmail_createForm() {
+    // hide current bio
+    document.getElementById('emailProfile').classList.add('hidden-element');
+
+    const mainDiv = document.createElement('div');
+    mainDiv.id = 'modifyEmail';
+    mainDiv.classList = 'col-sm-8 mx-auto shadow p-3 rounded-4';
+
+    const formDiv = document.createElement('form');
+    formDiv.id = 'modifyEmail-form';
+    formDiv.method = 'patch';
+    mainDiv.appendChild(formDiv);
+    
+    let input = document.createElement('input');
+    input.id = 'newEmail';
+    input.type = 'email';
+    input.name = 'newEmail';
+    input.classList = 'form-control mb-2 border-info text-secondar text-center';
+    input.placeholder = 'newEmail';
+    formDiv.appendChild(input);
+
+    input = document.createElement('input');
+    input.id = 'password';
+    input.type = 'password';
+    input.name = 'password';
+    input.classList = 'form-control form-control-sm mb-1 mt-4 border-success text-center shadow';
+    input.placeholder = 'password';
+    formDiv.appendChild(input);
+    
+
+    const rowDiv = document.createElement('div');
+    rowDiv.classList = 'row mt-2';
+    
+    const col1Div = document.createElement('div');
+    col1Div.classList = 'col-6';
+    
+    const cancelBtn = document.createElement('button');
+    cancelBtn.id = 'cancelBtn';
+    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow';
+    cancelBtn.type = 'submit';
+    cancelBtn.textContent = 'Cancel';
+    col1Div.appendChild(cancelBtn);
+    rowDiv.appendChild(col1Div);
+
+    const col2Div = document.createElement('div');
+    col2Div.classList = 'col-6';
+    
+    const applyBtn = document.createElement('button');
+    applyBtn.id = 'applyBtn';
+    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow';
+    applyBtn.type = 'submit';
+    applyBtn.textContent = 'Apply';
+    col2Div.appendChild(applyBtn);
+    rowDiv.appendChild(col2Div);
+
+    mainDiv.appendChild(rowDiv);
+    document.getElementById('emailDiv').appendChild(mainDiv);
+
+   document.getElementById('cancelBtn').addEventListener('click', function () {
+        document.getElementById('modifyEmail').remove();
+        document.getElementById('emailProfile').classList.remove('hidden-element');
+   });
+}

@@ -183,7 +183,7 @@ function initPlayBtn() {
         printConsoleInfos();
         hideCurrentSection();
         showSection('playPong');
-        // document.getElementById('gameDiv').classList.remove('hidden-element');
+        document.getElementById('gameDiv').classList.remove('hidden-element');
         reset_UI();
         removeInput();
         run();
