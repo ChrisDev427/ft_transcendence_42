@@ -26,8 +26,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY_DJANGO')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['nginx_container', 'localhost',]
+# 'nginx_container', 'localhost',
+ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [

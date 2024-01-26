@@ -177,7 +177,7 @@
     </section>
 
     <section id="playPong">
-          <div id="gameDiv" class="container bg-info bg-opacity-100 rounded-4 p-2 p-md-3 mt-5 shadow-lg" style="max-width: 900px;">
+          <div id="gameDiv" class="container bg-info bg-opacity-100 rounded-4 p-2 p-md-3 mt-5 shadow-lg hidden-element" style="max-width: 900px;">
             <div class="row">
               <canvas id="pongCanvas" width="1100" height="700" ></canvas>
             </div>
@@ -359,34 +359,150 @@
 
     <section id="profile">
       <h1 class="display-1 fw-bold text-info text-center">Profile</h1>
-      <div class="container w-md-50 p-3 mt-4 rounded-4 shadow-lg" style=" max-width: 800px;">
 
-        <!-- <div class="row "> -->
-          <div class="col-12 d-flex justify-content-center">
-            <img id="avatar-img" src="" alt="avatarUser" class="rounded-3 my-2" style="max-width: 200px;">
-            <div class="d-flex align-items-end">
-              <a class="btn bi bi-gear text-info mb-1 p-0" onclick=""></a>
+      <div class="container p-3 mt-4 rounded-4 shadow-lg" style=" max-width: 700px;">
+
+        <div class="col d-flex justify-content-center">
+          <img id="avatar-img" src="" alt="avatarUser" class="rounded-3 my-2" style="max-width: 200px;">
+          <div class="d-flex align-items-end">
+            <a class="btn bi bi-gear text-info mb-1 p-0" onclick=""></a>
+          </div>
+        </div>
+
+        <hr class="px-5 text-info border-2">
+
+        <div id="bioDiv">
+          <div id="bioProfile">
+            <p id="bioUser" class="lead fs-6 text-lighter text-secondary text-center">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam amet facere magni provident quaerat voluptates inventore architecto voluptate, pariatur iste sit illo porro consequuntur obcaecati accusamus rem quasi aliquam similique.</p>
+            <div class="d-flex justify-content-center">
+              <i class="col-1 btn btn-sm w-25 btn-outline-info bi bi-gear" onclick="handleBio_createForm()"></i>
             </div>
           </div>
-          <div class="col-12">
-            <hr class="px-5 text-info border-2">
 
-            <h5 id="firstNameUser" class="text-info text-center"></h5>
-            <h5 id="lastNameUser" class="text-info text-center"></h5>
-            <h5 id="userName" class="text-info text-center"></h5>
-            <h5 id="emailUser" class="text-info text-center"></h5>
+          <!-- <div id="modifyBio" class="col-sm-10 mx-auto shadow p-3 mt-3 rounded-4">
+            <form method="patch" id="modifyBio-form">
+              <textarea type="text" class="form-control form-control-sm mb-2 border-info shadow text-center" name="newBio" id="newBio" rows="4" placeholder="Enter your bio here"></textarea>
+            </form>
+            <div class="row mt-2">
+              <div class="col-6">
+                <button class="btn btn-sm btn-outline-danger w-100 shadow" type="submit">Cancel</button>
+              </div>
+              <div class="col-6">
+                <button class="btn btn-sm btn-outline-success w-100 shadow" type="submit">Send</button>
+              </div>
+            </div>
+          </div> -->
+        </div>
 
+        <hr class="px-5 text-info border-2">
 
+        <div id="infosDiv">
+          <div id="infosProfile">
+            <h5 id="firstNameProfileBtn" class="text-info text-center fs-4">Christophe</h5></a>
+            <h5 id="lastNameProfileBtn" class="text-info text-center fs-4">Massa</h5></a>
+            <h5 id="userNameProfileBtn" class="text-info text-center fs-4">Chrissou</h5></a>
+            <div class="d-flex justify-content-center">
+              <i class="col-1 btn btn-sm w-25 btn-outline-info bi bi-gear" onclick="handleInfos_createForm()"></i>
+
+            </div>
           </div>
-          <div class="col-12">
-            <hr class="px-5 text-info border-2">
-
-            <p id="bioUser" class="lead fs-6 text-lighter text-secondary text-center p-3"><a class="btn bi bi-pencil mb-1 ms-1 p-0 text-info" onclick=""></a></p>
 
 
+          <!-- <div id="modifyProfileInfo" class="col-sm-6 mx-auto shadow p-3 rounded-4">
+            <form method="patch"  id="modifyProfileInfo-form">
+              
+              <input type="text" class="form-control mb-2 border-info text-secondary text-center" name="firstname" id="firstname" placeholder="First name">
+              <input type="text" class="form-control mb-2 border-info text-secondary text-center" name="lastname" id="lastname" placeholder="Last name">
+              <input type="text" class="form-control mb-2 border-info text-secondary text-center" name="username" id="username" placeholder="User name">
+              <input type="password" class="form-control form-control-sm mb-1 mt-4 shadow border-success text-center" name="password" id="password" placeholder="Password">
+            </form>
+            
+            <div class="row mt-2">
+              <div class="col-6">
+                <button class="btn btn-sm btn-outline-danger shadow w-100" type="submit">Cancel</button>
+              </div>
+              <div class="col-6">
+                <button class="btn btn-sm btn-outline-success shadow w-100" type="submit">Send</button>
+              </div>
+            </div>
+          </div> -->
+        </div>
+
+
+        <hr class="px-5 text-info border-2">
+
+        <div id="emailDiv">
+          <div id="emailProfile">
+            <h5 id="emailProfileBtn" class="text-info text-center fs-4">christophemassa@icloud.com</h5>
+            <div class="d-flex justify-content-center">
+              <a class="col-1 btn bi bi-gear text-info p-0 m-0" onclick=""></a>
+            </div>
+          </div>
+          
+          <div id="modifyEmail" class="col-sm-8 mx-auto shadow p-3 rounded-4">
+            <form method="patch" id="modifyEmail-form">
+              <input type="text" class="form-control mb-2 border-info text-secondar text-center" name="first_name" id="firstname" placeholder="New email">
+              <input type="password" class="form-control form-control-sm mb-1 mt-4 border-success text-center shadow" name="first_name" id="password" placeholder="Password">
+            </form>
+            
+            <div class="row mt-2">
+              <div class="col-6">
+                <button class="btn btn-sm btn-outline-danger w-100 shadow" type="submit">Cancel</button>
+              </div>
+              <div class="col-6">
+                <button class="btn btn-sm btn-outline-success w-100 shadow" type="submit">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="px-5 text-info border-2">
+        <div id="authDiv">
+
+          <div id="authProfile" class="btn-group-sm" role="group" aria-label="Basic radio toggle button group">
+            <h6 class="col-12 text-center text-secondary fw-bold">2FA Authentication</h6>
+            <div class="col-12 d-flex justify-content-center mt-0">
+              <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+              <label class="btn btn-sm btn-outline-info py-0 px-2 me-1" for="btnradio1">On</label>
+              
+              <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+              <label class="btn btn-sm btn-outline-info py-0 px-2" for="btnradio2">Off</label>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+              
+              <button class="btn btn-sm btn-outline-info">Change password</button>
+            </div>
           </div>
 
-        <!-- </div> -->
+          <div id="modifyPassword" class="col-sm-6 mx-auto shadow p-3 mt-3 rounded-4">
+            <form method="patch" id="modifyPassword-form">
+              <input type="password" class="form-control form-control-sm mb-2 border-info shadow text-center" name="currentPassword" id="currentPassword" placeholder="Current Password">
+              <input type="password" class="form-control form-control-sm mb-1 border-info shadow text-center" name="newPassword" id="newPassword" placeholder="New Password">
+            </form>
+           
+            <div class="row mt-2">
+              <div class="col-6">
+                <button class="btn btn-sm btn-outline-danger w-100 shadow" type="submit">Cancel</button>
+              </div>
+              <div class="col-6">
+                <button class="btn btn-sm btn-outline-success w-100 shadow" type="submit">Send</button>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+       
+        
+          
+
+          <!-- <hr class="px-5 text-info border-2">
+          <div id="bioDiv">
+              <p id="bioUser" class="lead fs-6 text-lighter text-secondary text-center">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam amet facere magni provident quaerat voluptates inventore architecto voluptate, pariatur iste sit illo porro consequuntur obcaecati accusamus rem quasi aliquam similique.</p>
+            <div class="d-flex justify-content-center">
+              <a class="col-1 btn bi bi-gear text-info p-0 m-0" onclick=""></a>
+            </div>
+          </div> -->
+
 
 
       </div>
@@ -431,6 +547,7 @@
     <script src="./js/websiteUtils.js"></script>
     <script src="./js/websiteConfig.js"></script>
     <script src="./js/requestAPI.js"></script>
+    <script src="./js/updateUserInfos.js"></script>
     <script src="./pong_game/js/handle_UI.js"></script>
     <script src="./pong_game/js/gameConfig.js"></script>
     <script src="./pong_game/js/create_gameSettings_menu.js"></script>
