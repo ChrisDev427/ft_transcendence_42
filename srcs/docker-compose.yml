@@ -45,7 +45,6 @@ services:
     restart: always
     ports:
       - "80:80"
-      #- "443:443"
     networks:
       - pong
     volumes:
@@ -54,6 +53,14 @@ services:
     depends_on:
       - django
     env_file: .env
+
+  websocket:
+    container_name: websocket
+    build: ./requirements/backend/WebSocket
+    ports:
+      - "90:90"
+    networks:
+      - pong
 
 networks:
   pong:
