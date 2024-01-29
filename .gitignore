@@ -1,2 +1,3 @@
 .DS_Store
 srcs/.env
+srcs/requirements/backend/postgresql/DB
