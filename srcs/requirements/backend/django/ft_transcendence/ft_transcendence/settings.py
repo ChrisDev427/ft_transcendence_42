@@ -27,8 +27,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY_DJANGO')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['nginx_container', 'localhost',]
+ALLOWED_HOSTS = ['nginx_container', 'localhost']
 # Application definition
+
+OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
+OAUTH_CLIENT_SECRET = os.environ.get('OAUTH_CLIENT_SECRET')
+OAUTH_REDIRECT_URI = os.environ.get('OAUTH_REDIRECT_URI')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -42,7 +46,6 @@ INSTALLED_APPS = [
 	'rest_framework_simplejwt',
 	'account',
 	'game',
-	'oauth2_provider',
 ]
 
 MIDDLEWARE = [
@@ -58,12 +61,21 @@ MIDDLEWARE = [
 
  # CORS settings (Cross-Origin Resource Sharing)
 
+CORS_ALLOW_ANY_ORIGIN = True
+
+# CORS_ALLOW_HEADERS = [
+#     'accept',
+#     'accept-encoding',
+# ]
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost',
 ]
 
 CORS_ALLOW_HEADERS = [
     'Authorization',
+	'Content-Type',
+	'code'
 ]
 
 SITE_URL = 'http://localhost'
@@ -151,7 +163,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 	'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-		'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+		# 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     )
 }
 

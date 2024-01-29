@@ -1,6 +1,6 @@
 services:
   django:
-    image: django
+    image: django:v1
     container_name: django_container
     build: ./requirements/backend/django
     restart: on-failure

@@ -14,24 +14,56 @@ from rest_framework.parsers import MultiPartParser
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
+from django.http import JsonResponse
+from requests_oauthlib import OAuth2Session
+from django.views.decorators.csrf import csrf_exempt
 from .utils import *
 
 import pyotp, uuid, os
 
 
+class oauth_login(APIView):
+    permission_classes = [permissions.AllowAny]
+    def get(self, request, *args, **kwargs):
+        code = request.GET.get('code')
+        print("code")
+        print(code)
+        oauth = OAuth2Session(settings.OAUTH_CLIENT_ID, redirect_uri=settings.OAUTH_REDIRECT_URI)
+        token = oauth.fetch_token(
+            'https://api.intra.42.fr/oauth/token',
+            client_secret=settings.OAUTH_CLIENT_SECRET,
+            code=code
+        )
+        return JsonResponse(token)
+
+def oauth_callback(request):
+    code = request.GET.get('code')
+    print("code")
+    print(code)
+    oauth = OAuth2Session(settings.OAUTH_CLIENT_ID, redirect_uri=settings.OAUTH_REDIRECT_URI)
+    token = oauth.fetch_token(
+        'https://api.intra.42.fr/oauth/token',
+        client_secret=settings.OAUTH_CLIENT_SECRET,
+        code=code
+    )
+    return JsonResponse(token)
+
+
 class UserRegisterView(APIView):
     permission_classes = [permissions.AllowAny]
     def post(self, request):
-
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             email = str.lower(serializer.validated_data.get('email'))
+            username = str.lower(serializer.validated_data.get('username'))
             if User.objects.filter(email=email).exists():
                 return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
+            elif User.objects.filter(username=username).exists():
+                return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
             elif email == None:
                 return Response({"error": "Email needed"}, status=status.HTTP_400_BAD_REQUEST)
             user = User.objects.create_user(
-                username = serializer.validated_data.get('username'),
+                username = username,
                 password = serializer.validated_data.get('password'),
                 first_name = serializer.validated_data.get('first_name'),
                 last_name = serializer.validated_data.get('last_name'),
@@ -87,10 +119,11 @@ class ProfileView(APIView):
 
     def patch(self, request):
         user = request.user
-        if request.data.get('password'):
-            user.set_password(request.data.get('password'))
-            user.save()
-            return Response("password updated", status=status.HTTP_200_OK)
+        password = request.data.get('password')
+        if password is None:
+            return Response({"error:","password needed"}, status=status.HTTP_400_BAD_REQUEST)
+        elif not user.check_password(password):
+            return Response({"error:","wrong password"}, status=status.HTTP_400_BAD_REQUEST)
         user_profile = UserProfile.objects.filter(user=user).first()
         serializer = UserProfileSerializer(user_profile, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
@@ -125,7 +158,7 @@ class LoginView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         if response.status_code == 200:
-            username = request.data.get('username')
+            username = str.lower(request.data.get('username'))
             password = request.data.get('password')
             otp = request.data.get('otp')
             totp = request.data.get('totp')
@@ -160,7 +193,7 @@ class LogoutView(APIView):
     def get(self, request):
         user = request.user
         try:
-         user_profile = UserProfile.objects.filter(user=user).first()
+            user_profile = UserProfile.objects.filter(user=user).first()
         except UserProfile.DoesNotExist:
             return Response("no user connected", status=status.HTTP_404_NOT_FOUND)
         user_profile.is_connected = False

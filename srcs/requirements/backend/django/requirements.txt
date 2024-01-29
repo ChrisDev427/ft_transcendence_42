@@ -1,5 +1,6 @@
 Django==3.2.4
 djangorestframework
+# sudo dnf install postgresql-devel
 psycopg2 # for postgres
 djangorestframework-simplejwt==4.6
 Pillow # for image upload
@@ -7,4 +8,4 @@ django-cors-headers # for cors
 twilio # for sms
 phonenumbers # for phone number validation
 pyotp # for otp application authenticator
-django-oauth-toolkit # for oauth2
+requests-oauthlib # for oauth2
