@@ -21,6 +21,13 @@ input[type="text"]::placeholder {
 
   color: rgba(0, 179, 255, 0.351);
 }
+.cursor-pointer {
+  cursor: pointer;
+}
+.icon-disabled {
+  opacity: 0.5; /* Vous pouvez ajuster cette valeur selon vos préférences */
+  pointer-events: none; /* Désactive les interactions avec l'icône */
+}
 .hidden-element {
   display: none !important;
 }

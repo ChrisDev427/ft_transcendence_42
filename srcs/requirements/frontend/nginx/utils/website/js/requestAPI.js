@@ -5,17 +5,18 @@ document.getElementById('signup-form').addEventListener('submit', function (e) {
     fetch('http://localhost:8000/api/account/register/', {
     method: 'POST',
     body: new FormData(e.target)
+    
     })
     .then(response => {
       console.log('response = ' + response);
 
       if (response.status === 201) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
-        console.log('Inscription réussie !');
+        console.log('Register Success !' + response.status);
        
          // Vous pouvez personnaliser le message ou rediriger l'utilisateur ici
-        window.location.replace('index.html');
+        window.location.replace('#signIn');
       } else {
-        alert('Erreur lors de l\'inscription : ' + response.status);
+        console.error('Erreur lors de l\'inscription : ' + response);
         e.target.reset();
         // Gérer les erreurs d'inscription ici, par exemple en affichant un message d'erreur
       }
@@ -40,7 +41,7 @@ document.getElementById('signin-form').addEventListener('submit', function (e) {
           return response.json();
       } else {
           // Authentification échouée
-          alert('Erreur lors de l\'authentification : ' + response.status);
+          console.error('Erreur lors de l\'authentification : ' + response.status);
           e.target.reset();
           throw new Error('Échec de l\'authentification');
       }
@@ -91,7 +92,6 @@ function getProfileInfos(token) {
       console.log('Informations de l\'utilisateur :', data.avatar);
       fetchAndDisplayImage(data.avatar, token);
 
-      // document.getElementById('avatar-img').src = data.avatar;
       document.getElementById('firstNameUser').textContent = data.user.first_name;
       document.getElementById('lastNameUser').textContent = data.user.last_name;
       document.getElementById('userName').textContent = data.user.username;
