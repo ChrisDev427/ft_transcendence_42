@@ -71,9 +71,10 @@ api/account/o/token/
 
 api/friend_management/
 	connected : YES
-	method : GET, POST, PATCH
+	method : GET, POST, PATCH, DELETE
 	advice : - post : 'friend' to ask friend to friendship
 			 - patch : 'friend' and 'is_accepted(bool)' to accept request
+			 - delete : 'friend' to delete
 
 
 

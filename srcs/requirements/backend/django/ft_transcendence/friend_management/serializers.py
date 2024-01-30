@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import Friend
+from .models import Friend_management
 
 
-class FriendSerializer(serializers.ModelSerializer):
+class Friend_managementSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = Friend
+		model = Friend_management
 		fields = ['id', 'friend1', 'friend2','requester', 'is_accepted', 'chat']

@@ -15,14 +15,13 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import JsonResponse
-import requests
 from django.views.decorators.csrf import csrf_exempt
 from .utils import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.signing import TimestampSigner
 from friend_management.models import Friend_management
 
-import pyotp, uuid, os
+import pyotp, uuid, os, requests
 
 class oauth_login(APIView):
     permission_classes = [permissions.AllowAny]
@@ -238,7 +237,10 @@ class isIngame(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def put(self, request):
         user = request.user
-        user_profile = UserProfile.objects.filter(user=user).first()
+        try :
+            user_profile = UserProfile.objects.filter(user=user).first()
+        except UserProfile.DoesNotExist:
+            return Response({"error","user not found"},status=status.HTTP_404_NOT_FOUND)
         if user_profile.is_ingame:
             user_profile.is_ingame = False
         else:
