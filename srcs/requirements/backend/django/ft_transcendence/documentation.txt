@@ -1,0 +1,105 @@
+NOTE : to_connect, pass token in header
+
+API Urls :
+
+api/account/login/
+	connected : NO
+	method : POST
+	advice : - login with username, password
+			 - 2fa ? login with username, password, otp or totp
+
+api/account/logout/
+	connected : YES
+	method : GET
+
+api/account/register/
+	connected : NO
+	method : POST
+	advice : - register with username, password, email, first_name, last_name
+
+api/account/register/verify/
+	connected : NO
+	method : GET
+	advice : - verify email with "token"
+
+api/account/profile/
+	connected : YES
+	method : GET PATCH DELETE
+	advice : - for patch method :
+				- need password to update
+				- friend to ask user to friendship
+				- two_fa to enabled or disabled
+				- others to update
+
+api/account/profile/<str:username>/
+	connected : NO
+	method : GET
+
+api/account
+	connected : SuperUser
+	method : GET
+
+api/account/<int:pk>/
+	connected : NO
+	method : GET
+
+api/account/token/refresh/
+	connected : YES
+	method : POST
+
+api/account/profile/avatar/<str:avatar>/
+	connected : YES
+	method : GET
+
+api/account/profile/avatar/
+	connected : YES
+	method : PUT
+	advice : - update avatar
+
+api/account/otp/
+	connected : NO
+	method : POST
+	advice : - get otp with username, password, send_method
+
+api/account/o/token/
+	connected : NO
+	method : GET
+	advice : - get tokens with 'code'
+
+
+
+
+api/friend_management/
+	connected : YES
+	method : GET, POST, PATCH
+	advice : - post : 'friend' to ask friend to friendship
+			 - patch : 'friend' and 'is_accepted(bool)' to accept request
+
+
+
+
+api/chat/
+	connected : YES
+	method : GET
+	advice : - specify user1 and user2
+
+api/chat/create/
+	connected : YES
+	method : POST
+	advice : - specify user1 and user2
+
+api/chat/message/
+	connected : YES
+	method : PUT
+	advice : - specify chat_id and message
+
+
+api/game/
+	connected : ADMIN
+	method : GET POST
+	advice : post : - need player_one and player_two
+
+api/game/id
+	connected : ADMIN
+	method : PATCH
+	advice : - need id, winner, final_score

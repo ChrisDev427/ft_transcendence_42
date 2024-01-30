@@ -5,6 +5,8 @@ from rest_framework import status
 from .models import Chat
 from .serializers import ChatSerializer, MessageSerializer
 from rest_framework.permissions import IsAuthenticated
+from account.models import UserProfile
+from friend_management.models import Friend_management
 
 class ChatView(APIView):
 	permission_classes = [IsAuthenticated]
@@ -61,6 +63,12 @@ class ChatCreationView(APIView):
 			try :
 				chat = Chat.objects.get(user1=user2, user2=user1)
 			except Chat.DoesNotExist:
+				try :
+					friendship = Friend_management.objects.filter(friend1=user1, friend2=user2)
+				except Friend_management.DoesNotExist:
+					return Response({"error:", "friendship not exist"}, status=status.HTTP_400_BAD_REQUEST)
+				if friendship.is_accepted == False:
+					return Response({"error:", "friendship not accepted"}, status=status.HTTP_400_BAD_REQUEST)
 				serializer = ChatSerializer(chat, data=request.data, context={'request': request})
 				if serializer.is_valid():
 					serializer.save()

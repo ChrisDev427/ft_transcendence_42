@@ -20,6 +20,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .utils import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.signing import TimestampSigner
+from friend_management.models import Friend_management
 
 import pyotp, uuid, os
 
@@ -83,26 +84,26 @@ class UserRegisterView(APIView):
                 first_name = serializer.validated_data.get('first_name'),
                 last_name = serializer.validated_data.get('last_name'),
                 email=email,
-                is_active=False,
-                #is_active=True,
+                #is_active=False,
+                is_active=True,
             )
             user_profile = UserProfile.objects.create(user=user)
-            signer = TimestampSigner()
-            token = signer.sign(user.username)
-            user_profile.otp = token
+            # signer = TimestampSigner()
+            # token = signer.sign(user.username)
+            # user_profile.otp = token
             user_profile.save()
-            try :
-                send_mail(
-                'NO-REPLY:Verify your mail address',
-                f'Click to verify: {settings.SITE_URL + "/?token=" + user_profile.otp + "#verify-email"}',
-                settings.EMAIL_HOST_USER,
-                [user.email],
-                fail_silently=False,
-            )
-            except:
-                user_profile.delete()
-                user.delete()
-                return Response({"error": "Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            # try :
+            #     send_mail(
+            #     'NO-REPLY:Verify your mail address',
+            #     f'Click to verify: {settings.SITE_URL + "/?token=" + user_profile.otp + "#verify-email"}',
+            #     settings.EMAIL_HOST_USER,
+            #     [user.email],
+            #     fail_silently=False,
+            # )
+            # except:
+            #     user_profile.delete()
+            #     user.delete()
+            #     return Response({"error": "Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
             return Response("User created", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -147,9 +148,16 @@ class ProfileView(APIView):
             return Response({"error:","password needed"}, status=status.HTTP_400_BAD_REQUEST)
         elif not user.check_password(password):
             return Response({"error:","wrong password"}, status=status.HTTP_400_BAD_REQUEST)
+        request.data.pop('password')
         user_profile = UserProfile.objects.filter(user=user).first()
         serializer = UserProfileSerializer(user_profile, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
+            if request.data.get('friend'):
+                friend = get_object_or_404(UserProfile, user__username=request.data.get('friend'))
+                new_friend = Friend_management.objects.create(friend1=user_profile, friend2=friend, requester=user_profile)
+                user_profile.save()
+                friend.save()
+                return Response("friend requested", status=status.HTTP_200_OK)
             serializer.save()
             serializer = UserSerializer(user, data=request.data, partial=True, context={'request': request})
             if serializer.is_valid():
@@ -157,6 +165,9 @@ class ProfileView(APIView):
             if request.data.get('two_fa'):
                 user_profile.totp_secret = enable_2fa_authenticator(user_profile)
                 user_profile.two_fa = True
+                user_profile.save()
+            elif request.data.get('two_fa') == False:
+                user_profile.two_fa = False
                 user_profile.save()
             return Response("user updated", status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

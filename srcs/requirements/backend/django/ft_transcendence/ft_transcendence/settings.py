@@ -46,6 +46,8 @@ INSTALLED_APPS = [
 	'rest_framework_simplejwt',
 	'account',
 	'game',
+	'chat',
+	'friend_management',
 ]
 
 MIDDLEWARE = [
