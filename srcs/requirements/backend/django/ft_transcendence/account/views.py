@@ -68,18 +68,23 @@ class UserRegisterView(APIView):
                 first_name = serializer.validated_data.get('first_name'),
                 last_name = serializer.validated_data.get('last_name'),
                 email=email,
-                is_active=False,
+                is_active=True,
             )
             user_profile = UserProfile.objects.create(user=user)
             user_profile.otp = uuid.uuid4().hex
             user_profile.save()
-            send_mail(
-            'NO-REPLY:Verify your mail address',
-            f'Click to verify: {settings.SITE_URL + "#verify-email?token=" + user_profile.otp}',
-            os.environ.get('EMAIL_HOST_USER'),
-            [user.email],
-            fail_silently=False,
-)
+            # try :
+            #     send_mail(
+            #     'NO-REPLY:Verify your mail address',
+            #     f'Click to verify: {settings.SITE_URL + "/?token=" + user_profile.otp + "#verify-email"}',
+            #     os.environ.get('EMAIL_HOST_USER'),
+            #     [user.email],
+            #     fail_silently=False,
+            # )
+            # except:
+            #     user_profile.delete()
+            #     user.delete()
+            #     return Response({"error": "Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
             return Response("User created", status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -87,6 +92,7 @@ class UserRegisterView(APIView):
 class VerifyEmailView(APIView):
     def get(self, request, *args, **kwargs):
         token = request.GET.get('token', None)
+        print('token = ', token)
         user_profile = get_object_or_404(UserProfile, otp=token)
         user_profile.user.is_active = True
         user_profile.user.save()
@@ -95,7 +101,7 @@ class VerifyEmailView(APIView):
         return Response("Email verified", status=status.HTTP_200_OK)
 
 class AllUserView(APIView):
-    permission_classes = [permissions.IsAdminUser]
+    # permission_classes = [permissions.IsAdminUser]
     def get(self, request):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)

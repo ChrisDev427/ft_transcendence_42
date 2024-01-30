@@ -75,7 +75,8 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_HEADERS = [
     'Authorization',
 	'Content-Type',
-	'code'
+	'code',
+    'token'
 ]
 
 SITE_URL = 'http://localhost'

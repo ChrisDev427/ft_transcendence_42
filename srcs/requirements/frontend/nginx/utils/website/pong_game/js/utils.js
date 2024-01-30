@@ -61,25 +61,25 @@ function printGame() {
    
 }
 
-function printWinner() {
+// function printWinner() {
 
-    ctx.font = '130px "Bagel Fat One", sans-serif';
-    ctx.fillStyle = themeColor[theme].winPrint;
-    if(rightPlayerScore === 10) {
+//     ctx.font = '130px "Bagel Fat One", sans-serif';
+//     ctx.fillStyle = themeColor[theme].winPrint;
+//     if(rightPlayerScore === 10) {
        
-        ctx.fillText("Win!",  680, 400);
-    }
-    if(leftPlayerScore === 10) {
+//         ctx.fillText("Win!",  680, 400);
+//     }
+//     if(leftPlayerScore === 10) {
         
-        ctx.fillText("Win!", 140, 400);
-    }
-    leftPlayerNamePrint = "";
-    rightPlayerNamePrint = "";
+//         ctx.fillText("Win!", 140, 400);
+//     }
+//     leftPlayerNamePrint = "";
+//     rightPlayerNamePrint = "";
 
-    if(tournament) {
-        ManageTournament();
-    }
-}
+//     if(tournament) {
+//         ManageTournament();
+//     }
+// }
 
 function printInfos() {
     

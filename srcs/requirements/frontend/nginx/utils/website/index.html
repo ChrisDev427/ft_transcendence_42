@@ -24,7 +24,7 @@
 <body>
 
   <header class="pb-5 mb-4">
-    <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark bg-info py-0">
+    <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark bg-info py-1">
       <div class="container">
         <a class="navbar-brand fw-bold btn" onclick="showSection('main')">ft_transcendence42</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,9 +34,8 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
 
-            <!-- <i class="bi bi-circle-fill cl-green "></i> -->
             <!-- DropDown Profile -->
-            <li class="nav-item dropdown">
+            <li id="dropDownProfile" class="nav-item dropdown hidden-element">
               <a class="nav-link bi-person-circle  fs-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
               <div class="dropdown-menu bg-info py-0 border-0">
 
@@ -60,20 +59,17 @@
                     </div>
 
                     <div class="col d-flex justify-content-evenly mt-4">
-                        <a class="btn btn-sm btn-outline-info fw-bold bi bi-people-fill" href="#friends"></a>
-                        <a class="btn btn-sm btn-outline-info fw-bold bi bi-database-fill" href="#gameHistory"></a>
-                        <a class="btn btn-sm btn-outline-info fw-bold bi-person-circle" href="#profile"></a>
-                        <a class="btn btn-sm btn-outline-danger fw-bold bi-plug-fill" href="#"></a>
-                      </div>
+                      <a class="btn btn-sm btn-outline-info fw-bold bi bi-people-fill" href="#friends"></a>
+                      <a class="btn btn-sm btn-outline-info fw-bold bi bi-database-fill" href="#gameHistory"></a>
+                      <a class="btn btn-sm btn-outline-info fw-bold bi-person-circle" href="#profile"></a>
+                      <a class="btn btn-sm btn-outline-danger fw-bold bi-plug-fill" href="#"></a>
                     </div>
                   </div>
                 </div>
-              </li>
-              <!-- <div class="border "> -->
-
-                <!-- <p class="fw-bold text-secondary">Status<i class="bi-circle-fill cl-green "></i></p> -->
-              <!-- </div> -->
-
+              </div>
+            </li>
+              
+            
             <li class="nav-item  mt-2">
               <a class="nav-link fw-bold" href="#gameMenu">Play Pong</a>
             </li>
@@ -171,7 +167,7 @@
 
     <section id="gameMenu" class="">
       <h1 class="display-1 p-3 fw-bold text-info text-center">Pong</h1>
-      <div id="containerGameMenu" class="container rounded-4 shadow   p-2 border" style="width: 90%; max-width: 400px;">
+      <div id="containerGameMenu" class="container rounded-4 shadow p-2" style="width: 90%; max-width: 400px;">
           <div class="col d-flex justify-content-end p-2">
             <button type="button" class="btn btn-sm btn-outline-info me-1" id="resetBtnUI">reset</button>
             <button type="button" class="btn btn-sm btn-outline-danger" id="clBtnUI">quit</button>
@@ -323,7 +319,7 @@
       </div>
     </section>
     <section id="signIn">
-      <div class="container p-3">
+      <div id="signInDiv" class="container p-3">
         <div class="row fw-light text-secondary">
           <h1 class="display-1 fw-bold text-info text-center">Sign In</h1>
           <div class="col-md-5 col-lg-4 my-4 mx-auto">
@@ -335,18 +331,22 @@
                 <input type="password" class="form-control mb-3 border-info" autocomplete="current-password" id="signIn-password" name="password">
 
                 <button class="btn btn-info text-white w-100 mt-3" type="submit">Sign in</button>
+                <hr class="border-info">
+                <button class="btn btn-outline-info w-100" onclick="loginWith42()">Connect with 42</button>
             </form>
-            <button class="btn btn-info text-white w-100 mt-3" onclick="loginWith42()">Se connecter avec 42</button>
           </div>
-            <script>
+        </div>
+        
+      </div>
+            <!-- <script>
                function loginWith42() {
                 const oauthUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-44e47265c9b8312f83a47d720211e265bef85a1c8fc632f8786fe9dcdade34d1&redirect_uri=http%3A%2F%2Flocalhost&response_type=code';
                 window.location.href = oauthUrl;
                }
-            </script>
+            </script> -->
     </section>
     <section id="signUp">
-      <div class="container p-3">
+      <div id="signUpDiv" class="container p-3">
         <h1 class="display-1 fw-bold text-info text-center">Sign Up</h1>
         <div class="row fw-light text-secondary">
           <div class="col-7 col-md-5  my-4 mx-auto ">
@@ -372,62 +372,33 @@
         </div>
       </div>
     </section>
-    <!-- <script>
-      //const csrfToken = getCookie('csrftoken');
-      document.getElementById('signup-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        fetch('http://localhost:8000/api/account/register/', {
-        method: 'POST',
-        body: new FormData(e.target)
-        })
-        .then(response => {
-          if (response.status === 201) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
-            const alerte = alert('Inscription réussie !');
-            setTimeout(function(){
-              alerte.close();
-            }, 2000);
-             // Vous pouvez personnaliser le message ou rediriger l'utilisateur ici
-            window.location.replace('index.html');
-          } else {
-            alert('Erreur lors de l\'inscription : ' + response.status);
-            console.log(response);
-            e.target.reset();
-            // Gérer les erreurs d'inscription ici, par exemple en affichant un message d'erreur
-          }
-        })
-        .catch(error => {
-          console.error('Erreur lors de la soumission du formulaire :', error);
-        });
-      });
-      document.getElementById('signin-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        fetch('http://localhost:8000/api/account/login/', {
-        method: 'POST',
-        body: new FormData(e.target)
-        })
-        .then(response => {
-          if (response.status === 200) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
-            const alerte = alert('authentification réussie zregrezgerz !');
-            setTimeout(function(){
-              alerte.close();
-            }, 2000);
-            const auth_token = response.access;
-            const refresh_token = response.refresh;
-            console.log(auth_token);
-             // Vous pouvez personnaliser le message ou rediriger l'utilisateur ici
-            window.location.replace('index.html');
-          } else {
-            alert('Erreur lors de l\'authentification : ' + response.status);
-            e.target.reset();
-            // Gérer les erreurs d'inscription ici, par exemple en affichant un message d'erreur
-          }
-        })
-        .catch(error => {
-          console.error('Erreur lors de la soumission du formulaire :', error);
-        });
-      });
-    </script> -->
 
+    <section id="verify-email">
+      <div class="container p-3" >
+        <!-- kdfjhgkdasjhgkdfhgk
+        <script>
+          const urlParams = new URLSearchParams(window.location.search);
+          const token = urlParams.get('token');
+          console.log(token);
+          fetch("http://localhost:8000/api/account/register/verify/?token=" + token)
+         
+          .then(response => {
+            if (response.status === 200) {
+                // Authentification réussie
+                // return response.json();
+                console.log('email verified !');
+            } else {
+              // Gestion des erreurs lors de la récupération du profil
+              console.error('Error email verfification', response.status);
+
+          }})
+        </script> -->
+
+
+      </div>
+
+    </section>
+    
     <section id="friends">
       <div class="container p-3">
         <h1 class="display-1 fw-bold text-info text-center">Friends</h1>
@@ -442,38 +413,60 @@
 
     <section id="profile">
       <h1 class="display-1 fw-bold text-info text-center">Profile</h1>
-      <div class="container w-md-50 p-3 mt-4 rounded-4 shadow-lg" style=" max-width: 800px;">
 
-        <!-- <div class="row "> -->
-          <div class="col-12 d-flex justify-content-center">
-            <img src="img/img-chris.jpg" alt="img-avatar" class="rounded-3 my-2" style="max-width: 200px;">
-            <div class="d-flex align-items-end">
-              <a class="btn bi bi-gear text-info mb-1 p-0" onclick=""></a>
+      <div class="container p-3 mt-4 rounded-4 shadow-lg" style=" max-width: 700px;">
+        <div class="col d-flex justify-content-center">
+          <img id="avatar-img" src="" alt="avatarUser" class="rounded-3 my-2" style="max-width: 200px;">
+          <div class="d-flex align-items-end">
+            <i id="setProfileBtn" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick=""></i>
+          </div>
+        </div>
+        <hr class="px-5 text-info border-2">
+        <div id="bioDiv">
+          <div >
+            <p id="bioProfile" class="lead fs-6 text-lighter text-secondary text-center"></p>
+            <div class="d-flex justify-content-center">
+              <i id="setProfileBtn" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleBio_createForm()"></i>
             </div>
           </div>
-          <div class="col-12">
-            <hr class="px-5 text-info border-2">
-
-            <h5 class="text-info text-center">Christophe<a class="btn bi bi-pencil mb-2 ms-1 p-0 text-info" onclick=""></a></h5>
-            <h5 class="text-info text-center">Massa<a class="btn bi bi-pencil mb-2 ms-1 p-0 text-info" onclick=""></a></h5>
-            <h5 class="text-info text-center">Chrissou<a class="btn bi bi-pencil mb-2 ms-1 p-0 text-info" onclick=""></a></h5>
-            <h5 class="text-info text-center">christophemassa@icloud.com<a class="btn bi bi-pencil mb-2 ms-1 p-0 text-info" onclick=""></a></h5>
-
-
+        </div>
+        <hr class="px-5 text-info border-2">
+        <div id="infosDiv">
+          <div id="infosProfile">
+            <h5 id="firstNameProfile" class="text-info text-center fs-4"></h5></a>
+            <h5 id="lastNameProfile" class="text-info text-center fs-4"></h5></a>
+            <h5 id="userNameProfile" class="text-info text-center fs-4"></h5></a>
+            <div class="d-flex justify-content-center">
+              <i id="setProfileBtn" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleInfos_createForm()"></i>
+            </div>
           </div>
-          <div class="col-12">
-            <hr class="px-5 text-info border-2">
-
-            <p class="lead fs-6 text-lighter text-secondary text-center p-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi quos ex quod sit nobis, fugit veritatis inventore quas iusto fugiat omnis magnam eum maxime hic at ad sed consequatur tenetur.<a class="btn bi bi-pencil mb-1 ms-1 p-0 text-info" onclick=""></a></p>
-
-
+        </div>
+        <hr class="px-5 text-info border-2">
+        <div id="emailDiv">
+          <div >
+            <h5 id="emailProfile" class="text-info text-center fs-4"></h5>
+            <div class="d-flex justify-content-center">
+              <i id="setProfileBtn" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleEmail_createForm()"></i>
+            </div>
           </div>
-
-        <!-- </div> -->
-
-
+        </div>
+        <hr class="px-5 text-info border-2">
+        <div id="authDiv">
+          <div id="authProfile" class="btn-group-sm" role="group" aria-label="Basic radio toggle button group">
+            <h6 class="col-12 text-center text-secondary fw-bold">2FA Authentication</h6>
+            <div class="col-12 d-flex justify-content-center mt-0">
+              <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+              <label id="setProfileBtn" class="btn btn-sm btn-outline-info py-0 px-2 me-1" for="btnradio1">On</label>
+              
+              <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+              <label id="setProfileBtn" class="btn btn-sm btn-outline-info py-0 px-2" for="btnradio2">Off</label>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+              <button id="setProfileBtn" class="btn btn-sm btn-outline-info" onclick="handlePassword_createForm()">Change password</button>
+            </div>
+          </div>
+        </div>
       </div>
-
       </div>
     </section>
 
@@ -513,7 +506,9 @@
 
     <script src="./js/websiteUtils.js"></script>
     <script src="./js/websiteConfig.js"></script>
-    <script src="./js/formsUtils.js"></script>
+    <script src="./js/requestAPI/register_login_logout.js"></script>
+    <script src="./js/requestAPI/updateUserInfos_createForms.js"></script>
+    <script src="./js/requestAPI/handleAlerts.js"></script>
     <script src="./pong_game/js/handle_UI.js"></script>
     <script src="./pong_game/js/gameConfig.js"></script>
     <script src="./pong_game/js/create_gameSettings_menu.js"></script>
