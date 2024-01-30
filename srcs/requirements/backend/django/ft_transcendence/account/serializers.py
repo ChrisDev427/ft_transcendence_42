@@ -8,6 +8,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'first_name', 'last_name', 'password', 'email', 'is_staff', 'is_active', 'date_joined', 'last_login']
 
+class PublicUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name', 'last_name']
+
 class UserProfileSerializer(serializers.ModelSerializer):
 
     user = UserSerializer()

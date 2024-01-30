@@ -2,9 +2,11 @@ function handleBio_createForm() {
     // hide current bio
     document.getElementById('bioProfile').classList.add('hidden-element');
 
+    disableProfileBtn();
+
     const mainDiv = document.createElement('div');
     mainDiv.id = 'modifyBio';
-    mainDiv.classList = 'col-sm-10 mx-auto shadow p-3 mt-3 rounded-4';
+    mainDiv.classList = 'col-sm-10 mx-auto shadow p-3 mt-3 rounded-4 bg-info bg-opacity-10';
 
     const formDiv = document.createElement('form');
     formDiv.id = 'modifyBio-form';
@@ -51,16 +53,19 @@ function handleBio_createForm() {
    document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyBio').remove();
         document.getElementById('bioProfile').classList.remove('hidden-element');
+        enableProfileBtn();
    });
 }
 
 function handleInfos_createForm() {
     // hide current bio
     document.getElementById('infosProfile').classList.add('hidden-element');
+    disableProfileBtn();
+
 
     const mainDiv = document.createElement('div');
     mainDiv.id = 'modifyProfileInfos';
-    mainDiv.classList = 'col-sm-6 mx-auto shadow p-3 rounded-4';
+    mainDiv.classList = 'col-sm-6 mx-auto shadow p-3 rounded-4 bg-info bg-opacity-10';
 
     const formDiv = document.createElement('form');
     formDiv.id = 'modifyProfileInfos-form';
@@ -116,16 +121,20 @@ function handleInfos_createForm() {
    document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyProfileInfos').remove();
         document.getElementById('infosProfile').classList.remove('hidden-element');
+        enableProfileBtn();
+
    });
 }
 
 function handleEmail_createForm() {
     // hide current bio
     document.getElementById('emailProfile').classList.add('hidden-element');
+    disableProfileBtn();
+
 
     const mainDiv = document.createElement('div');
     mainDiv.id = 'modifyEmail';
-    mainDiv.classList = 'col-sm-8 mx-auto shadow p-3 rounded-4';
+    mainDiv.classList = 'col-sm-8 mx-auto shadow p-3 rounded-4 bg-info bg-opacity-10';
 
     const formDiv = document.createElement('form');
     formDiv.id = 'modifyEmail-form';
@@ -137,7 +146,7 @@ function handleEmail_createForm() {
     input.type = 'email';
     input.name = 'newEmail';
     input.classList = 'form-control mb-2 border-info text-secondar text-center';
-    input.placeholder = 'newEmail';
+    input.placeholder = 'new email';
     formDiv.appendChild(input);
 
     input = document.createElement('input');
@@ -180,5 +189,90 @@ function handleEmail_createForm() {
    document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyEmail').remove();
         document.getElementById('emailProfile').classList.remove('hidden-element');
+        enableProfileBtn();
+
    });
+}
+
+function handlePassword_createForm() {
+    // hide current bio
+    document.getElementById('authProfile').classList.add('hidden-element');
+    disableProfileBtn();
+
+
+    const mainDiv = document.createElement('div');
+    mainDiv.id = 'modifyPassword';
+    mainDiv.classList = 'col-sm-6 mx-auto shadow p-3 mt-3 rounded-4 bg-info bg-opacity-10';
+
+    const formDiv = document.createElement('form');
+    formDiv.id = 'modifyPassword-form';
+    formDiv.method = 'patch';
+    mainDiv.appendChild(formDiv);
+    
+    let input = document.createElement('input');
+    input.id = 'currentPassword';
+    input.type = 'currentPassword';
+    input.name = 'currentPassword';
+    input.classList = 'form-control form-control-sm mb-2 border-info shadow text-center';
+    input.placeholder = 'current password';
+    formDiv.appendChild(input);
+
+    input = document.createElement('input');
+    input.id = 'newPassword';
+    input.type = 'newPassword';
+    input.name = 'newPassword';
+    input.classList = 'form-control form-control-sm mb-2 border-info shadow text-center';
+    input.placeholder = 'new password';
+    formDiv.appendChild(input);
+    
+
+    const rowDiv = document.createElement('div');
+    rowDiv.classList = 'row mt-2';
+    
+    const col1Div = document.createElement('div');
+    col1Div.classList = 'col-6';
+    
+    const cancelBtn = document.createElement('button');
+    cancelBtn.id = 'cancelBtn';
+    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow';
+    cancelBtn.type = 'submit';
+    cancelBtn.textContent = 'Cancel';
+    col1Div.appendChild(cancelBtn);
+    rowDiv.appendChild(col1Div);
+
+    const col2Div = document.createElement('div');
+    col2Div.classList = 'col-6';
+    
+    const applyBtn = document.createElement('button');
+    applyBtn.id = 'applyBtn';
+    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow';
+    applyBtn.type = 'submit';
+    applyBtn.textContent = 'Apply';
+    col2Div.appendChild(applyBtn);
+    rowDiv.appendChild(col2Div);
+
+    mainDiv.appendChild(rowDiv);
+    document.getElementById('emailDiv').appendChild(mainDiv);
+
+   document.getElementById('cancelBtn').addEventListener('click', function () {
+        document.getElementById('modifyPassword').remove();
+        document.getElementById('authProfile').classList.remove('hidden-element');
+        enableProfileBtn();
+
+   });
+}
+
+function disableProfileBtn() {
+    document.querySelectorAll('#setProfileBtn').forEach(function (element) {
+        // Supprime la classe 'icon-disabled' de chaque élément
+        element.classList.add('icon-disabled');
+      });
+    
+}
+
+function enableProfileBtn() {
+    document.querySelectorAll('#setProfileBtn').forEach(function (element) {
+        // Supprime la classe 'icon-disabled' de chaque élément
+        element.classList.remove('icon-disabled');
+      });
 }
