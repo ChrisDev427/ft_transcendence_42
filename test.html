@@ -3,29 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
+    <title>WebSocket Sessions</title>
 </head>
 <body>
-    <section>
-     
-       
-            <div class="position-absolute top-50 start-50 translate-middle bg-secondary border ">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo dolor excepturi, ad architecto quaerat quisquam id eligendi similique natus facilis ipsum deleniti aut, officia debitis suscipit quod quidem sunt delectus.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo dolor excepturi, ad architecto quaerat quisquam id eligendi similique natus facilis ipsum deleniti aut, officia debitis suscipit quod quidem sunt delectus.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo dolor excepturi, ad architecto quaerat quisquam id eligendi similique natus facilis ipsum deleniti aut, officia debitis suscipit quod quidem sunt delectus.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo dolor excepturi, ad architecto quaerat quisquam id eligendi similique natus facilis ipsum deleniti aut, officia debitis suscipit quod quidem sunt delectus.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo dolor excepturi, ad architecto quaerat quisquam id eligendi similique natus facilis ipsum deleniti aut, officia debitis suscipit quod quidem sunt delectus.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo dolor excepturi, ad architecto quaerat quisquam id eligendi similique natus facilis ipsum deleniti aut, officia debitis suscipit quod quidem sunt delectus.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo dolor excepturi, ad architecto quaerat quisquam id eligendi similique natus facilis ipsum deleniti aut, officia debitis suscipit quod quidem sunt delectus.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo dolor excepturi, ad architecto quaerat quisquam id eligendi similique natus facilis ipsum deleniti aut, officia debitis suscipit quod quidem sunt delectus.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo dolor excepturi, ad architecto quaerat quisquam id eligendi similique natus facilis ipsum deleniti aut, officia debitis suscipit quod quidem sunt delectus.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo dolor excepturi, ad architecto quaerat quisquam id eligendi similique natus facilis ipsum deleniti aut, officia debitis suscipit quod quidem sunt delectus.</p>
-            </div>
-    
 
-    </section>
+<div id="sessionsList" style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;"></div>
+
+<script>
+    const socket = new WebSocket('ws://90.116.98.105:90');
+
+    socket.addEventListener('open', (event) => {
+        console.log('Connected to WebSocket server');
+    });
+
+    socket.addEventListener('message', (event) => {
+        console.log('Message from server:', event.data);
+
+        const data = JSON.parse(event.data);
+
+        if (data.action === 'updateSessions') {
+            console.log('Updating sessions list...');
+            updateSessionsList(data.sessions);
+        } else if (data.action === 'join') {
+            console.log('Joining session with ID:', data.sessionId);
+            // Ajoutez votre logique pour rejoindre la session ici
+        }
+    });
+
+    socket.addEventListener('close', (event) => {
+        console.log('Connection closed');
+    });
+
+    function updateSessionsList(sessions) {
+        const sessionsListElement = document.getElementById('sessionsList');
+        sessionsListElement.innerHTML = '';
+
+        sessions.forEach(session => {
+            const sessionLink = document.createElement('a');
+            sessionLink.href = `http://fttranscendence.ddns.net/website/#playPong/${session.id}`;
+            sessionLink.textContent = `Session ID: ${session.id}, Created At: ${session.createdAt}`;
+
+            sessionLink.addEventListener('click', () => {
+                socket.send(JSON.stringify({ action: 'join', sessionId: session.id }));
+            });
+
+            const sessionElement = document.createElement('p');
+            sessionElement.appendChild(sessionLink);
+
+            sessionsListElement.appendChild(sessionElement);
+        });
+
+        console.log('Updated sessions list:', sessions);
+    }
     
+    document.addEventListener('DOMContentLoaded', function () {
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash;
+            const match = hash.match(/^#playPong\/([a-zA-Z0-9-]+)$/);
+
+            if (match) {
+                const sessionId = match[1];
+                console.log('Joining session with ID:', sessionId);
+                // Ajoutez votre logique pour rejoindre la session ici
+            }
+        });
+    });
+
+</script>
+
 </body>
 </html>

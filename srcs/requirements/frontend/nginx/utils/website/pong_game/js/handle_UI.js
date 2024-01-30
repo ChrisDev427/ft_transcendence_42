@@ -124,9 +124,12 @@ btn.tournamentBtn.addEventListener("click", function() {
     create_Tournament_mode();
 });
 
+
+
 function initPlayBtn() {
     const playBtn = document.getElementById("playBtn");
     playBtn.addEventListener("click", function() {
+
         
         if(onePlayer) {
 
@@ -152,7 +155,11 @@ function initPlayBtn() {
             }
             leftPlayerName = playerName_1.value;
             rightPlayerName = playerName_2.value;
+
+            const message = JSON.stringify({ action: 'createSession' });
+            socket.send(message);
         }
+        
         else if(tournament) {
             console.log('tournament condition');
             for(let i = 0; i < tournamentSize; i++) {
@@ -187,6 +194,7 @@ function initPlayBtn() {
         reset_UI();
         removeInput();
         run();
+  
     });
 }
 
@@ -245,4 +253,6 @@ quitGameBtn.addEventListener("click", function() {
     resetGameValues();
     showSection('main');
 
+    const message = JSON.stringify({ action: 'quitSession' });
+    socket.send(message);
 });

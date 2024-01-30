@@ -18,12 +18,38 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Serif+Display&display=swap" rel="stylesheet">
 
-
 </head>
 
 <body>
-  <script>
-    const socket = new WebSocket('ws://90.116.98.105:90');
+
+    <script>
+        const socket = new WebSocket('ws://90.116.98.105:90');
+        
+        socket.addEventListener('open', (event) => {
+            console.log('Connected to WebSocket server');
+        });
+        socket.addEventListener('close', (event) => {
+            console.log('Connection closed');
+        });
+  
+    </script>
+
+  <!-- 
+
+    document.addEventListener('mousemove', (event) => {
+      const coordinates = {
+          x: event.clientX,
+          y: event.clientY
+      };
+
+      // Envoyer les coordonnées au serveur
+      socket.send(JSON.stringify(coordinates));
+    });
+
+    socket.addEventListener('message', (event) => {
+        const coordinates = JSON.parse(event.data);
+        console.log('Server Broadcast:', coordinates);
+    });
 
     // Gérez l'événement d'ouverture de la connexion
     socket.addEventListener('open', (event) => {
@@ -44,7 +70,7 @@
     socket.addEventListener('error', (event) => {
         console.error('Erreur WebSocket:', event);
     });
-  </script>
+  </script> -->
 
   <header class="pb-5 mb-4">
     <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark bg-info py-0">

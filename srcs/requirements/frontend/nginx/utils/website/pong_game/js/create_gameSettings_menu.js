@@ -41,6 +41,7 @@ function create_OnePlayer_input() {
     // Ajout de l'élément div principal à la section spécifiée
     mySection.appendChild(mainDiv);
     initPlayBtn();
+    
 }
 
 function create_TwoPlayers_input() {
