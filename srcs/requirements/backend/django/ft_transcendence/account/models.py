@@ -7,7 +7,7 @@ class UserProfile(models.Model):
 	mobile_number = models.CharField(max_length=15, blank=True)
 	is_connected = models.BooleanField(default=False)
 	avatar = models.ImageField(upload_to='avatar/', default='/api/account/profile/avatar/defaultPic.png')
-	bio = models.TextField(max_length=420, default="about you...")
+	bio = models.TextField(max_length=420, default="write something about you...")
 	is_ingame = models.BooleanField(default=False)
 	games_id = models.ManyToManyField('game.Game', blank=True)
 	win = models.IntegerField(default=0)
