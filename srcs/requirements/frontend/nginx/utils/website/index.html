@@ -35,7 +35,7 @@
           <ul class="navbar-nav">
 
             <!-- DropDown Profile -->
-            <li class="nav-item dropdown">
+            <li id="dropDownProfile" class="nav-item dropdown hidden-element">
               <a class="nav-link bi-person-circle  fs-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
               <div class="dropdown-menu bg-info py-0 border-0">
 
@@ -59,17 +59,17 @@
                     </div>
 
                     <div class="col d-flex justify-content-evenly mt-4">
-                        <a class="btn btn-sm btn-outline-info fw-bold bi bi-people-fill" href="#friends"></a>
-                        <a class="btn btn-sm btn-outline-info fw-bold bi bi-database-fill" href="#gameHistory"></a>
-                        <a class="btn btn-sm btn-outline-info fw-bold bi-person-circle" href="#profile"></a>
-                        <a class="btn btn-sm btn-outline-danger fw-bold bi-plug-fill" href="#"></a>
-                      </div>
+                      <a class="btn btn-sm btn-outline-info fw-bold bi bi-people-fill" href="#friends"></a>
+                      <a class="btn btn-sm btn-outline-info fw-bold bi bi-database-fill" href="#gameHistory"></a>
+                      <a class="btn btn-sm btn-outline-info fw-bold bi-person-circle" href="#profile"></a>
+                      <a class="btn btn-sm btn-outline-danger fw-bold bi-plug-fill" href="#"></a>
                     </div>
                   </div>
                 </div>
-              </li>
+              </div>
+            </li>
               
-
+            
             <li class="nav-item  mt-2">
               <a class="nav-link fw-bold" href="#gameMenu">Play Pong</a>
             </li>
@@ -91,7 +91,28 @@
   </header>
   <main>
     <section id="main" class="d-flex justify-content-center">
-
+    <script>
+      function getAuthorizationCode() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('code');
+      }
+     async function exchangeCodeForToken(code) {
+        const response = await fetch('http://localhost:8000/api/account/o/token/', {
+            method: 'GET',
+            headers: {
+                'code': code
+            },
+        });
+        const data = await response.json();
+        console.log(data);
+        return data;
+    }
+      const code = getAuthorizationCode();
+      console.log("code =",code);
+      if (code) {
+        exchangeCodeForToken(code);
+      }
+    </script>
       <div class="container rounded-4 shadow" >
         <div class="col d-flex justify-content-center mx-4">
           <h1 class="display-2 text-info fw-bold">ft_transcendence</h1>
@@ -298,7 +319,7 @@
       </div>
     </section>
     <section id="signIn">
-      <div class="container p-3">
+      <div id="signInDiv" class="container p-3">
         <div class="row fw-light text-secondary">
           <h1 class="display-1 fw-bold text-info text-center">Sign In</h1>
           <div class="col-md-5 col-lg-4 my-4 mx-auto">
@@ -310,11 +331,22 @@
                 <input type="password" class="form-control mb-3 border-info" autocomplete="current-password" id="signIn-password" name="password">
 
                 <button class="btn btn-info text-white w-100 mt-3" type="submit">Sign in</button>
+                <hr class="border-info">
+                <button class="btn btn-outline-info w-100" onclick="loginWith42()">Connect with 42</button>
             </form>
           </div>
+        </div>
+        
+      </div>
+            <!-- <script>
+               function loginWith42() {
+                const oauthUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-44e47265c9b8312f83a47d720211e265bef85a1c8fc632f8786fe9dcdade34d1&redirect_uri=http%3A%2F%2Flocalhost&response_type=code';
+                window.location.href = oauthUrl;
+               }
+            </script> -->
     </section>
     <section id="signUp">
-      <div class="container p-3">
+      <div id="signUpDiv" class="container p-3">
         <h1 class="display-1 fw-bold text-info text-center">Sign Up</h1>
         <div class="row fw-light text-secondary">
           <div class="col-7 col-md-5  my-4 mx-auto ">
@@ -339,6 +371,32 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <section id="verify-email">
+      <div class="container p-3" >
+        <!-- kdfjhgkdasjhgkdfhgk
+        <script>
+          const urlParams = new URLSearchParams(window.location.search);
+          const token = urlParams.get('token');
+          console.log(token);
+          fetch("http://localhost:8000/api/account/register/verify/?token=" + token)
+         
+          .then(response => {
+            if (response.status === 200) {
+                // Authentification réussie
+                // return response.json();
+                console.log('email verified !');
+            } else {
+              // Gestion des erreurs lors de la récupération du profil
+              console.error('Error email verfification', response.status);
+
+          }})
+        </script> -->
+
+
+      </div>
+
     </section>
     
     <section id="friends">
@@ -365,8 +423,8 @@
         </div>
         <hr class="px-5 text-info border-2">
         <div id="bioDiv">
-          <div id="bioProfile">
-            <p id="bioUser" class="lead fs-6 text-lighter text-secondary text-center">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam amet facere magni provident quaerat voluptates inventore architecto voluptate, pariatur iste sit illo porro consequuntur obcaecati accusamus rem quasi aliquam similique.</p>
+          <div >
+            <p id="bioProfile" class="lead fs-6 text-lighter text-secondary text-center"></p>
             <div class="d-flex justify-content-center">
               <i id="setProfileBtn" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleBio_createForm()"></i>
             </div>
@@ -375,9 +433,9 @@
         <hr class="px-5 text-info border-2">
         <div id="infosDiv">
           <div id="infosProfile">
-            <h5 id="firstNameProfileBtn" class="text-info text-center fs-4">Christophe</h5></a>
-            <h5 id="lastNameProfileBtn" class="text-info text-center fs-4">Massa</h5></a>
-            <h5 id="userNameProfileBtn" class="text-info text-center fs-4">Chrissou</h5></a>
+            <h5 id="firstNameProfile" class="text-info text-center fs-4"></h5></a>
+            <h5 id="lastNameProfile" class="text-info text-center fs-4"></h5></a>
+            <h5 id="userNameProfile" class="text-info text-center fs-4"></h5></a>
             <div class="d-flex justify-content-center">
               <i id="setProfileBtn" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleInfos_createForm()"></i>
             </div>
@@ -385,8 +443,8 @@
         </div>
         <hr class="px-5 text-info border-2">
         <div id="emailDiv">
-          <div id="emailProfile">
-            <h5 id="emailProfileBtn" class="text-info text-center fs-4">christophemassa@icloud.com</h5>
+          <div >
+            <h5 id="emailProfile" class="text-info text-center fs-4"></h5>
             <div class="d-flex justify-content-center">
               <i id="setProfileBtn" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleEmail_createForm()"></i>
             </div>
@@ -448,8 +506,9 @@
 
     <script src="./js/websiteUtils.js"></script>
     <script src="./js/websiteConfig.js"></script>
-    <script src="./js/requestAPI.js"></script>
-    <script src="./js/updateUserInfos_createForms.js"></script>
+    <script src="./js/requestAPI/register_login_logout.js"></script>
+    <script src="./js/requestAPI/updateUserInfos_createForms.js"></script>
+    <script src="./js/requestAPI/handleAlerts.js"></script>
     <script src="./pong_game/js/handle_UI.js"></script>
     <script src="./pong_game/js/gameConfig.js"></script>
     <script src="./pong_game/js/create_gameSettings_menu.js"></script>

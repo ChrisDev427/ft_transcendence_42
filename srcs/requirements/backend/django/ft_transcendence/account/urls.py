@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import UserRegisterView, LoginView, LogoutView, ProfileView, AllUserView, UserView, getProfileView, AvatarView, UpdateAvatarView, SendOTPView, VerifyEmailView
+from .views import UserRegisterView, LoginView, LogoutView, ProfileView, AllUserView, UserView, getProfileView, AvatarView, UpdateAvatarView, SendOTPView, VerifyEmailView, oauth_login
 from rest_framework_simplejwt.views import TokenRefreshView
+from . import views
 
 app_name = 'account'
 
@@ -16,5 +17,6 @@ urlpatterns = [
 	path('profile/avatar/<str:avatar>/', AvatarView.as_view(), name='get-avatar'),
 	path('profile/avatar/', UpdateAvatarView.as_view(), name='avatar'),
 	path('otp/', SendOTPView.as_view(), name='otp'),
-	path('register/verify', VerifyEmailView.as_view() , name='verify_email'),
+	path('register/verify/', VerifyEmailView.as_view() , name='verify_email'),
+	path('o/token/', oauth_login.as_view() , name='oauth_callback'),
 ]
