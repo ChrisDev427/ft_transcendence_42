@@ -97,20 +97,17 @@
         return urlParams.get('code');
       }
      async function exchangeCodeForToken(code) {
-        const response = await fetch('http://localhost:8000/api/account/o/token/', {
-            method: 'GET',
-            headers: {
-                'code': code
-            },
-        });
+        const response = await fetch('http://localhost:8000/api/account/o/token/?code=' + code);
         const data = await response.json();
         console.log(data);
         return data;
     }
       const code = getAuthorizationCode();
-      console.log("code =",code);
       if (code) {
-        exchangeCodeForToken(code);
+        response = exchangeCodeForToken(code);
+        token = response.access_token;
+        console.log(response.json);
+        token_refresh = response.refresh_token;
       }
     </script>
       <div class="container rounded-4 shadow" >
@@ -164,7 +161,30 @@
         </div>
       </div>
     </section>
+    <section id="verify-email">
+      <div class="container p-3" >
+        <script>
+          const urlParams = new URLSearchParams(window.location.search);
+          const token = urlParams.get('token');
+          if (token) {
+            fetch("http://localhost:8000/api/account/register/verify/?token=" + token)
+            .then(response => {
+              if (response.status === 200) {
+                  // Authentification réussie
+                  // return response.json();
+                  console.log('email verified !');
+              } else {
+                // Gestion des erreurs lors de la récupération du profil
+                console.error('Error email verfification', response.status);
 
+            }})
+          }
+        </script>
+
+
+      </div>
+
+    </section>
     <section id="gameMenu" class="">
       <h1 class="display-1 p-3 fw-bold text-info text-center">Pong</h1>
       <div id="containerGameMenu" class="container rounded-4 shadow p-2" style="width: 90%; max-width: 400px;">

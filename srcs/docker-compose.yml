@@ -53,10 +53,25 @@ services:
       - django
     env_file: .env
 
+  # postfixadmin:
+  #   container_name: postfixadmin_container
+  #   networks:
+  #     - pong
+  #   depends_on:
+  #     - postgresql
+  #   image: postfixadmin
+  #   volumes:
+  #     - DB:/dev/tcp/
+  #   ports:
+  #     - "25:25"
+  #   restart: always
+  #   env_file: .env
+
 networks:
   pong:
     name: pong
     driver: bridge
+
 
 volumes:
   DB:

@@ -15,38 +15,53 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import JsonResponse
-from requests_oauthlib import OAuth2Session
 from django.views.decorators.csrf import csrf_exempt
 from .utils import *
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.signing import TimestampSigner
+from friend_management.models import Friend_management
 
-import pyotp, uuid, os
-
+import pyotp, uuid, os, requests
 
 class oauth_login(APIView):
     permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
         code = request.GET.get('code')
-        print("code")
-        print(code)
-        oauth = OAuth2Session(settings.OAUTH_CLIENT_ID, redirect_uri=settings.OAUTH_REDIRECT_URI)
-        token = oauth.fetch_token(
-            'https://api.intra.42.fr/oauth/token',
-            client_secret=settings.OAUTH_CLIENT_SECRET,
-            code=code
-        )
-        return JsonResponse(token)
+        print(settings.OAUTH_REDIRECT_URI)
+        data = {
+            'grant_type': 'authorization_code',
+            'code': code,
+            'redirect_uri': "http://localhost",
+            'client_id': "u-s4t2ud-44e47265c9b8312f83a47d720211e265bef85a1c8fc632f8786fe9dcdade34d1",
+            'client_secret': "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",
+        }
+        response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
+        if response.status_code != 200:
+            return Response(response.json(), status=response.status_code)
+        profile = requests.get('https://api.intra.42.fr/v2/me', headers={'Authorization': 'Bearer ' + response.json()['access_token']})
+        if profile.status_code != 200:
+            return Response(profile.json(), status=profile.status_code)
+        try:
+            user = User.objects.get(username=profile.json()['login'])
+            user_profile = UserProfile.objects.filter(user=user).first()
+        except User.DoesNotExist:
+            user = User.objects.create_user(
+                username = profile.json()['login'],
+                password = uuid.uuid4().hex,
+                first_name = profile.json()['first_name'],
+                last_name = profile.json()['last_name'],
+                email=profile.json()['email'],
+                is_active=True,
+            )
+            user_profile = UserProfile.objects.create(user=user)
+            user_profile.avatar = UpdateAvatarSerializer(requests.get(profile.json()['image']['link']))
+            user_profile.phone_number = profile.json()['phone']
+            user_profile.save()
+        user_profile.is_connected = True
+        user_profile.save()
+        refresh = RefreshToken.for_user(user)
+        return Response({'refresh':str(refresh), 'access': str(refresh.access_token)}, status=status.HTTP_200_OK)
 
-def oauth_callback(request):
-    code = request.GET.get('code')
-    print("code")
-    print(code)
-    oauth = OAuth2Session(settings.OAUTH_CLIENT_ID, redirect_uri=settings.OAUTH_REDIRECT_URI)
-    token = oauth.fetch_token(
-        'https://api.intra.42.fr/oauth/token',
-        client_secret=settings.OAUTH_CLIENT_SECRET,
-        code=code
-    )
-    return JsonResponse(token)
 
 
 class UserRegisterView(APIView):
@@ -68,16 +83,19 @@ class UserRegisterView(APIView):
                 first_name = serializer.validated_data.get('first_name'),
                 last_name = serializer.validated_data.get('last_name'),
                 email=email,
+                #is_active=False,
                 is_active=True,
             )
             user_profile = UserProfile.objects.create(user=user)
-            user_profile.otp = uuid.uuid4().hex
+            # signer = TimestampSigner()
+            # token = signer.sign(user.username)
+            # user_profile.otp = token
             user_profile.save()
             # try :
             #     send_mail(
             #     'NO-REPLY:Verify your mail address',
             #     f'Click to verify: {settings.SITE_URL + "/?token=" + user_profile.otp + "#verify-email"}',
-            #     os.environ.get('EMAIL_HOST_USER'),
+            #     settings.EMAIL_HOST_USER,
             #     [user.email],
             #     fail_silently=False,
             # )
@@ -86,13 +104,12 @@ class UserRegisterView(APIView):
             #     user.delete()
             #     return Response({"error": "Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
             return Response("User created", status=status.HTTP_201_CREATED)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class VerifyEmailView(APIView):
     def get(self, request, *args, **kwargs):
         token = request.GET.get('token', None)
-        print('token = ', token)
+        print(token)
         user_profile = get_object_or_404(UserProfile, otp=token)
         user_profile.user.is_active = True
         user_profile.user.save()
@@ -101,7 +118,7 @@ class VerifyEmailView(APIView):
         return Response("Email verified", status=status.HTTP_200_OK)
 
 class AllUserView(APIView):
-    # permission_classes = [permissions.IsAdminUser]
+    #permission_classes = [permissions.IsAdminUser]
     def get(self, request):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
@@ -130,9 +147,16 @@ class ProfileView(APIView):
             return Response({"error:","password needed"}, status=status.HTTP_400_BAD_REQUEST)
         elif not user.check_password(password):
             return Response({"error:","wrong password"}, status=status.HTTP_400_BAD_REQUEST)
+        request.data.pop('password')
         user_profile = UserProfile.objects.filter(user=user).first()
         serializer = UserProfileSerializer(user_profile, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
+            if request.data.get('friend'):
+                friend = get_object_or_404(UserProfile, user__username=request.data.get('friend'))
+                new_friend = Friend_management.objects.create(friend1=user_profile, friend2=friend, requester=user_profile)
+                user_profile.save()
+                friend.save()
+                return Response("friend requested", status=status.HTTP_200_OK)
             serializer.save()
             serializer = UserSerializer(user, data=request.data, partial=True, context={'request': request})
             if serializer.is_valid():
@@ -140,6 +164,9 @@ class ProfileView(APIView):
             if request.data.get('two_fa'):
                 user_profile.totp_secret = enable_2fa_authenticator(user_profile)
                 user_profile.two_fa = True
+                user_profile.save()
+            elif request.data.get('two_fa') == False:
+                user_profile.two_fa = False
                 user_profile.save()
             return Response("user updated", status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -210,7 +237,10 @@ class isIngame(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def put(self, request):
         user = request.user
-        user_profile = UserProfile.objects.filter(user=user).first()
+        try :
+            user_profile = UserProfile.objects.filter(user=user).first()
+        except UserProfile.DoesNotExist:
+            return Response({"error","user not found"},status=status.HTTP_404_NOT_FOUND)
         if user_profile.is_ingame:
             user_profile.is_ingame = False
         else:
