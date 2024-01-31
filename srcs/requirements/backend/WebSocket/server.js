@@ -6,8 +6,20 @@ const server = http.createServer((req, res) => {
 
 });
 
+
+class Session {
+    constructor(id, createdAt, ip) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.ip = ip
+        
+    }
+}
+
 const wss = new WebSocket.Server({ noServer: true });
 const sessions = [];
+
+
 
 wss.on('connection', (ws, req) => {
     const ip = req.connection.remoteAddress;    // Gérer les requêtes HTTP ici si nécessaire
@@ -18,15 +30,28 @@ wss.on('connection', (ws, req) => {
         try {
             const data = JSON.parse(message);
             const ip = req.connection.remoteAddress;
-            console.log(`Client connected from IP: ${ip}`);
-            
+
+            // reception de demande de creation de serveur
             if (data.action === 'createSession') {
-                
                 const sessionId = uuidv4();
-                sessions.push({ id: sessionId, createdAt: new Date() });
+                const session = new Session(sessionId, new Date(), ip);
+                sessions.push(session);
+
                 console.log(`${ip} Session created :`, sessionId);
+
+                ws.send(JSON.stringify({ action: 'sessionCreated', sessionId }));
+
+                // envoie a tout les utilisateurs
                 broadcastSessions();
-                        
+            
+
+            } if (data.action === 'updatePaddlePositions') {
+                const { leftPaddleY, rightPaddleY } = data;
+    
+                // console.log(`${ip}`);
+                // console.log('Left Paddle Y:', leftPaddleY);
+                // console.log('Right Paddle Y:', rightPaddleY);
+
             } else if (data.action === 'quitSession') {
                 console.log(`${ip} Client quit the session`, data.sessionId);
                 

@@ -108,7 +108,16 @@ btn.twoPlayersBtn.addEventListener("click", function() {
 
     twoPlayers = true;
 
-    create_TwoPlayers_input();
+    if (playLocal) {
+        create_TwoPlayers_input();
+    }
+    if(playOnline) {
+
+        const message = JSON.stringify({ 
+            action: 'createSession'
+        });
+        socket.send(message);
+    }
 });
 
 btn.tournamentBtn.addEventListener("click", function() {
@@ -118,13 +127,26 @@ btn.tournamentBtn.addEventListener("click", function() {
     btn.tournamentBtn.classList.add("disabled");
     btn.tournamentBtn.classList.remove("btn-outline-info");
     btn.tournamentBtn.classList.add("btn-info");
-
+    
     tournament = true;
-
+    
     create_Tournament_mode();
 });
 
 
+// socket.addEventListener('message', (event) => {
+//     try {
+//         const data = JSON.parse(event.data);
+
+//         if (data.action === 'sessionCreated') {
+//             const sessionId = data.sessionId;
+//             console.log(sessionId);
+            
+//         }
+//     } catch (error) {
+//         console.error('Error parsing message:', error);
+//     }
+// });
 
 function initPlayBtn() {
     const playBtn = document.getElementById("playBtn");
@@ -156,8 +178,6 @@ function initPlayBtn() {
             leftPlayerName = playerName_1.value;
             rightPlayerName = playerName_2.value;
 
-            const message = JSON.stringify({ action: 'createSession' });
-            socket.send(message);
         }
         
         else if(tournament) {
