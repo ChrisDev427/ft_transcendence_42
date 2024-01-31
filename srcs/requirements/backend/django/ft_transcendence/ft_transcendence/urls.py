@@ -18,8 +18,6 @@ from django.urls import include, path
 from django.contrib import admin
 #from rest_framework import routers
 
-from account import views
-
 #router = routers.DefaultRouter()
 #router.register(r'users', views.UserViewSet)
 
@@ -31,6 +29,8 @@ urlpatterns = [
 	path('admin/', admin.site.urls),
 	path('api/account/', include('account.urls')),
 	path('api/game/', include('game.urls')),
+	path('api/chat/', include('chat.urls')),
+	path('api/friend_management/', include('friend_management.urls')),
 ]
 
 #urlpatterns += router.urls

@@ -12,7 +12,7 @@ class UserProfile(models.Model):
 	games_id = models.ManyToManyField('game.Game', blank=True)
 	win = models.IntegerField(default=0)
 	lose = models.IntegerField(default=0)
-	friends = models.ManyToManyField('self', blank=True)
+	friend = models.ManyToManyField('self', blank=True)
 	two_fa = models.BooleanField(default=False)
 	otp = models.CharField(max_length=64, blank=True, null=True)
 	opt_expiration = models.DateTimeField(blank=True, null=True)
