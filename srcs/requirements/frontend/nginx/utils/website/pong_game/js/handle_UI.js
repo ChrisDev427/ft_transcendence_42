@@ -6,10 +6,65 @@ const btn = {
     localBtn: document.getElementById("localBtn"),
     onLineBtn: document.getElementById("onLineBtn"),
 
+    createBtn: document.getElementById("createBtn"),
+    joinBtn: document.getElementById("joinBtn"),
+
     onePlayerBtn: document.getElementById("onePlayerBtn"),
     twoPlayersBtn: document.getElementById("twoPlayersBtn"),
     tournamentBtn: document.getElementById("tournamentBtn"),
 };
+
+//************************************************************************************
+
+btn.createBtn.addEventListener("click", function() {
+    
+    btn.createBtn.classList.add("disabled");
+    btn.createBtn.classList.remove("btn-outline-info");
+    btn.createBtn.classList.add("btn-info");
+    btn.joinBtn.classList.add("disabled");
+   
+    document.getElementById('gameModeMenu').classList.remove('hidden-element');
+    document.getElementById('dificultyMenu').classList.remove('hidden-element');
+    
+});
+btn.joinBtn.addEventListener("click", function() {
+    
+    btn.joinBtn.classList.add("disabled");
+    btn.joinBtn.classList.remove("btn-outline-info");
+    btn.joinBtn.classList.add("btn-info");
+    btn.createBtn.classList.add("disabled");
+
+});
+
+
+//************************************************************************************
+
+btn.localBtn.addEventListener("click", function() {
+    
+    btn.localBtn.classList.add("disabled");
+    btn.localBtn.classList.remove("btn-outline-info");
+    btn.localBtn.classList.add("btn-info");
+    btn.onLineBtn.classList.add("disabled");
+    
+    document.getElementById('dificultyMenu').classList.remove('hidden-element');
+    document.getElementById('gameModeMenu').classList.remove('hidden-element');
+    
+    playLocal = true;
+    playOnline = false;
+});
+btn.onLineBtn.addEventListener("click", function() {
+    
+    btn.localBtn.classList.add("disabled");
+    
+    btn.onLineBtn.classList.add("disabled");
+    btn.onLineBtn.classList.remove("btn-outline-info");
+    btn.onLineBtn.classList.add("btn-info");
+
+    document.getElementById('onlineMenu').classList.remove('hidden-element');
+
+    playLocal = false;
+    playOnline = true;
+});
 
 //************************************************************************************
 
@@ -19,8 +74,14 @@ btn.easyBtn.addEventListener("click", function() {
     btn.easyBtn.classList.add("btn-info");
     btn.mediumBtn.classList.add("disabled");
     btn.hardBtn.classList.add("disabled");
-    btn.onLineBtn.classList.remove("disabled");
-    btn.localBtn.classList.remove("disabled");
+
+    if (playLocal) {
+        btn.onePlayerBtn.classList.remove("disabled");
+    }
+    btn.twoPlayersBtn.classList.remove("disabled");
+    btn.tournamentBtn.classList.remove("disabled");
+    // btn.onLineBtn.classList.remove("disabled");
+    // btn.localBtn.classList.remove("disabled");
     
     level = 3;
     paddleHeight = 110;
@@ -33,8 +94,14 @@ btn.mediumBtn.addEventListener("click", function() {
     btn.mediumBtn.classList.remove("btn-outline-info");
     btn.mediumBtn.classList.add("btn-info");
     btn.hardBtn.classList.add("disabled");
-    btn.onLineBtn.classList.remove("disabled");
-    btn.localBtn.classList.remove("disabled");
+
+    if (playLocal) {
+        btn.onePlayerBtn.classList.remove("disabled");
+    }
+    btn.twoPlayersBtn.classList.remove("disabled");
+    btn.tournamentBtn.classList.remove("disabled");
+    // btn.onLineBtn.classList.remove("disabled");
+    // btn.localBtn.classList.remove("disabled");
     
     level = 5;
     paddleHeight = 80;
@@ -47,42 +114,20 @@ btn.hardBtn.addEventListener("click", function() {
     btn.hardBtn.classList.add("disabled");
     btn.hardBtn.classList.remove("btn-outline-info");
     btn.hardBtn.classList.add("btn-info");
-    btn.onLineBtn.classList.remove("disabled");
-    btn.localBtn.classList.remove("disabled");
+
+    if (playLocal) {
+        btn.onePlayerBtn.classList.remove("disabled");
+    }
+    btn.twoPlayersBtn.classList.remove("disabled");
+    btn.tournamentBtn.classList.remove("disabled");
+    // btn.onLineBtn.classList.remove("disabled");
+    // btn.localBtn.classList.remove("disabled");
     
     level = 7;
     paddleHeight = 60;
 });
 
-//************************************************************************************
 
-btn.localBtn.addEventListener("click", function() {
-    
-    btn.localBtn.classList.add("disabled");
-    btn.localBtn.classList.remove("btn-outline-info");
-    btn.localBtn.classList.add("btn-info");
-    btn.onLineBtn.classList.add("disabled");
-    btn.onePlayerBtn.classList.remove("disabled");
-    btn.twoPlayersBtn.classList.remove("disabled");
-    btn.tournamentBtn.classList.remove("disabled");
-   
-    playLocal = true;
-    playOnline = false;
-});
-btn.onLineBtn.addEventListener("click", function() {
-
-    btn.localBtn.classList.add("disabled");
-    btn.onLineBtn.classList.add("active");
-    btn.onLineBtn.classList.add("disabled");
-    btn.onLineBtn.classList.remove("btn-outline-info");
-    btn.onLineBtn.classList.add("btn-info");
-    btn.onePlayerBtn.classList.add("disabled");
-    btn.twoPlayersBtn.classList.remove("disabled");
-    btn.tournamentBtn.classList.remove("disabled");
-    
-    playLocal = false;
-    playOnline = true;
-});
 
 //************************************************************************************
 
@@ -108,7 +153,12 @@ btn.twoPlayersBtn.addEventListener("click", function() {
 
     twoPlayers = true;
 
-    create_TwoPlayers_input();
+    if(playLocal) {
+        create_TwoPlayers_input();
+    }
+    if(playOnline) {
+
+    }
 });
 
 btn.tournamentBtn.addEventListener("click", function() {
@@ -121,7 +171,12 @@ btn.tournamentBtn.addEventListener("click", function() {
 
     tournament = true;
 
-    create_Tournament_mode();
+    if(playLocal) {
+        create_Tournament_mode();
+    }
+    if(playOnline) {
+
+    }
 });
 
 function initPlayBtn() {
@@ -183,7 +238,7 @@ function initPlayBtn() {
         printConsoleInfos();
         hideCurrentSection();
         showSection('playPong');
-        document.getElementById('gameDiv').classList.remove('hidden-element');
+        document.getElementById('gameDiv').classList.remove('hidden-element'); 
         reset_UI();
         removeInput();
         run();
@@ -193,7 +248,7 @@ function initPlayBtn() {
 function reset_UI() {
 
     for (let key in btn) {
-        if (['easyBtn', 'mediumBtn', 'hardBtn'].includes(key)) {
+        if (['localBtn', 'onLineBtn', 'easyBtn', 'mediumBtn', 'hardBtn', 'createBtn', 'joinBtn'].includes(key)) {
             // Pour les cas spécifiques
             if (btn[key].classList.contains('disabled')) {
                 btn[key].classList.remove('disabled');
@@ -210,6 +265,9 @@ function reset_UI() {
             btn[key].classList.add('btn-outline-info');
         }
     }
+    document.getElementById('dificultyMenu').classList.add('hidden-element');
+    document.getElementById('gameModeMenu').classList.add('hidden-element');
+    document.getElementById('onlineMenu').classList.add('hidden-element');
 }
 
 function removeInput() {

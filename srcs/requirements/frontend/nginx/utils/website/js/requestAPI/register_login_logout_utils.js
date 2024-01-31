@@ -124,15 +124,9 @@ function alert_login_success() {
     div1.id = 'spinner';
     div1.classList = 'd-flex justify-content-center';
     
-
-
-
-
     const div2 = document.createElement('div');
     div2.classList = 'spinner-border text-success';
     div2.role = 'status';
-    // let span = document.createElement('span');
-    // span.classList = 'visually-hidden';
     div1.appendChild(div2);
 
     document.getElementById('signInDiv').appendChild(div1);
@@ -142,23 +136,111 @@ function alert_login_success() {
         
         document.getElementById('alertSuccess').remove();
         document.getElementById('spinner').remove();
-        document.getElementById('nav-signIn').classList.add('hidden-element');
-        document.getElementById('nav-signUp').classList.add('hidden-element');
-        document.getElementById('dropDownProfile').classList.remove('hidden-element');
 
-        document.getElementById('signIn-signUp-btn').classList.add('hidden-element');
-        document.getElementById('friends-ganeHistory-btn').classList.remove('hidden-element');
-
-        document.getElementById('signIn').disabled = true;
+        itemsVisibility_logged_in();
+        signInSection.querySelectorAll('input, button').forEach((element) => {
+            element.disabled = false;  // Rendre l'élément actif
+        });
+        document.getElementById('signin-form').reset();
 
         showSection('main');
       }, 2000);
 
+}
 
-    // document.getElementById('linkToSignIn').addEventListener("click", function() {
-    //     document.getElementById('signup-form').reset();
-    //     signInSection.querySelectorAll('input, button').forEach((element) => {
-    //         element.disabled = false;  // Rendre l'élément actif
-    //     });
-    // });
+function itemsVisibility_logged_in() {
+
+    const elementsToShow = ['friends-gameHistory-btn',
+                            'profile',
+                            'friends',
+                            'dropDownProfile',
+                            'gameHistory'];
+
+    elementsToShow.forEach((elementId) => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.classList.remove('unvisible');
+        }
+    });
+//----------------------------------------------------------------
+    const elementsToHide = ['nav-signIn',
+                            'nav-signUp',
+                            'signIn-signUp-btn',
+                            'signIn',
+                            'signUp'];
+
+    elementsToHide.forEach((elementId) => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.classList.add('unvisible');
+        }
+    });
+}
+
+function itemsVisibility_logged_out() {
+
+    const elementsToShow = ['friends-gameHistory-btn',
+                            'profile',
+                            'friends',
+                            'dropDownProfile',
+                            'gameHistory'];
+
+    elementsToShow.forEach((elementId) => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.classList.add('unvisible');
+        }
+    });
+//----------------------------------------------------------------
+    const elementsToHide = ['nav-signIn',
+                            'nav-signUp',
+                            'signIn-signUp-btn',
+                            'signIn',
+                            'signUp'];
+
+    elementsToHide.forEach((elementId) => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.classList.remove('unvisible');
+        }
+    });
+}
+
+
+function userLogout() {
+
+    document.getElementById('alert-logout').classList.remove('hidden-element');
+
+    document.getElementById('cancelLogout').addEventListener('click', function() {
+        document.getElementById('alert-logout').classList.add('hidden-element');
+    });
+
+    document.getElementById('validLogout').addEventListener('click', function() {
+
+        const div1 = document.createElement('div');
+        div1.id = 'spinner';
+        div1.classList = 'd-flex justify-content-center';
+    
+        const div2 = document.createElement('div');
+        div2.classList = 'spinner-border text-light mt-3';
+        div2.role = 'status';
+        div1.appendChild(div2);
+        const target = document.getElementById('confirm-logout');
+        target.appendChild(div1);
+
+        setTimeout(function () {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            itemsVisibility_logged_out();
+            document.getElementById('spinner').remove();
+            document.getElementById('alert-logout').classList.add('hidden-element');
+            // showSection('main');
+        }, 20000);
+        // document.getElementById('alert-logout').classList.add('hidden-element');
+
+        // // Supprimez les tokens du localStorage lors de la déconnexion
+        // localStorage.removeItem('accessToken');
+        // localStorage.removeItem('refreshToken');
+        // itemsVisibility_logged_out();
+    });
 }
