@@ -20,6 +20,8 @@ from .utils import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.signing import TimestampSigner
 from friend_management.models import Friend_management
+from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
 
 import pyotp, uuid, os, requests
 
@@ -83,33 +85,35 @@ class UserRegisterView(APIView):
                 first_name = serializer.validated_data.get('first_name'),
                 last_name = serializer.validated_data.get('last_name'),
                 email=email,
-                #is_active=False,
-                is_active=True,
+                is_active=False,
+                #is_active=True,
             )
             user_profile = UserProfile.objects.create(user=user)
-            # signer = TimestampSigner()
-            # token = signer.sign(user.username)
-            # user_profile.otp = token
+            signer = TimestampSigner()
+            token = signer.sign(user.username)
+            user_profile.otp = token
             user_profile.save()
-            # try :
-            #     send_mail(
-            #     'NO-REPLY:Verify your mail address',
-            #     f'Click to verify: {settings.SITE_URL + "/?token=" + user_profile.otp + "#verify-email"}',
-            #     settings.EMAIL_HOST_USER,
-            #     [user.email],
-            #     fail_silently=False,
-            # )
-            # except:
-            #     user_profile.delete()
-            #     user.delete()
-            #     return Response({"error": "Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            html_content = render_to_string('mailVerif.html', {'token': token, 'url': settings.SITE_URL})
+            html_content_safe = mark_safe(html_content)
+            try :
+                send_mail(
+                subject='NO-REPLY:Verify your mail address',
+                message=f'Click to verify: {settings.SITE_URL + "/?token=" + user_profile.otp + "#verify-email"}',
+                from_email='Pong Email Verification <' + settings.EMAIL_HOST_USER + '>' ,
+                recipient_list=[user.email],
+                fail_silently=False,
+                html_message=html_content_safe
+            )
+            except:
+                user_profile.delete()
+                user.delete()
+                return Response({"error": "Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
             return Response("User created", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class VerifyEmailView(APIView):
     def get(self, request, *args, **kwargs):
         token = request.GET.get('token', None)
-        print(token)
         user_profile = get_object_or_404(UserProfile, otp=token)
         user_profile.user.is_active = True
         user_profile.user.save()

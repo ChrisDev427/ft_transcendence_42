@@ -1,4 +1,4 @@
 .DS_Store
 srcs/.env
-srcs/requirements/backend/postgresql/DB
-**/migrations/
+srcs/requirements/backend/postgresql/DB/*
+**/__pycache__/
