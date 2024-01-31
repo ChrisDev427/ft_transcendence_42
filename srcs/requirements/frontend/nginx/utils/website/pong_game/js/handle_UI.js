@@ -157,6 +157,7 @@ btn.twoPlayersBtn.addEventListener("click", function() {
         create_TwoPlayers_input();
     }
     if(playOnline) {
+        
 
     }
 });
