@@ -5,7 +5,7 @@ document.getElementById('signup-form').addEventListener('submit', function (e) {
     fetch('http://localhost:8000/api/account/register/', {
     method: 'POST',
     body: new FormData(e.target)
-    
+
     })
     .then(response => {
       console.log('response = ' + response);
@@ -13,7 +13,7 @@ document.getElementById('signup-form').addEventListener('submit', function (e) {
       if (response.status === 201) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
         console.log('Register Success !' + response.status);
         alert_register_success();
-        
+
       } else {
             response.json().then((jsonData) => {
             console.error('Erreur lors de l\'inscription : ' + Object.values(jsonData));
@@ -142,8 +142,8 @@ function verifyEmail() {
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get('token');
   console.log(token);
-  fetch("http://localhost:8000/api/account/register/verify/?token=" + token)
-  
+  fetch("http://localhost:8000/api/account/email/verify/?token=" + token)
+
   .then(response => {
     if (response.status === 200) {
         // Authentification réussie

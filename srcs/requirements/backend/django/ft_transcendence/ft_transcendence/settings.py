@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY_DJANGO')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['nginx_container', 'localhost']
+ALLOWED_HOSTS = ['nginx_container', 'localhost', 'websocket']
 # Application definition
 
 OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
