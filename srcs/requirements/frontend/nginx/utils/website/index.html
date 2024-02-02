@@ -81,8 +81,8 @@
                 </div>
               </div>
             </li>
-              
-            
+
+
             <li class="nav-item  mt-2">
               <a class="nav-link fw-bold" href="#gameMenu">Play Pong</a>
             </li>
@@ -103,7 +103,7 @@
 
   </header>
   <main>
-   
+
     <section id="main" class="d-flex justify-content-center">
     <script>
       function getAuthorizationCode() {
@@ -181,7 +181,7 @@
           const urlParams = new URLSearchParams(window.location.search);
           const token = urlParams.get('token');
           if (token) {
-            fetch("http://localhost:8000/api/account/register/verify/?token=" + token)
+            fetch("http://localhost:8000/api/account/email/verify/?token=" + token)
             .then(response => {
               if (response.status === 200) {
                   // Authentification réussie
@@ -223,7 +223,7 @@
           <button type="button" class="btn btn-outline-info mx-2" id="mediumBtn">Medium</button>
           <button type="button" class="btn btn-outline-info" id="hardBtn">Hard</button>
         </div>
-       
+
 
         <div id="gameModeMenu" class="col d-flex justify-content-center m-3 hidden-element">
           <button type="button" class="btn btn-outline-info disabled" id="onePlayerBtn">One Player</button>
@@ -376,7 +376,7 @@
             </form>
           </div>
         </div>
-        
+
       </div>
             <!-- <script>
                function loginWith42() {
@@ -421,7 +421,7 @@
           const token = urlParams.get('token');
           console.log(token);
           fetch("http://localhost:8000/api/account/register/verify/?token=" + token)
-         
+
           .then(response => {
             if (response.status === 200) {
                 // Authentification réussie
@@ -438,7 +438,7 @@
       </div>
 
     </section>
-    
+
     <section id="friends" class="unvisible">
       <div class="container p-3">
         <h1 class="display-1 fw-bold text-info text-center">Friends</h1>
@@ -497,7 +497,7 @@
             <div class="col-12 d-flex justify-content-center mt-0">
               <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
               <label id="setProfileBtn" class="btn btn-sm btn-outline-info py-0 px-2 me-1" for="btnradio1">On</label>
-              
+
               <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
               <label id="setProfileBtn" class="btn btn-sm btn-outline-info py-0 px-2" for="btnradio2">Off</label>
             </div>
