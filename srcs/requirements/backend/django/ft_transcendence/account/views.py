@@ -142,32 +142,41 @@ class ProfileView(APIView):
 
     def patch(self, request):
         user = request.user
-        password = request.data.get('password')
-        if password is None:
-            return Response({"error:","password needed"}, status=status.HTTP_400_BAD_REQUEST)
+        request_copy = request.data.copy()
+        password = request_copy.get('password')
+        if password == "":
+            return Response({"password needed"}, status=status.HTTP_400_BAD_REQUEST)
         elif not user.check_password(password):
-            return Response({"error:","wrong password"}, status=status.HTTP_400_BAD_REQUEST)
-        request.data.pop('password')
+            return Response({"wrong password"}, status=status.HTTP_400_BAD_REQUEST)
+        request_copy.pop('password')
         user_profile = UserProfile.objects.filter(user=user).first()
-        serializer = UserProfileSerializer(user_profile, data=request.data, partial=True, context={'request': request})
+        serializer = UserProfileSerializer(user_profile, data=request_copy, partial=True, context={'request': request})
         if serializer.is_valid():
-            if request.data.get('friend'):
-                friend = get_object_or_404(UserProfile, user__username=request.data.get('friend'))
+            if request_copy.get('friend'):
+                friend = get_object_or_404(UserProfile, user__username=request_copy.get('friend'))
                 new_friend = Friend_management.objects.create(friend1=user_profile, friend2=friend, requester=user_profile)
                 user_profile.save()
                 friend.save()
                 return Response("friend requested", status=status.HTTP_200_OK)
             serializer.save()
-            serializer = UserSerializer(user, data=request.data, partial=True, context={'request': request})
+            serializer = UserSerializer(user, data=request_copy, partial=True, context={'request': request})
             if serializer.is_valid():
                 serializer.save()
-            if request.data.get('two_fa'):
+            if request_copy.get('two_fa'):
                 user_profile.totp_secret = enable_2fa_authenticator(user_profile)
                 user_profile.two_fa = True
                 user_profile.save()
-            elif request.data.get('two_fa') == False:
+            elif request_copy.get('two_fa') == False:
+                user_profile.totp_secret = None
                 user_profile.two_fa = False
                 user_profile.save()
+            # if request_copy.get('two_fa') == 'enabled':
+            #     user_profile.totp_secret = enable_2fa_authenticator(user_profile)
+            #     user_profile.two_fa = True
+            #     user_profile.save()
+            # elif request_copy.get('two_fa') == 'disabled':
+            #     user_profile.two_fa = False
+            #     user_profile.save()
             return Response("user updated", status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

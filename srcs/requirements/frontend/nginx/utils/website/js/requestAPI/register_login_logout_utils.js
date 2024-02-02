@@ -10,6 +10,7 @@ function alert_register_fail(message) {
 
     let div = document.createElement('div');
     div.classList = 'w-75 mx-auto alert alert-danger alert-dismissible fade show text-center text-danger shadow ';
+    div.style.maxWidth= '350px';
     div.role = 'alert';
     div.id = 'alert';
     div.textContent = message;
@@ -43,6 +44,7 @@ function alert_register_success() {
 
     let div = document.createElement('div');
     div.classList = 'w-75 mx-auto alert alert-success alert-dismissible fade show text-center text-success shadow';
+    div.style.maxWidth= '350px';
     div.role = 'alert';
     div.id = 'alertSuccess';
     div.textContent = 'The account has been created successfully.';
@@ -51,7 +53,7 @@ function alert_register_success() {
     div.appendChild(br);
 
     let link = document.createElement('a');
-    link.id = 'linkToSignIn'
+    link.id = 'linkToSignIn';
     link.classList = 'alert-link text-success';
     link.href = '#signIn';
     link.textContent = 'sign in';
@@ -80,6 +82,7 @@ function alert_login_fail() {
 
     let div = document.createElement('div');
     div.classList = 'w-75 mx-auto alert alert-danger alert-dismissible fade show text-center text-danger shadow ';
+    div.style.maxWidth= '350px';
     div.role = 'alert';
     div.id = 'alert';
     div.textContent = 'Wrong username or password !';
@@ -114,6 +117,7 @@ function alert_login_success() {
 
     const div = document.createElement('div');
     div.classList = 'w-75 mx-auto alert alert-success text-center text-success shadow';
+    div.style.maxWidth= '350px';
     div.role = 'alert';
     div.id = 'alertSuccess';
     div.textContent = 'You are successfully logged !';
@@ -234,8 +238,8 @@ function userLogout() {
             itemsVisibility_logged_out();
             document.getElementById('spinner').remove();
             document.getElementById('alert-logout').classList.add('hidden-element');
-            // showSection('main');
-        }, 20000);
+            showSection('main');
+        }, 3000);
         // document.getElementById('alert-logout').classList.add('hidden-element');
 
         // // Supprimez les tokens du localStorage lors de la déconnexion
@@ -243,4 +247,68 @@ function userLogout() {
         // localStorage.removeItem('refreshToken');
         // itemsVisibility_logged_out();
     });
+}
+
+function refreshAccessToken() {
+    // Récupérez le refresh token de votre système de stockage (par exemple, localStorage)
+    const refreshToken = localStorage.getItem('refreshToken');
+    console.error(refreshToken);
+    console.error(JSON.stringify({
+        refresh: refreshToken,
+    }));
+  
+    if (!refreshToken) {
+        console.error('No refresh token available');
+        return;
+    }
+  
+    // Effectuez une requête au point de terminaison de rafraîchissement du token côté serveur
+    fetch('http://localhost:8000/api/account/token/refresh/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        
+        body: JSON.stringify({
+            refresh: refreshToken,
+        }),
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            console.log('access token expired, auto logout redirect to signIn');
+            userLogout();
+            showSection('signIn');
+        }
+    })
+    .then(data => {
+        // Mettez à jour le nouvel access token dans le système de stockage (par exemple, localStorage)
+        localStorage.setItem('accessToken', data.access);
+        console.log('Token refreshed successfully');
+    })
+    // .catch(error => {
+    //     console.error('Error refreshing token:', error);
+    // });
+  }
+
+function verifyToken() {
+    fetch('http://localhost:8000/api/account/token/verify/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            token: localStorage.getItem('accessToken'),
+        }),
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('acces token verified');
+            
+        } else {
+            refreshAccessToken()
+            console.log('refreshAccessToken() called');
+        }
+    })
 }

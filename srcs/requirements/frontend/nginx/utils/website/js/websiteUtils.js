@@ -62,33 +62,22 @@ document.addEventListener('DOMContentLoaded', function () {
 //     });
 // });
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     console.log('Check accessToken & refreshToken');
-//     // Récupérez les tokens du localStorage
-//     const storedAccessToken = localStorage.getItem('accessToken');
-//     const storedRefreshToken = localStorage.getItem('refreshToken');
-//     // Vérifiez si les tokens existent
-//     if (storedAccessToken && storedRefreshToken) {
-//         // Utilisez les tokens pour l'authentification
-//         // ...
-//         getProfileInfos(storedAccessToken);
-//         // document.getElementById('alertSuccess').remove();
-//         // document.getElementById('spinner').remove();
-//         document.getElementById('nav-signIn').classList.add('unvisible');
-//         document.getElementById('nav-signUp').classList.add('unvisible');
-//         document.getElementById('dropDownProfile').classList.remove('unvisible');
+document.addEventListener('DOMContentLoaded', function () {
+    
+    console.log('Check accessToken & refreshToken');
+    // Récupérez les tokens du localStorage
+    const storedAccessToken = localStorage.getItem('accessToken');
+    const storedRefreshToken = localStorage.getItem('refreshToken');
+    // Vérifiez si les tokens existent
+    if (storedAccessToken && storedRefreshToken) {
+        
+        getProfileInfos(storedAccessToken);
+        itemsVisibility_logged_in();
 
-//         document.getElementById('signIn-signUp-btn').classList.add('unvisible');
-//         document.getElementById('friends-gameHistory-btn').classList.remove('unvisible');
-//         document.getElementById('profile').classList.remove('unvisible');
+        console.log('AccessToken:', storedAccessToken);
+        console.log('RefreshToken:', storedRefreshToken);
 
-//         document.getElementById('signIn').disabled = true;
-
-//         // showSection('main');
-//         console.log('AccessToken:', storedAccessToken);
-//         console.log('RefreshToken:', storedRefreshToken);
-
-//         // Par exemple, vous pourriez renvoyer ces tokens au serveur pour vérification
-//         // ou effectuer toute autre opération nécessaire pour restaurer la session.
-//     }
-// });
+        // Par exemple, vous pourriez renvoyer ces tokens au serveur pour vérification
+        // ou effectuer toute autre opération nécessaire pour restaurer la session.
+    }
+});
