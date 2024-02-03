@@ -33,6 +33,7 @@ btn.joinBtn.addEventListener("click", function() {
     btn.joinBtn.classList.remove("btn-outline-info");
     btn.joinBtn.classList.add("btn-info");
     btn.createBtn.classList.add("disabled");
+    
 
 });
 
@@ -157,6 +158,7 @@ btn.twoPlayersBtn.addEventListener("click", function() {
         create_TwoPlayers_input();
     }
     if(playOnline) {
+
 
     }
 });

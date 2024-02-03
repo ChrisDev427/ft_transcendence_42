@@ -20,4 +20,5 @@ urlpatterns = [
 	path('email/verify/', views.VerifyEmailView.as_view() , name='email_verify'),
 	path('mobile/verify/', views.VerifyMobileView.as_view() , name='mobile_verify'),
 	path('o/token/', views.oauth_login.as_view() , name='oauth_callback'),
+	path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ]

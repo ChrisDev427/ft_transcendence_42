@@ -5,8 +5,8 @@ function handleBio_createForm() {
     disableProfileBtn();
 
     const mainDiv = document.createElement('div');
-    mainDiv.id = 'modifyBio';
-    mainDiv.classList = 'col-sm-10 mx-auto shadow p-3 mt-3 rounded-4 bg-info bg-opacity-10';
+    mainDiv.id = 'modifyForm';
+    mainDiv.classList = 'col-sm-10 mx-auto shadow p-3  rounded-4 bg-info bg-opacity-10';
 
     const formDiv = document.createElement('form');
     formDiv.id = 'modifyBio-form';
@@ -17,10 +17,18 @@ function handleBio_createForm() {
     textareaDiv.id = 'newBio';
     textareaDiv.type = 'text';
     textareaDiv.classList = 'form-control form-control-sm mb-2 border-info shadow text-center';
-    textareaDiv.name = 'newBio';
+    textareaDiv.name = 'bio';
     textareaDiv.rows = '4';
     textareaDiv.placeholder = 'Enter your bio here';
     formDiv.appendChild(textareaDiv);
+
+    input = document.createElement('input');
+    input.id = 'password';
+    input.type = 'password';
+    input.name = 'password';
+    input.classList = 'form-control w-50 mx-auto form-control-sm mb-1 mt-3 border-success text-center shadow w-50 mx-auto';
+    input.placeholder = 'password';
+    formDiv.appendChild(input);
 
     const rowDiv = document.createElement('div');
     rowDiv.classList = 'row mt-2';
@@ -47,24 +55,26 @@ function handleBio_createForm() {
     col2Div.appendChild(applyBtn);
     rowDiv.appendChild(col2Div);
 
-    mainDiv.appendChild(rowDiv);
+    formDiv.appendChild(rowDiv);
     document.getElementById('bioDiv').appendChild(mainDiv);
 
-   document.getElementById('cancelBtn').addEventListener('click', function () {
-        document.getElementById('modifyBio').remove();
+    modifyBio_API();
+
+    document.getElementById('cancelBtn').addEventListener('click', function () {
+        document.getElementById('modifyForm').remove();
         document.getElementById('bioProfile').classList.remove('hidden-element');
         enableProfileBtn();
-   });
+    });
 }
 
 function handleInfos_createForm() {
-    // hide current bio
+    // hide current infos
     document.getElementById('infosProfile').classList.add('hidden-element');
     disableProfileBtn();
 
 
     const mainDiv = document.createElement('div');
-    mainDiv.id = 'modifyProfileInfos';
+    mainDiv.id = 'modifyForm';
     mainDiv.classList = 'col-sm-6 mx-auto shadow p-3 rounded-4 bg-info bg-opacity-10';
 
     const formDiv = document.createElement('form');
@@ -72,7 +82,7 @@ function handleInfos_createForm() {
     formDiv.method = 'patch';
     mainDiv.appendChild(formDiv);
     
-    const inputsName = ["firstname", "lastname", "username", "password"];
+    const inputsName = ["first_name", "last_name", "username", "password"];
     for (let i = 0; i < 4; i++) {
         const input = document.createElement('input');
         
@@ -85,7 +95,7 @@ function handleInfos_createForm() {
             input.classList = 'form-control mb-2 border-info text-secondary text-center';
         } else {
             input.type = 'password';
-            input.classList = 'form-control form-control-sm mb-1 mt-4 shadow border-success text-center';
+            input.classList = 'form-control form-control-sm mb-1 mt-3 shadow border-success text-center w-50 mx-auto';
         }
         formDiv.appendChild(input);
     }
@@ -115,25 +125,34 @@ function handleInfos_createForm() {
     col2Div.appendChild(applyBtn);
     rowDiv.appendChild(col2Div);
 
-    mainDiv.appendChild(rowDiv);
+    formDiv.appendChild(rowDiv);
     document.getElementById('infosDiv').appendChild(mainDiv);
 
-   document.getElementById('cancelBtn').addEventListener('click', function () {
-        document.getElementById('modifyProfileInfos').remove();
+
+    modifyInfos_API();
+
+    document.getElementById('cancelBtn').addEventListener('click', function () {
+        document.getElementById('modifyForm').remove();
         document.getElementById('infosProfile').classList.remove('hidden-element');
         enableProfileBtn();
 
-   });
+    });
+
+//     document.getElementById('applyBtn').addEventListener('click', function () {
+//        console.log('apply btn pushed');
+
+//    });
+
 }
 
 function handleEmail_createForm() {
-    // hide current bio
+    // hide current email
     document.getElementById('emailProfile').classList.add('hidden-element');
     disableProfileBtn();
 
 
     const mainDiv = document.createElement('div');
-    mainDiv.id = 'modifyEmail';
+    mainDiv.id = 'modifyForm';
     mainDiv.classList = 'col-sm-8 mx-auto shadow p-3 rounded-4 bg-info bg-opacity-10';
 
     const formDiv = document.createElement('form');
@@ -144,7 +163,7 @@ function handleEmail_createForm() {
     let input = document.createElement('input');
     input.id = 'newEmail';
     input.type = 'email';
-    input.name = 'newEmail';
+    input.name = 'email';
     input.classList = 'form-control mb-2 border-info text-secondar text-center';
     input.placeholder = 'new email';
     formDiv.appendChild(input);
@@ -153,7 +172,7 @@ function handleEmail_createForm() {
     input.id = 'password';
     input.type = 'password';
     input.name = 'password';
-    input.classList = 'form-control form-control-sm mb-1 mt-4 border-success text-center shadow';
+    input.classList = 'form-control form-control-sm mb-1 mt-3 border-success text-center shadow w-50 mx-auto';
     input.placeholder = 'password';
     formDiv.appendChild(input);
     
@@ -183,25 +202,27 @@ function handleEmail_createForm() {
     col2Div.appendChild(applyBtn);
     rowDiv.appendChild(col2Div);
 
-    mainDiv.appendChild(rowDiv);
+    formDiv.appendChild(rowDiv);
     document.getElementById('emailDiv').appendChild(mainDiv);
 
-   document.getElementById('cancelBtn').addEventListener('click', function () {
-        document.getElementById('modifyEmail').remove();
+    modifyEmail_API();
+
+    document.getElementById('cancelBtn').addEventListener('click', function () {
+        document.getElementById('modifyForm').remove();
         document.getElementById('emailProfile').classList.remove('hidden-element');
         enableProfileBtn();
 
-   });
+    });
 }
 
 function handlePassword_createForm() {
-    // hide current bio
-    document.getElementById('authProfile').classList.add('hidden-element');
+    // hide 'change password' btn
+    document.getElementById('changeEraseBtn').classList.add('hidden-element');
     disableProfileBtn();
 
 
     const mainDiv = document.createElement('div');
-    mainDiv.id = 'modifyPassword';
+    mainDiv.id = 'modifyForm';
     mainDiv.classList = 'col-sm-6 mx-auto shadow p-3 mt-3 rounded-4 bg-info bg-opacity-10';
 
     const formDiv = document.createElement('form');
@@ -211,17 +232,17 @@ function handlePassword_createForm() {
     
     let input = document.createElement('input');
     input.id = 'currentPassword';
-    input.type = 'currentPassword';
-    input.name = 'currentPassword';
-    input.classList = 'form-control form-control-sm mb-2 border-info shadow text-center';
+    input.type = 'password';
+    input.name = 'password';
+    input.classList = 'form-control form-control-sm mb-2 border-info shadow text-center w-50 mx-auto';
     input.placeholder = 'current password';
     formDiv.appendChild(input);
 
     input = document.createElement('input');
     input.id = 'newPassword';
     input.type = 'newPassword';
-    input.name = 'newPassword';
-    input.classList = 'form-control form-control-sm mb-2 border-info shadow text-center';
+    input.name = 'new_password';
+    input.classList = 'form-control form-control-sm mb-2 border-info shadow text-center w-50 mx-auto';
     input.placeholder = 'new password';
     formDiv.appendChild(input);
     
@@ -252,14 +273,121 @@ function handlePassword_createForm() {
     rowDiv.appendChild(col2Div);
 
     mainDiv.appendChild(rowDiv);
-    document.getElementById('emailDiv').appendChild(mainDiv);
+    document.getElementById('changeEraseDiv').appendChild(mainDiv);
 
    document.getElementById('cancelBtn').addEventListener('click', function () {
-        document.getElementById('modifyPassword').remove();
-        document.getElementById('authProfile').classList.remove('hidden-element');
+        document.getElementById('modifyForm').remove();
+        document.getElementById('changeEraseBtn').classList.remove('hidden-element');
         enableProfileBtn();
 
    });
+}
+
+function handle2FA_createForm() {
+    // hide 'change password' btn
+    // document.getElementById('authProfile').classList.add('hidden-element');
+    disableProfileBtn();
+
+
+    const mainDiv = document.createElement('div');
+    mainDiv.id = 'modifyForm';
+    mainDiv.classList = 'col-sm-6 mx-auto shadow p-3 mt-3 rounded-4 bg-info bg-opacity-10';
+
+    const formDiv = document.createElement('form');
+    formDiv.id = 'twofa-form';
+    formDiv.method = 'patch';
+    mainDiv.appendChild(formDiv);
+
+    const btnDiv = document.createElement('div');
+    btnDiv.classList = 'col-12 d-flex justify-content-center mt-0';
+    formDiv.appendChild(btnDiv);
+    
+    let input = document.createElement('input');
+    input.type = 'radio';
+    input.classList = 'form-control btn-check';
+    input.name = 'two_fa_on';
+    input.id = '2FA-btn-on';
+    input.autocomplete = 'off';
+    input.value = 'True';
+    input.checked = false;
+    btnDiv.appendChild(input);
+
+    let label = document.createElement('label');
+    label.classList = 'btn btn-sm btn-outline-info py-0 px-2 me-1';
+    label.htmlFor = '2FA-btn-on';
+    label.textContent = 'On';
+    btnDiv.appendChild(label);
+
+
+    input = document.createElement('input');
+    input.type = 'radio';
+    input.classList = 'form-control btn-check';
+    input.name = 'two_fa_off';
+    input.id = '2FA-btn-off';
+    input.autocomplete = 'off';
+    input.value = 'False';
+    input.checked = true;
+    btnDiv.appendChild(input);
+    
+    label = document.createElement('label');
+    label.classList = 'btn btn-sm btn-outline-info py-0 px-2 me-1';
+    label.htmlFor = '2FA-btn-off';
+    label.textContent = 'Off';
+    btnDiv.appendChild(label);
+
+    const rowDiv = document.createElement('div');
+    rowDiv.classList = 'row mt-2';
+    const passwordDiv = document.createElement('div');
+    passwordDiv.classList = 'col-12';
+    const inputPassword = document.createElement('input');
+    inputPassword.type = 'password';
+    inputPassword.classList = 'form-control form-control-sm my-2 border-info shadow text-center w-50 mx-auto';
+    inputPassword.name = 'password';
+    inputPassword.id = 'passwordInput';
+    inputPassword.placeholder = 'password';
+    passwordDiv.appendChild(inputPassword);
+    rowDiv.appendChild(passwordDiv);
+    
+    const col1Div = document.createElement('div');
+    col1Div.classList = 'col-6';
+    const cancelBtn = document.createElement('button');
+    cancelBtn.id = 'cancelBtn';
+    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow';
+    cancelBtn.type = 'submit';
+    cancelBtn.textContent = 'Cancel';
+    col1Div.appendChild(cancelBtn);
+    rowDiv.appendChild(col1Div);
+
+    const col2Div = document.createElement('div');
+    col2Div.classList = 'col-6';
+    const applyBtn = document.createElement('button');
+    applyBtn.id = 'applyBtn';
+    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow';
+    applyBtn.type = 'submit';
+    applyBtn.textContent = 'Apply';
+    col2Div.appendChild(applyBtn);
+    rowDiv.appendChild(col2Div);
+
+    formDiv.appendChild(rowDiv);
+    document.getElementById('authDiv').appendChild(mainDiv);
+
+    modify2FA_API();
+
+    document.getElementById('cancelBtn').addEventListener('click', function () {
+        document.getElementById('modifyForm').remove();
+        // document.getElementById('authProfile').classList.remove('hidden-element');
+        enableProfileBtn();
+    });
+    document.getElementById('2FA-btn-on').addEventListener('click', function (element) {
+        element.checked = true;
+        document.getElementById('2FA-btn-off').checked = false;
+    });
+    
+    document.getElementById('2FA-btn-off').addEventListener('click', function (element) {
+        element.checked = true;
+        document.getElementById('2FA-btn-on').checked = false;
+        
+    });
 }
 
 function disableProfileBtn() {

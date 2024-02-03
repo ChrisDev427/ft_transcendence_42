@@ -2,6 +2,8 @@
 //const csrfToken = getCookie('csrftoken');
 document.getElementById('signup-form').addEventListener('submit', function (e) {
     e.preventDefault();
+    verifyToken();
+
     fetch('http://localhost:8000/api/account/register/', {
     method: 'POST',
     body: new FormData(e.target)
@@ -33,6 +35,7 @@ document.getElementById('signup-form').addEventListener('submit', function (e) {
 
 document.getElementById('signin-form').addEventListener('submit', function (e) {
   e.preventDefault();
+  verifyToken();
 
   fetch('http://localhost:8000/api/account/login/', {
       method: 'POST',
@@ -46,10 +49,10 @@ document.getElementById('signin-form').addEventListener('submit', function (e) {
           return response.json();
       } else {
           // Authentification échouée
-          console.error('Erreur lors de l\'authentification : ' + response.status);
+          console.error('Authentication failed : ' + response.status);
           alert_login_fail();
           e.target.reset();
-          throw new Error('Échec de l\'authentification');
+          throw new Error('Authentication failed');
       }
   })
   .then(data => {
@@ -73,23 +76,30 @@ document.getElementById('signin-form').addEventListener('submit', function (e) {
       // window.location.replace('index.html');
   })
   .catch(error => {
-      console.error('Erreur lors de la soumission du formulaire :', error);
+      console.error('Error : form submit :', error);
   });
 });
 
 
 function getProfileInfos(token) {
   console.log('GET PROFILE INFOS FUNCTION');
+  verifyToken();
   fetch('http://localhost:8000/api/account/profile/', {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + token
-    }
+      }
   })
   .then(response => {
       if (response.status === 200) {
           // Authentification réussie
           return response.json();
+      } else if (response.status === 401) {
+
+          console.error('Error : expired access token', response.status);
+          
+          // getProfileInfos(localStorage.getItem('accessToken'));
+
       } else {
         // Gestion des erreurs lors de la récupération du profil
         console.error('Erreur lors de la récupération du profil :', response.status);
@@ -106,6 +116,9 @@ function getProfileInfos(token) {
       document.getElementById('emailProfile').textContent = data.user.email;
       document.getElementById('bioProfile').textContent = data.bio;
 
+      userId = data.user.id;
+      username = data.user.username;
+
   })
   .catch(error => {
     console.error('Erreur lors de la récupération du profil :', error);
@@ -113,6 +126,8 @@ function getProfileInfos(token) {
 }
 
 function fetchAndDisplayImage(apiUrl, token) {
+  verifyToken();
+
   fetch(apiUrl, {
       method: 'GET',
       headers: {
@@ -130,6 +145,7 @@ function fetchAndDisplayImage(apiUrl, token) {
     const imageURL = URL.createObjectURL(blob);
     // Met à jour la source de l'élément image avec l'id 'avatar-img'
     document.getElementById('avatar-img').src = imageURL;
+    document.getElementById('avatar-img_profilDropdown').src = imageURL;
   })
   .catch(error => {
     console.error('Erreur lors du chargement de l\'image :', error);
@@ -142,8 +158,15 @@ function verifyEmail() {
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get('token');
   console.log(token);
+<<<<<<< HEAD
   fetch("http://localhost:8000/api/account/email/verify/?token=" + token)
 
+=======
+  verifyToken();
+
+  fetch("http://localhost:8000/api/account/register/verify/?token=" + token)
+  
+>>>>>>> origin/chris
   .then(response => {
     if (response.status === 200) {
         // Authentification réussie
