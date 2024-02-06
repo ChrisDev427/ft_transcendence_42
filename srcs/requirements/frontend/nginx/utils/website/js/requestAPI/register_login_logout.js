@@ -97,7 +97,7 @@ function getProfileInfos(token) {
       } else if (response.status === 401) {
 
           console.error('Error : expired access token', response.status);
-          
+
           // getProfileInfos(localStorage.getItem('accessToken'));
 
       } else {
@@ -158,15 +158,10 @@ function verifyEmail() {
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get('token');
   console.log(token);
-<<<<<<< HEAD
-  fetch("http://localhost:8000/api/account/email/verify/?token=" + token)
-
-=======
   verifyToken();
 
   fetch("http://localhost:8000/api/account/register/verify/?token=" + token)
-  
->>>>>>> origin/chris
+
   .then(response => {
     if (response.status === 200) {
         // Authentification réussie

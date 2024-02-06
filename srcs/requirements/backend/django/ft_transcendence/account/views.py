@@ -19,6 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .utils import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from friend_management.models import Friend_management
+from django.core.files.base import ContentFile
 
 
 import pyotp, uuid, os, requests
@@ -41,7 +42,6 @@ class oauth_login(APIView):
     permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
         code = request.GET.get('code')
-        print(settings.OAUTH_REDIRECT_URI)
         data = {
             'grant_type': 'authorization_code',
             'code': code,
@@ -55,21 +55,26 @@ class oauth_login(APIView):
         profile = requests.get('https://api.intra.42.fr/v2/me', headers={'Authorization': 'Bearer ' + response.json()['access_token']})
         if profile.status_code != 200:
             return Response(profile.json(), status=profile.status_code)
+        profile = profile.json()
         try:
-            user = User.objects.get(username=profile.json()['login'])
+            user = User.objects.get(username=profile['login'])
             user_profile = UserProfile.objects.filter(user=user).first()
         except User.DoesNotExist:
             user = User.objects.create_user(
-                username = profile.json()['login'],
-                password = uuid.uuid4().hex,
-                first_name = profile.json()['first_name'],
-                last_name = profile.json()['last_name'],
-                email=profile.json()['email'],
+                username = profile['login'],
+                password = settings.PASSWORD_42,
+                first_name = profile['first_name'],
+                last_name = profile['last_name'],
+                email=profile['email'],
                 is_active=True,
             )
             user_profile = UserProfile.objects.create(user=user)
-            user_profile.avatar = UpdateAvatarSerializer(requests.get(profile.json()['image']['link']))
-            user_profile.phone_number = profile.json()['phone']
+            avatar_url = profile.get('image', {}).get('link')
+            new_avatar = requests.get(avatar_url)
+            if new_avatar.status_code == 200:
+                user_profile.avatar = ContentFile(new_avatar.content)
+                user_profile.avatar.save(user.username + '.jpg', ContentFile(new_avatar.content))
+                user_profile.avatar.name = '/api/account/profile/avatar/' + user.username + '.jpg'
             user_profile.save()
         user_profile.is_connected = True
         user_profile.save()
@@ -148,16 +153,18 @@ class ProfileView(APIView):
     def patch(self, request):
         user = request.user
         request_copy = request.data.copy()
-        print(request_copy)
-        password = request_copy.get('password')
-        if password == "" or password is None:
-            return Response({"password needed"}, status=status.HTTP_400_BAD_REQUEST)
-        elif not user.check_password(password):
-            return Response({"wrong password"}, status=status.HTTP_400_BAD_REQUEST)
-        request_copy.pop('password')
+        # print(request_copy)
+        # password = request_copy.get('password')
+        # if password == "" or password is None:
+        #     return Response({"password needed"}, status=status.HTTP_400_BAD_REQUEST)
+        # elif not user.check_password(password):
+        #     return Response({"wrong password"}, status=status.HTTP_400_BAD_REQUEST)
+        # request_copy.pop('password')
         user_profile = UserProfile.objects.filter(user=user).first()
         serializer = UserProfileSerializer(user_profile, data=request_copy, partial=True, context={'request': request})
         if serializer.is_valid():
+            if request_copy.get('username') and request_copy.get('first_name') and request_copy.get('last_name') and user.check_password(settings.PASSWORD_42):
+                return Response({"42 user can't change this infos"}, status=status.HTTP_401_UNAUTHORIZED)
             if request_copy.get('friend'):
                 friend = get_object_or_404(UserProfile, user__username=request_copy.get('friend'))
                 Friend_management.objects.create(friend1=user_profile, friend2=friend, requester=user_profile)
@@ -165,6 +172,8 @@ class ProfileView(APIView):
                 friend.save()
                 return Response("friend requested", status=status.HTTP_200_OK)
             if request_copy.get('email'):
+                if user.check_password(settings.PASSWORD_42):
+                    return Response({"42 user can't change email"}, status=status.HTTP_401_UNAUTHORIZED)
                 email = str.lower(request_copy.get('email'))
                 if User.objects.filter(email=email).exists():
                     return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
@@ -179,13 +188,19 @@ class ProfileView(APIView):
                 user.save()
             if request_copy.get('new_password'):
                 new_password = request_copy.get('new_password')
-                if new_password == "" or new_password is None:
+                if user.check_password(settings.PASSWORD_42):
+                    return Response({"42 user can't change password"}, status=status.HTTP_401_UNAUTHORIZED)
+                elif user.check_password(request_copy.get('password')) == False:
+                    return Response({"wrong password"}, status=status.HTTP_400_BAD_REQUEST)
+                elif new_password == "" or new_password is None:
                     return Response({"password needed"}, status=status.HTTP_400_BAD_REQUEST)
                 elif user.check_password(new_password):
                     return Response({"password cannot be same as before"}, status=status.HTTP_400_BAD_REQUEST)
                 user.set_password(new_password)
                 user.save()
             if request_copy.get('two_fa_on') == "":
+                if user.check_password(settings.PASSWORD_42):
+                    return Response({"42 user can't enable 2fa"}, status=status.HTTP_401_UNAUTHORIZED)
                 user_profile.totp_secret = enable_2fa_authenticator(user_profile)
                 user_profile.two_fa = True
                 user_profile.save() == ""
@@ -215,9 +230,6 @@ class ProfileView(APIView):
 
     def delete(self, request):
         user = request.user
-        password = request.data.get('password')
-        if password == "" or password is None:
-            return Response({"password needed"}, status=status.HTTP_400_BAD_REQUEST)
         user_profile = UserProfile.objects.filter(user=user).first()
         if user_profile:
             user_profile.delete()

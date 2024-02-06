@@ -2,3 +2,4 @@
 srcs/.env
 srcs/requirements/backend/postgresql/DB/*
 **/migrations
+**/__pycache__
