@@ -74,7 +74,7 @@ class oauth_login(APIView):
             if new_avatar.status_code == 200:
                 user_profile.avatar = ContentFile(new_avatar.content)
                 user_profile.avatar.save(user.username + '.jpg', ContentFile(new_avatar.content))
-                user_profile.avatar.name = '/api/account/profile/avatar/' + user.username + '.jpg'
+                user_profile.avatar.name = '/api/account/avatar/' + user.username + '.jpg'
             user_profile.save()
         user_profile.is_connected = True
         user_profile.save()
@@ -330,15 +330,19 @@ class AvatarView(APIView):
 class UpdateAvatarView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser]
-    allowed_methods = ['PUT']
 
-    def put(self, request):
-        user_profile = request.user.userprofile
-        serializer = UpdateAvatarSerializer(user_profile, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors ,status=status.HTTP_400_NO_CONTENT)
+    def post(self, request):
+        user = request.user
+        user_profile = UserProfile.objects.get(user=user)
+        avatar_file = request.FILES.get('avatar')
+        if avatar_file:
+            file_name = avatar_file.name
+            user_profile.avatar.save(file_name, ContentFile(avatar_file.read()))
+            user_profile.avatar.name = "api/account/avatar/" + file_name.split('/')[-1]
+            user_profile.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response({"No avatar given"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class SendOTPView(APIView):
     def post(self, request):

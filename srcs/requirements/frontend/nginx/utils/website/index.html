@@ -110,7 +110,6 @@
   <main>
 
     <section id="main" class="d-flex justify-content-center">
-
       <div class="container rounded-4 shadow" >
         <div class="col d-flex justify-content-center mx-4">
           <h1 class="display-2 text-info fw-bold">ft_transcendence</h1>
@@ -130,7 +129,7 @@
               in software development, database design, security, and the integration of modern technologies.
             </p>
           </div>
-          <div class="col-lg-3 mb-3">
+          <di class="col-lg-3 mb-3">
             <div class="col d-flex justify-content-center mt-4 mb-2 mb-lg-5">
               <a class="btn btn-info text-light shadow p-4 w-75" href="#gameMenu">Play Pong</a>
             </div>
@@ -158,11 +157,10 @@
             <div class="col d-flex justify-content-center ">
               <a class="btn btn-outline-info  shadow p-2 w-75 mb-4" href="#aboutTheTeam">About the team</a>
             </div>
-          </div>
+          </di
         </div>
       </div>
     </section>
-
     <section id="gameMenu" class="">
       <h1 class="display-1 p-3 fw-bold text-info text-center">Pong</h1>
       <div id="containerGameMenu" class="container rounded-4 shadow p-2" style="width: 90%; max-width: 400px;">
@@ -414,7 +412,6 @@
           <h1 class="display-3 text-info text-center fw-bold">ft_transcendence</h1>
       <div>
 
-
     </section>
 
     <section id="friends" class="unvisible">
@@ -433,10 +430,12 @@
       <h1 class="display-1 fw-bold text-info text-center">Profile</h1>
 
       <div class="container p-3 mt-4 rounded-4 shadow-lg" style=" max-width: 700px;">
-        <div class="col d-flex justify-content-center">
-          <img id="avatar-img" src="" alt="avatarUser" class="rounded-3 my-2" style="max-width: 200px;">
-          <div class="d-flex align-items-end">
-            <i id="setAvatarIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick=""></i>
+        <div id="avatarDiv">
+          <div id="avatarProfile" class="col d-flex justify-content-center">
+            <img id="avatar-img" src="" alt="avatarUser" class="rounded-3 my-2" style="max-width: 200px;">
+            <div class="d-flex align-items-end">
+              <i id="setAvatarIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleAvatar_createForm()"></i>
+            </div>
           </div>
         </div>
         <hr class="px-5 text-info border-2">

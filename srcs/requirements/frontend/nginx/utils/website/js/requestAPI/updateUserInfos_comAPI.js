@@ -191,10 +191,10 @@ function eraseAccount_API() {
 
             if (response.ok) { // Vérifiez si la réponse a un statut de succès (200-299)
                 console.log('Erase Account Success!');
-                
+
                 alert_modify_success('authProfile', 'Erasing...');
                 setTimeout(function () {
-                    
+
                     localStorage.removeItem('accessToken');
                     localStorage.removeItem('refreshToken');
                     itemsVisibility_logged_out();
@@ -239,29 +239,29 @@ function alert_modify_success(targetDiv, message) {
     div.role = 'alert';
     div.id = 'alert';
     div.textContent = message;
-    
+
     modifyForm.appendChild(div);
-    
+
     const div1 = document.createElement('div');
     div1.id = 'spinner';
     div1.classList = 'd-flex justify-content-center';
-    
+
     const div2 = document.createElement('div');
     div2.classList = 'spinner-border text-secondary';
     div2.role = 'status';
     div1.appendChild(div2);
 
     modifyForm.appendChild(div1);
-    
+
 
     setTimeout(function () {
-        
-      
+
+
 
         document.getElementById('modifyForm').remove();
         document.getElementById(targetDiv).classList.remove('hidden-element');
         enableProfileBtn();
-        
+
       }, 3000);
 
 }
@@ -290,7 +290,7 @@ function alert_modify_error(targetDiv, message) {
     closeBtn.setAttribute('aria-label', 'Close');
 
     div.appendChild(closeBtn);
-    
+
     modifyForm.appendChild(div);
 
     document.getElementById('closeAlert').addEventListener('click', function () {
@@ -304,7 +304,7 @@ function alert_modify_error(targetDiv, message) {
 // document.getElementById('2FA-btn-on').addEventListener('click', function () {
 
 
-    
+
 //     verifyToken();
 //     fetch('http://localhost:8000/api/account/profile/', {
 //             method: 'PATCH',
@@ -322,7 +322,7 @@ function alert_modify_error(targetDiv, message) {
 //             if (response.ok) { // Vérifiez si la réponse a un statut de succès (200-299)
 //                 console.log('Modify 2FA Success!');
 
-            
+
 //             } else {
 //                 // Si la réponse n'est pas OK, traitez l'erreur
 //                 console.error('Error : Modify 2FA : ', response.status);
@@ -356,7 +356,7 @@ function alert_modify_error(targetDiv, message) {
 //             if (response.ok) { // Vérifiez si la réponse a un statut de succès (200-299)
 //                 console.log('Modify 2FA Success!');
 
-            
+
 //             } else {
 //                 // Si la réponse n'est pas OK, traitez l'erreur
 //                 console.error('Error : Modify 2FA : ', response.status);
@@ -371,3 +371,41 @@ function alert_modify_error(targetDiv, message) {
 //             console.error('Fetch Error:', error);
 //         });
 // });
+
+function modifyAvatar_API() {
+    console.log('in modifyAvatar_API()');
+    verifyToken();
+
+    document.getElementById('modifyAvatar-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        fetch('http://localhost:8000/api/account/avatar/', {
+            method: 'POST',
+            body: new FormData(e.target),
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+            }
+        })
+        .then(response => {
+            console.log('response status:', response.status);
+
+            if (response.ok) {
+                console.log('Modify Avatar Success!');
+                return response.json();
+            } else {
+                throw new Error('Modify Avatar Error');
+            }
+        })
+        .then(data => {
+            console.log('apiUrl ' + data.avatar);
+            // Vous pouvez gérer le succès et les erreurs ici
+            fetchAndDisplayImage(data.avatar, token);
+            alert_modify_success('avatarProfile', 'Success');
+        })
+        .catch(error => {
+            console.error('Fetch Error:', error);
+            // Gérez toutes les erreurs ici, qu'elles soient liées à la requête ou à la réponse
+            alert_modify_error('avatarProfile', 'Error');
+        });
+    });
+}
