@@ -22,13 +22,13 @@ function handleBio_createForm() {
     textareaDiv.placeholder = 'Enter your bio here';
     formDiv.appendChild(textareaDiv);
 
-    input = document.createElement('input');
-    input.id = 'password';
-    input.type = 'password';
-    input.name = 'password';
-    input.classList = 'form-control w-50 mx-auto form-control-sm mb-1 mt-3 border-success text-center shadow w-50 mx-auto';
-    input.placeholder = 'password';
-    formDiv.appendChild(input);
+    // input = document.createElement('input');
+    // input.id = 'password';
+    // input.type = 'password';
+    // input.name = 'password';
+    // input.classList = 'form-control w-50 mx-auto form-control-sm mb-1 mt-3 border-success text-center shadow w-50 mx-auto';
+    // input.placeholder = 'password';
+    // formDiv.appendChild(input);
 
     const rowDiv = document.createElement('div');
     rowDiv.classList = 'row mt-2';
@@ -82,21 +82,21 @@ function handleInfos_createForm() {
     formDiv.method = 'patch';
     mainDiv.appendChild(formDiv);
     
-    const inputsName = ["first_name", "last_name", "username", "password"];
-    for (let i = 0; i < 4; i++) {
+    const inputsName = ["first_name", "last_name", "username"];
+    for (let i = 0; i < 3; i++) {
         const input = document.createElement('input');
         
         input.name = inputsName[i];
         input.id = inputsName[i];
         input.placeholder = inputsName[i];
 
-        if(i < 3) {
+        // if(i < 3) {
             input.type = 'text';
             input.classList = 'form-control mb-2 border-info text-secondary text-center';
-        } else {
-            input.type = 'password';
-            input.classList = 'form-control form-control-sm mb-1 mt-3 shadow border-success text-center w-50 mx-auto';
-        }
+        // } else {
+        //     input.type = 'password';
+        //     input.classList = 'form-control form-control-sm mb-1 mt-3 shadow border-success text-center w-50 mx-auto';
+        // }
         formDiv.appendChild(input);
     }
 
@@ -168,13 +168,13 @@ function handleEmail_createForm() {
     input.placeholder = 'new email';
     formDiv.appendChild(input);
 
-    input = document.createElement('input');
-    input.id = 'password';
-    input.type = 'password';
-    input.name = 'password';
-    input.classList = 'form-control form-control-sm mb-1 mt-3 border-success text-center shadow w-50 mx-auto';
-    input.placeholder = 'password';
-    formDiv.appendChild(input);
+    // input = document.createElement('input');
+    // input.id = 'password';
+    // input.type = 'password';
+    // input.name = 'password';
+    // input.classList = 'form-control form-control-sm mb-1 mt-3 border-success text-center shadow w-50 mx-auto';
+    // input.placeholder = 'password';
+    // formDiv.appendChild(input);
     
 
     const rowDiv = document.createElement('div');
@@ -339,14 +339,15 @@ function handle2FA_createForm() {
     rowDiv.classList = 'row mt-2';
     const passwordDiv = document.createElement('div');
     passwordDiv.classList = 'col-12';
-    const inputPassword = document.createElement('input');
-    inputPassword.type = 'password';
-    inputPassword.classList = 'form-control form-control-sm my-2 border-info shadow text-center w-50 mx-auto';
-    inputPassword.name = 'password';
-    inputPassword.id = 'passwordInput';
-    inputPassword.placeholder = 'password';
-    passwordDiv.appendChild(inputPassword);
-    rowDiv.appendChild(passwordDiv);
+
+    // const inputPassword = document.createElement('input');
+    // inputPassword.type = 'password';
+    // inputPassword.classList = 'form-control form-control-sm my-2 border-info shadow text-center w-50 mx-auto';
+    // inputPassword.name = 'password';
+    // inputPassword.id = 'passwordInput';
+    // inputPassword.placeholder = 'password';
+    // passwordDiv.appendChild(inputPassword);
+    // rowDiv.appendChild(passwordDiv);
     
     const col1Div = document.createElement('div');
     col1Div.classList = 'col-6';
@@ -390,17 +391,119 @@ function handle2FA_createForm() {
     });
 }
 
+function eraseAccount_createForm() {
+    // hide 'change password' btn
+    document.getElementById('changeEraseBtn').classList.add('hidden-element');
+    disableProfileBtn();
+
+
+    const mainDiv = document.createElement('div');
+    mainDiv.id = 'modifyForm';
+    mainDiv.classList = 'col-sm-6 mx-auto shadow p-3 mt-3 rounded-4 bg-info bg-opacity-10';
+
+    const formDiv = document.createElement('form');
+    formDiv.id = 'eraseAccount-form';
+    formDiv.method = 'delete';
+    mainDiv.appendChild(formDiv);
+    
+    // let input = document.createElement('input');
+    // input.id = 'password';
+    // input.type = 'password';
+    // input.name = 'password';
+    // input.classList = 'form-control form-control-sm mb-2 border-info shadow text-center w-50 mx-auto';
+    // input.placeholder = 'password';
+    // formDiv.appendChild(input);
+    
+    const rowDiv = document.createElement('div');
+    rowDiv.classList = 'row mt-2';
+    
+    const col1Div = document.createElement('div');
+    col1Div.classList = 'col-6';
+    
+    const cancelBtn = document.createElement('button');
+    cancelBtn.id = 'cancelBtn';
+    cancelBtn.classList = 'btn btn-sm btn-success w-100 shadow';
+    cancelBtn.type = 'submit';
+    cancelBtn.textContent = 'Cancel';
+    col1Div.appendChild(cancelBtn);
+    rowDiv.appendChild(col1Div);
+
+    const col2Div = document.createElement('div');
+    col2Div.classList = 'col-6';
+    
+    const applyBtn = document.createElement('button');
+    applyBtn.id = 'applyBtn';
+    applyBtn.classList = 'btn btn-sm btn-danger w-100 shadow';
+    applyBtn.type = 'submit';
+    applyBtn.textContent = 'ERASE ACCOUNT';
+    col2Div.appendChild(applyBtn);
+    rowDiv.appendChild(col2Div);
+
+    formDiv.appendChild(rowDiv);
+    document.getElementById('changeEraseDiv').appendChild(mainDiv);
+    eraseAccount_API();
+    document.getElementById('cancelBtn').addEventListener('click', function () {
+        document.getElementById('modifyForm').remove();
+        document.getElementById('changeEraseBtn').classList.remove('hidden-element');
+        enableProfileBtn();
+
+    });
+}
+
+
+
+
+
+// function disableProfileBtn() {
+//     document.querySelectorAll('#setProfileBtn').forEach(function (element) {
+//         // Supprime la classe 'icon-disabled' de chaque élément
+//         element.classList.add('icon-disabled');
+//       });
+    
+// }
+
+// function enableProfileBtn() {
+//     document.querySelectorAll('#setProfileBtn').forEach(function (element) {
+//         // Supprime la classe 'icon-disabled' de chaque élément
+//         element.classList.remove('icon-disabled');
+//       });
+// }
+
 function disableProfileBtn() {
-    document.querySelectorAll('#setProfileBtn').forEach(function (element) {
-        // Supprime la classe 'icon-disabled' de chaque élément
+    document.querySelectorAll('#profile button').forEach(function (element) {
+        
         element.classList.add('icon-disabled');
-      });
+    });
+    document.querySelectorAll('#profile i').forEach(function (element) {
+       
+        element.classList.add('icon-disabled');
+    });
     
 }
 
 function enableProfileBtn() {
-    document.querySelectorAll('#setProfileBtn').forEach(function (element) {
-        // Supprime la classe 'icon-disabled' de chaque élément
+    document.querySelectorAll('#profile button').forEach(function (element) {
+        
         element.classList.remove('icon-disabled');
-      });
+    });
+    document.querySelectorAll('#profile i').forEach(function (element) {
+       
+        element.classList.remove('icon-disabled');
+    });
 }
+
+// // Sélectionner tous les boutons à l'intérieur de la section avec l'ID "profile"
+// const buttonsInSection = document.querySelectorAll('#profile button');
+
+// // Sélectionner toutes les icônes à l'intérieur de la section avec l'ID "profile"
+// const iconsInSection = document.querySelectorAll('#profile i');
+
+// // Appliquer des styles ou effectuer d'autres opérations sur les boutons
+// buttonsInSection.forEach(button => {
+//   // Vos actions spécifiques pour chaque bouton
+// });
+
+// // Appliquer des styles ou effectuer d'autres opérations sur les icônes
+// iconsInSection.forEach(icon => {
+//   // Vos actions spécifiques pour chaque icône
+// });

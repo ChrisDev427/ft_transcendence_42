@@ -13,10 +13,12 @@ urlpatterns = [
 	path('', views.AllUserView.as_view(), name='account'),
 	path('<int:pk>/', views.UserView.as_view(), name='account-numero'),
 	path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+	path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 	path('profile/avatar/<str:avatar>/', views.AvatarView.as_view(), name='get-avatar'),
 	path('profile/avatar/', views.UpdateAvatarView.as_view(), name='avatar'),
 	path('otp/', views.SendOTPView.as_view(), name='otp'),
-	path('register/verify/', views.VerifyEmailView.as_view() , name='verify_email'),
+	path('email/verify/', views.VerifyEmailView.as_view() , name='email_verify'),
+	path('mobile/verify/', views.VerifyMobileView.as_view() , name='mobile_verify'),
 	path('o/token/', views.oauth_login.as_view() , name='oauth_callback'),
 	path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ]

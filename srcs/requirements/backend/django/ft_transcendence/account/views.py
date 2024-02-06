@@ -18,10 +18,24 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .utils import *
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.core.signing import TimestampSigner
 from friend_management.models import Friend_management
 
+
 import pyotp, uuid, os, requests
+
+class AllUserView(APIView):
+    #permission_classes = [permissions.IsAdminUser]
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+class UserView(APIView):
+    def get(self, request, pk):
+        user = User.objects.get(pk=pk)
+        serializer = PublicUserSerializer(user)
+        return Response(serializer.data)
+
 
 class oauth_login(APIView):
     permission_classes = [permissions.AllowAny]
@@ -31,9 +45,9 @@ class oauth_login(APIView):
         data = {
             'grant_type': 'authorization_code',
             'code': code,
-            'redirect_uri': "http://localhost",
-            'client_id': "u-s4t2ud-44e47265c9b8312f83a47d720211e265bef85a1c8fc632f8786fe9dcdade34d1",
-            'client_secret': "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",
+            'redirect_uri': settings.SITE_URL,
+            'client_id': os.environ.get('OAUTH_CLIENT_ID'),
+            'client_secret': os.environ.get('OAUTH_SECRET'),
         }
         response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
         if response.status_code != 200:
@@ -63,7 +77,6 @@ class oauth_login(APIView):
         return Response({'refresh':str(refresh), 'access': str(refresh.access_token)}, status=status.HTTP_200_OK)
 
 
-
 class UserRegisterView(APIView):
     permission_classes = [permissions.AllowAny]
     def post(self, request):
@@ -83,33 +96,22 @@ class UserRegisterView(APIView):
                 first_name = serializer.validated_data.get('first_name'),
                 last_name = serializer.validated_data.get('last_name'),
                 email=email,
-                #is_active=False,
-                is_active=True,
+                is_active=False,
             )
             user_profile = UserProfile.objects.create(user=user)
-            # signer = TimestampSigner()
-            # token = signer.sign(user.username)
-            # user_profile.otp = token
-            user_profile.save()
-            # try :
-            #     send_mail(
-            #     'NO-REPLY:Verify your mail address',
-            #     f'Click to verify: {settings.SITE_URL + "/?token=" + user_profile.otp + "#verify-email"}',
-            #     settings.EMAIL_HOST_USER,
-            #     [user.email],
-            #     fail_silently=False,
-            # )
-            # except:
-            #     user_profile.delete()
-            #     user.delete()
-            #     return Response({"error": "Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            try :
+                send_email(user_profile, email)
+            except:
+                user_profile.delete()
+                user.delete()
+                return Response({"Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
             return Response("User created", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class VerifyEmailView(APIView):
+    permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
         token = request.GET.get('token', None)
-        print(token)
         user_profile = get_object_or_404(UserProfile, otp=token)
         user_profile.user.is_active = True
         user_profile.user.save()
@@ -117,18 +119,21 @@ class VerifyEmailView(APIView):
         user_profile.save()
         return Response("Email verified", status=status.HTTP_200_OK)
 
-class AllUserView(APIView):
-    #permission_classes = [permissions.IsAdminUser]
-    def get(self, request):
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
+class VerifyMobileView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
 
-class UserView(APIView):
-    def get(self, request, pk):
-        user = User.objects.get(pk=pk)
-        serializer = PublicUserSerializer(user)
-        return Response(serializer.data)
+    def get(self, request):
+        user = request.user
+        user_profile = UserProfile.objects.filter(user=user).first()
+        if user_profile.mobile_number_verified:
+            return Response("Mobile number already verified", status=status.HTTP_400_BAD_REQUEST)
+        if verify_twilio_otp(user_profile, request.GET.get('otp')):
+            user_profile.mobile_number_verified = True
+            user_profile.otp = None
+            user_profile.save()
+            return Response("Mobile number verified", status=status.HTTP_200_OK)
+        return Response("Invalid OTP", status=status.HTTP_400_BAD_REQUEST)
+
 
 class ProfileView(APIView):
 
@@ -143,50 +148,83 @@ class ProfileView(APIView):
     def patch(self, request):
         user = request.user
         request_copy = request.data.copy()
-        password = request_copy.get('password')
-        if password == "":
-            return Response({"password needed"}, status=status.HTTP_400_BAD_REQUEST)
-        elif not user.check_password(password):
-            return Response({"wrong password"}, status=status.HTTP_400_BAD_REQUEST)
-        request_copy.pop('password')
+        print(request_copy)
+        # password = request_copy.get('password')
+        # if password == "" or password is None:
+        #     return Response({"password needed"}, status=status.HTTP_400_BAD_REQUEST)
+        # elif not user.check_password(password):
+        #     return Response({"wrong password"}, status=status.HTTP_400_BAD_REQUEST)
+        # request_copy.pop('password')
         user_profile = UserProfile.objects.filter(user=user).first()
         serializer = UserProfileSerializer(user_profile, data=request_copy, partial=True, context={'request': request})
         if serializer.is_valid():
             if request_copy.get('friend'):
                 friend = get_object_or_404(UserProfile, user__username=request_copy.get('friend'))
-                new_friend = Friend_management.objects.create(friend1=user_profile, friend2=friend, requester=user_profile)
+                Friend_management.objects.create(friend1=user_profile, friend2=friend, requester=user_profile)
                 user_profile.save()
                 friend.save()
                 return Response("friend requested", status=status.HTTP_200_OK)
+            if request_copy.get('email'):
+                email = str.lower(request_copy.get('email'))
+                if User.objects.filter(email=email).exists():
+                    return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
+                try :
+                    send_email(user_profile, email)
+                except:
+                    return Response({"Email verification not sent, email update aborted"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+                user.email = email
+                user.is_active = False
+                user_profile.is_connected = False
+                user_profile.save()
+                user.save()
+            if request_copy.get('new_password') and user.check_password(request_copy.get('password')):
+                new_password = request_copy.get('new_password')
+                if new_password == "" or new_password is None:
+                    return Response({"password needed"}, status=status.HTTP_400_BAD_REQUEST)
+                elif user.check_password(new_password):
+                    return Response({"password cannot be same as before"}, status=status.HTTP_400_BAD_REQUEST)
+                user.set_password(new_password)
+                user.save()
+            if request_copy.get('two_fa_on') == "":
+                user_profile.totp_secret = enable_2fa_authenticator(user_profile)
+                user_profile.two_fa = True
+                user_profile.save() == ""
+            elif request_copy.get('two_fa_off') == "":
+                user_profile.totp_secret = None
+                user_profile.two_fa = False
+                user_profile.save()
+            if request_copy.get('mobile_number'):
+                mobile_number = request_copy.get('mobile_number')
+                if mobile_number == "" or mobile_number is None:
+                    return Response({"mobile number needed"}, status=status.HTTP_400_BAD_REQUEST)
+                elif user_profile.mobile_number == mobile_number:
+                    return Response({"mobile number already exists"}, status=status.HTTP_400_BAD_REQUEST)
+                elif mobile_number[0] != '+' or not mobile_number[1:].isdigit():
+                    return Response({"invalid mobile number"}, status=status.HTTP_400_BAD_REQUEST)
+                user_profile.mobile_number = mobile_number
+                user_profile.otp = send_otp('sms', user_profile)
+                if user_profile.otp == None:
+                    return Response("otp not sent" , status=status.HTTP_503_SERVICE_UNAVAILABLE)
+                user_profile.save()
             serializer.save()
             serializer = UserSerializer(user, data=request_copy, partial=True, context={'request': request})
             if serializer.is_valid():
                 serializer.save()
-            if request_copy.get('two_fa'):
-                user_profile.totp_secret = enable_2fa_authenticator(user_profile)
-                user_profile.two_fa = True
-                user_profile.save()
-            elif request_copy.get('two_fa') == False:
-                user_profile.totp_secret = None
-                user_profile.two_fa = False
-                user_profile.save()
-            # if request_copy.get('two_fa') == 'enabled':
-            #     user_profile.totp_secret = enable_2fa_authenticator(user_profile)
-            #     user_profile.two_fa = True
-            #     user_profile.save()
-            # elif request_copy.get('two_fa') == 'disabled':
-            #     user_profile.two_fa = False
-            #     user_profile.save()
             return Response("user updated", status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
         user = request.user
+        # password = request.data.get('password')
+        # if password == "" or password is None:
+        #     return Response({"password needed"}, status=status.HTTP_400_BAD_REQUEST)
         user_profile = UserProfile.objects.filter(user=user).first()
         if user_profile:
             user_profile.delete()
+            user.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 class getProfileView(APIView):
     def get(self, request, username):
@@ -196,6 +234,8 @@ class getProfileView(APIView):
 
 
 class LoginView(TokenObtainPairView):
+
+    serializer_class = MyTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
@@ -208,22 +248,22 @@ class LoginView(TokenObtainPairView):
             if user is None:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             elif not user.is_active:
-                return Response({"message:","email not verified"}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({"email not verified"}, status=status.HTTP_401_UNAUTHORIZED)
             try:
                 user_profile = UserProfile.objects.filter(user=user).first()
             except UserProfile.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             if user_profile.two_fa:
                 if not user_profile.otp:
-                    return Response({"message:","otp needed"}, status=status.HTTP_401_UNAUTHORIZED)
+                    return Response({"otp needed"}, status=status.HTTP_401_UNAUTHORIZED)
                 if totp:
                     totp_secret = pyotp.TOTP(user_profile.totp_secret)
                     if not totp_secret.verify(totp):
-                        return Response({"message:","totp not match"}, status=status.HTTP_401_UNAUTHORIZED)
+                        return Response({"totp not match"}, status=status.HTTP_401_UNAUTHORIZED)
                 elif not otp:
-                    return Response({"message:","otp needed"}, status=status.HTTP_401_UNAUTHORIZED)
+                    return Response({"otp needed"}, status=status.HTTP_401_UNAUTHORIZED)
                 elif user_profile.opt_expiration < timezone.now():
-                    return Response({"message:","otp expired"}, status=status.HTTP_401_UNAUTHORIZED)
+                    return Response({"otp expired"}, status=status.HTTP_401_UNAUTHORIZED)
                 elif user_profile.otp == otp or verify_twilio_otp(user_profile, otp):
                     user_profile.otp = None
             user_profile.is_connected = True
@@ -249,7 +289,7 @@ class isIngame(APIView):
         try :
             user_profile = UserProfile.objects.filter(user=user).first()
         except UserProfile.DoesNotExist:
-            return Response({"error","user not found"},status=status.HTTP_404_NOT_FOUND)
+            return Response({"user not found"},status=status.HTTP_404_NOT_FOUND)
         if user_profile.is_ingame:
             user_profile.is_ingame = False
         else:
@@ -290,22 +330,30 @@ class UpdateAvatarView(APIView):
 
 class SendOTPView(APIView):
     def post(self, request):
-        username = request.data.get('username')
+        username = str.lower(request.data.get('username'))
         password = request.data.get('password')
         send_method = request.data.get('send_method')
         if not username or not password or not send_method:
-            return Response({"error:","username, password and send_method needed"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"username, password and send_method needed"}, status=status.HTTP_400_BAD_REQUEST)
         user = authenticate(username=username, password=password)
         try :
             user_profile = UserProfile.objects.filter(user=user).first()
         except UserProfile.DoesNotExist:
-            return Response({"message:","user not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"user not found"}, status=status.HTTP_404_NOT_FOUND)
+        if user_profile is None:
+            return Response({"user not found"}, status=status.HTTP_404_NOT_FOUND)
+        if send_method == "sms":
+            if not user_profile.mobile_number:
+                return Response({"mobile number needed"}, status=status.HTTP_400_BAD_REQUEST)
+            elif user_profile.mobile_number_verified == False:
+                return Response({"mobile number not verified"}, status=status.HTTP_401_UNAUTHORIZED)
+        print(user_profile)
         user_profile.otp = str()
         user_profile.otp = send_otp(send_method, user_profile)
         if user_profile.otp == None:
-            return Response({"error:","send method"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"send otp error"}, status=status.HTTP_400_BAD_REQUEST)
         elif user_profile.otp == '0':
             return Response(get_totp_uri(user_profile), status=status.HTTP_200_OK)
         user_profile.opt_expiration = timezone.now() + timezone.timedelta(minutes=5)
         user_profile.save()
-        return Response({'detail': 'Verification code sent successfully.'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'Verification code sent successfully.'}, status=status.HTTP_204_NO_CONTENT)

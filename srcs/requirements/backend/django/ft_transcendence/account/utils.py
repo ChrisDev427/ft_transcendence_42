@@ -1,6 +1,10 @@
 import pyotp, os, random
 from django.core.mail import send_mail
 from twilio.rest import Client
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
+from django.core.signing import TimestampSigner
 
 
 def enable_2fa_authenticator(user_profile):
@@ -31,7 +35,7 @@ def send_otp(string, user_profile):
         send_mail(
             'OTP',
             'Your OTP is ' + verification_code,
-            os.environ.get('EMAIL_HOST_USER'),
+            'Pong OTP Verification <' + settings.EMAIL_HOST_USER + '>',
             [user_profile.user.email],
             fail_silently=False,
         )
@@ -41,7 +45,6 @@ def send_otp(string, user_profile):
         auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
         service_sid = os.environ.get('TWILIO_SERVICE_SID')
         client = Client(account_sid, auth_token)
-
         verification = client.verify.services(service_sid).verifications.create(
             to=user_profile.mobile_number,
             channel='sms'
@@ -49,3 +52,19 @@ def send_otp(string, user_profile):
         return verification.sid
     elif string == 'application':
         return '0'
+
+def send_email(user_profile, email):
+    signer = TimestampSigner()
+    token = signer.sign(user_profile.user.username)
+    user_profile.otp = token
+    user_profile.save()
+    html_content = render_to_string('mailVerif.html', {'token': token, 'url': settings.SITE_URL})
+    html_content_safe = mark_safe(html_content)
+    send_mail(
+        subject='NO-REPLY:Verify your mail address',
+        message=f'Click to verify: {settings.SITE_URL + "/?token=" + user_profile.otp + "#verify-email"}',
+        from_email='Pong Email Verification <' + settings.EMAIL_HOST_USER + '>' ,
+        recipient_list=[email],
+        fail_silently=False,
+        html_message=html_content_safe
+    )
