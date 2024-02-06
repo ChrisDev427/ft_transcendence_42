@@ -186,7 +186,7 @@ class ProfileView(APIView):
                 user_profile.is_connected = False
                 user_profile.save()
                 user.save()
-            if request_copy.get('new_password'):
+            if request_copy.get('new_password') and user.check_password(request_copy.get('password')):
                 new_password = request_copy.get('new_password')
                 if user.check_password(settings.PASSWORD_42):
                     return Response({"42 user can't change password"}, status=status.HTTP_401_UNAUTHORIZED)

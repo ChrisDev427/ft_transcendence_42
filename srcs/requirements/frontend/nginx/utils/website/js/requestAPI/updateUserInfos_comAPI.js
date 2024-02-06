@@ -172,6 +172,58 @@ function modify2FA_API() {
     });
 }
 
+function eraseAccount_API() {
+    console.log('in eraseAccount_API()');
+    verifyToken();
+
+    document.getElementById('eraseAccount-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        fetch('http://localhost:8000/api/account/profile/', {
+            method: 'DELETE',
+            body: new FormData(e.target),
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+            }
+        })
+        .then(response => {
+            console.log('response status:', response.status);
+
+            if (response.ok) { // Vérifiez si la réponse a un statut de succès (200-299)
+                console.log('Erase Account Success!');
+                
+                alert_modify_success('authProfile', 'Erasing...');
+                setTimeout(function () {
+                    
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('refreshToken');
+                    itemsVisibility_logged_out();
+                    showSection('main');
+                  }, 3000);
+                // Vous pouvez appeler une fonction pour gérer le succès ici
+            } else {
+                // Si la réponse n'est pas OK, traitez l'erreur
+                console.error('Error : Erase Account : ', response.status);
+                // alert_modify_error('authProfile', 'An error accured !');
+
+                return response.json(); // Retourne la promesse pour que vous puissiez accéder aux données JSON de l'erreur
+            }
+        })
+        .then(errorData => {
+            // Traitez les données d'erreur ici s'il y en a
+            if (errorData) {
+                alert_modify_error('authProfile', Object.values(errorData));
+                console.error('Error Data:', errorData);
+                // Vous pouvez également appeler une fonction pour gérer l'erreur ici
+            }
+        })
+        .catch(error => {
+            // Attrapez les erreurs qui se produisent lors de l'envoi de la requête
+            console.error('Fetch Error:', error);
+        });
+    });
+}
+
 function alert_modify_success(targetDiv, message) {
 
     // Sélectionnez la section par son ID

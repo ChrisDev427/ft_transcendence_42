@@ -17,11 +17,11 @@ h4 {
 section {
   margin-bottom: 100px;
 }
-input[type="text"]::placeholder {
+input[type="text password"]::placeholder {
 
   color: rgba(0, 179, 255, 0.351);
 }
-#alert-logout {
+#alert-bg-blur {
   position: fixed;
   top: 0;
   left: 0;
