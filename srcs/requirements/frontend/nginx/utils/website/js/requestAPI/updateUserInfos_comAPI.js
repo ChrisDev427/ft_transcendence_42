@@ -1,4 +1,43 @@
 // Update User Infos
+
+function modifyAvatar_API() {
+    console.log('in modifyAvatar_API()');
+    verifyToken();
+
+    document.getElementById('modifyAvatar-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        fetch('http://localhost:8000/api/account/avatar/', {
+            method: 'POST',
+            body: new FormData(e.target),
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+            }
+        })
+        .then(response => {
+            console.log('response status:', response.status);
+
+            if (response.ok) {
+                console.log('Modify Avatar Success!');
+                return response.json();
+            } else {
+                throw new Error('Modify Avatar Error');
+            }
+        })
+        .then(data => {
+            console.log('apiUrl ' + data.avatar);
+            // Vous pouvez gérer le succès et les erreurs ici
+            fetchAndDisplayImage(data.avatar, token);
+            alert_modify_success('avatarProfile', 'Success');
+        })
+        .catch(error => {
+            console.error('Fetch Error:', error);
+            // Gérez toutes les erreurs ici, qu'elles soient liées à la requête ou à la réponse
+            alert_modify_error('avatarProfile', 'Error');
+        });
+    });
+}
+
 function modifyBio_API() {
     console.log('in modifyInfos_API()');
     verifyToken();
@@ -148,8 +187,8 @@ function modify2FA_API() {
 
             if (response.ok) { // Vérifiez si la réponse a un statut de succès (200-299)
                 console.log('Modify 2FA Success!');
-                getProfileInfos(localStorage.getItem('accessToken'));
-                alert_modify_success('authProfile', 'Success');
+                // getProfileInfos(localStorage.getItem('accessToken'));
+                // alert_modify_success('authProfile', 'Success');
                 // Vous pouvez appeler une fonction pour gérer le succès ici
             } else {
                 // Si la réponse n'est pas OK, traitez l'erreur
@@ -293,11 +332,15 @@ function alert_modify_error(targetDiv, message) {
     
     modifyForm.appendChild(div);
 
-    document.getElementById('closeAlert').addEventListener('click', function () {
-
+    closeBtn.addEventListener('click', function () {
         modifyForm.querySelectorAll('input, button').forEach((element) => {
             element.disabled = false;  // Rendre l'élément inactif
-            });
+        });
+        document.getElementById('modifyForm').remove();
+        document.getElementById(targetDiv).classList.remove('hidden-element');
+        enableProfileBtn();
+
+        
     });
 }
 

@@ -130,6 +130,7 @@
               in software development, database design, security, and the integration of modern technologies.
             </p>
           </div>
+          
           <div class="col-lg-3 mb-3">
             <div class="col d-flex justify-content-center mt-4 mb-2 mb-lg-5">
               <a class="btn btn-info text-light shadow p-4 w-75" href="#gameMenu">Play Pong</a>
@@ -433,10 +434,12 @@
       <h1 class="display-1 fw-bold text-info text-center">Profile</h1>
 
       <div class="container p-3 mt-4 rounded-4 shadow-lg" style=" max-width: 700px;">
-        <div class="col d-flex justify-content-center">
-          <img id="avatar-img" src="" alt="avatarUser" class="rounded-3 my-2" style="max-width: 200px;">
-          <div class="d-flex align-items-end">
-            <i id="setAvatarIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick=""></i>
+        <div id="avatarDiv">
+          <div id="avatarProfile" class="col d-flex justify-content-center">
+            <img id="avatar-img" src="" alt="avatarUser" class="rounded-3 my-2" style="max-width: 200px;">
+            <div class="d-flex align-items-end">
+              <i id="setAvatarIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleAvatar_createForm()"></i>
+            </div>
           </div>
         </div>
         <hr class="px-5 text-info border-2">
@@ -467,7 +470,12 @@
         <div id="authDiv">
           <hr class="px-5 text-info border-2">
           <div id="authProfile" class="btn-group-sm" role="group" aria-label="Basic radio toggle button group">
-            <h6 class="col-12 text-center text-secondary fw-bold">2FA Authentication</h6>
+            <h6 class="col text-center text-secondary fw-bold">2FA Authentication</h6>
+
+            <div id="mobileDiv" class="col d-flex justify-content-center hidden-element">
+              <h6 class="btn border-0 text-center text-secondary fw-bold" onclick="">mobile</h6>
+            </div>
+
             <div class="d-flex justify-content-center">
               <i id="set2faIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handle2FA_createForm()"></i>
             </div>

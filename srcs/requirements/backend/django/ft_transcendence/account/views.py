@@ -318,15 +318,18 @@ class AvatarView(APIView):
 class UpdateAvatarView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser]
-    allowed_methods = ['PUT']
+    allowed_methods = ['POST']
+    # http_method_names = ['post', 'options']
 
-    def put(self, request):
-        user_profile = request.user.userprofile
-        serializer = UpdateAvatarSerializer(user_profile, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors ,status=status.HTTP_400_NO_CONTENT)
+    def post(self, request):
+        user = request.user
+        user_profile = UserProfile.objects.get(user=user)
+        avatar_file = request.FILES['avatar']
+        user_profile.avatar.save("/api/account/avatar/" + avatar_file.name, ContentFile(avatar_file.read()))
+        user_profile.save()
+        return Response(status=status.HTTP_200_OK) 
+        #     return Response(serializer.data, status=status.HTTP_200_OK)
+        # return Response(serializer.errors ,status=status.HTTP_400_NO_CONTENT)
 
 class SendOTPView(APIView):
     def post(self, request):

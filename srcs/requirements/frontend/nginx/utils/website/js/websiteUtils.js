@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // });
 
 document.addEventListener('DOMContentLoaded', function () {
-    
+
     console.log('Check accessToken & refreshToken');
     // Récupérez les tokens du localStorage
     const storedAccessToken = localStorage.getItem('accessToken');
@@ -73,6 +73,8 @@ document.addEventListener('DOMContentLoaded', function () {
         
         getProfileInfos(storedAccessToken);
         itemsVisibility_logged_in();
+        profileAccess(localStorage.getItem('connectType'));
+
 
         console.log('AccessToken:', storedAccessToken);
         console.log('RefreshToken:', storedRefreshToken);

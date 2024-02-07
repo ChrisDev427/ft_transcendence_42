@@ -66,9 +66,10 @@ document.getElementById('signin-form').addEventListener('submit', function (e) {
 
       localStorage.setItem('accessToken', data.access);
       localStorage.setItem('refreshToken', data.refresh);
+      localStorage.setItem('connectType', 'signin');
 
       getProfileInfos(localStorage.getItem('accessToken'));
-      profileAccess('signin');
+      profileAccess(localStorage.getItem('connectType'));
 
       // Fait quelque chose avec les informations de l'utilisateur, par exemple, les afficher
 
@@ -114,11 +115,14 @@ async function exchangeCodeForToken(code) {
     
     localStorage.setItem('accessToken', data.access);
     localStorage.setItem('refreshToken', data.refresh);
+    localStorage.setItem('connectType', '42');
+
     itemsVisibility_logged_in();
     
     console.log('exchange token');
     getProfileInfos(localStorage.getItem('accessToken'));
-    profileAccess('42');
+    profileAccess(localStorage.getItem('connectType'));
+    
     removeParamURL();
   } catch (error) {
     console.error('Error : request exchange code / token :', error);
@@ -192,6 +196,7 @@ function getProfileInfos(token) {
   })
   .then(data => {
       // Récupère les informations de l'utilisateur
+      console.log('apiUrl ' + data.avatar);
       fetchAndDisplayImage(data.avatar, token);
       document.getElementById('firstNameProfile').textContent = data.user.first_name;
       document.getElementById('lastNameProfile').textContent = data.user.last_name;

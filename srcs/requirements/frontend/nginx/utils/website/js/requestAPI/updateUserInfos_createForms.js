@@ -1,3 +1,70 @@
+function handleAvatar_createForm() {
+    // hide current infos
+    document.getElementById('avatarProfile').classList.add('hidden-element');
+    disableProfileBtn();
+
+    const mainDiv = document.createElement('div');
+    mainDiv.id = 'modifyForm';
+    mainDiv.classList = 'col-sm-6 mx-auto shadow p-3 rounded-4 bg-info bg-opacity-10';
+
+    const formDiv = document.createElement('form');
+    formDiv.id = 'modifyAvatar-form';
+    formDiv.method = 'post';
+    mainDiv.appendChild(formDiv);
+    
+    
+    const input = document.createElement('input');
+    input.accept = 'image/*';
+    input.name = 'avatar';
+    input.id = 'avatarInput';
+    
+    input.type = 'file';
+    input.classList = 'form-control form-control-sm my-4 border-info text-secondary text-center';
+    
+    formDiv.appendChild(input);
+    
+
+    const rowDiv = document.createElement('div');
+    rowDiv.classList = 'row mt-2';
+    
+    const col1Div = document.createElement('div');
+    col1Div.classList = 'col-6';
+    
+    const cancelBtn = document.createElement('button');
+    cancelBtn.id = 'cancelBtn';
+    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow';
+    cancelBtn.type = 'submit';
+    cancelBtn.textContent = 'Cancel';
+    col1Div.appendChild(cancelBtn);
+    rowDiv.appendChild(col1Div);
+
+    const col2Div = document.createElement('div');
+    col2Div.classList = 'col-6';
+    
+    const applyBtn = document.createElement('button');
+    applyBtn.id = 'applyBtn';
+    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow';
+    applyBtn.type = 'submit';
+    applyBtn.textContent = 'Apply';
+    col2Div.appendChild(applyBtn);
+    rowDiv.appendChild(col2Div);
+
+    formDiv.appendChild(rowDiv);
+    document.getElementById('avatarDiv').appendChild(mainDiv);
+
+    document.getElementById('cancelBtn').addEventListener('click', function () {
+        document.getElementById('modifyForm').remove();
+        document.getElementById('avatarProfile').classList.remove('hidden-element');
+        enableProfileBtn();
+    });
+
+    document.getElementById('applyBtn').addEventListener('click', function () {
+        console.log('apply btn pushed');
+        modifyAvatar_API();
+    });
+
+}
+
 function handleBio_createForm() {
     // hide current bio
     document.getElementById('bioProfile').classList.add('hidden-element');
@@ -58,12 +125,15 @@ function handleBio_createForm() {
     formDiv.appendChild(rowDiv);
     document.getElementById('bioDiv').appendChild(mainDiv);
 
-    modifyBio_API();
-
+    
     document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyForm').remove();
         document.getElementById('bioProfile').classList.remove('hidden-element');
         enableProfileBtn();
+    });
+    document.getElementById('applyBtn').addEventListener('click', function () {
+        modifyBio_API();
+
     });
 }
 
@@ -71,7 +141,6 @@ function handleInfos_createForm() {
     // hide current infos
     document.getElementById('infosProfile').classList.add('hidden-element');
     disableProfileBtn();
-
 
     const mainDiv = document.createElement('div');
     mainDiv.id = 'modifyForm';
@@ -89,14 +158,9 @@ function handleInfos_createForm() {
         input.name = inputsName[i];
         input.id = inputsName[i];
         input.placeholder = inputsName[i];
-
-        // if(i < 3) {
-            input.type = 'text';
-            input.classList = 'form-control mb-2 border-info text-secondary text-center';
-        // } else {
-        //     input.type = 'password';
-        //     input.classList = 'form-control form-control-sm mb-1 mt-3 shadow border-success text-center w-50 mx-auto';
-        // }
+        input.type = 'text';
+        input.classList = 'form-control mb-2 border-info text-secondary text-center';
+       
         formDiv.appendChild(input);
     }
 
@@ -128,20 +192,16 @@ function handleInfos_createForm() {
     formDiv.appendChild(rowDiv);
     document.getElementById('infosDiv').appendChild(mainDiv);
 
-
-    modifyInfos_API();
-
     document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyForm').remove();
         document.getElementById('infosProfile').classList.remove('hidden-element');
         enableProfileBtn();
-
     });
 
-//     document.getElementById('applyBtn').addEventListener('click', function () {
-//        console.log('apply btn pushed');
-
-//    });
+    document.getElementById('applyBtn').addEventListener('click', function () {
+        console.log('apply btn pushed');
+        modifyInfos_API();
+    });
 
 }
 
@@ -379,6 +439,18 @@ function handle2FA_createForm() {
         // document.getElementById('authProfile').classList.remove('hidden-element');
         enableProfileBtn();
     });
+
+    document.getElementById('applyBtn').addEventListener('click', function () {
+        if(document.getElementById('2FA-btn-on').checked = true) {
+            document.getElementById('mobileDiv').classList.remove('hidden-element');
+        } else {
+            document.getElementById('mobileDiv').classList.add('hidden-element');
+        }
+        mainDiv.remove();
+        enableProfileBtn();
+        
+    });
+
     document.getElementById('2FA-btn-on').addEventListener('click', function (element) {
         element.checked = true;
         document.getElementById('2FA-btn-off').checked = false;
