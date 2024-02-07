@@ -46,6 +46,11 @@ class GameView(APIView):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class GameDetailView(APIView):
+
+	permissions_classes = [IsAdminUser]
+	
 	def patch(self, request, id):
 		get_object_or_404(models.Game, pk = id)
 		game_entries = models.Game.objects.get(id=id)

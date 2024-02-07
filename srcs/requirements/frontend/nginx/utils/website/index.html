@@ -20,9 +20,10 @@
 
 </head>
 
+
 <body>
     <script>
-        const socket = new WebSocket('ws://90.116.98.105:90');
+        const socket = new WebSocket('wss://90.116.98.105:90');
         
         socket.addEventListener('open', (event) => {
             console.log('Connected to WebSocket server');
@@ -70,6 +71,18 @@
         console.error('Erreur WebSocket:', event);
     });
   </script> -->
+  <!-- Alert Logout ------------------------------------>
+  <div id="alert-logout" class="hidden-element">
+    <!-- <div class="alert alert-info shadow-lg border-0" role="alert" id="confirm-logout" style="position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;"> -->
+      <div id="confirm-logout" class="p-3 p-md-4 bg-info shadow-lg rounded-4 " style="position: fixed; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+        <button id="cancelLogout" class="btn fw-bold shadow  btn-outline-light me-2">X</button>
+        <button id="validLogout" class="btn fw-bold shadow  btn-outline-light">logout</button>
+      </div>
+    <!-- </div> -->
+  </div>
+  <!---------------------------------------------------->
+
+
 
   <header class="pb-5 mb-4">
     <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark bg-info py-1">
@@ -83,15 +96,15 @@
           <ul class="navbar-nav">
 
             <!-- DropDown Profile -->
-            <li id="dropDownProfile" class="nav-item dropdown hidden-element">
+            <li id="dropDownProfile" class="nav-item dropdown unvisible">
               <a class="nav-link bi-person-circle  fs-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
               <div class="dropdown-menu bg-info py-0 border-0">
 
                 <div class="card mx-auto pb-3 shadow-lg border-0" style="width: 18rem;">
                   <img src="img/img-chris.jpg" class="card-img-top mx-auto mt-3 rounded" alt="avatar-img" style="width: 150px;">
                   <div class="card-body">
-                    <h4 style="font-family: 'Bagel Fat One', sans-serif;" class="card-title text-info text-center">Chrissou</h4>
-                    <p class="card-text text-secondary text-center fw-light">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <h4 id="dropDownProfileName" style="font-family: 'Bagel Fat One', sans-serif;" class="card-title text-info text-center mb-3"></h4>
+                    <!-- <p class="card-text text-secondary text-center fw-light">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
 
                     <div class="col d-flex justify-content-around px-4">
                       <div>
@@ -110,7 +123,7 @@
                       <a class="btn btn-sm btn-outline-info fw-bold bi bi-people-fill" href="#friends"></a>
                       <a class="btn btn-sm btn-outline-info fw-bold bi bi-database-fill" href="#gameHistory"></a>
                       <a class="btn btn-sm btn-outline-info fw-bold bi-person-circle" href="#profile"></a>
-                      <a class="btn btn-sm btn-outline-danger fw-bold bi-plug-fill" href="#"></a>
+                      <a class="btn btn-sm btn-outline-danger fw-bold bi-plug-fill" onclick="userLogout()"></a>
                     </div>
                   </div>
                 </div>
@@ -138,6 +151,7 @@
 
   </header>
   <main>
+   
     <section id="main" class="d-flex justify-content-center">
     <script>
       function getAuthorizationCode() {
@@ -145,20 +159,17 @@
         return urlParams.get('code');
       }
      async function exchangeCodeForToken(code) {
-        const response = await fetch('http://localhost:8000/api/account/o/token/', {
-            method: 'GET',
-            headers: {
-                'code': code
-            },
-        });
+        const response = await fetch('http://localhost:8000/api/account/o/token/?code=' + code);
         const data = await response.json();
         console.log(data);
         return data;
     }
       const code = getAuthorizationCode();
-      console.log("code =",code);
       if (code) {
-        exchangeCodeForToken(code);
+        response = exchangeCodeForToken(code);
+        token = response.access_token;
+        console.log(response.json);
+        token_refresh = response.refresh_token;
       }
     </script>
       <div class="container rounded-4 shadow" >
@@ -196,7 +207,7 @@
             </div>
             
             <!-- TO SHOW WHEN USER IS CONNECTED -->
-            <div id="friends-ganeHistory-btn" class="hidden-element">
+            <div id="friends-gameHistory-btn" class="unvisible">
               <div class="col d-flex justify-content-center mb-2">
                 <a class="btn btn-outline-info  shadow p-2 w-75" href="#friends">Friends</a>
               </div>
@@ -212,7 +223,30 @@
         </div>
       </div>
     </section>
+    <section id="verify-email">
+      <div class="container p-3" >
+        <script>
+          const urlParams = new URLSearchParams(window.location.search);
+          const token = urlParams.get('token');
+          if (token) {
+            fetch("http://localhost:8000/api/account/register/verify/?token=" + token)
+            .then(response => {
+              if (response.status === 200) {
+                  // Authentification réussie
+                  // return response.json();
+                  console.log('email verified !');
+              } else {
+                // Gestion des erreurs lors de la récupération du profil
+                console.error('Error email verfification', response.status);
 
+            }})
+          }
+        </script>
+
+
+      </div>
+
+    </section>
     <section id="gameMenu" class="">
       <h1 class="display-1 p-3 fw-bold text-info text-center">Pong</h1>
       <div id="containerGameMenu" class="container rounded-4 shadow p-2" style="width: 90%; max-width: 400px;">
@@ -224,16 +258,22 @@
             <h1 class="text-info display-6">Settings</h1>
           </div>
         <hr class="text-info mb-4">
-        <div class="col d-flex justify-content-center m-2">
+        <div class="col d-flex justify-content-center m-3">
+          <button type="button" class="btn btn-outline-info mx-2" id="localBtn">Local</button>
+          <button type="button" class="btn btn-outline-info" id="onLineBtn">Online</button>
+        </div>
+        <div id="onlineMenu" class="col d-flex justify-content-center m-3 hidden-element">
+          <button type="button" class="btn btn-outline-info mx-2" id="createBtn">Create</button>
+          <button type="button" class="btn btn-outline-info" id="joinBtn">Join</button>
+        </div>
+        <div id="dificultyMenu" class="col d-flex justify-content-center m-2 hidden-element">
           <button type="button" class="btn btn-outline-info" id="easyBtn">Easy</button>
           <button type="button" class="btn btn-outline-info mx-2" id="mediumBtn">Medium</button>
           <button type="button" class="btn btn-outline-info" id="hardBtn">Hard</button>
         </div>
-        <div class="col d-flex justify-content-center m-3">
-          <button type="button" class="btn btn-outline-info disabled mx-2" id="localBtn">Local</button>
-          <button type="button" class="btn btn-outline-info disabled" id="onLineBtn">Online</button>
-        </div>
-        <div class="col d-flex justify-content-center m-3">
+       
+
+        <div id="gameModeMenu" class="col d-flex justify-content-center m-3 hidden-element">
           <button type="button" class="btn btn-outline-info disabled" id="onePlayerBtn">One Player</button>
           <button type="button" class="btn btn-outline-info disabled mx-2" id="twoPlayersBtn">Two Players</button>
           <button type="button" class="btn btn-outline-info disabled" id="tournamentBtn">Tournament</button>
@@ -421,7 +461,7 @@
       </div>
     </section>
 
-    <section id="verify-email">
+    <section id="verify-email" class="unvisible">
       <div class="container p-3" >
         <!-- kdfjhgkdasjhgkdfhgk
         <script>
@@ -447,19 +487,19 @@
 
     </section>
     
-    <section id="friends">
+    <section id="friends" class="unvisible">
       <div class="container p-3">
         <h1 class="display-1 fw-bold text-info text-center">Friends</h1>
       </div>
     </section>
 
-    <section id="gameHistory">
+    <section id="gameHistory" class="unvisible">
       <div class="container p-3">
         <h1 class="display-1 fw-bold text-info text-center">Game History</h1>
       </div>
     </section>
 
-    <section id="profile">
+    <section id="profile" class="unvisible">
       <h1 class="display-1 fw-bold text-info text-center">Profile</h1>
 
       <div class="container p-3 mt-4 rounded-4 shadow-lg" style=" max-width: 700px;">
@@ -518,6 +558,89 @@
       </div>
     </section>
 
+    <section id="sessions">
+      <div id="sessionsList" style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;"></div>
+
+      <script>
+          // const socket = new WebSocket('ws://90.116.98.105:90');
+
+          socket.addEventListener('open', (event) => {
+              console.log('Connected to WebSocket server');
+          });
+
+          socket.addEventListener('message', (event) => {
+              console.log('Message from server:', event.data);
+
+              const data = JSON.parse(event.data);
+
+              if (data.action === 'updateSessions') {
+                  console.log('Updating sessions list...');
+                  updateSessionsList(data.sessions);
+              } else if (data.action === 'join') {
+                  console.log('Joining session with ID:', data.sessionId);
+                  // Ajoutez votre logique pour rejoindre la session ici
+              }
+          });
+
+          socket.addEventListener('close', (event) => {
+              console.log('Connection closed');
+          });
+
+          function updateSessionsList(sessions) {
+              const sessionsListElement = document.getElementById('sessionsList');
+              sessionsListElement.innerHTML = '';
+
+              sessions.forEach(session => {
+                  const sessionLink = document.createElement('a');
+                  sessionLink.href = `https://transcendence42.ddns.net/website/#playPong`;
+                  sessionLink.textContent = `Session ID: ${session.id}, Created At: ${session.createdAt}`;
+
+                  sessionLink.addEventListener('click', () => {
+                      socket.send(JSON.stringify({ action: 'join', sessionId: session.id }));
+                      
+                      leftPlayerName ="test";
+                      rightPlayerName="test1";
+
+                      level = 5;
+                      playOnline = true;
+                      twoPlayers = true;
+                      start = true;
+
+                      setPlayerNameToPrint(leftPlayerName, rightPlayerName);
+                      setHandToStart();
+                      printConsoleInfos();
+                      
+                      showSection("playPong");
+                      document.getElementById('gameDiv').classList.remove('hidden-element');
+                      run();
+
+                  });
+
+                  const sessionElement = document.createElement('p');
+                  sessionElement.appendChild(sessionLink);
+
+                  sessionsListElement.appendChild(sessionElement);
+              });
+
+              console.log('Updated sessions list:', sessions);
+          }
+          
+          document.addEventListener('DOMContentLoaded', function () {
+              window.addEventListener('hashchange', () => {
+                  const hash = window.location.hash;
+                  const match = hash.match(/^#playPong\/([a-zA-Z0-9-]+)$/);
+
+                  if (match) {
+                      const sessionId = match[1];
+                      console.log('Joining session with ID:', sessionId);
+                      // Ajoutez votre logique pour rejoindre la session ici
+                  }
+              });
+          });
+
+      </script>
+    </section>
+
   </main>
 
   <footer id="footer" class="bg-info fixed-bottom" >
@@ -543,7 +666,7 @@
             </li>
             <li class="list-inline-item">
               <a class="text-white" href="https://twitter.com/42NiceSud" target="_blank" rel="nofollow">
-              <i class="bi-twitter custom-icon-footer   fs-3"></i>
+              <i class="bi-twitter custom-icon-footer fs-3"></i>
               </a>
             </li>
           </ul>
@@ -555,8 +678,8 @@
     <script src="./js/websiteUtils.js"></script>
     <script src="./js/websiteConfig.js"></script>
     <script src="./js/requestAPI/register_login_logout.js"></script>
+    <script src="./js/requestAPI/register_login_logout_utils.js"></script>
     <script src="./js/requestAPI/updateUserInfos_createForms.js"></script>
-    <script src="./js/requestAPI/handleAlerts.js"></script>
     <script src="./pong_game/js/handle_UI.js"></script>
     <script src="./pong_game/js/gameConfig.js"></script>
     <script src="./pong_game/js/create_gameSettings_menu.js"></script>

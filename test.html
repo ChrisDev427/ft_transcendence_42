@@ -10,7 +10,7 @@
 <div id="sessionsList" style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;"></div>
 
 <script>
-    const socket = new WebSocket('ws://90.116.98.105:90');
+    const socket = new WebSocket('wss://90.116.98.105:90');
 
     socket.addEventListener('open', (event) => {
         console.log('Connected to WebSocket server');
@@ -40,7 +40,7 @@
 
         sessions.forEach(session => {
             const sessionLink = document.createElement('a');
-            sessionLink.href = `http://fttranscendence.ddns.net/website/#playPong/${session.id}`;
+            sessionLink.href = `http://fttranscendence.ddns.net/website/#playPong`;
             sessionLink.textContent = `Session ID: ${session.id}, Created At: ${session.createdAt}`;
 
             sessionLink.addEventListener('click', () => {

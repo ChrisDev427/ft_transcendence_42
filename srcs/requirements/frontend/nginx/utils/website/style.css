@@ -21,6 +21,17 @@ input[type="text"]::placeholder {
 
   color: rgba(0, 179, 255, 0.351);
 }
+#alert-logout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(210, 210, 210, 0.5); /* Fond semi-transparent noir pour le flou */
+  backdrop-filter: blur(6px); /* Flou appliqué à l'arrière-plan */
+  z-index: 1100; /* Placez l'arrière-plan au-dessus de tout sauf la boîte de dialogue */
+  
+}
 .cursor-pointer {
   cursor: pointer;
 }
@@ -29,6 +40,9 @@ input[type="text"]::placeholder {
   pointer-events: none; /* Désactive les interactions avec l'icône */
 }
 .hidden-element {
+  display: none !important;
+}
+.unvisible {
   display: none !important;
 }
 .cl-green {

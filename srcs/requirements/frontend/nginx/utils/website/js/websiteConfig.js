@@ -1,6 +1,7 @@
 let connectedFrom_mobile = false;
 let connectedFrom_desktop = false;
-
+let id;
+let username;
 
 if ('ontouchstart' in window || navigator.maxTouchPoints) {
     console.log("The user is connecting from a mobile phone.");

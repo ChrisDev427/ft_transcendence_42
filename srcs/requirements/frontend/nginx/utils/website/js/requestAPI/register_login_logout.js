@@ -79,6 +79,7 @@ document.getElementById('signin-form').addEventListener('submit', function (e) {
 
 
 function getProfileInfos(token) {
+  console.log('GET PROFILE INFOS FUNCTION');
   fetch('http://localhost:8000/api/account/profile/', {
       method: 'GET',
       headers: {
@@ -98,12 +99,14 @@ function getProfileInfos(token) {
   .then(data => {
       // Récupère les informations de l'utilisateur
       fetchAndDisplayImage(data.avatar, token);
+      document.getElementById('dropDownProfileName').textContent = data.user.username;
       document.getElementById('firstNameProfile').textContent = data.user.first_name;
       document.getElementById('lastNameProfile').textContent = data.user.last_name;
       document.getElementById('userNameProfile').textContent = data.user.username;
       document.getElementById('emailProfile').textContent = data.user.email;
       document.getElementById('bioProfile').textContent = data.bio;
-
+      id = data.user.id;
+      username = data.user.username;
   })
   .catch(error => {
     console.error('Erreur lors de la récupération du profil :', error);

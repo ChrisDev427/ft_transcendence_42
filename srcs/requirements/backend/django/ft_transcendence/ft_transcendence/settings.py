@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY_DJANGO')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['nginx_container', 'localhost']
+ALLOWED_HOSTS = ['*']
 # Application definition
 
 OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
@@ -46,6 +46,8 @@ INSTALLED_APPS = [
 	'rest_framework_simplejwt',
 	'account',
 	'game',
+	'chat',
+	'friend_management',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +63,7 @@ MIDDLEWARE = [
 
  # CORS settings (Cross-Origin Resource Sharing)
 
-CORS_ALLOW_ANY_ORIGIN = True
+# CORS_ALLOW_ANY_ORIGIN = True
 
 # CORS_ALLOW_HEADERS = [
 #     'accept',
@@ -69,17 +71,20 @@ CORS_ALLOW_ANY_ORIGIN = True
 # ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost',
+    "https://transcendence42.ddns.net",
+    # "https://90.116.98.105",
+    # 'http://localhost',
 ]
 
 CORS_ALLOW_HEADERS = [
     'Authorization',
 	'Content-Type',
 	'code',
-    'token'
+	'token',
+    'Access-Control-Allow-Origin',
 ]
 
-SITE_URL = 'http://localhost'
+SITE_URL = 'https://fttranscendence.ddns.net'
 
 ROOT_URLCONF = 'ft_transcendence.urls'
 
@@ -171,7 +176,7 @@ REST_FRAMEWORK = {
  # JWT settings
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 	'UPDATE_LAST_LOGIN': True,
 }
@@ -184,6 +189,14 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_FROM = "Pong_Verfication"
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'postfix_container'  # Nom du service Postfix dans docker-compose
+# EMAIL_PORT = 25
+# EMAIL_USE_TLS = False
+# EMAIL_HOST_USER et EMAIL_HOST_PASSWORD si nécessaire
+
 
 TWILIO_SID = os.environ.get('TWILIO_SID')
 TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
@@ -191,6 +204,5 @@ TWILIO_SERVICE_ID = os.environ.get('TWILIO_SERVICE_ID')
 
 
 
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
