@@ -65,11 +65,6 @@ MIDDLEWARE = [
 
 # CORS_ALLOW_ANY_ORIGIN = True
 
-# CORS_ALLOW_HEADERS = [
-#     'accept',
-#     'accept-encoding',
-# ]
-
 CORS_ALLOWED_ORIGINS = [
     "https://transcendence42.ddns.net",
     # "https://90.116.98.105",
@@ -78,6 +73,8 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_HEADERS = [
     'Authorization',
+	'accept',
+    'accept-encoding',
 	'Content-Type',
 	'code',
 	'token',
@@ -91,7 +88,7 @@ ROOT_URLCONF = 'ft_transcendence.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -187,9 +184,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-mail.outlook.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_AUTHENTICATION = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_APPLICATION_PASSWORD')
 EMAIL_FROM = "Pong_Verfication"
+
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'postfix_container'  # Nom du service Postfix dans docker-compose
@@ -202,7 +201,7 @@ TWILIO_SID = os.environ.get('TWILIO_SID')
 TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
 TWILIO_SERVICE_ID = os.environ.get('TWILIO_SERVICE_ID')
 
-
+PASSWORD_42 = "i8F6X2h8PZ2kyd"
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True

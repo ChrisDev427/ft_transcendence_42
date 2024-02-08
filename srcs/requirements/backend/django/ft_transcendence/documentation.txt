@@ -17,10 +17,15 @@ api/account/register/ --> register a new user
 	method : POST
 	advice : - register with username, password, email, first_name, last_name
 
-api/account/register/verify/ --> verify the email and activate your account
+api/account/email/verify/ --> verify the email and activate your account
 	connected : NO
 	method : GET
-	advice : - verify email with "token" in the url
+	advice : - verify with token : "token"
+
+api/account/mobile/verify/ -> verify the mobile
+	connected : YES
+	method : GET
+	advice : - verify with otp : "otp"
 
 api/account/profile/ --> manage your account
 	connected : YES
@@ -42,6 +47,11 @@ api/account
 api/account/token/refresh/ --> get a new token access with token refresh
 	connected : YES
 	method : POST
+
+api/account/token/verify/ --> verify access token validity
+	connected : NO
+	method : POST
+	advice : key : "token"
 
 api/account/profile/avatar/<str:avatar>/ --> Download the avatar
 	connected : YES

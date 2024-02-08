@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 
   <!-- Style -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./style.css">
 
   <!-- font -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,7 @@
 
 <body>
     <script>
-        const socket = new WebSocket('wss://90.116.98.105:90');
+        const socket = new WebSocket('wss://transcendence42.ddns.net:90');
         
         socket.addEventListener('open', (event) => {
             console.log('Connected to WebSocket server');
@@ -72,19 +72,24 @@
     });
   </script> -->
   <!-- Alert Logout ------------------------------------>
-  <div id="alert-logout" class="hidden-element">
-    <!-- <div class="alert alert-info shadow-lg border-0" role="alert" id="confirm-logout" style="position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;"> -->
+  <div id="alert-bg-blur" class="hidden-element">
       <div id="confirm-logout" class="p-3 p-md-4 bg-info shadow-lg rounded-4 " style="position: fixed; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
         <button id="cancelLogout" class="btn fw-bold shadow  btn-outline-light me-2">X</button>
         <button id="validLogout" class="btn fw-bold shadow  btn-outline-light">logout</button>
       </div>
-    <!-- </div> -->
   </div>
   <!---------------------------------------------------->
+  <!-- Alert Logout ------------------------------------>
+  <!-- <div id="alert-bg-blur" class="hidden-element">
+    <div class="p-3 p-md-4 bg-info shadow-lg rounded-4 " style="position: fixed; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+
+    </div>
+</div> -->
+<!---------------------------------------------------->
 
 
 
-  <header class="pb-5 mb-4">
+  <header id="header" class="pb-5 mb-4">
     <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark bg-info py-1">
       <div class="container">
         <a class="navbar-brand fw-bold btn" onclick="showSection('main')">ft_transcendence42</a>
@@ -101,12 +106,12 @@
               <div class="dropdown-menu bg-info py-0 border-0">
 
                 <div class="card mx-auto pb-3 shadow-lg border-0" style="width: 18rem;">
-                  <img src="img/img-chris.jpg" class="card-img-top mx-auto mt-3 rounded" alt="avatar-img" style="width: 150px;">
+                  <img id="avatar-img_profilDropdown" src="" class="card-img-top mx-auto mt-3 rounded" alt="avatar-img" style="width: 150px;">
                   <div class="card-body">
-                    <h4 id="dropDownProfileName" style="font-family: 'Bagel Fat One', sans-serif;" class="card-title text-info text-center mb-3"></h4>
-                    <!-- <p class="card-text text-secondary text-center fw-light">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                    <h4 id="username-profileDropdown" style="font-family: 'Bagel Fat One', sans-serif;" class="card-title text-info text-center mb-3"></h4>
+                    <p id="bio-profileDropdown" class="card-text text-secondary text-center fw-light"></p>
 
-                    <div class="col d-flex justify-content-around px-4">
+                    <!-- <div class="col d-flex justify-content-around px-4">
                       <div>
 
                         <i class="bi bi-circle-fill text-success "></i>
@@ -117,7 +122,7 @@
                           <option class="text-secondary fw-bold" value="4">Invisible</option>
                         </select>
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="col d-flex justify-content-evenly mt-4">
                       <a class="btn btn-sm btn-outline-info fw-bold bi bi-people-fill" href="#friends"></a>
@@ -129,8 +134,8 @@
                 </div>
               </div>
             </li>
-              
-            
+
+
             <li class="nav-item  mt-2">
               <a class="nav-link fw-bold" href="#gameMenu">Play Pong</a>
             </li>
@@ -151,27 +156,8 @@
 
   </header>
   <main>
-   
+
     <section id="main" class="d-flex justify-content-center">
-    <script>
-      function getAuthorizationCode() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('code');
-      }
-     async function exchangeCodeForToken(code) {
-        const response = await fetch('http://localhost:8000/api/account/o/token/?code=' + code);
-        const data = await response.json();
-        console.log(data);
-        return data;
-    }
-      const code = getAuthorizationCode();
-      if (code) {
-        response = exchangeCodeForToken(code);
-        token = response.access_token;
-        console.log(response.json);
-        token_refresh = response.refresh_token;
-      }
-    </script>
       <div class="container rounded-4 shadow" >
         <div class="col d-flex justify-content-center mx-4">
           <h1 class="display-2 text-info fw-bold">ft_transcendence</h1>
@@ -191,7 +177,7 @@
               in software development, database design, security, and the integration of modern technologies.
             </p>
           </div>
-          <div class="col-lg-3 mb-3">
+          <di class="col-lg-3 mb-3">
             <div class="col d-flex justify-content-center mt-4 mb-2 mb-lg-5">
               <a class="btn btn-info text-light shadow p-4 w-75" href="#gameMenu">Play Pong</a>
             </div>
@@ -219,33 +205,9 @@
             <div class="col d-flex justify-content-center ">
               <a class="btn btn-outline-info  shadow p-2 w-75 mb-4" href="#aboutTheTeam">About the team</a>
             </div>
-          </div>
+          </di
         </div>
       </div>
-    </section>
-    <section id="verify-email">
-      <div class="container p-3" >
-        <script>
-          const urlParams = new URLSearchParams(window.location.search);
-          const token = urlParams.get('token');
-          if (token) {
-            fetch("http://localhost:8000/api/account/register/verify/?token=" + token)
-            .then(response => {
-              if (response.status === 200) {
-                  // Authentification réussie
-                  // return response.json();
-                  console.log('email verified !');
-              } else {
-                // Gestion des erreurs lors de la récupération du profil
-                console.error('Error email verfification', response.status);
-
-            }})
-          }
-        </script>
-
-
-      </div>
-
     </section>
     <section id="gameMenu" class="">
       <h1 class="display-1 p-3 fw-bold text-info text-center">Pong</h1>
@@ -271,7 +233,7 @@
           <button type="button" class="btn btn-outline-info mx-2" id="mediumBtn">Medium</button>
           <button type="button" class="btn btn-outline-info" id="hardBtn">Hard</button>
         </div>
-       
+
 
         <div id="gameModeMenu" class="col d-flex justify-content-center m-3 hidden-element">
           <button type="button" class="btn btn-outline-info disabled" id="onePlayerBtn">One Player</button>
@@ -328,8 +290,9 @@
     <section id="aboutTheTeam" >
       <div class="container p-3" >
         <h1 class="display-1 fw-bold  text-info text-center">The team</h1>
-        <div class="row py-2  d-flex justify-content-evenly">
-          <div class="col-12 col-lg-3  pt-4 rounded shadow">
+        <div class="row py-2 d-flex justify-content-center">
+
+          <div class="col-12 col-md-5 me-md-5 pt-4 rounded shadow">
             <img src="img/img-chris.jpg" alt="img_chris" class="w-50  d-block mx-auto m-4 shadow-lg" style="border-radius: 8px;">
             <h4 class="fw-bold text-center cl-text">Christophe MASSA</h4>
             <ul class="list-inline text-center fs-4">
@@ -354,8 +317,8 @@
             </p>
           </div>
 
-          <div class="col-12 col-lg-3 m-5 m-lg-0 pt-4 rounded shadow">
-            <img src="img/img-axel.jpg" alt="img_axel" class="w-50  d-block mx-auto m-4 shadow-lg" style="border-radius: 8px;">
+          <div class="col-12 col-md-5 mt-5 mt-md-0 pt-4 rounded shadow">
+            <img src="img/img_axel.jpg" alt="img_axel" class="w-50  d-block mx-auto m-4 shadow-lg" style="border-radius: 8px;">
             <h4 class="fw-bold text-center cl-text">Axel FERNANDEZ</h4>
             <ul class="list-inline text-center fs-4">
               <li class="list-inline-item">
@@ -378,18 +341,46 @@
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
+          </div>
 
-          <div class="col-12 col-lg-3  pt-4 rounded shadow">
-            <img src="img/img-axel.jpg" alt="img_axel" class="w-50 border border-1 border-dark d-block mx-auto m-4" style="border-radius: 5px;">
-            <h4 class="fw-bold text-center cl-text">Scrat</h4>
+          <div class="row py-2 mt-4 d-flex justify-content-center">
+
+          <div class="col-12 col-md-5 me-md-5 pt-4 rounded shadow">
+            <img src="img/img_paul.jpg" alt="img_axel" class="w-50 d-block mx-auto m-4 shadow-lg" style="border-radius: 5px;">
+            <h4 class="fw-bold text-center cl-text">Paul SCHEMITH</h4>
             <ul class="list-inline text-center fs-4">
               <li class="list-inline-item">
-                <a class="text-info" href="" target="_blank" rel="nofollow">
+                <a class="text-info" href="https://github.com/Monkey42Github" target="_blank" rel="nofollow">
                   <i class="bi-github custom-icon p-2"></i>
                 </a>
               </li>
               <li class="list-inline-item">
-                <a class="text-info" href="" target="_blank" rel="nofollow">
+                <a class="text-info" href="https://www.linkedin.com/in/paul-schemith/" target="_blank" rel="nofollow">
+                  <i class="bi-linkedin custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="mailto:paulschemith95@gmail.com" target="_blank" rel="nofollow">
+                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
+                </a>
+              </li>
+            </ul>
+            <p class="fw-light text-center text-secondary my-4 p-2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+
+          <div class="col-12 col-md-5 mt-5 mt-md-0 pt-4 rounded shadow">
+            <img src="img/img_youssef.JPG" alt="img_axel" class="w-50 d-block mx-auto m-4 shadow-lg" style="border-radius: 5px;">
+            <h4 class="fw-bold text-center cl-text">Youssef BOUGHANMI</h4>
+            <ul class="list-inline text-center fs-4">
+              <li class="list-inline-item">
+                <a class="text-info" href="https://github.com/YoussefBOUGHANMI" target="_blank" rel="nofollow">
+                  <i class="bi-github custom-icon p-2"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-info" href="https://www.linkedin.com/in/youssef-boughanmi/" target="_blank" rel="nofollow">
                   <i class="bi-linkedin custom-icon p-2"></i>
                 </a>
               </li>
@@ -404,27 +395,30 @@
             </p>
           </div>
         </div>
+        </div>
+
+
       </div>
     </section>
     <section id="signIn">
       <div id="signInDiv" class="container p-3">
         <div class="row fw-light text-secondary">
           <h1 class="display-1 fw-bold text-info text-center">Sign In</h1>
-          <div class="col-md-5 col-lg-4 my-4 mx-auto">
-            <form method="POST" class="shadow p-3 rounded text-center" id="signin-form">
-                <label for="Username" class="form-label">Username</label>
-                <input type="Username" class="form-control mb-3 border-info" id="username" name="username">
+          <div class="col-md-5 col-lg-4 my-4 mx-auto shadow p-3 rounded text-center">
+            <form method="POST" class="form-control border-0" id="signin-form">
+                <!-- <label for="Username" class="form-label text-secondary">Username</label> -->
+                <input type="text" class="form-control mb-3 border-info" id="username" name="username" placeholder="Username">
 
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control mb-3 border-info" autocomplete="current-password" id="signIn-password" name="password">
+                <!-- <label for="password" class="form-label text-secondary">Password</label> -->
+                <input type="password" class="form-control mb-3 border-info" autocomplete="current-password" id="signIn-password" name="password" placeholder="Password">
 
                 <button class="btn btn-info text-white w-100 mt-3" type="submit">Sign in</button>
+              </form>
                 <hr class="border-info">
                 <button class="btn btn-outline-info w-100" onclick="loginWith42()">Connect with 42</button>
-            </form>
           </div>
         </div>
-        
+
       </div>
             <!-- <script>
                function loginWith42() {
@@ -462,31 +456,12 @@
     </section>
 
     <section id="verify-email" class="unvisible">
-      <div class="container p-3" >
-        <!-- kdfjhgkdasjhgkdfhgk
-        <script>
-          const urlParams = new URLSearchParams(window.location.search);
-          const token = urlParams.get('token');
-          console.log(token);
-          fetch("http://localhost:8000/api/account/register/verify/?token=" + token)
-         
-          .then(response => {
-            if (response.status === 200) {
-                // Authentification réussie
-                // return response.json();
-                console.log('email verified !');
-            } else {
-              // Gestion des erreurs lors de la récupération du profil
-              console.error('Error email verfification', response.status);
-
-          }})
-        </script> -->
-
-
-      </div>
+      <div class="container mt-3">
+          <h1 class="display-3 text-info text-center fw-bold">ft_transcendence</h1>
+      <div>
 
     </section>
-    
+
     <section id="friends" class="unvisible">
       <div class="container p-3">
         <h1 class="display-1 fw-bold text-info text-center">Friends</h1>
@@ -503,58 +478,57 @@
       <h1 class="display-1 fw-bold text-info text-center">Profile</h1>
 
       <div class="container p-3 mt-4 rounded-4 shadow-lg" style=" max-width: 700px;">
-        <div class="col d-flex justify-content-center">
-          <img id="avatar-img" src="" alt="avatarUser" class="rounded-3 my-2" style="max-width: 200px;">
-          <div class="d-flex align-items-end">
-            <i id="setProfileBtn" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick=""></i>
+        <div id="avatarDiv">
+          <div id="avatarProfile" class="col d-flex justify-content-center">
+            <img id="avatar-img" src="" alt="avatarUser" class="rounded-3 my-2" style="max-width: 200px;">
+            <div class="d-flex align-items-end">
+              <i id="setAvatarIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleAvatar_createForm()"></i>
+            </div>
           </div>
         </div>
         <hr class="px-5 text-info border-2">
         <div id="bioDiv">
-          <div >
             <p id="bioProfile" class="lead fs-6 text-lighter text-secondary text-center"></p>
             <div class="d-flex justify-content-center">
-              <i id="setProfileBtn" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleBio_createForm()"></i>
+              <i id="setBioIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleBio_createForm()"></i>
             </div>
-          </div>
         </div>
         <hr class="px-5 text-info border-2">
         <div id="infosDiv">
-          <div id="infosProfile">
-            <h5 id="firstNameProfile" class="text-info text-center fs-4"></h5></a>
-            <h5 id="lastNameProfile" class="text-info text-center fs-4"></h5></a>
-            <h5 id="userNameProfile" class="text-info text-center fs-4"></h5></a>
-            <div class="d-flex justify-content-center">
-              <i id="setProfileBtn" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleInfos_createForm()"></i>
+            <div id="infosProfile">
+              <h5 id="firstNameProfile" class="text-info text-center fs-4"></h5></a>
+              <h5 id="lastNameProfile" class="text-info text-center fs-4"></h5></a>
+              <h5 id="userNameProfile" class="text-info text-center fs-4"></h5></a>
             </div>
-          </div>
+              <div class="d-flex justify-content-center">
+                <i id="setInfoIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleInfos_createForm()"></i>
+              </div>
         </div>
         <hr class="px-5 text-info border-2">
         <div id="emailDiv">
-          <div >
             <h5 id="emailProfile" class="text-info text-center fs-4"></h5>
-            <div class="d-flex justify-content-center">
-              <i id="setProfileBtn" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleEmail_createForm()"></i>
+            <div id="emailProfileDiv" class="d-flex justify-content-center">
+              <i id="setEmailIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleEmail_createForm()"></i>
             </div>
-          </div>
         </div>
-        <hr class="px-5 text-info border-2">
         <div id="authDiv">
+          <hr class="px-5 text-info border-2">
           <div id="authProfile" class="btn-group-sm" role="group" aria-label="Basic radio toggle button group">
             <h6 class="col-12 text-center text-secondary fw-bold">2FA Authentication</h6>
-            <div class="col-12 d-flex justify-content-center mt-0">
-              <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-              <label id="setProfileBtn" class="btn btn-sm btn-outline-info py-0 px-2 me-1" for="btnradio1">On</label>
-              
-              <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-              <label id="setProfileBtn" class="btn btn-sm btn-outline-info py-0 px-2" for="btnradio2">Off</label>
-            </div>
-            <div class="d-flex justify-content-center mt-3">
-              <button id="setProfileBtn" class="btn btn-sm btn-outline-info" onclick="handlePassword_createForm()">Change password</button>
+            <div class="d-flex justify-content-center">
+              <i id="set2faIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handle2FA_createForm()"></i>
             </div>
           </div>
+          </div>
+
+        <div id="changeEraseDiv">
+          <hr class="px-5 text-info border-2">
+          <div id="changeEraseBtn" class="d-flex justify-content-center mt-3">
+            <button id="changePasswordBtn" class="btn btn-sm btn-outline-info me-3" onclick="handlePassword_createForm()">Change password</button>
+            <button id="eraseAccountBtn" class="btn btn-sm btn-outline-danger" onclick="eraseAccount_createForm()">Erase Account</button>
+          </div>
         </div>
-      </div>
+
       </div>
     </section>
 
@@ -680,6 +654,7 @@
     <script src="./js/requestAPI/register_login_logout.js"></script>
     <script src="./js/requestAPI/register_login_logout_utils.js"></script>
     <script src="./js/requestAPI/updateUserInfos_createForms.js"></script>
+    <script src="./js/requestAPI/updateUserInfos_comAPI.js"></script>
     <script src="./pong_game/js/handle_UI.js"></script>
     <script src="./pong_game/js/gameConfig.js"></script>
     <script src="./pong_game/js/create_gameSettings_menu.js"></script>

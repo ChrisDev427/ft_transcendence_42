@@ -33,6 +33,7 @@ btn.joinBtn.addEventListener("click", function() {
     btn.joinBtn.classList.remove("btn-outline-info");
     btn.joinBtn.classList.add("btn-info");
     btn.createBtn.classList.add("disabled");
+    
 
     // document.getElementById('sessions').classList.remove('hidden-element')
     showSection('sessions');

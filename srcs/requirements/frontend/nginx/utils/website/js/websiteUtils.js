@@ -10,7 +10,7 @@ function hideCurrentSection() {
 
 function showSection(sectionId) {
     let targetSection = document.getElementById(sectionId);
-    
+
     hideCurrentSection();
     // Si sectionId est vide, affichez la section principale par défaut
     if (!sectionId) {
@@ -33,9 +33,9 @@ function showSection(sectionId) {
 window.addEventListener('popstate', function (event) {
     var sectionId = (location.hash) ? location.hash.slice(1) : null;
     console.log('Popstate event:', sectionId);
-    
+
     showSection(sectionId);
-    
+
 });
 
 // Au chargement initial, vérifiez s'il y a un hash et affichez la section correspondante
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('Initial hash:', sectionId);
 
     showSection(sectionId);
-    
+
 });
 
 // Navbar close auto
@@ -62,33 +62,23 @@ document.addEventListener('DOMContentLoaded', function () {
 //     });
 // });
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     console.log('Check accessToken & refreshToken');
-//     // Récupérez les tokens du localStorage
-//     const storedAccessToken = localStorage.getItem('accessToken');
-//     const storedRefreshToken = localStorage.getItem('refreshToken');
-//     // Vérifiez si les tokens existent
-//     if (storedAccessToken && storedRefreshToken) {
-//         // Utilisez les tokens pour l'authentification
-//         // ...
-//         getProfileInfos(storedAccessToken);
-//         // document.getElementById('alertSuccess').remove();
-//         // document.getElementById('spinner').remove();
-//         document.getElementById('nav-signIn').classList.add('unvisible');
-//         document.getElementById('nav-signUp').classList.add('unvisible');
-//         document.getElementById('dropDownProfile').classList.remove('unvisible');
+document.addEventListener('DOMContentLoaded', function () {
 
-//         document.getElementById('signIn-signUp-btn').classList.add('unvisible');
-//         document.getElementById('friends-gameHistory-btn').classList.remove('unvisible');
-//         document.getElementById('profile').classList.remove('unvisible');
+    console.log('Check accessToken & refreshToken');
+    // Récupérez les tokens du localStorage
+    const storedAccessToken = localStorage.getItem('accessToken');
+    const storedRefreshToken = localStorage.getItem('refreshToken');
+    // Vérifiez si les tokens existent
+    if (storedAccessToken && storedRefreshToken) {
 
-//         document.getElementById('signIn').disabled = true;
+        getProfileInfos(storedAccessToken);
+        profileAccess(localStorage.getItem('connectType'));
+        itemsVisibility_logged_in();
 
-//         // showSection('main');
-//         console.log('AccessToken:', storedAccessToken);
-//         console.log('RefreshToken:', storedRefreshToken);
+        console.log('AccessToken:', storedAccessToken);
+        console.log('RefreshToken:', storedRefreshToken);
 
-//         // Par exemple, vous pourriez renvoyer ces tokens au serveur pour vérification
-//         // ou effectuer toute autre opération nécessaire pour restaurer la session.
-//     }
-// });
+        // Par exemple, vous pourriez renvoyer ces tokens au serveur pour vérification
+        // ou effectuer toute autre opération nécessaire pour restaurer la session.
+    }
+});
