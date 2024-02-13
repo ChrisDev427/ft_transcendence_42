@@ -25,6 +25,7 @@ from django.contrib import admin
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     #path('api/', include('account.urls')),
+	path('', include('django_prometheus.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 	path('admin/', admin.site.urls),
 	path('api/account/', include('account.urls')),

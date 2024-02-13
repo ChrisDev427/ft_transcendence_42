@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY_DJANGO')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['nginx_container', 'localhost', 'websocket']
+ALLOWED_HOSTS = ['localhost', 'django_container:8000']
 # Application definition
 
 OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
@@ -48,25 +48,29 @@ INSTALLED_APPS = [
 	'game',
 	'chat',
 	'friend_management',
+	'django_prometheus',
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
  # CORS settings (Cross-Origin Resource Sharing)
 
-CORS_ALLOW_ANY_ORIGIN = True
+# CORS_ALLOW_ANY_ORIGIN = True
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost',
+	'https://transcendence42.ddns.net',
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -194,9 +198,7 @@ EMAIL_FROM = "Pong_Verfication"
 # EMAIL_HOST_USER et EMAIL_HOST_PASSWORD si nécessaire
 
 
-TWILIO_SID = os.environ.get('TWILIO_SID')
-TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
-TWILIO_SERVICE_ID = os.environ.get('TWILIO_SERVICE_ID')
+HTTPSMS_KEY = os.environ.get('HTTPSMS_KEY')
 
 PASSWORD_42 = "i8F6X2h8PZ2kyd"
 

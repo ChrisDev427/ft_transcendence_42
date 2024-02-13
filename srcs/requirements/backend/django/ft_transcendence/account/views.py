@@ -84,6 +84,7 @@ class oauth_login(APIView):
 
 class UserRegisterView(APIView):
     permission_classes = [permissions.AllowAny]
+
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -130,9 +131,7 @@ class VerifyMobileView(APIView):
     def get(self, request):
         user = request.user
         user_profile = UserProfile.objects.filter(user=user).first()
-        if user_profile.mobile_number_verified:
-            return Response("Mobile number already verified", status=status.HTTP_400_BAD_REQUEST)
-        if verify_twilio_otp(user_profile, request.GET.get('otp')):
+        if  user_profile.otp == request.GET.get('otp'):
             user_profile.mobile_number_verified = True
             user_profile.otp = None
             user_profile.save()
@@ -198,6 +197,7 @@ class ProfileView(APIView):
                     return Response({"password cannot be same as before"}, status=status.HTTP_400_BAD_REQUEST)
                 user.set_password(new_password)
                 user.save()
+                return Response("password updated", status=status.HTTP_200_OK)
             if request_copy.get('two_fa_on') == "":
                 if user.check_password(settings.PASSWORD_42):
                     return Response({"42 user can't enable 2fa"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -212,15 +212,19 @@ class ProfileView(APIView):
                 mobile_number = request_copy.get('mobile_number')
                 if mobile_number == "" or mobile_number is None:
                     return Response({"mobile number needed"}, status=status.HTTP_400_BAD_REQUEST)
-                elif user_profile.mobile_number == mobile_number:
+                elif user_profile.mobile_number == mobile_number and user_profile.mobile_number_verified == True:
                     return Response({"mobile number already exists"}, status=status.HTTP_400_BAD_REQUEST)
                 elif mobile_number[0] != '+' or not mobile_number[1:].isdigit():
                     return Response({"invalid mobile number"}, status=status.HTTP_400_BAD_REQUEST)
+                if user_profile.mobile_number_verified == True:
+                    user_profile.mobile_number_verified = False
                 user_profile.mobile_number = mobile_number
                 user_profile.otp = send_otp('sms', user_profile)
                 if user_profile.otp == None:
                     return Response("otp not sent" , status=status.HTTP_503_SERVICE_UNAVAILABLE)
                 user_profile.save()
+            if request_copy.get('username'):
+                request_copy['username'] = str.lower(request_copy['username'])
             serializer.save()
             serializer = UserSerializer(user, data=request_copy, partial=True, context={'request': request})
             if serializer.is_valid():
@@ -266,18 +270,18 @@ class LoginView(TokenObtainPairView):
             except UserProfile.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             if user_profile.two_fa:
-                if not user_profile.otp:
-                    return Response({"otp needed"}, status=status.HTTP_401_UNAUTHORIZED)
                 if totp:
                     totp_secret = pyotp.TOTP(user_profile.totp_secret)
                     if not totp_secret.verify(totp):
                         return Response({"totp not match"}, status=status.HTTP_401_UNAUTHORIZED)
-                elif not otp:
+                if not user_profile.otp and not otp:
                     return Response({"otp needed"}, status=status.HTTP_401_UNAUTHORIZED)
-                elif user_profile.opt_expiration < timezone.now():
+                if user_profile.opt_expiration < timezone.now():
                     return Response({"otp expired"}, status=status.HTTP_401_UNAUTHORIZED)
-                elif user_profile.otp == otp or verify_twilio_otp(user_profile, otp):
+                if user_profile.otp == otp:
                     user_profile.otp = None
+                else:
+                    return Response({"otp not match"}, status=status.HTTP_401_UNAUTHORIZED)
             user_profile.is_connected = True
             user_profile.save()
             profile_serializer = UserProfileSerializer(user_profile, context={'request': request})
@@ -360,7 +364,7 @@ class SendOTPView(APIView):
             return Response({"user not found"}, status=status.HTTP_404_NOT_FOUND)
         if send_method == "sms":
             if not user_profile.mobile_number:
-                return Response({"mobile number needed"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"mobile number is missing"}, status=status.HTTP_400_BAD_REQUEST)
             elif user_profile.mobile_number_verified == False:
                 return Response({"mobile number not verified"}, status=status.HTTP_401_UNAUTHORIZED)
         print(user_profile)
