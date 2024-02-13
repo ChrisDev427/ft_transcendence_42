@@ -2,11 +2,11 @@
 
 h1 {
   font-family: 'Bagel Fat One', sans-serif;
- 
+
 }
 h5 {
   font-family: 'Bagel Fat One', sans-serif;
- 
+
 }
 h3 {
   font-family: Cambria;
@@ -30,7 +30,7 @@ input[type="text password"]::placeholder {
   background-color: rgba(210, 210, 210, 0.5); /* Fond semi-transparent noir pour le flou */
   backdrop-filter: blur(6px); /* Flou appliqué à l'arrière-plan */
   z-index: 1100; /* Placez l'arrière-plan au-dessus de tout sauf la boîte de dialogue */
-  
+
 }
 .cursor-pointer {
   cursor: pointer;
@@ -69,14 +69,14 @@ input[type="text password"]::placeholder {
   transition: color 0.4s ease; /* Transition de couleur sur 0.3 secondes avec une fonction d'accélération */
 }
 .custom-icon:hover {
-    color: #004ac0; 
+    color: #004ac0;
 }
 .custom-icon-footer {
   color: #ffffff; /* Couleur par défaut */
   transition: color 0.4s ease; /* Transition de couleur sur 0.3 secondes avec une fonction d'accélération */
 }
 .custom-icon-footer:hover {
-    color: #004ac0; 
+    color: #004ac0;
 }
 
 .hover-logo {

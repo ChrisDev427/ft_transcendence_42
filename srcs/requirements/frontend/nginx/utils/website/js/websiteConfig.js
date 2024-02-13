@@ -1,6 +1,6 @@
 let connectedFrom_mobile = false;
 let connectedFrom_desktop = false;
-let connectWith42 = false;
+let two_fa = false;
 // let userId;
 // let username;
 

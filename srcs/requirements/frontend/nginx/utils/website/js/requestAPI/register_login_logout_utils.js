@@ -2,11 +2,10 @@ function alert_register_fail(message) {
 
     // Disable form
     const signUpSection = document.getElementById('signUp');
-    // Parcourez tous les éléments descendants de la section
-    signUpSection.querySelectorAll('input, button').forEach((element) => {
-    element.disabled = true;  // Rendre l'élément inactif
+        // Parcourez tous les éléments descendants de la section
+        signUpSection.querySelectorAll('input, button').forEach((element) => {
+        element.disabled = true;  // Rendre l'élément inactif
     });
-
 
     let div = document.createElement('div');
     div.classList = 'w-75 mx-auto alert alert-danger alert-dismissible fade show text-center text-danger shadow ';
@@ -39,7 +38,7 @@ function alert_register_success() {
 
     // Parcourez tous les éléments descendants de la section
     signUpSection.querySelectorAll('input, button').forEach((element) => {
-    element.disabled = true;  // Rendre l'élément inactif
+        element.disabled = true;  // Rendre l'élément inactif
     });
 
     let div = document.createElement('div');
@@ -62,7 +61,7 @@ function alert_register_success() {
     }, 3000);
 }
 
-function alert_login_fail() {
+function alert_login_fail(errorMessage) {
     // Disable form
     const signInSection = document.getElementById('signIn');
     // Parcourez tous les éléments descendants de la section
@@ -76,7 +75,7 @@ function alert_login_fail() {
     div.style.maxWidth= '350px';
     div.role = 'alert';
     div.id = 'alert';
-    div.textContent = 'Wrong username or password !';
+    div.textContent = errorMessage;
 
     let button = document.createElement('button');
     button.classList = 'btn-close';
@@ -92,6 +91,8 @@ function alert_login_fail() {
         signInSection.querySelectorAll('input, button').forEach((element) => {
             element.disabled = false;  // Rendre l'élément actif
         });
+        document.getElementById('signin-form').reset();
+        document.getElementById('signin-form').addEventListener('submit', formSubmitHandler_login);
     });
     
 }
@@ -125,19 +126,16 @@ function alert_login_success() {
     div1.appendChild(div2);
 
     document.getElementById('signInDiv').appendChild(div1);
-    
-
+    document.getElementById('signin-form').addEventListener('submit', formSubmitHandler_login);
     setTimeout(function () {
         
         document.getElementById('alertSuccess').remove();
         document.getElementById('spinner').remove();
-
         itemsVisibility_logged_in();
         signInSection.querySelectorAll('input, button').forEach((element) => {
             element.disabled = false;  // Rendre l'élément actif
         });
         document.getElementById('signin-form').reset();
-
         showSection('main');
       }, 2000);
 
@@ -201,37 +199,6 @@ function itemsVisibility_logged_out() {
     });
 }
 
-//******* Manage User Logout ******************************************************
-function userLogout() {
-    document.getElementById('alert-bg-blur').classList.remove('hidden-element');
-}
-document.getElementById('cancelLogout').addEventListener('click', function() {
-    document.getElementById('alert-bg-blur').classList.add('hidden-element');
-});
-document.getElementById('validLogout').addEventListener('click', function() {
-    const div1 = document.createElement('div');
-    div1.id = 'spinner';
-    div1.classList = 'd-flex justify-content-center';
-    
-    const div2 = document.createElement('div');
-    div2.classList = 'spinner-border text-light mt-3';
-    div2.role = 'status';
-    div1.appendChild(div2);
-    const target = document.getElementById('confirm-logout');
-    target.appendChild(div1);
-    setTimeout(function () {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        itemsVisibility_logged_out();
-        document.getElementById('spinner').remove();
-        document.getElementById('alert-bg-blur').classList.add('hidden-element');
-        // connectWith42 = false;
-        
-        showSection('main');
-    }, 3000);
-});
-//*********************************************************************************
-
 function refreshAccessToken() {
     // Récupérez le refresh token de votre système de stockage (par exemple, localStorage)
     const refreshToken = localStorage.getItem('refreshToken');
@@ -244,7 +211,6 @@ function refreshAccessToken() {
         console.error('No refresh token available');
         return;
     }
-  
     // Effectuez une requête au point de terminaison de rafraîchissement du token côté serveur
     fetch('http://localhost:8000/api/account/token/refresh/', {
         method: 'POST',
@@ -270,10 +236,7 @@ function refreshAccessToken() {
         localStorage.setItem('accessToken', data.access);
         console.log('Token refreshed successfully');
     })
-    // .catch(error => {
-    //     console.error('Error refreshing token:', error);
-    // });
-  }
+}
 
 function verifyToken() {
     fetch('http://localhost:8000/api/account/token/verify/', {
@@ -311,41 +274,3 @@ function profileAccess(connectWith) {
     }
     
 }
-// function alert_email_verified() {
-
-//     // Sélectionnez la section par son ID
-//     const signUpSection = document.getElementById('signUp');
-
-//     // Parcourez tous les éléments descendants de la section
-//     signUpSection.querySelectorAll('input, button').forEach((element) => {
-//     element.disabled = true;  // Rendre l'élément inactif
-//     });
-
-//     let div = document.createElement('div');
-//     div.classList = 'w-75 mx-auto alert alert-success alert-dismissible fade show text-center text-success shadow';
-//     div.style.maxWidth= '350px';
-//     div.role = 'alert';
-//     div.id = 'alertSuccess';
-//     div.textContent = 'The account has been successfully created, a confirmation email has been sent.';
-
-//     const br = document.createElement('br');
-//     div.appendChild(br);
-
-//     // let link = document.createElement('a');
-//     // link.id = 'linkToSignIn';
-//     // link.classList = 'alert-link text-success';
-//     // link.href = '#signIn';
-//     // link.textContent = 'sign in';
-    
-//     // div.appendChild(link);
-   
-//     document.getElementById('signUpDiv').appendChild(div);
-
-//     // document.getElementById('linkToSignIn').addEventListener("click", function() {
-//     //     document.getElementById('alertSuccess').remove();
-//     //     document.getElementById('signup-form').reset();
-//     //     signUpSection.querySelectorAll('input, button').forEach((element) => {
-//     //         element.disabled = false;  // Rendre l'élément actif
-//     //     });
-//     // });
-// }

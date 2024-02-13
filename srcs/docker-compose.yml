@@ -5,7 +5,10 @@ services:
     build: ./requirements/backend/django
     restart: on-failure
     command: >
-      sh -c "python manage.py makemigrations &&
+      sh -c "python manage.py makemigrations game &&
+             python manage.py makemigrations friend_management &&
+             python manage.py makemigrations chat &&
+             python manage.py makemigrations account &&
              python manage.py migrate &&
              python manage.py shell < create_superuser.py &&
              python manage.py runserver 0.0.0.0:8000"
@@ -52,20 +55,6 @@ services:
     depends_on:
       - django
     env_file: .env
-
-  # postfixadmin:
-  #   container_name: postfixadmin_container
-  #   networks:
-  #     - pong
-  #   depends_on:
-  #     - postgresql
-  #   image: postfixadmin
-  #   volumes:
-  #     - DB:/dev/tcp/
-  #   ports:
-  #     - "25:25"
-  #   restart: always
-  #   env_file: .env
 
 networks:
   pong:
