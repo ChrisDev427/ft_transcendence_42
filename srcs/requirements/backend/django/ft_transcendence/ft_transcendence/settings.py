@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -54,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -64,10 +65,13 @@ MIDDLEWARE = [
  # CORS settings (Cross-Origin Resource Sharing)
 
 # CORS_ALLOW_ANY_ORIGIN = True
+CORS_ALLOW_PRIVATE_NETWORK : True
 
 CORS_ALLOWED_ORIGINS = [
     "https://transcendence42.ddns.net",
-    # "https://90.116.98.105",
+    # "https://transcendence42.ddns.net:90",
+
+    "https://90.116.98.105",
     # 'http://localhost',
 ]
 
@@ -79,9 +83,17 @@ CORS_ALLOW_HEADERS = [
 	'code',
 	'token',
     'Access-Control-Allow-Origin',
+
+    'Referer',
+    'Sec-Ch-Ua',
+    'Sec-Ch-Ua-Mobile',
+    'Sec-Ch-Ua-Platform',
+    'User-Agent',
+    'Origin',
+    'Host',
 ]
 
-SITE_URL = 'https://fttranscendence.ddns.net'
+SITE_URL = 'https://transcendence42.ddns.net'
 
 ROOT_URLCONF = 'ft_transcendence.urls'
 
@@ -203,5 +215,5 @@ TWILIO_SERVICE_ID = os.environ.get('TWILIO_SERVICE_ID')
 
 PASSWORD_42 = "i8F6X2h8PZ2kyd"
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True

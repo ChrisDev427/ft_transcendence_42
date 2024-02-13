@@ -9,7 +9,6 @@ const server = https.createServer({
 });
 
 
-
 class Session {
     constructor(sessionId, createdAt, ip, level, paddleHeight, user_id, username) {
         this.sessionId = sessionId;
@@ -25,19 +24,56 @@ class Session {
 
 const wss = new WebSocket.Server({ noServer: true });
 
+const messageHistoryBySession = {};
+const MAX_MESSAGES = 10;
+const messageHistory = [];
 const sessions = [];
 const connectedUsersBySession = {};
 
-wss.on('connection', (ws, req) => {
-    const ip = req.connection.remoteAddress;    // Gérer les requêtes HTTP ici si nécessaire
 
+wss.on('connection', (ws, req) => {
+    const ip = req.connection.remoteAddress;
+
+    ws.userId = ip
+    ws.sessionId = getSessionIdByUserId(ws.userId);
     console.log(`Client connected from IP: ${ip}`);
+
+    // envoie des donnees au nouveau client
+    const latestMessages = messageHistory.slice(-MAX_MESSAGES);
+    ws.send(JSON.stringify({ type: 'messageGeneral', messages: latestMessages }));
+
+    const latestsessions = sessions.map(session => ({
+        id: session.sessionId,
+        createdAt: session.createdAt.toISOString(),
+        level: session.level,
+        paddleHeight: session.paddleHeight,
+        user_id: session.user_id,
+        username: session.username,
+    }));
+    ws.send(JSON.stringify({ action: 'updateSessions', sessions: latestsessions }));
+
 
     ws.on('message', (message) => {
         try {
             const data = JSON.parse(message);
             const ip = req.connection.remoteAddress;
 
+            const username = ws.userId;
+            const sessionId = getSessionIdByUserId(ws.userId);
+
+            
+
+            if (data.action === 'sendMessage') {
+                const text = data.text;
+
+                console.log(text);
+                console.log(sessionId);
+
+                console.log(connectedUsersBySession);
+                broadcastMessageSession({ action: 'receiveMessage', username, text }, sessionId);
+
+                // broadcastMessage({ action: 'receiveMessage', username, text });
+            }
             // reception de demande de creation de session
             if (data.action === 'createSession') {
                 if (isUserAlreadyConnected(ip, data.sessionId)) {
@@ -54,6 +90,7 @@ wss.on('connection', (ws, req) => {
                     connectedUsersBySession[sessionId] = [];
                     connectedUsersBySession[sessionId].push(ip);
                     console.log(`${ip} join session!`, sessionId);
+                    ws.sessionId = getSessionIdByUserId(ws.userId);
                     console.log(connectedUsersBySession);
 
                     ws.send(JSON.stringify({ action: 'sessionCreated', sessionId }));
@@ -72,10 +109,10 @@ wss.on('connection', (ws, req) => {
                 const sessionId = ID ? ID : "Unknown Session";
                 
 
-                console.log(`UserID: ${ip}`);
-                console.log(`Session ID: ${sessionId}`);
-                console.log('Left Paddle Y:', leftPaddleY);
-                console.log('Right Paddle Y:', rightPaddleY);
+                // console.log(`UserID: ${ip}`);
+                // console.log(`Session ID: ${sessionId}`);
+                // console.log('Left Paddle Y:', leftPaddleY);
+                // console.log('Right Paddle Y:', rightPaddleY);
 
             } else if (data.action === 'quitSession') {
                 userLeaveSession(ip);
@@ -88,14 +125,15 @@ wss.on('connection', (ws, req) => {
                     console.log(`${ip} est deja connecte a une session`);
                     
 
-                    // L'utilisateur est déjà connecté à une autre session
-                    // Vous pouvez gérer cela selon vos besoins, par exemple, le déconnecter automatiquement de la session précédente
-                    // ou refuser la connexion à la nouvelle session.
                 } else {
                     // Ajout de l'utilisateur à la liste des utilisateurs connectés à la session
                     if (connectedUsersBySession[data.sessionId]) {
                         connectedUsersBySession[data.sessionId].push(ip);
                         console.log(`${ip} join session!`, data.sessionId);
+                        ws.sessionId = getSessionIdByUserId(ws.userId);
+                        const sessionMessageHistory = messageHistoryBySession[data.sessionId] || [];
+                        ws.send(JSON.stringify({ type: "messageGeneral", messages: sessionMessageHistory }));
+                
                         console.log(connectedUsersBySession);
                     }
                     // Envoyer un message de confirmation ou autres actions nécessaires
@@ -115,6 +153,39 @@ wss.on('connection', (ws, req) => {
     });
 });
 
+function broadcastMessageSession(message, sessionId) {
+    if (!messageHistoryBySession[sessionId]) {
+        messageHistoryBySession[sessionId] = [];
+    }
+
+    messageHistoryBySession[sessionId].push(message);
+    if (messageHistoryBySession[sessionId].length > MAX_MESSAGES) {
+        messageHistoryBySession[sessionId].shift();
+    }
+    
+    const latestMessages = messageHistoryBySession[sessionId];
+    wss.clients.forEach(client => {
+        const clientSessionId = getSessionIdByUserId(client.userId);
+
+        if (client.readyState === WebSocket.OPEN && clientSessionId === sessionId) {
+            client.send(JSON.stringify({ type: "messageGeneral", messages: latestMessages }));
+        }
+    });
+}
+
+
+
+function getSessionIdByUserId(userId) {
+    for (const sessionId in connectedUsersBySession) {
+        if (connectedUsersBySession[sessionId].includes(userId)) {
+            return sessionId;
+        }
+    }
+    return null;
+}
+
+
+
 function isUserAlreadyConnected(userId, sessionId) {
     // Vérifier si l'utilisateur est déjà connecté à la session spécifiée
     if (connectedUsersBySession[sessionId] && connectedUsersBySession[sessionId].includes(userId)) {
@@ -132,17 +203,35 @@ function isUserAlreadyConnected(userId, sessionId) {
 }
 
 
-// utilisateur quitte la session
-function userLeaveSession(userId) {
-    for (const sessionId in connectedUsersBySession) {
-        connectedUsersBySession[sessionId] = connectedUsersBySession[sessionId].filter(id => id !== userId);
+function userLeaveSession(sessionId) {
+    const sessionIndex = sessions.findIndex(session => session.sessionId === sessionId);
 
-        // Supprimer la session si elle est vide
-        if (connectedUsersBySession[sessionId].length === 0) {
-            delete connectedUsersBySession[sessionId];
-        }
-    }
+    const removedSession = sessions.splice(sessionIndex, 1)[0];
+    
+    delete messageHistoryBySession[sessionId];
+    delete connectedUsersBySession[sessionId];
+    broadcastSessions();
+    console.log(sessions)
+
+
+    console.log(sessions)
 }
+
+
+// envoie des messages du general
+function broadcastMessage(message) {
+    messageHistory.push(message);
+    if (messageHistory.length > MAX_MESSAGES) {
+        messageHistory.shift();
+    }
+    const latestMessages = messageHistory.slice(-MAX_MESSAGES);
+    wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({ type: "messageGeneral", messages: latestMessages }));
+        }
+    });
+}
+
 
 // envoyer les sessions à tous les clients
 function broadcastSessions() {
@@ -154,7 +243,6 @@ function broadcastSessions() {
         user_id: session.user_id,
         username: session.username,
     }));
-
     wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify({ action: 'updateSessions', sessions: sessionsData }));
@@ -162,9 +250,11 @@ function broadcastSessions() {
     });
 }
 
-setInterval(() => {
-    broadcastSessions();
-}, 5000);
+// setInterval(() => {
+//     broadcastSessions();
+// }, 5000);
+
+
 
 server.on('upgrade', (request, socket, head) => {
     wss.handleUpgrade(request, socket, head, (ws) => {

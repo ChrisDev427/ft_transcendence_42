@@ -20,9 +20,9 @@ from .utils import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from friend_management.models import Friend_management
 from django.core.files.base import ContentFile
-
-
 import pyotp, uuid, os, requests
+
+
 
 class AllUserView(APIView):
     #permission_classes = [permissions.IsAdminUser]
@@ -83,36 +83,45 @@ class oauth_login(APIView):
 
 
 class UserRegisterView(APIView):
-    permission_classes = [permissions.AllowAny]
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             email = str.lower(serializer.validated_data.get('email'))
             username = str.lower(serializer.validated_data.get('username'))
             if User.objects.filter(email=email).exists():
-                return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
+                response = Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
             elif User.objects.filter(username=username).exists():
-                return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
-            elif email == None:
-                return Response({"error": "Email needed"}, status=status.HTTP_400_BAD_REQUEST)
-            user = User.objects.create_user(
-                username = username,
-                password = serializer.validated_data.get('password'),
-                first_name = serializer.validated_data.get('first_name'),
-                last_name = serializer.validated_data.get('last_name'),
-                email=email,
-                is_active=False,
-            )
-            user_profile = UserProfile.objects.create(user=user)
-            try :
-                send_email(user_profile, email)
-            except:
-                user_profile.delete()
-                user.delete()
-                return Response({"Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-            return Response("User created", status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+                response = Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
+            elif email is None:  # Remarque : Utilisez 'is None' pour une vérification plus pythonique
+                response = Response({"error": "Email needed"}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                user = User.objects.create_user(
+                    username=username,
+                    password=serializer.validated_data.get('password'),
+                    first_name=serializer.validated_data.get('first_name'),
+                    last_name=serializer.validated_data.get('last_name'),
+                    email=email,
+                    is_active=False,
+                )
+                user_profile = UserProfile.objects.create(user=user)
+                try:
+                    send_email(user_profile, email)
+                    response = Response("User created", status=status.HTTP_201_CREATED)
+                except:
+                    user_profile.delete()
+                    user.delete()
+                    response = Response({"Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        else:
+            response = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Ajoutez vos en-têtes personnalisés ici
+        response['Access-Control-Allow-Origin'] = '*'  # Ou spécifiez des origines autorisées
+        response['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        response['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        # Ajoutez d'autres en-têtes CORS si nécessaire
+        
+        return response
+    
 class VerifyEmailView(APIView):
     permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
@@ -373,3 +382,4 @@ class SendOTPView(APIView):
         user_profile.opt_expiration = timezone.now() + timezone.timedelta(minutes=5)
         user_profile.save()
         return Response({'Verification code sent successfully.'}, status=status.HTTP_204_NO_CONTENT)
+

@@ -205,7 +205,7 @@
             <div class="col d-flex justify-content-center ">
               <a class="btn btn-outline-info  shadow p-2 w-75 mb-4" href="#aboutTheTeam">About the team</a>
             </div>
-          </di
+          </div>
         </div>
       </div>
     </section>
@@ -282,8 +282,81 @@
                 </div>
               </div>
             </div>
+          </div>
 
-        </div>
+
+
+          <!-- chat general JS -->
+          <div id="chat-container">
+            <div id="chat-messages"></div>
+            <div id="input-container">
+              <input type="text" id="message-input" placeholder="Ecris un chat..." onkeydown="handleKeyPress(event)">
+              <button id="send-button" onclick="sendMessage()">Send</button>
+            </div>
+          </div>
+          <script>
+
+              socket.addEventListener('message', (event) => {
+                  const messageContainer = document.getElementById('chat-messages');
+                  const receivedMessage = JSON.parse(event.data);
+      
+                  if (receivedMessage.type === 'messageGeneral') {
+                      const messages = receivedMessage.messages || [];
+                      const messagesToDisplay = messages.slice(-10);
+                      messageContainer.innerHTML = '';
+                      messagesToDisplay.forEach(msg => {
+                          messageContainer.innerHTML += `<div><strong>${msg.username}:</strong> ${msg.text}</div>`;
+                      });
+                      messageContainer.scrollTop = messageContainer.scrollHeight;
+                  }
+              });
+                      
+              function sendMessage() {
+                  const messageInput = document.getElementById('message-input');
+                  const message = messageInput.value.trim();
+          
+                  if (message !== '') {
+                      if (socket.readyState === WebSocket.OPEN) {
+                          socket.send(JSON.stringify({ action: 'sendMessage', text: message }));
+                          messageInput.value = '';
+                      } else {
+                          console.warn('La connexion WebSocket n\'est pas encore établie.');
+                      }
+                  }
+              }
+              
+              function handleKeyPress(event) {
+                  if (event.key === 'Enter') {
+                      sendMessage();
+                  }
+              }
+              </script>
+
+              <!-- <div id="chat-container_session">
+                <div id="chat-messages_session"></div>
+                <div id="input-container_session">
+                  <input type="text" id="message-input_session" placeholder="Ecris un chat..." onkeydown="handleKeyPress(event)">
+                  <button id="send-button_session" onclick="sendMessage_session()">Send</button>
+                </div>
+              </div>
+
+              <script>
+                socket.addEventListener('message', (event) => {
+                  const messageContainer = document.getElementById('chat-messages_session');
+                  const receivedMessage = JSON.parse(event.data);
+      
+                  if (receivedMessage.type === 'messageGeneral') {
+                      const messages = receivedMessage.messages || [];
+                      const messagesToDisplay = messages.slice(-10);
+                      messageContainer.innerHTML = '';
+                      messagesToDisplay.forEach(msg => {
+                          messageContainer.innerHTML += `<div><strong>${msg.username}:</strong> ${msg.text}</div>`;
+                      });
+                      messageContainer.scrollTop = messageContainer.scrollHeight;
+                  }
+              });
+              </script> -->
+
     </section>
 
 
@@ -551,9 +624,7 @@
                   console.log('Updating sessions list...');
                   updateSessionsList(data.sessions);
               } else if (data.action === 'join') {
-                  console.log('Joining session with ID:', data.sessionId);
-                  // Ajoutez votre logique pour rejoindre la session ici
-              }
+                  console.log('Joining session with ID:', data.sessionId);              }
           });
 
           socket.addEventListener('close', (event) => {

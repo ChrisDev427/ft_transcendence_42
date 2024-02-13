@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        #chat-container {
+            width: 400px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #chat-messages {
+            height: 200px;
+            overflow-y: scroll;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        #input-container {
+            display: flex;
+        }
+
+        #message-input {
+            flex-grow: 1;
+            padding: 8px;
+            margin-right: 10px;
+        }
+
+        #send-button {
+            padding: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-messages"></div>
+        <div id="input-container">
+            <input type="text" id="message-input" placeholder="Ecris un chat..." onkeydown="handleKeyPress(event)">
+            <button id="send-button" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const ws = new WebSocket('wss://transcendence42.ddns.net:90');
+    
+        ws.addEventListener('open', (event) => {
+            console.log('WebSocket connection opened:', event);
+            // La connexion WebSocket est maintenant ouverte, vous pouvez envoyer des messages si nécessaire
+        });
+
+
+
+        ws.addEventListener('message', (event) => {
+            const messageContainer = document.getElementById('chat-messages');
+            const receivedMessage = JSON.parse(event.data);
+
+            if (receivedMessage.type === 'messageGeneral') {
+                const messages = receivedMessage.messages || [];
+                const messagesToDisplay = messages.slice(-10);
+                messageContainer.innerHTML = '';
+                messagesToDisplay.forEach(msg => {
+                    messageContainer.innerHTML += `<div><strong>${msg.username}:</strong> ${msg.text}</div>`;
+                });
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+            }
+        });
+                
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value.trim();
+    
+            if (message !== '') {
+                // Assurez-vous que la connexion est ouverte avant d'envoyer un message
+                if (ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({ action: 'sendMessage', text: message }));
+                    messageInput.value = '';
+                } else {
+                    console.warn('La connexion WebSocket n\'est pas encore établie.');
+                }
+            }
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+
+        ws.addEventListener('close', (event) => {
+            console.log('WebSocket connection closed:', event);
+        });
+        </script>
+</body>
+</html>
