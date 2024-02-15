@@ -52,7 +52,7 @@ services:
     volumes:
        - ./requirements/frontend/nginx/conf/nginx.conf:/etc/nginx/conf.d/default.conf
        - ./requirements/frontend/nginx/utils/:/usr/share/nginx/html
-       - ./requirements/frontend/nginx/.htpasswd:/etc/nginx/.htpasswd
+      #  - ./requirements/frontend/nginx/.htpasswd:/etc/nginx/.htpasswd
     depends_on:
       - django
     env_file: .env
@@ -79,6 +79,7 @@ services:
       - "3000:3000"
     volumes:
       - ./requirements/backend/grafana:/var/lib/grafana
+      - ./requirements/backend/grafana/conf/defaults.ini:/usr/share/grafana/conf/defaults.ini
     networks:
       - pong
     env_file: .env

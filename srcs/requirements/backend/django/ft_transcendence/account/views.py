@@ -107,7 +107,7 @@ class UserRegisterView(APIView):
             user_profile = UserProfile.objects.create(user=user)
             try :
                 send_email(user_profile, email)
-            except:
+            except Exception as e:
                 user_profile.delete()
                 user.delete()
                 return Response({"Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
