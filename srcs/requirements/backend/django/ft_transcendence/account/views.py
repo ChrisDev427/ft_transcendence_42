@@ -33,10 +33,9 @@ class AllUserView(APIView):
 
 class UserView(APIView):
     def get(self, request, pk):
-        user = User.objects.get(pk=pk)
-        serializer = PublicUserSerializer(user)
+        user = UserProfile.objects.get(pk=pk)
+        serializer = PublicUserProfileSerializer(user)
         return Response(serializer.data)
-
 
 class oauth_login(APIView):
     permission_classes = [permissions.AllowAny]
@@ -314,17 +313,16 @@ class isIngame(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class AvatarView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
-    def get (self, request, avatar):
+    def get (self, request, username):
         try:
-            user = request.user
-            user_profile = UserProfile.objects.get(user=user)
+            user_profile = UserProfile.objects.filter(user__username=username).first()
             if user_profile.avatar:
                 image_path = 'account/avatar/' + user_profile.avatar.name.split('/')[-1]
                 with default_storage.open(image_path, 'rb') as image_file:
                     image_data = image_file.read()
-                image_extension = avatar.split('.')[-1]
+                image_extension = image_path.split('.')[-1]
                 return HttpResponse(image_data, content_type='image/' + image_extension)
             else:
                 return HttpResponse(status=404)
@@ -377,3 +375,15 @@ class SendOTPView(APIView):
         user_profile.opt_expiration = timezone.now() + timezone.timedelta(minutes=5)
         user_profile.save()
         return Response({'Verification code sent successfully.'}, status=status.HTTP_204_NO_CONTENT)
+
+class ActivityCheckView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        try:
+            user_profile = UserProfile.objects.get(user=user)
+            user_profile.update_last_activity()  # Met à jour la dernière activité
+            return Response({'status': 'Activity updated'})
+        except UserProfile.DoesNotExist:
+            return Response({'error': 'UserProfile not found'}, status=404)

@@ -10,3 +10,4 @@ phonenumbers # for phone number validation
 pyotp # for otp application authenticator
 requests-oauthlib # for oauth2
 django-prometheus # for prometheus - monitoring
+django-background-tasks # for background tasks

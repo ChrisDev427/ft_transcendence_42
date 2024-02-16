@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 	'chat',
 	'friend_management',
 	'django_prometheus',
+	'background_task',
 ]
 
 MIDDLEWARE = [

@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 class Friend_managementView(APIView):
 	permission_classes = [IsAuthenticated]
 
-	def get(self, request):
+	def get(self, request): # modifier juste pour les users connectés
 		friend_management = Friend_management.objects.all()
 		serializer = Friend_managementSerializer(friend_management, many=True)
 		return Response(serializer.data)
