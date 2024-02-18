@@ -9,10 +9,16 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'first_name', 'last_name', 'password', 'email', 'is_staff', 'is_active', 'date_joined', 'last_login']
 
-class PublicUserSerializer(serializers.ModelSerializer):
+class PublicUserProfileSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
+
     class Meta:
-        model = User
-        fields = ['id', 'username', 'first_name', 'last_name']
+        model = UserProfile
+        fields = ['id', 'username']
+
+    def get_username(self, obj):
+        return obj.user.username
+
 
 class UserProfileSerializer(serializers.ModelSerializer):
 
