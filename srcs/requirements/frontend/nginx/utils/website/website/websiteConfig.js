@@ -3,9 +3,9 @@ let connectedFrom_desktop = false;
 let two_fa = false;
 let sessionUsername;
 
-// chart pie data
-
-// let userId;
+//****** DOMAIN URLS *********************
+const domainPath = 'http://localhost:8000';
+// const domainPath = 'https://transcendence42.ddns.net/';
 
 if ('ontouchstart' in window || navigator.maxTouchPoints) {
     console.log("The user is connecting from a mobile phone.");

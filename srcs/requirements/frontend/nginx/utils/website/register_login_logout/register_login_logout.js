@@ -21,7 +21,8 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
   div1.appendChild(div2);
   document.getElementById('signUpDiv').appendChild(div1);
 
-  fetch('http://localhost:8000/api/account/register/', {
+  // fetch('http://localhost:8000/api/account/register/', {
+    fetch(domainPath + '/api/account/register/', {
   method: 'POST',
   body: formData
 
@@ -55,7 +56,8 @@ function requestLogin(formData) {
 
   verifyToken();
 
-  fetch('http://localhost:8000/api/account/login/', {
+  // fetch('http://localhost:8000/api/account/login/', {
+    fetch(domainPath + '/api/account/login/', {
     method: 'POST',
     body: formData
   })
@@ -139,6 +141,7 @@ document.getElementById('validLogout').addEventListener('click', function() {
     document.getElementById('spinner').remove();
     document.getElementById('alert-bg-blur').classList.add('hidden-element');
     showSection('main');
+    location.reload();
   }, 3000);
 });
 
@@ -162,7 +165,8 @@ function getAuthorizationCode() {
 
 async function exchangeCodeForToken(code) {
   try {
-    const response = await fetch('http://localhost:8000/api/account/o/token/?code=' + code);
+    // const response = await fetch('http://localhost:8000/api/account/o/token/?code=' + code);
+    const response = await fetch(domainPath + '/api/account/o/token/?code=' + code);
 
     if (!response.ok) {
       throw new Error('Error : fetch : exchange token');
@@ -220,7 +224,8 @@ function verifyEmail() {
   console.log(token);
 
   if (token) {
-    fetch("http://localhost:8000/api/account/email/verify/?token=" + token)
+    // fetch("http://localhost:8000/api/account/email/verify/?token=" + token)
+    fetch(domainPath + '/api/account/email/verify/?token=' + token)
     .then(response => {
       if (response.status === 200) {
         // Authentification réussie

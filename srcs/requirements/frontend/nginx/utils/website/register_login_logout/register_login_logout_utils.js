@@ -203,12 +203,12 @@ function refreshAccessToken() {
         return;
     }
     // Effectuez une requête au point de terminaison de rafraîchissement du token côté serveur
-    fetch('http://localhost:8000/api/account/token/refresh/', {
+    // fetch('http://localhost:8000/api/account/token/refresh/', {
+        fetch(domainPath + '/api/account/token/refresh/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        
         body: JSON.stringify({
             refresh: refreshToken,
         }),
@@ -223,14 +223,14 @@ function refreshAccessToken() {
         }
     })
     .then(data => {
-        // Mettez à jour le nouvel access token dans le système de stockage (par exemple, localStorage)
         localStorage.setItem('accessToken', data.access);
         console.log('Token refreshed successfully');
     })
 }
 
 function verifyToken() {
-    fetch('http://localhost:8000/api/account/token/verify/', {
+    // fetch('http://localhost:8000/api/account/token/verify/', {
+        fetch(domainPath + '/api/account/token/verify/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -263,5 +263,4 @@ function profileAccess(connectWith) {
         document.getElementById('changePasswordBtn').classList.remove('unvisible');
         document.getElementById('setInfoIc').classList.remove('unvisible');
     }
-    
 }

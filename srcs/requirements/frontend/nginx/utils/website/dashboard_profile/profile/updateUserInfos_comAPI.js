@@ -13,7 +13,8 @@ function modifyAvatar_API() {
         }
         else {
 
-            fetch('http://localhost:8000/api/account/avatar/', {
+            // fetch('http://localhost:8000/api/account/avatar/', {
+                fetch(domainPath + '/api/account/avatar/', {
                 method: 'POST',
                 body: new FormData(e.target),
                 headers: {
@@ -27,14 +28,12 @@ function modifyAvatar_API() {
                     console.log('Modify Avatar Success!');
                     getProfileInfos();
                     alert_modify_success('avatarProfile', 'Success');
-                    // return response.json();
                 } else {
                     throw new Error('Modify Avatar Error');
                 }
             })
             .catch(error => {
                 console.error('Fetch Error:', error);
-                // Gérez toutes les erreurs ici, qu'elles soient liées à la requête ou à la réponse
                 alert_modify_error('avatarProfile', 'Error');
             });
         }
@@ -54,7 +53,8 @@ function modifyBio_API() {
         }
         else {
 
-            fetch('http://localhost:8000/api/account/profile/', {
+            // fetch('http://localhost:8000/api/account/profile/', {
+                fetch(domainPath + '/api/account/profile/', {
                 method: 'PATCH',
                 body: new FormData(e.target),
                 headers: {
@@ -64,13 +64,13 @@ function modifyBio_API() {
             .then(response => {
                 console.log('response status:', response.status);
 
-                if (response.ok) { // Vérifiez si la réponse a un statut de succès (200-299)
+                if (response.ok) {
                     console.log('Modify Bio Success!');
                     getProfileInfos();
                     alert_modify_success('bioProfileDiv', 'Success');
                 } else {
                     console.error('Error:', response.status);
-                    return response.json(); // Retourne la promesse pour que vous puissiez accéder aux données JSON de l'erreur
+                    return response.json();
                 }
             })
             .then(errorData => {
@@ -103,18 +103,13 @@ function setMobile_API() {
             const mobile = document.getElementById('inputMobileNumber');
 
             if (mobile.value.startsWith('0')) {
-                // Supprimer le premier caractère (le '0') de la valeur du champ
                 mobile.value = mobile.value.substring(1);
-                
             }
-            console.log(countryCode.value);
-            console.log(mobile.value);
-            
             const tmp = countryCode.value + mobile.value;
             mobile.value = tmp;
            
-
-            fetch('http://localhost:8000/api/account/profile/', {
+            // fetch('http://localhost:8000/api/account/profile/', {
+                fetch(domainPath + '/api/account/profile/', {
                 method: 'PATCH',
                 body: new FormData(e.target),
                 headers: {
@@ -124,7 +119,7 @@ function setMobile_API() {
             .then(response => {
                 console.log('response status:', response.status);
 
-                if (response.ok) { // Vérifiez si la réponse a un statut de succès (200-299)
+                if (response.ok) {
                     console.log('Input Mobile Success!');
                 alert_modify_success('mobileInfosDiv', 'A verification code is sent on your mobile');
                 getProfileInfos();
@@ -132,27 +127,22 @@ function setMobile_API() {
                         verifyMobile_createForm();
                     }, 3000);
                 } else {
-                    // Si la réponse n'est pas OK, traitez l'erreur
                     console.error('Error:', response.status);
-                    return response.json(); // Retourne la promesse pour que vous puissiez accéder aux données JSON de l'erreur
+                    return response.json();
                 }
             })
             .then(errorData => {
-                // Traitez les données d'erreur ici s'il y en a
                 if (errorData) {
                     alert_modify_error('mobileInfosDiv', Object.values(errorData));
                     console.error('Error Data:', errorData);
-                    // Vous pouvez également appeler une fonction pour gérer l'erreur ici
                 }
             })
             .catch(error => {
-                // Attrapez les erreurs qui se produisent lors de l'envoi de la requête
                 console.error('Fetch Error : ', error);
             });
         }
     });
 }
-
 
 function modifyInfos_API() {
     console.log('in modifyInfos_API()');
@@ -170,37 +160,33 @@ function modifyInfos_API() {
         }
         else {
 
-            fetch('http://localhost:8000/api/account/profile/', {
-            method: 'PATCH',
-            body: new FormData(e.target),
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-            }
+            // fetch('http://localhost:8000/api/account/profile/', {
+            fetch(domainPath + '/api/account/profile/', {
+                method: 'PATCH',
+                body: new FormData(e.target),
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+                }
             })
             .then(response => {
                 console.log('response status:', response.status);
 
-                if (response.ok) { // Vérifiez si la réponse a un statut de succès (200-299)
+                if (response.ok) {
                     console.log('Modify Infos Success!');
                 getProfileInfos();
                 alert_modify_success('infosProfile', 'Success');
-                    // Vous pouvez appeler une fonction pour gérer le succès ici
                 } else {
-                    // Si la réponse n'est pas OK, traitez l'erreur
                     console.error('Error : Modify Infos : ', response.status);
-                    return response.json(); // Retourne la promesse pour que vous puissiez accéder aux données JSON de l'erreur
+                    return response.json();
                 }
             })
             .then(errorData => {
-                // Traitez les données d'erreur ici s'il y en a
                 if (errorData) {
                     alert_modify_error('infosProfile', Object.values(errorData));
                     console.error('Error Data:', errorData);
-                    // Vous pouvez également appeler une fonction pour gérer l'erreur ici
                 }
             })
             .catch(error => {
-                // Attrapez les erreurs qui se produisent lors de l'envoi de la requête
                 console.error('Fetch Error:', error);
             });
         }
@@ -221,19 +207,19 @@ function modifyEmail_API() {
         }
         else {
 
-            fetch('http://localhost:8000/api/account/profile/', {
-            method: 'PATCH',
-            body: new FormData(e.target),
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-            }
+            // fetch('http://localhost:8000/api/account/profile/', {
+            fetch(domainPath + '/api/account/profile/', {
+                method: 'PATCH',
+                body: new FormData(e.target),
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+                }
             })
             .then(response => {
                 console.log('response status:', response.status);
 
-                if (response.ok) { // Vérifiez si la réponse a un statut de succès (200-299)
+                if (response.ok) {
                     console.log('Modify Email Success!');
-                // getProfileInfos(localStorage.getItem('accessToken'));
                     alert_modify_success('emailProfileDiv', 'Success');
                     setTimeout(function () {
                         userLogout_API();
@@ -243,20 +229,17 @@ function modifyEmail_API() {
                         showSection('signIn');
                     }, 3000);
                 } else {
-                    // Si la réponse n'est pas OK, traitez l'erreur
                     console.error('Error : Modify Email : ', response.status);
-                    return response.json(); // Retourne la promesse pour que vous puissiez accéder aux données JSON de l'erreur
+                    return response.json();
                 }
             })
             .then(errorData => {
-                // Traitez les données d'erreur ici s'il y en a
                 if (errorData) {
                     alert_modify_error('emailProfileDiv', Object.values(errorData));
                     console.error('Error Data:', errorData);
                 }
             })
             .catch(error => {
-                // Attrapez les erreurs qui se produisent lors de l'envoi de la requête
                 console.error('Fetch Error:', error);
             });
         }
@@ -278,22 +261,22 @@ function modifyPassword_API() {
         }
         else {
 
-            fetch('http://localhost:8000/api/account/profile/', {
-            method: 'PATCH',
-            body: new FormData(e.target),
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-            }
+            // fetch('http://localhost:8000/api/account/profile/', {
+            fetch(domainPath + '/api/account/profile/', {
+                method: 'PATCH',
+                body: new FormData(e.target),
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+                }
             })
             .then(response => {
-                console.log('response status:', response.status);
 
-                if (response.ok) { // Vérifiez si la réponse a un statut de succès (200-299)
+                if (response.ok) { 
                     console.log('Modify Password Success!');
                     alert_modify_success('changeEraseBtn', 'Success');
                 } else {
                     console.error('Error : Modify Password : ', response.status);
-                    return response.json(); // Retourne la promesse pour que vous puissiez accéder aux données JSON de l'erreur
+                    return response.json();
                 }
             })
             .then(errorData => {
@@ -317,7 +300,8 @@ function modify2FA_API() {
     document.getElementById('twofa-form').addEventListener('submit', function (e) {
         e.preventDefault();
 
-        fetch('http://localhost:8000/api/account/profile/', {
+        // fetch('http://localhost:8000/api/account/profile/', {
+        fetch(domainPath + '/api/account/profile/', {
             method: 'PATCH',
             body: new FormData(e.target),
             headers: {
@@ -327,28 +311,23 @@ function modify2FA_API() {
         .then(response => {
             console.log('response status:', response.status);
 
-            if (response.ok) { // Vérifiez si la réponse a un statut de succès (200-299)
+            if (response.ok) {
                 
                 console.log('Modify 2FA Success!');
                 getProfileInfos();
                 alert_modify_success('authProfile', 'Success');
-              
             } else {
-                // Si la réponse n'est pas OK, traitez l'erreur
                 console.error('Error : Modify 2FA : ', response.status);
-                return response.json(); // Retourne la promesse pour que vous puissiez accéder aux données JSON de l'erreur
+                return response.json();
             }
         })
         .then(errorData => {
-            // Traitez les données d'erreur ici s'il y en a
             if (errorData) {
                 alert_modify_error('authProfile', Object.values(errorData));
                 console.error('Error Data:', errorData);
-                // Vous pouvez également appeler une fonction pour gérer l'erreur ici
             }
         })
         .catch(error => {
-            // Attrapez les erreurs qui se produisent lors de l'envoi de la requête
             console.error('Fetch Error:', error);
         });
     });
@@ -357,7 +336,8 @@ function modify2FA_API() {
 function userLogout_API() {
     console.log('USER LOGOUT FUNCTION');
     verifyToken();
-    fetch('http://localhost:8000/api/account/logout/', {
+    // fetch('http://localhost:8000/api/account/logout/', {
+    fetch(domainPath + '/api/account/logout/', {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
@@ -365,11 +345,9 @@ function userLogout_API() {
     })
     .then(response => {
         if (response.ok) {
-            // Authentification réussie
           console.log('Logout Success :', response.status);
         }
         else {
-          // Gestion des erreurs lors de la récupération du profil
           console.error('Error : logout :', response.status);
           throw new Error('Échec de la récupération du profil');
       }
@@ -386,7 +364,8 @@ function eraseAccount_API() {
     document.getElementById('eraseAccount-form').addEventListener('submit', function (e) {
         e.preventDefault();
 
-        fetch('http://localhost:8000/api/account/profile/', {
+        // fetch('http://localhost:8000/api/account/profile/', {
+        fetch(domainPath + '/api/account/profile/', {
             method: 'DELETE',
             body: new FormData(e.target),
             headers: {
@@ -396,7 +375,7 @@ function eraseAccount_API() {
         .then(response => {
             console.log('response status:', response.status);
 
-            if (response.ok) { // Vérifiez si la réponse a un statut de succès (200-299)
+            if (response.ok) {
                 console.log('Erase Account Success!');
 
                 alert_modify_success('authProfile', 'Erasing...');
@@ -407,25 +386,18 @@ function eraseAccount_API() {
                     itemsVisibility_logged_out();
                     showSection('main');
                   }, 3000);
-                // Vous pouvez appeler une fonction pour gérer le succès ici
             } else {
-                // Si la réponse n'est pas OK, traitez l'erreur
                 console.error('Error : Erase Account : ', response.status);
-                // alert_modify_error('authProfile', 'An error accured !');
-
-                return response.json(); // Retourne la promesse pour que vous puissiez accéder aux données JSON de l'erreur
+                return response.json();
             }
         })
         .then(errorData => {
-            // Traitez les données d'erreur ici s'il y en a
             if (errorData) {
                 alert_modify_error('authProfile', Object.values(errorData));
                 console.error('Error Data:', errorData);
-                // Vous pouvez également appeler une fonction pour gérer l'erreur ici
             }
         })
         .catch(error => {
-            // Attrapez les erreurs qui se produisent lors de l'envoi de la requête
             console.error('Fetch Error:', error);
         });
     });
@@ -433,12 +405,9 @@ function eraseAccount_API() {
 
 function alert_modify_success(targetDiv, message) {
 
-    // Sélectionnez la section par son ID
     const modifyForm = document.getElementById('modifyForm');
-
-    // Parcourez tous les éléments descendants de la section
     modifyForm.querySelectorAll('input, button').forEach((element) => {
-    element.disabled = true;  // Rendre l'élément inactif
+        element.disabled = true; 
     });
 
     const div = document.createElement('div');
@@ -471,10 +440,7 @@ function alert_modify_success(targetDiv, message) {
 
 function alert_modify_error(targetDiv, message) {
 
-    // Sélectionnez la section par son ID
     const modifyForm = document.getElementById('modifyForm');
-
-    // Parcourez tous les éléments descendants de la section
     modifyForm.querySelectorAll('input, button').forEach((element) => {
         element.disabled = true;  // Rendre l'élément inactif
     });

@@ -62,11 +62,9 @@ function initDashboard(data) {
   .catch(error => {
     console.error("Error : download avatar imgage 'initDashboard()' !", error);
   });
+  
   manageFriends(data);
   get_users_data();
-
-  // document.getElementById('totalUsersDash').textContent = totalUsers;
-  // document.getElementById('connectedUsersDash').textContent = connectedUsers;
 }
 
 
@@ -76,40 +74,25 @@ function manageFriends(data) {
   createFriendArray(data)
   .then(friendsArray => {
     if (friendsArray.length === 0) {
-
-      const div = document.createElement('div');
-      div.id = 'friendsTextInfo';
-      div.classList = 'p-5';
-      const text = document.createElement('h5');
-      text.classList = 'font-weight-bold text-center text-secondary';
-      text.textContent = "You don't have any friend yet";
-      div.appendChild(text);
-      document.getElementById('friendShipBody-dashboard').appendChild(div);
-      document.getElementById('spinnerFriends').remove();
-
+      document.getElementById('spinner' + 'friendShipBody-dashboard').remove();
+      document.getElementById('friendsTextInfo').classList.remove('hidden-element');
       console.log('No friendship to display in dashboard');
     } else {
-      const textToRemove = document.getElementById('friendsTextInfo');
-      if (textToRemove) {
-        textToRemove.remove();
-      }
-      createFriendsContent(friendsArray);
+     
+      friends_createContent(friendsArray);
     }
-    
   })
   .catch(error => {
     console.error("Error in dashFriendsInitContent():", error);
   });
 }
 
-function createFriendsContent(friendsArray) {
+function friends_createContent(friendsArray) {
 
-  console.log('array size = ' + friendsArray.length);
   sortFriendsArray(friendsArray);
   
   for (let i = 0; i < friendsArray.length; i++) {
 
-    // console.log('check = ' + friendsArray[i][0]);
     const mainDiv = document.createElement('div');
     mainDiv.classList = 'px-3 mb-3 fade-in';
     mainDiv.id = 'friendShipList-dashboard';
@@ -190,18 +173,200 @@ function createFriendsContent(friendsArray) {
     iconDiv.classList = 'col-auto my-sm-auto mx-auto mx-md-0 ml-md-auto mt-2';
     const icon = document.createElement('i');
     icon.classList = 'btn border-0 fa-solid fa-ellipsis-vertical text-secondary';
-    icon.onclick = '';
+    icon.id = 'friendExpand' + i;
     iconDiv.appendChild(icon);
     rowDiv.appendChild(iconDiv);
 
+    //************************************************************************
+    const friendObject = getUserObject(friendsArray[i][0]);
+    const expandInfos = friendExpandInfos_createContent(friendObject, i);
+    rowDiv.appendChild(expandInfos);
+    //************************************************************************
+    
     mainDiv.appendChild(rowDiv);
+
     setTimeout(function() {
 
-     
       document.getElementById('friendShipBody-dashboard').appendChild(mainDiv);
-    }, 300)
 
+      document.getElementById('friendExpand' + i).addEventListener('click', function() {
+        const expandInfos = document.getElementById('expand' + i);
+        if (expandInfos.classList.contains('hidden-element')) {
+          expandInfos.classList.remove('hidden-element');
+        } else {
+          expandInfos.classList.add('hidden-element');
+        }
+      })
+    }, 300);
+  }
+  document.getElementById('spinner' + 'friendShipBody-dashboard').remove();
+}
+
+
+function friendExpandInfos_createContent(userObject, index) {
+  
+  const cardTitles = ['Victories', 'Defeats', 'Played', 'Friends'];
+  const cardValue = [userObject.win, userObject.lose, userObject.win + userObject.lose, userObject.friend.length];
+  const cardIcons = ['fas fa-trophy text-success', 'fa-solid fa-face-sad-tear text-danger', 'fas fa-table-tennis text-info', 'fa-solid fa-people-group text-primary'];
+  const cardTextColor = [' text-success', ' text-danger', ' text-info', ' text-primary'];
+  const infosUser = [userObject.user.first_name, userObject.user.last_name, userObject.user.email];
+
+  console.log('userObject = ' + userObject.user.username);
+
+  const mainDiv = document.createElement('div');
+  mainDiv.classList = 'col-12 mt-3 hidden-element';
+  mainDiv.id = 'expand' + index;
+
+  // const hr1 = document.createElement('hr');
+  // hr1.classList = 'border-secondary';
+  // mainDiv.appendChild(hr1);
+
+  const mainRow = document.createElement('div');
+  mainRow.classList = 'row p-4 d-flex justify-content-evenly bg-success bg-opacity-25 rounded-3 shadow-sm';
+
+  for (let i = 0; i < 4; i++) {
+
+    const mainCol = document.createElement('div');
+    mainCol.classList = 'col-sm-5 px-2 rounded bg-white mb-2 shadow';
+    const row = document.createElement('div');
+    row.classList = 'row';
+
+    const col1 = document.createElement('div');
+    col1.classList = 'col';
+
+    const title = document.createElement('small');
+    title.classList = 'fw-bold' + cardTextColor[i];
+    title.textContent = cardTitles[i];
+    col1.appendChild(title);
+
+    const value = document.createElement('small');
+    value.classList = 'mb-0 fw-bold text-secondary ms-sm-2';
+    value.textContent = cardValue[i];
+    col1.appendChild(value);
+    row.appendChild(col1);
+    
+    const col2 = document.createElement('div');
+    col2.classList = 'col-auto';
+    const icon = document.createElement('i');
+    icon.classList = cardIcons[i];
+    col2.appendChild(icon);
+    row.appendChild(col2);
+    
+    mainCol.appendChild(row);
+    mainRow.appendChild(mainCol);
   }
   
-  document.getElementById('spinner' + 'friendShipBody-dashboard').remove();
+  const infosDiv = document.createElement('div');
+  infosDiv.classList = 'col-12 mt-3';
+  for (let i = 0; i < 4; i++) {
+    const h5 = document.createElement('h5');
+    if (i < 3) {
+      h5.classList = 'text-secondary text-center fs-5';
+      h5.textContent = infosUser[i];
+    } else {
+      h5.classList = 'text-secondary text-center fst-italic fs-6';
+      if (userObject.mobile_number.length === 0) {
+        h5.textContent = 'Mobile not provided';
+      } else {
+        h5.textContent = userObject.mobile_number;
+      }
+    }
+    infosDiv.appendChild(h5);
+  }
+  mainRow.appendChild(infosDiv);
+
+  const p1 = document.createElement('p');
+  p1.classList = 'lead fst-italic text-secondary text-center fs-6 mb-0';
+  const small1 = document.createElement('small');
+  small1.textContent = 'joined on : ' + handleDates(userObject.user.date_joined);
+  p1.appendChild(small1);
+  infosDiv.appendChild(p1);
+
+  const p2 = document.createElement('p');
+  p2.classList = 'lead fst-italic text-secondary text-center fs-6';
+  const small2 = document.createElement('small');
+  small2.textContent = 'last login : ' + handleDates(userObject.user.last_login);
+  p2.appendChild(small2);
+  infosDiv.appendChild(p2);
+  mainRow.appendChild(infosDiv);
+
+
+  const btnDiv = document.createElement('div');
+  btnDiv.classList = 'd-flex justify-content-center';
+  const btn = document.createElement('button');
+  btn.classList = 'btn btn-sm btn-warning text-white';
+  btn.id = 'removeFriendBtn';
+  btn.textContent = 'Remove friendship';
+  btnDiv.appendChild(btn);
+  infosDiv.appendChild(btnDiv);
+  mainDiv.appendChild(mainRow);
+
+  // const hr2 = document.createElement('hr');
+  // hr2.classList = 'border-secondary';
+  // mainDiv.appendChild(hr2);
+
+  return mainDiv;  
+}
+
+function searchUser_createContent(friendObjet) {
+
+  const mainDiv = document.createElement('div');
+  mainDiv.classList = 'col-sm-10 mx-auto bg-primary bg-opacity-10 rounded shadow p-3 mb-3 fade-in';
+
+  const rowDiv = document.createElement('div');
+  rowDiv.classList = 'row';
+
+  const imgDiv = document.createElement('div');
+  imgDiv.classList = 'col-auto mx-auto mx-sm-0 my-auto';
+
+  const img = document.createElement('img');
+  img.classList = 'rounded-3 shadow';
+  img.alt = 'avatarUser';
+  img.style.maxWidth = '80px';
+  getAvatar(friendObjet.user.username)
+  .then(imageURL => {
+    img.src = imageURL;
+  })
+  .catch(error => {
+    console.error("Error : download avatar imgage 'searchFriend_createContent()' !", error);
+  });
+  imgDiv.appendChild(img);
+  rowDiv.appendChild(imgDiv);
+
+  const infosDiv = document.createElement('div');
+  infosDiv.classList = 'col-sm-5 my-auto';
+  const username = document.createElement('h5');
+  username.classList = 'text-info text-center text-sm-start fs-3 mb-2 mt-md-0';
+  username.textContent = friendObjet.user.username;
+  infosDiv.appendChild(username);
+  const firstname = document.createElement('h5');
+  firstname.classList = 'text-secondary text-center text-sm-start fs-5';
+  firstname.textContent = friendObjet.user.first_name;
+  infosDiv.appendChild(firstname);
+  const lastname = document.createElement('h5');
+  lastname.classList = 'text-secondary text-center text-sm-start fs-5';
+  lastname.textContent = friendObjet.user.last_name;
+  infosDiv.appendChild(lastname);
+  rowDiv.appendChild(infosDiv);
+
+  const div = document.createElement('div');
+  div.classList = 'col-sm-3 d-flex justify-content-center align-items-center';
+  if (!isFriend(friendObjet.user.username)) {
+    const btn = document.createElement('button');
+    btn.classList = 'btn btn-info text-white mx-auto';
+    btn.textContent = 'Ask as friend';
+    btn.id = 'askFriendBtn';
+    div.appendChild(btn);
+  } else {
+    const icon = document.createElement('i');
+    icon.classList = 'fa-solid fa-user-group fa-3x text-info';
+    icon.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.3)';
+    div.appendChild(icon);
+  }
+  rowDiv.appendChild(div);
+
+  mainDiv.appendChild(rowDiv);
+  setTimeout(function() {
+    document.getElementById('searchFriend-cardArea').appendChild(mainDiv);
+  }, 300)
 }
