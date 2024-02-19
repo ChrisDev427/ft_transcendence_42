@@ -21,6 +21,46 @@ input[type="text password"]::placeholder {
 
   color: rgba(0, 179, 255, 0.351);
 }
+
+/* #friendShipList-dashboard, #main, #gameMenu, #playPong, #aboutTheTeam, #signIn, #signUp, #dashboard, #gameHistory, #profile, #alert-bg-blur, #alert-bg-blur {
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in-out forwards;
+  animation-delay: 0s;
+}
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+
+} */
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+.fade-out {
+  opacity: 1;
+  animation: fadeOut 0.3s ease-in-out forwards;
+}
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+#searchUserNotFound {
+  opacity: 0;
+  animation: fadeInOut 2s ease-in-out forwards; /* Ajustez la durée selon vos besoins */
+  animation-delay: 0s;
+}
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  20%, 70% { opacity: 1; }
+
+}
+
 #alert-bg-blur {
   position: fixed;
   top: 0;
@@ -87,4 +127,80 @@ input[type="text password"]::placeholder {
 }
 .image-container:hover .hover-logo {
   display: inline-block; /* ou display: block; selon le besoin */
+}
+
+
+.chart-pie {
+  position: relative;
+  height: 15rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .chart-pie {
+    height: calc(20rem - 43px) !important;
+  }
+}
+.border-left-primary {
+  border-left: 0.25rem solid #4e73df !important;
+}
+
+.border-bottom-primary {
+  border-bottom: 0.25rem solid #4e73df !important;
+}
+
+.border-left-secondary {
+  border-left: 0.25rem solid #858796 !important;
+}
+
+.border-bottom-secondary {
+  border-bottom: 0.25rem solid #858796 !important;
+}
+
+.border-left-success {
+  border-left: 0.25rem solid #1cc88a !important;
+}
+
+.border-bottom-success {
+  border-bottom: 0.25rem solid #1cc88a !important;
+}
+
+.border-left-info {
+  border-left: 0.25rem solid #36b9cc !important;
+}
+
+.border-bottom-info {
+  border-bottom: 0.25rem solid #36b9cc !important;
+}
+
+.border-left-warning {
+  border-left: 0.25rem solid #f6c23e !important;
+}
+
+.border-bottom-warning {
+  border-bottom: 0.25rem solid #f6c23e !important;
+}
+
+.border-left-danger {
+  border-left: 0.25rem solid #e74a3b !important;
+}
+
+.border-bottom-danger {
+  border-bottom: 0.25rem solid #e74a3b !important;
+}
+
+.border-left-light {
+  border-left: 0.25rem solid #f8f9fc !important;
+}
+
+.border-bottom-light {
+  border-bottom: 0.25rem solid #f8f9fc !important;
+}
+
+.border-left-dark {
+  border-left: 0.25rem solid #5a5c69 !important;
+}
+
+.border-bottom-dark {
+  border-bottom: 0.25rem solid #5a5c69 !important;
 }

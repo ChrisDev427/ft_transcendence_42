@@ -197,18 +197,19 @@ class ProfileView(APIView):
                 user.set_password(new_password)
                 user.save()
                 return Response("password updated", status=status.HTTP_200_OK)
-            if request_copy.get('two_fa_on') == "":
+            if request_copy.get('two_fa_on'):
                 if user.check_password(settings.PASSWORD_42):
                     return Response({"42 user can't enable 2fa"}, status=status.HTTP_401_UNAUTHORIZED)
                 user_profile.totp_secret = enable_2fa_authenticator(user_profile)
                 user_profile.two_fa = True
                 user_profile.save() == ""
-            elif request_copy.get('two_fa_off') == "":
+            elif request_copy.get('two_fa_off'):
                 user_profile.totp_secret = None
                 user_profile.two_fa = False
                 user_profile.save()
             if request_copy.get('mobile_number'):
                 mobile_number = request_copy.get('mobile_number')
+
                 if mobile_number == "" or mobile_number is None:
                     return Response({"mobile number needed"}, status=status.HTTP_400_BAD_REQUEST)
                 elif user_profile.mobile_number == mobile_number and user_profile.mobile_number_verified == True:
