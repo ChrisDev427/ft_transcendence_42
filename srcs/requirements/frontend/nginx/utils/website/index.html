@@ -177,7 +177,8 @@
               in software development, database design, security, and the integration of modern technologies.
             </p>
           </div>
-          <di class="col-lg-3 mb-3">
+          
+          <div class="col-lg-3 mb-3">
             <div class="col d-flex justify-content-center mt-4 mb-2 mb-lg-5">
               <a class="btn btn-info text-light shadow p-4 w-75" href="#gameMenu">Play Pong</a>
             </div>
@@ -480,15 +481,15 @@
           <div class="col-md-5 col-lg-4 my-4 mx-auto shadow p-3 rounded text-center">
             <form method="POST" class="form-control border-0" id="signin-form">
                 <!-- <label for="Username" class="form-label text-secondary">Username</label> -->
-                <input type="text" class="form-control mb-3 border-info" id="username" name="username" placeholder="Username">
+                <input type="text" class="form-control mb-3 border-info" id="signIn-username" name="username" placeholder="Username">
 
                 <!-- <label for="password" class="form-label text-secondary">Password</label> -->
                 <input type="password" class="form-control mb-3 border-info" autocomplete="current-password" id="signIn-password" name="password" placeholder="Password">
 
-                <button class="btn btn-info text-white w-100 mt-3" type="submit">Sign in</button>
+                <button id="signInBtn" class="btn btn-info text-white w-100 mt-3" type="submit">Sign in</button>
               </form>
                 <hr class="border-info">
-                <button class="btn btn-outline-info w-100" onclick="loginWith42()">Connect with 42</button>
+                <button id="42connectBtn" class="btn btn-outline-info w-100" onclick="loginWith42()">Connect with 42</button>
           </div>
         </div>
 
@@ -536,8 +537,10 @@
     </section>
 
     <section id="friends" class="unvisible">
-      <div class="container p-3">
-        <h1 class="display-1 fw-bold text-info text-center">Friends</h1>
+     
+      <div class="container-fluid p-3" style="height: 100vh; max-width: 1600px;">
+        <h1 class="display-1 fw-bold text-info text-center">Dashboard</h1>
+        <object type="text/html" data="startbootstrap-sb-admin-2-gh-pages/dashboard.html" width="100%" height="100%" class="rounded-4 mt-3"></object>
       </div>
     </section>
 
@@ -546,6 +549,8 @@
         <h1 class="display-1 fw-bold text-info text-center">Game History</h1>
       </div>
     </section>
+
+
 
     <section id="profile" class="unvisible">
       <h1 class="display-1 fw-bold text-info text-center">Profile</h1>
@@ -561,10 +566,13 @@
         </div>
         <hr class="px-5 text-info border-2">
         <div id="bioDiv">
+          <div id="bioProfileDiv">
+
             <p id="bioProfile" class="lead fs-6 text-lighter text-secondary text-center"></p>
             <div class="d-flex justify-content-center">
               <i id="setBioIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleBio_createForm()"></i>
             </div>
+          </div>
         </div>
         <hr class="px-5 text-info border-2">
         <div id="infosDiv">
@@ -572,33 +580,47 @@
               <h5 id="firstNameProfile" class="text-info text-center fs-4"></h5></a>
               <h5 id="lastNameProfile" class="text-info text-center fs-4"></h5></a>
               <h5 id="userNameProfile" class="text-info text-center fs-4"></h5></a>
-            </div>
               <div class="d-flex justify-content-center">
                 <i id="setInfoIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleInfos_createForm()"></i>
               </div>
+            </div>
         </div>
         <hr class="px-5 text-info border-2">
         <div id="emailDiv">
+          <div id="emailProfileDiv">
+
             <h5 id="emailProfile" class="text-info text-center fs-4"></h5>
-            <div id="emailProfileDiv" class="d-flex justify-content-center">
+            <div  class="d-flex justify-content-center">
               <i id="setEmailIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleEmail_createForm()"></i>
             </div>
+          </div>
         </div>
         <div id="authDiv">
           <hr class="px-5 text-info border-2">
           <div id="authProfile" class="btn-group-sm" role="group" aria-label="Basic radio toggle button group">
-            <h6 class="col-12 text-center text-secondary fw-bold">2FA Authentication</h6>
+            <div id="authTitleDiv">
+              <h6 id="authTitle" class="col text-center text-secondary fw-bold">2FA Authentication</h6>
+            </div>
+            <div id="mobileDiv" class="d-flex justify-content-center pb-3">
+              <div id="mobileInfosDiv" class="d-flex justify-content-center">
+
+                <i id="mobileIcon" class="fs-4 text-info bi bi-telephone-plus-fill cursor-pointer me-3" onclick="mobileInput_createForm()"></i>
+                <p id="mobileNotVerified" class="fst-italic text-danger fw-light mt-1">not verified !</p>
+                <p id="mobileVerified" class="fst-italic text-info fw-bold mt-1"></p>
+              </div>
+
+            </div>
             <div class="d-flex justify-content-center">
               <i id="set2faIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handle2FA_createForm()"></i>
             </div>
           </div>
-          </div>
+        </div>
 
         <div id="changeEraseDiv">
           <hr class="px-5 text-info border-2">
-          <div id="changeEraseBtn" class="d-flex justify-content-center mt-3">
-            <button id="changePasswordBtn" class="btn btn-sm btn-outline-info me-3" onclick="handlePassword_createForm()">Change password</button>
-            <button id="eraseAccountBtn" class="btn btn-sm btn-outline-danger" onclick="eraseAccount_createForm()">Erase Account</button>
+          <div id="changeEraseBtn" class="d-flex justify-content-center mt-4 mb-3">
+            <button id="changePasswordBtn" class="btn btn-sm fw-bold btn-outline-info me-3" onclick="handlePassword_createForm()">Change password</button>
+            <button id="eraseAccountBtn" class="btn btn-sm fw-bold btn-outline-danger" onclick="eraseAccount_createForm()">Erase Account</button>
           </div>
         </div>
 
@@ -637,7 +659,7 @@
 
               sessions.forEach(session => {
                   const sessionLink = document.createElement('a');
-                  sessionLink.href = `https://transcendence42.ddns.net/website/#playPong`;
+                  sessionLink.href = `https://transcendence42.ddns.net/#playPong`;
                   sessionLink.textContent = `Session ID: ${session.id}, Created At: ${session.createdAt}`;
 
                   sessionLink.addEventListener('click', () => {
@@ -723,6 +745,8 @@
     <script src="./js/websiteUtils.js"></script>
     <script src="./js/websiteConfig.js"></script>
     <script src="./js/requestAPI/register_login_logout.js"></script>
+    <script src="./js/requestAPI/manage_2FA.js"></script>
+    <script src="./js/requestAPI/manage_2FA_utils.js"></script>
     <script src="./js/requestAPI/register_login_logout_utils.js"></script>
     <script src="./js/requestAPI/updateUserInfos_createForms.js"></script>
     <script src="./js/requestAPI/updateUserInfos_comAPI.js"></script>
@@ -736,6 +760,7 @@
     <script src="./pong_game/js/pong.js"></script>
 
 
+    <script src="./qrcodejs/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </body>

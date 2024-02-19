@@ -74,6 +74,8 @@ document.addEventListener('DOMContentLoaded', function () {
         getProfileInfos(storedAccessToken);
         profileAccess(localStorage.getItem('connectType'));
         itemsVisibility_logged_in();
+        profileAccess(localStorage.getItem('connectType'));
+
 
         console.log('AccessToken:', storedAccessToken);
         console.log('RefreshToken:', storedRefreshToken);

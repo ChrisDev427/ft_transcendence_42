@@ -18,8 +18,8 @@ function check2FA(e) {
     // const passwordValue = passwordInput.value;
   
     // Retourne la promesse de l'appel fetch
-    return fetch('http://localhost:8000/api/account/profile/' + usernameValue, {
-        // return fetch('http://localhost:8000/api/account/profile/' + usernameValue, passwordValue, {
+    return fetch('https://transcendence42.ddns.net/api/account/profile/' + usernameValue + '/', {
+        // return fetch('https://transcendence42.ddns.net:8000/api/account/profile/' + usernameValue, passwordValue, {
       method: 'GET',
     })
     .then(response => {

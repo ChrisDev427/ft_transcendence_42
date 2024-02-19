@@ -1,92 +1,132 @@
 // REGISTER ----------------------------------------------------------------------
-//const csrfToken = getCookie('csrftoken');
-document.getElementById('signup-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    verifyToken();
 
-    fetch('http://localhost:8000/api/account/register/', {
-    method: 'POST',
-    body: new FormData(e.target)
+document.getElementById('signup-form').addEventListener('submit', function(e) {
+  e.preventDefault();
 
-    })
-    .then(response => {
-      console.log('response = ' + response);
+  fetch('https://transcendence42.ddns.net/api/account/register/', {
+  method: 'POST',
+  body: new FormData(e.target)
 
-      if (response.status === 201) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
-        console.log('Register Success !' + response.status);
-        alert_register_success();
-        e.target.reset();
+  })
+  .then(response => {
+    console.log('response = ' + response);
 
-
-      } else {
-            response.json().then((jsonData) => {
-            console.error('Erreur lors de l\'inscription : ' + Object.values(jsonData));
-            alert_register_fail("Registration error : " + Object.values(jsonData));
-          }).catch((error) => {
-              console.error('Erreur lors de la récupération du contenu JSON de la réponse : ' + error);
-        });
-        e.target.reset();
-      }
-    })
-    .catch(error => {
-      console.error('Erreur lors de la soumission du formulaire :', error);
-    });
+    if (response.status === 201) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
+      console.log('Register Success !' + response.status);
+      alert_register_success();
+      e.target.reset();
+    } else {
+      response.json().then((jsonData) => {
+      console.error('Erreur lors de l\'inscription : ' + Object.values(jsonData));
+      alert_register_fail("Registration error : " + Object.values(jsonData));
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la récupération du contenu JSON de la réponse : ' + error);
+      });
+      e.target.reset();
+    }
+  })
+  .catch(error => {
+    console.error('Erreur lors de la soumission du formulaire :', error);
   });
+});
 
 // LOGIN -------------------------------------------------------------------------
 
-document.getElementById('signin-form').addEventListener('submit', function (e) {
-  e.preventDefault();
+function requestLogin(formData) {
+
   verifyToken();
 
-  fetch('http://localhost:8000/api/account/login/', {
-      method: 'POST',
-      body: new FormData(e.target)
+  fetch('https://transcendence42.ddns.net/api/account/login/', {
+    method: 'POST',
+    body: formData
   })
   .then(response => {
-      if (response.status === 200) {
-          // Authentification réussie
-          console.log('login success');
-          alert_login_success();
-          return response.json();
-      } else {
-          // Authentification échouée
-          console.error('Authentication failed : ' + response.status);
-          alert_login_fail();
-          e.target.reset();
-          throw new Error('Authentication failed');
-      }
+    if (response.status === 200) {
+      // Authentification réussie
+      console.log('login success');
+      alert_login_success();
+      return response.json();
+    } else {
+      // Authentification échouée
+      console.error('Authentication failed : ' + response.status);
+      response.json()
+      .then(data => {
+        console.log('Response data:', data);
+        alert_login_fail(data.detail);
+      })
+      throw new Error('Authentication failed');
+    }
   })
   .then(data => {
-      // Récupère les informations de l'utilisateur et le jeton d'accès
-      console.log(data);
-      const userInformation = data.user;
-      // const accessToken = data.access;
-      // const refreshToken = data.refresh;
-
-      localStorage.setItem('accessToken', data.access);
-      localStorage.setItem('refreshToken', data.refresh);
-      localStorage.setItem('connectType', 'signin');
-
-      getProfileInfos(localStorage.getItem('accessToken'));
-      profileAccess(localStorage.getItem('connectType'));
-
-      // Fait quelque chose avec les informations de l'utilisateur, par exemple, les afficher
-
-      // console.log('Informations de l\'utilisateur :', userInformation);
-      // console.log('Jeton d\'accès :', accessToken);
-
-      // Redirige l'utilisateur vers une autre page (par exemple, le tableau de bord)
-      // window.location.replace('index.html');
+    // Récupère les informations de l'utilisateur et le jeton d'accès
+    console.log(data);
+    // const userInformation = data.user;
+   
+    localStorage.setItem('accessToken', data.access);
+    localStorage.setItem('refreshToken', data.refresh);
+    localStorage.setItem('connectType', 'signin');
+    getProfileInfos(localStorage.getItem('accessToken'));
+    profileAccess(localStorage.getItem('connectType'));
   })
   .catch(error => {
-      console.error('Error : form submit :', error);
+    console.error('Error : form submit :', error);
+    // alert_login_fail(error);
   });
+}
+
+document.getElementById('signin-form').addEventListener('submit', formSubmitHandler_login);
+function formSubmitHandler_login(e) {
+  e.preventDefault();
+
+  // Supprimez l'événement après son déclenchement
+  document.getElementById('signin-form').removeEventListener('submit', formSubmitHandler_login);
+
+  check2FA(e)
+    .then(response => {
+      const formData = new FormData(e.target);
+      if (response) {
+        console.log('new form data for 2FA');
+        getOTP_createForm(formData);
+      } else {
+        requestLogin(formData);
+      }
+    });
+}
+
+function userLogout() {
+  document.getElementById('alert-bg-blur').classList.remove('hidden-element');
+  document.getElementById('cancelLogout').addEventListener('click', function() {
+    document.getElementById('alert-bg-blur').classList.add('hidden-element');
+  });
+}
+document.getElementById('validLogout').addEventListener('click', function() {
+  console.log('valid logout pushed !');
+  userLogout_API();
+  const div1 = document.createElement('div');
+  div1.id = 'spinner';
+  div1.classList = 'd-flex justify-content-center';
+
+  const div2 = document.createElement('div');
+  div2.classList = 'spinner-border text-light mt-3';
+  div2.role = 'status';
+  div1.appendChild(div2);
+  const target = document.getElementById('confirm-logout');
+  target.appendChild(div1);
+  setTimeout(function () {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    itemsVisibility_logged_out();
+    document.getElementById('spinner').remove();
+    document.getElementById('alert-bg-blur').classList.add('hidden-element');
+    showSection('main');
+  }, 3000);
 });
+
 // LOGIN WITH 42 ******************************************************************************************
 function loginWith42() {
   console.log('connect with 42 function');
-  const oauthUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-44e47265c9b8312f83a47d720211e265bef85a1c8fc632f8786fe9dcdade34d1&redirect_uri=http%3A%2F%2Flocalhost&response_type=code';
+  const oauthUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-44e47265c9b8312f83a47d720211e265bef85a1c8fc632f8786fe9dcdade34d1&redirect_uri=https%3A%2F%2Ftranscendence42.ddns.net&response_type=code';
   window.location.href = oauthUrl;
 }
 
@@ -103,7 +143,7 @@ function getAuthorizationCode() {
 
 async function exchangeCodeForToken(code) {
   try {
-    const response = await fetch('http://localhost:8000/api/account/o/token/?code=' + code);
+    const response = await fetch('https://transcendence42.ddns.net/api/account/o/token/?code=' + code);
 
     if (!response.ok) {
       throw new Error('Error : fetch : exchange token');
@@ -121,7 +161,8 @@ async function exchangeCodeForToken(code) {
     console.log('exchange token');
     getProfileInfos(localStorage.getItem('accessToken'));
     profileAccess(localStorage.getItem('connectType'));
-    removeParamURL();
+    
+   removeParamURL();
   } catch (error) {
     console.error('Error : request exchange code / token :', error);
     throw error;
@@ -141,36 +182,13 @@ function removeParamURL() {
   // Mettre à jour l'URL sans le paramètre
   window.history.replaceState({}, document.title, currentURL.href);
 }
-// const code = getAuthorizationCode();
-// if (code) {
-//   console.log('code = ' + code);
-//   response = exchangeCodeForToken(code);
-//   console.log('response.access = ' + response.access);
-//   console.log('response.refresh = ' + response.refresh);
-//   // token = response.access_token;
-//   // token_refresh = response.refresh_token;
-// }
-
-// function getAuthorizationCode() {
-//   const urlParams = new URLSearchParams(window.location.search);
-//   return urlParams.get('code');
-// }
-
-// async function exchangeCodeForToken(code) {
-//   const response = await fetch('http://localhost:8000/api/account/o/token/?code=' + code);
-//   console.log('response = ' + response);
-//   const data = await response.json();
-//   console.log('data = : ' + data);
-//   return data;
-// }
-
 
 //*********************************************************************************************************
 
 function getProfileInfos(token) {
   console.log('GET PROFILE INFOS FUNCTION');
   verifyToken();
-  fetch('http://localhost:8000/api/account/profile/', {
+  fetch('https://transcendence42.ddns.net/api/account/profile/', {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + token
@@ -194,13 +212,38 @@ function getProfileInfos(token) {
   })
   .then(data => {
       // Récupère les informations de l'utilisateur
-      fetchAndDisplayImage(data.avatar, token);
+      console.log('apiUrl ' + data.avatar.replace("http", "https"));
+      
+      two_fa = data.two_fa;
+      if (two_fa === true) {
+        document.getElementById('authTitle').classList.add('text-success');
+        document.getElementById('mobileDiv').classList.remove('hidden-element');
+        if(data.mobile_number !== "" && data.mobile_number_verified === false) {
+          document.getElementById('mobileNotVerified').classList.remove('hidden-element');
+          document.getElementById('mobileVerified').classList.add('hidden-element');
+
+        } else {
+          document.getElementById('mobileNotVerified').classList.add('hidden-element')
+          document.getElementById('mobileVerified').classList.remove('hidden-element');
+          document.getElementById('mobileVerified').textContent = data.mobile_number;
+
+        }
+      } else {
+        document.getElementById('mobileDiv').classList.add('hidden-element');
+      }
+      
+      console.log('two_fa = ' + two_fa)
+     
+      fetchAndDisplayImage(data.avatar.replace("http", "https"), token);
       document.getElementById('firstNameProfile').textContent = data.user.first_name;
       document.getElementById('lastNameProfile').textContent = data.user.last_name;
       document.getElementById('userNameProfile').textContent = data.user.username;
       document.getElementById('emailProfile').textContent = data.user.email;
       document.getElementById('bioProfile').textContent = data.bio;
-      id = data.user.id;
+      document.getElementById('username-profileDropdown').textContent = data.user.username;
+      document.getElementById('bio-profileDropdown').textContent = data.bio;
+     
+      userId = data.user.id;
       username = data.user.username;
   })
   .catch(error => {
@@ -256,7 +299,7 @@ function verifyEmail() {
   console.log(token);
 
   if (token) {
-    fetch("http://localhost:8000/api/account/email/verify/?token=" + token)
+    fetch("https://transcendence42.ddns.net/api/account/email/verify/?token=" + token)
     .then(response => {
       if (response.status === 200) {
         // Authentification réussie

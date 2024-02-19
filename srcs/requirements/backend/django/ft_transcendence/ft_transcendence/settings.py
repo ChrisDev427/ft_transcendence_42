@@ -70,8 +70,8 @@ CORS_ALLOW_PRIVATE_NETWORK : True
 CORS_ALLOWED_ORIGINS = [
     "https://transcendence42.ddns.net",
     # "https://transcendence42.ddns.net:90",
-
-    "https://90.116.98.105",
+    
+    "https://90.116.1.104",
     # 'http://localhost',
 ]
 

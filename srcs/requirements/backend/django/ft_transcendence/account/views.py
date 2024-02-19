@@ -83,44 +83,40 @@ class oauth_login(APIView):
 
 
 class UserRegisterView(APIView):
-    def post(self, request, *args, **kwargs):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             email = str.lower(serializer.validated_data.get('email'))
             username = str.lower(serializer.validated_data.get('username'))
             if User.objects.filter(email=email).exists():
-                response = Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
             elif User.objects.filter(username=username).exists():
-                response = Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
-            elif email is None:  # Remarque : Utilisez 'is None' pour une vérification plus pythonique
-                response = Response({"error": "Email needed"}, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                user = User.objects.create_user(
-                    username=username,
-                    password=serializer.validated_data.get('password'),
-                    first_name=serializer.validated_data.get('first_name'),
-                    last_name=serializer.validated_data.get('last_name'),
-                    email=email,
-                    is_active=False,
-                )
-                user_profile = UserProfile.objects.create(user=user)
-                try:
-                    send_email(user_profile, email)
-                    response = Response("User created", status=status.HTTP_201_CREATED)
-                except:
-                    user_profile.delete()
-                    user.delete()
-                    response = Response({"Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-        else:
-            response = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Ajoutez vos en-têtes personnalisés ici
-        response['Access-Control-Allow-Origin'] = '*'  # Ou spécifiez des origines autorisées
-        response['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
-        response['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-        # Ajoutez d'autres en-têtes CORS si nécessaire
-        
-        return response
+                return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
+            elif email == None:
+                return Response({"error": "Email needed"}, status=status.HTTP_400_BAD_REQUEST)
+            user = User.objects.create_user(
+                username = username,
+                password = serializer.validated_data.get('password'),
+                first_name = serializer.validated_data.get('first_name'),
+                last_name = serializer.validated_data.get('last_name'),
+                email=email,
+                is_active=False,
+            )
+            user_profile = UserProfile.objects.create(user=user)
+            try :
+                send_email(user_profile, email)
+
+            except Exception as e:
+                print("test")
+                print(e)
+                print("test")
+                user_profile.delete()
+                user.delete()
+                return Response({"Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            return Response("User created", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class VerifyEmailView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -139,9 +135,8 @@ class VerifyMobileView(APIView):
     def get(self, request):
         user = request.user
         user_profile = UserProfile.objects.filter(user=user).first()
-        if user_profile.mobile_number_verified:
-            return Response("Mobile number already verified", status=status.HTTP_400_BAD_REQUEST)
-        if verify_twilio_otp(user_profile, request.GET.get('otp')):
+        
+        if  user_profile.otp == request.GET.get('otp'):
             user_profile.mobile_number_verified = True
             user_profile.otp = None
             user_profile.save()
@@ -207,24 +202,28 @@ class ProfileView(APIView):
                     return Response({"password cannot be same as before"}, status=status.HTTP_400_BAD_REQUEST)
                 user.set_password(new_password)
                 user.save()
-            if request_copy.get('two_fa_on') == "":
+                return Response("password updated", status=status.HTTP_200_OK)
+            if request_copy.get('two_fa_on'):
                 if user.check_password(settings.PASSWORD_42):
                     return Response({"42 user can't enable 2fa"}, status=status.HTTP_401_UNAUTHORIZED)
                 user_profile.totp_secret = enable_2fa_authenticator(user_profile)
                 user_profile.two_fa = True
                 user_profile.save() == ""
-            elif request_copy.get('two_fa_off') == "":
+            elif request_copy.get('two_fa_off'):
                 user_profile.totp_secret = None
                 user_profile.two_fa = False
                 user_profile.save()
             if request_copy.get('mobile_number'):
                 mobile_number = request_copy.get('mobile_number')
+
                 if mobile_number == "" or mobile_number is None:
                     return Response({"mobile number needed"}, status=status.HTTP_400_BAD_REQUEST)
-                elif user_profile.mobile_number == mobile_number:
+                elif user_profile.mobile_number == mobile_number and user_profile.mobile_number_verified == True:
                     return Response({"mobile number already exists"}, status=status.HTTP_400_BAD_REQUEST)
                 elif mobile_number[0] != '+' or not mobile_number[1:].isdigit():
                     return Response({"invalid mobile number"}, status=status.HTTP_400_BAD_REQUEST)
+                if user_profile.mobile_number_verified == True:
+                    user_profile.mobile_number_verified = False
                 user_profile.mobile_number = mobile_number
                 user_profile.otp = send_otp('sms', user_profile)
                 if user_profile.otp == None:
@@ -275,8 +274,8 @@ class LoginView(TokenObtainPairView):
             except UserProfile.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             if user_profile.two_fa:
-                if not user_profile.otp:
-                    return Response({"otp needed"}, status=status.HTTP_401_UNAUTHORIZED)
+                # if not user_profile.otp:
+                #     return Response({"otp needed"}, status=status.HTTP_401_UNAUTHORIZED)
                 if totp:
                     totp_secret = pyotp.TOTP(user_profile.totp_secret)
                     if not totp_secret.verify(totp):

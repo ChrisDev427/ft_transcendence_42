@@ -10,27 +10,26 @@ function handleAvatar_createForm() {
     const formDiv = document.createElement('form');
     formDiv.id = 'modifyAvatar-form';
     formDiv.method = 'post';
-    formDiv.enctype = 'multipart/form-data';
     mainDiv.appendChild(formDiv);
-
-
+    
+    
     const input = document.createElement('input');
     input.accept = 'image/*';
     input.name = 'avatar';
     input.id = 'avatarInput';
-
+    
     input.type = 'file';
     input.classList = 'form-control form-control-sm my-4 border-info text-secondary text-center';
-
+    
     formDiv.appendChild(input);
-
+    
 
     const rowDiv = document.createElement('div');
     rowDiv.classList = 'row mt-2';
-
+    
     const col1Div = document.createElement('div');
     col1Div.classList = 'col-6';
-
+    
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'cancelBtn';
     cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow';
@@ -41,7 +40,7 @@ function handleAvatar_createForm() {
 
     const col2Div = document.createElement('div');
     col2Div.classList = 'col-6';
-
+    
     const applyBtn = document.createElement('button');
     applyBtn.id = 'applyBtn';
     applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow';
@@ -68,7 +67,8 @@ function handleAvatar_createForm() {
 
 function handleBio_createForm() {
     // hide current bio
-    document.getElementById('bioProfile').classList.add('hidden-element');
+    document.getElementById('bioProfileDiv').classList.add('hidden-element');
+    // document.getElementById('setBioIc').classList.add('hidden-element');
 
     disableProfileBtn();
 
@@ -126,12 +126,16 @@ function handleBio_createForm() {
     formDiv.appendChild(rowDiv);
     document.getElementById('bioDiv').appendChild(mainDiv);
 
-    modifyBio_API();
-
+    
     document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyForm').remove();
-        document.getElementById('bioProfile').classList.remove('hidden-element');
+        document.getElementById('bioProfileDiv').classList.remove('hidden-element');
+        document.getElementById('setBioIc').classList.remove('hidden-element');
         enableProfileBtn();
+    });
+    document.getElementById('applyBtn').addEventListener('click', function () {
+        modifyBio_API();
+
     });
 }
 
@@ -139,7 +143,6 @@ function handleInfos_createForm() {
     // hide current infos
     document.getElementById('infosProfile').classList.add('hidden-element');
     disableProfileBtn();
-
 
     const mainDiv = document.createElement('div');
     mainDiv.id = 'modifyForm';
@@ -155,16 +158,11 @@ function handleInfos_createForm() {
         const input = document.createElement('input');
 
         input.name = inputsName[i];
-        input.id = inputsName[i];
+        input.id = inputsName[i] + 'ModifyProfile';
         input.placeholder = inputsName[i];
-
-        // if(i < 3) {
-            input.type = 'text';
-            input.classList = 'form-control mb-2 border-info text-secondary text-center';
-        // } else {
-        //     input.type = 'password';
-        //     input.classList = 'form-control form-control-sm mb-1 mt-3 shadow border-success text-center w-50 mx-auto';
-        // }
+        input.type = 'text';
+        input.classList = 'form-control mb-2 border-info text-secondary text-center';
+       
         formDiv.appendChild(input);
     }
 
@@ -196,32 +194,35 @@ function handleInfos_createForm() {
     formDiv.appendChild(rowDiv);
     document.getElementById('infosDiv').appendChild(mainDiv);
 
-
-    modifyInfos_API();
-
     document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyForm').remove();
         document.getElementById('infosProfile').classList.remove('hidden-element');
         enableProfileBtn();
-
     });
 
-//     document.getElementById('applyBtn').addEventListener('click', function () {
-//        console.log('apply btn pushed');
+    document.getElementById('applyBtn').addEventListener('click', function () {
+        console.log('apply btn pushed');
 
-//    });
+        modifyInfos_API();
+    });
 
 }
 
 function handleEmail_createForm() {
     // hide current email
-    document.getElementById('emailProfile').classList.add('hidden-element');
+    document.getElementById('emailProfileDiv').classList.add('hidden-element');
+    // document.getElementById('setEmailIc').classList.add('hidden-element');
     disableProfileBtn();
 
 
     const mainDiv = document.createElement('div');
     mainDiv.id = 'modifyForm';
     mainDiv.classList = 'col-sm-8 mx-auto shadow p-3 rounded-4 bg-info bg-opacity-10';
+
+    const text = document.createElement('h6');
+    text.textContent = "You'll be disconnected to verify the new address";
+    text.classList = 'text-secondary text-danger text-secondary text-center fst-italic fw-light';
+    mainDiv.appendChild(text);
 
     const formDiv = document.createElement('form');
     formDiv.id = 'modifyEmail-form';
@@ -277,7 +278,8 @@ function handleEmail_createForm() {
 
     document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyForm').remove();
-        document.getElementById('emailProfile').classList.remove('hidden-element');
+        document.getElementById('emailProfileDiv').classList.remove('hidden-element');
+        document.getElementById('setEmailIc').classList.remove('hidden-element');
         enableProfileBtn();
 
     });
@@ -296,7 +298,7 @@ function handlePassword_createForm() {
     const formDiv = document.createElement('form');
     formDiv.id = 'modifyPassword-form';
     formDiv.method = 'patch';
-    mainDiv.appendChild(formDiv);
+    
 
     let input = document.createElement('input');
     input.id = 'currentPassword';
@@ -308,7 +310,7 @@ function handlePassword_createForm() {
 
     input = document.createElement('input');
     input.id = 'newPassword';
-    input.type = 'newPassword';
+    input.type = 'password';
     input.name = 'new_password';
     input.classList = 'form-control form-control-sm mb-2 border-info shadow text-center w-50 mx-auto';
     input.placeholder = 'new password';
@@ -340,26 +342,35 @@ function handlePassword_createForm() {
     col2Div.appendChild(applyBtn);
     rowDiv.appendChild(col2Div);
 
-    mainDiv.appendChild(rowDiv);
+    formDiv.appendChild(rowDiv);
+    mainDiv.appendChild(formDiv);
+
     document.getElementById('changeEraseDiv').appendChild(mainDiv);
 
-   document.getElementById('cancelBtn').addEventListener('click', function () {
+    document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyForm').remove();
         document.getElementById('changeEraseBtn').classList.remove('hidden-element');
         enableProfileBtn();
 
-   });
+    });
+
+    document.getElementById('applyBtn').addEventListener('click', function () {
+       modifyPassword_API();
+    });
 }
 
 function handle2FA_createForm() {
-    // hide 'change password' btn
-    // document.getElementById('authProfile').classList.add('hidden-element');
+    
+    document.getElementById('authProfile').classList.add('hidden-element');
     disableProfileBtn();
-
-
     const mainDiv = document.createElement('div');
     mainDiv.id = 'modifyForm';
     mainDiv.classList = 'col-sm-6 mx-auto shadow p-3 mt-3 rounded-4 bg-info bg-opacity-10';
+
+    const title = document.createElement('h6');
+    title.classList = 'col text-center text-secondary fw-bold';
+    title.textContent = '2FA Authentication';
+    mainDiv.appendChild(title);
 
     const formDiv = document.createElement('form');
     formDiv.id = 'twofa-form';
@@ -374,15 +385,18 @@ function handle2FA_createForm() {
     input.type = 'radio';
     input.classList = 'form-control btn-check';
     input.name = 'two_fa_on';
-    input.id = '2FA-btn-on';
+    input.id = 'two_fa_on';
     input.autocomplete = 'off';
-    input.value = 'True';
-    input.checked = false;
+    if (two_fa === true) {
+        input.checked = true;
+    } else {
+        input.checked = false;
+    }
     btnDiv.appendChild(input);
 
     let label = document.createElement('label');
     label.classList = 'btn btn-sm btn-outline-info py-0 px-2 me-1';
-    label.htmlFor = '2FA-btn-on';
+    label.htmlFor = 'two_fa_on';
     label.textContent = 'On';
     btnDiv.appendChild(label);
 
@@ -391,31 +405,24 @@ function handle2FA_createForm() {
     input.type = 'radio';
     input.classList = 'form-control btn-check';
     input.name = 'two_fa_off';
-    input.id = '2FA-btn-off';
+    input.id = 'two_fa_off';
     input.autocomplete = 'off';
-    input.value = 'False';
-    input.checked = true;
+    if (two_fa === false) {
+        input.checked = true;
+    } else {
+        input.checked = false;
+    }
     btnDiv.appendChild(input);
 
     label = document.createElement('label');
     label.classList = 'btn btn-sm btn-outline-info py-0 px-2 me-1';
-    label.htmlFor = '2FA-btn-off';
+    label.htmlFor = 'two_fa_off';
     label.textContent = 'Off';
     btnDiv.appendChild(label);
 
     const rowDiv = document.createElement('div');
     rowDiv.classList = 'row mt-2';
-    const passwordDiv = document.createElement('div');
-    passwordDiv.classList = 'col-12';
-
-    // const inputPassword = document.createElement('input');
-    // inputPassword.type = 'password';
-    // inputPassword.classList = 'form-control form-control-sm my-2 border-info shadow text-center w-50 mx-auto';
-    // inputPassword.name = 'password';
-    // inputPassword.id = 'passwordInput';
-    // inputPassword.placeholder = 'password';
-    // passwordDiv.appendChild(inputPassword);
-    // rowDiv.appendChild(passwordDiv);
+  
 
     const col1Div = document.createElement('div');
     col1Div.classList = 'col-6';
@@ -440,24 +447,60 @@ function handle2FA_createForm() {
     formDiv.appendChild(rowDiv);
     document.getElementById('authDiv').appendChild(mainDiv);
 
-    modify2FA_API();
-
+    
     document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyForm').remove();
-        // document.getElementById('authProfile').classList.remove('hidden-element');
+        document.getElementById('authProfile').classList.remove('hidden-element');
         enableProfileBtn();
     });
-    document.getElementById('2FA-btn-on').addEventListener('click', function (element) {
-        element.checked = true;
-        document.getElementById('2FA-btn-off').checked = false;
+    
+    document.getElementById('applyBtn').addEventListener('click', function () {
+        // if(document.getElementById('2FA-btn-on').checked = true) {
+        //     document.getElementById('mobileDiv').classList.remove('hidden-element');
+        // } else {
+        //     document.getElementById('mobileDiv').classList.add('hidden-element');
+        // }
+        modify2FA_API();
+       
     });
 
-    document.getElementById('2FA-btn-off').addEventListener('click', function (element) {
+    
+    document.getElementById('two_fa_on').addEventListener('click', function (element) {
+        
         element.checked = true;
-        document.getElementById('2FA-btn-on').checked = false;
+        document.getElementById('two_fa_off').checked = false;
+        document.getElementById('authTitle').classList.add('text-success');
+    });
+
+    document.getElementById('two_fa_off').addEventListener('click', function (element) {
+       
+        element.checked = true;
+        document.getElementById('two_fa_on').checked = false;
+        document.getElementById('authTitle').classList.remove('text-success');
+
 
     });
 }
+
+// function handleTwoFA_createForm() {
+//     const mainDiv = document.createElement('div');
+//     mainDiv.id = 'mobileDiv';
+//     mainDiv.classList = 'col d-flex justify-content-center';
+//     const textBtn = document.createElement('h6');
+//     textBtn.classList = 'btn btn-sm border-0 text-center text-secondary fw-light';
+//     textBtn.setAttribute('onclick', "");
+//     textBtn.textContent = 'authenticate with mobile';
+
+//     mainDiv.appendChild(textBtn);
+    
+//     if (two_fa === true) {
+//         document.getElementById('authTitleDiv').appendChild(mainDiv);
+//         document.getElementById('authTitle').classList.add('text-success');
+//     } else {
+//         document.getElementById('mobileDiv').remove();
+//         document.getElementById('authTitle').classList.remove('text-success');
+//     }
+// }
 
 function eraseAccount_createForm() {
     // hide 'change password' btn
@@ -474,14 +517,6 @@ function eraseAccount_createForm() {
     formDiv.method = 'delete';
     mainDiv.appendChild(formDiv);
 
-    // let input = document.createElement('input');
-    // input.id = 'password';
-    // input.type = 'password';
-    // input.name = 'password';
-    // input.classList = 'form-control form-control-sm mb-2 border-info shadow text-center w-50 mx-auto';
-    // input.placeholder = 'password';
-    // formDiv.appendChild(input);
-
     const rowDiv = document.createElement('div');
     rowDiv.classList = 'row mt-2';
 
@@ -490,7 +525,7 @@ function eraseAccount_createForm() {
 
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'cancelBtn';
-    cancelBtn.classList = 'btn btn-sm btn-success w-100 shadow';
+    cancelBtn.classList = 'btn btn-sm btn-success fw-bold w-100 shadow';
     cancelBtn.type = 'submit';
     cancelBtn.textContent = 'Cancel';
     col1Div.appendChild(cancelBtn);
@@ -501,7 +536,7 @@ function eraseAccount_createForm() {
 
     const applyBtn = document.createElement('button');
     applyBtn.id = 'applyBtn';
-    applyBtn.classList = 'btn btn-sm btn-danger w-100 shadow';
+    applyBtn.classList = 'btn btn-sm btn-danger fw-bold w-100 shadow';
     applyBtn.type = 'submit';
     applyBtn.textContent = 'ERASE ACCOUNT';
     col2Div.appendChild(applyBtn);
@@ -517,25 +552,6 @@ function eraseAccount_createForm() {
 
     });
 }
-
-
-
-
-
-// function disableProfileBtn() {
-//     document.querySelectorAll('#setProfileBtn').forEach(function (element) {
-//         // Supprime la classe 'icon-disabled' de chaque élément
-//         element.classList.add('icon-disabled');
-//       });
-
-// }
-
-// function enableProfileBtn() {
-//     document.querySelectorAll('#setProfileBtn').forEach(function (element) {
-//         // Supprime la classe 'icon-disabled' de chaque élément
-//         element.classList.remove('icon-disabled');
-//       });
-// }
 
 function disableProfileBtn() {
     document.querySelectorAll('#profile button').forEach(function (element) {
@@ -560,19 +576,5 @@ function enableProfileBtn() {
     });
 }
 
-// // Sélectionner tous les boutons à l'intérieur de la section avec l'ID "profile"
-// const buttonsInSection = document.querySelectorAll('#profile button');
 
-// // Sélectionner toutes les icônes à l'intérieur de la section avec l'ID "profile"
-// const iconsInSection = document.querySelectorAll('#profile i');
-
-// // Appliquer des styles ou effectuer d'autres opérations sur les boutons
-// buttonsInSection.forEach(button => {
-//   // Vos actions spécifiques pour chaque bouton
-// });
-
-// // Appliquer des styles ou effectuer d'autres opérations sur les icônes
-// iconsInSection.forEach(icon => {
-//   // Vos actions spécifiques pour chaque icône
-// });
 

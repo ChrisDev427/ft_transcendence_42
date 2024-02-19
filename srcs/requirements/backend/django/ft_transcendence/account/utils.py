@@ -1,4 +1,4 @@
-import pyotp, os, random
+import pyotp, os, random, requests, json
 from django.core.mail import send_mail
 from twilio.rest import Client
 from django.conf import settings
@@ -17,8 +17,8 @@ def get_totp_uri(user_profile):
     return totp.provisioning_uri(user_profile.user.email, issuer_name="Pong_42")
 
 def verify_twilio_otp(user_profile, submitted_code):
-        account_sid = os.environ.get('TWILIO_SID')
-        auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
+        account_sid = settings.TWILIO_SID
+        auth_token = settings.TWILIO_AUTH_TOKEN
         client = Client(account_sid, auth_token)
         verification_check = client.verify.v2.services(os.environ.get('TWILIO_SERVICE_SID')).verification_checks.create(
         to=user_profile.mobile_number,
@@ -41,15 +41,22 @@ def send_otp(string, user_profile):
         )
         return verification_code
     elif string == 'sms':
-        account_sid = os.environ.get('TWILIO_SID')
-        auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
-        service_sid = os.environ.get('TWILIO_SERVICE_SID')
-        client = Client(account_sid, auth_token)
-        verification = client.verify.services(service_sid).verifications.create(
-            to=user_profile.mobile_number,
-            channel='sms'
-        )
-        return verification.sid
+        api_key = "7kWvMgyiinW0x4N3kJnmaXdNfLkZhfqeeM1TW_4WxoJTcH4Z9V1HVsvvp9sGsmri"
+        url = 'https://api.httpsms.com/v1/messages/send'
+        headers = {
+            'x-api-key': api_key,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+        code = str(random.randint(1000, 9999))
+        Content = "Your OTP is " + code
+        payload = {
+            "content": Content,
+            "from": "+33622423694",
+            "to": user_profile.mobile_number
+        }
+        requests.post(url, headers=headers, data=json.dumps(payload))
+        return code
     elif string == 'application':
         return '0'
 
