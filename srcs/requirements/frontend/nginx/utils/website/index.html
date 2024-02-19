@@ -18,6 +18,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Serif+Display&display=swap" rel="stylesheet">
 
+  <!-- Custom fonts for this template-->
+  <!-- <link href="dashboard/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css"> -->
+  <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <!-- <link href="dashboard/sb-admin-2.min.css" rel="stylesheet"> -->
+
+
 </head>
 
 
@@ -72,21 +82,12 @@
     });
   </script> -->
   <!-- Alert Logout ------------------------------------>
-  <div id="alert-bg-blur" class="hidden-element">
-      <div id="confirm-logout" class="p-3 p-md-4 bg-info shadow-lg rounded-4 " style="position: fixed; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+  <div id="alert-bg-blur" class="hidden-element fade-in">
+      <div id="confirm-logout" class="fade-in p-3 p-md-5 bg-info shadow-lg rounded-4 " style="position: fixed; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
         <button id="cancelLogout" class="btn fw-bold shadow  btn-outline-light me-2">X</button>
         <button id="validLogout" class="btn fw-bold shadow  btn-outline-light">logout</button>
       </div>
   </div>
-  <!---------------------------------------------------->
-  <!-- Alert Logout ------------------------------------>
-  <!-- <div id="alert-bg-blur" class="hidden-element">
-    <div class="p-3 p-md-4 bg-info shadow-lg rounded-4 " style="position: fixed; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
-
-    </div>
-</div> -->
-<!---------------------------------------------------->
-
 
 
   <header id="header" class="pb-5 mb-4">
@@ -102,30 +103,16 @@
 
             <!-- DropDown Profile -->
             <li id="dropDownProfile" class="nav-item dropdown unvisible">
-              <a class="nav-link bi-person-circle  fs-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
-              <div class="dropdown-menu bg-info py-0 border-0">
+              <a class="nav-link bi-person-circle  fs-3" href="#" role="toggle" data-bs-toggle="dropdown" aria-expanded="false"></a>
+              <div id="dropdown-menu" class="dropdown-menu bg-info py-0 border-0 fade-in">
 
                 <div class="card mx-auto pb-3 shadow-lg border-0" style="width: 18rem;">
                   <img id="avatar-img_profilDropdown" src="" class="card-img-top mx-auto mt-3 rounded" alt="avatar-img" style="width: 150px;">
                   <div class="card-body">
                     <h4 id="username-profileDropdown" style="font-family: 'Bagel Fat One', sans-serif;" class="card-title text-info text-center mb-3"></h4>
                     <p id="bio-profileDropdown" class="card-text text-secondary text-center fw-light"></p>
-
-                    <!-- <div class="col d-flex justify-content-around px-4">
-                      <div>
-
-                        <i class="bi bi-circle-fill text-success "></i>
-                        <select class="form-select-sm border-info text-secondary text-center fw-bold  " aria-label="Default select example">
-                          <option class="text-secondary fw-bold" value="1">Online</option>
-                          <option class="text-secondary fw-bold" value="2">Inactive</option>
-                          <option class="text-secondary fw-bold" value="3">Do Not Disturb</option>
-                          <option class="text-secondary fw-bold" value="4">Invisible</option>
-                        </select>
-                      </div>
-                    </div> -->
-
                     <div class="col d-flex justify-content-evenly mt-4">
-                      <a class="btn btn-sm btn-outline-info fw-bold bi bi-people-fill" href="#friends"></a>
+                      <a class="btn btn-sm btn-outline-info fw-bold bi bi-speedometer" href="#dashboard" onclick="getDashboardInfos()"></a>
                       <a class="btn btn-sm btn-outline-info fw-bold bi bi-database-fill" href="#gameHistory"></a>
                       <a class="btn btn-sm btn-outline-info fw-bold bi-person-circle" href="#profile"></a>
                       <a class="btn btn-sm btn-outline-danger fw-bold bi-plug-fill" onclick="userLogout()"></a>
@@ -157,7 +144,7 @@
   </header>
   <main>
 
-    <section id="main" class="d-flex justify-content-center">
+    <section id="main" class="d-flex justify-content-center fade-in hidden-element">
       <div class="container rounded-4 shadow" >
         <div class="col d-flex justify-content-center mx-4">
           <h1 class="display-2 text-info fw-bold">ft_transcendence</h1>
@@ -177,7 +164,7 @@
               in software development, database design, security, and the integration of modern technologies.
             </p>
           </div>
-          
+
           <div class="col-lg-3 mb-3">
             <div class="col d-flex justify-content-center mt-4 mb-2 mb-lg-5">
               <a class="btn btn-info text-light shadow p-4 w-75" href="#gameMenu">Play Pong</a>
@@ -196,7 +183,7 @@
             <!-- TO SHOW WHEN USER IS CONNECTED -->
             <div id="friends-gameHistory-btn" class="unvisible">
               <div class="col d-flex justify-content-center mb-2">
-                <a class="btn btn-outline-info  shadow p-2 w-75" href="#friends">Friends</a>
+                <a class="btn btn-outline-info  shadow p-2 w-75" href="#dashboard" onclick="getDashboardInfos()">Dashboard</a>
               </div>
               <div class="col d-flex justify-content-center mb-2">
                 <a class="btn btn-outline-info  shadow p-2 w-75" href="#gameHistory">Game History</a>
@@ -210,7 +197,7 @@
         </div>
       </div>
     </section>
-    <section id="gameMenu" class="">
+    <section id="gameMenu" class="fade-in hidden-element">
       <h1 class="display-1 p-3 fw-bold text-info text-center">Pong</h1>
       <div id="containerGameMenu" class="container rounded-4 shadow p-2" style="width: 90%; max-width: 400px;">
           <div class="col d-flex justify-content-end p-2">
@@ -244,7 +231,7 @@
       </div>
     </section>
 
-    <section id="playPong">
+    <section id="playPong" class="fade-in hidden-element">
           <div id="gameDiv" class="container bg-info bg-opacity-100 rounded-4 p-2 p-md-3 mt-5 shadow-lg hidden-element" style="max-width: 900px;">
             <div class="row">
               <canvas id="pongCanvas" width="1100" height="700" ></canvas>
@@ -361,7 +348,7 @@
     </section>
 
 
-    <section id="aboutTheTeam" >
+    <section id="aboutTheTeam" class="fade-in hidden-element">
       <div class="container p-3" >
         <h1 class="display-1 fw-bold  text-info text-center">The team</h1>
         <div class="row py-2 d-flex justify-content-center">
@@ -470,81 +457,333 @@
           </div>
         </div>
         </div>
-
-
       </div>
     </section>
-    <section id="signIn">
+
+
+    <section id="signIn" class="fade-in hidden-element">
       <div id="signInDiv" class="container p-3">
-        <div class="row fw-light text-secondary">
-          <h1 class="display-1 fw-bold text-info text-center">Sign In</h1>
-          <div class="col-md-5 col-lg-4 my-4 mx-auto shadow p-3 rounded text-center">
+        <h1 class="display-1 fw-bold text-info text-center">Sign In</h1>
+        <div class="row">
+          <div class="col-md-5 col-lg-4 my-4 mx-auto shadow px-3 py-4 rounded">
             <form method="POST" class="form-control border-0" id="signin-form">
-                <!-- <label for="Username" class="form-label text-secondary">Username</label> -->
-                <input type="text" class="form-control mb-3 border-info" id="signIn-username" name="username" placeholder="Username">
-
-                <!-- <label for="password" class="form-label text-secondary">Password</label> -->
-                <input type="password" class="form-control mb-3 border-info" autocomplete="current-password" id="signIn-password" name="password" placeholder="Password">
-
-                <button id="signInBtn" class="btn btn-info text-white w-100 mt-3" type="submit">Sign in</button>
-              </form>
-                <hr class="border-info">
-                <button id="42connectBtn" class="btn btn-outline-info w-100" onclick="loginWith42()">Connect with 42</button>
+              <input type="text" class="form-control mb-3 border-info text-center text-info" id="signIn-username" name="username" placeholder="Username">
+              <input type="password" class="form-control mb-3 border-info text-center text-info" autocomplete="current-password" id="signIn-password" name="password" placeholder="Password">
+              <button id="signInBtn" class="btn btn-info text-white w-100 mt-3" type="submit">Sign in</button>
+            </form>
+            <hr class="border-info mb-4">
+            <button id="42connectBtn" class="btn btn-outline-info w-100" onclick="loginWith42()">Connect with 42</button>
           </div>
         </div>
-
       </div>
-            <!-- <script>
-               function loginWith42() {
-                const oauthUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-44e47265c9b8312f83a47d720211e265bef85a1c8fc632f8786fe9dcdade34d1&redirect_uri=http%3A%2F%2Flocalhost&response_type=code';
-                window.location.href = oauthUrl;
-               }
-            </script> -->
     </section>
-    <section id="signUp">
+    <section id="signUp" class="fade-in hidden-element">
       <div id="signUpDiv" class="container p-3">
         <h1 class="display-1 fw-bold text-info text-center">Sign Up</h1>
-        <div class="row fw-light text-secondary">
-          <div class="col-7 col-md-5  my-4 mx-auto ">
-            <form method="post" class="shadow p-3 rounded" id="signup-form">
-                <label for="firstname" class="form-label">First name</label>
-                <input type="text" class="form-control mb-3 border-info" name="first_name" id="firstname">
-
-                <label for="lastname" class="form-label">Last name</label>
-                <input type="text" class="form-control mb-3 border-info" name="last_name" id="lastname" required>
-
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control mb-3 border-info" id="email" name="email" aria-describedby="emailHelp">
-
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control mb-3 border-info" id="username" name="username" aria-describedby="inputGroupPrepend2" required>
-
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control mb-3 border-info" autocomplete="new-password" id="signUp-password" name="password">
-
-                <button class="btn btn-info text-white w-100 mt-3" type="submit">Sign up</button>
+        <div class="row">
+          <div class="col-md-5 col-lg-4 my-4 mx-auto shadow px-3 py-4 rounded">
+            <form method="post" class="form-control border-0" id="signup-form">
+              <input type="text" class="form-control mb-3 border-info text-center text-info" name="first_name" id="firstname" placeholder="First name">
+              <input type="text" class="form-control mb-3 border-info text-center text-info" name="last_name" id="lastname" placeholder="Last name">
+              <input type="text" class="form-control mb-3 border-info text-center text-info" id="username" name="username" aria-describedby="inputGroupPrepend2" placeholder="User name">
+              <input type="email" class="form-control mb-3 border-info text-center text-info" id="email" name="email" aria-describedby="emailHelp" placeholder="Email">
+              <input type="password" class="form-control mb-3 border-info text-center text-info" autocomplete="new-password" id="signUp-password" name="password" placeholder="Password">
+              <button id="signUpBtn" class="btn btn-info text-white w-100 mt-3" type="submit">Sign up</button>
             </form>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="verify-email" class="unvisible">
+
+    <section id="verify-email" class="unvisible fade-in">
       <div class="container mt-3">
           <h1 class="display-3 text-info text-center fw-bold">ft_transcendence</h1>
       <div>
-
     </section>
 
-    <section id="friends" class="unvisible">
-     
-      <div class="container-fluid p-3" style="height: 100vh; max-width: 1600px;">
-        <h1 class="display-1 fw-bold text-info text-center">Dashboard</h1>
-        <object type="text/html" data="startbootstrap-sb-admin-2-gh-pages/dashboard.html" width="100%" height="100%" class="rounded-4 mt-3"></object>
+
+    <section id="dashboard" class="unvisible fade-in">
+      <!-- <h1 class="display-1 fw-bold text-info text-center">Dashboard</h1> -->
+      <div class="container-fluid p-4 mt-5 rounded-4 bg-secondary bg-opacity-10" style="max-width: 1600px;">
+        <!-- Begin Page Content -->
+        <div class="container-fluid p-4" style="max-width: 1600px;">
+
+          <!-- Top Cards -->
+          <div class="row ">
+            <!-- Friends -->
+            <div class="col-lg-6 col-xl-3  mb-4">
+              <div class="card border-0 border-left-primary shadow">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="fw-bold text-primary text-uppercase mb-1">Friends</div>
+                      <div id="friendsNumberDash" class="h5 mb-0 fw-bold text-secondary"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fa-solid fa-people-group fa-2x text-primary"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Played -->
+            <div class="col-lg-6 col-xl-3  mb-4">
+              <div class="card border-0 border-left-info shadow">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="fw-bold text-info text-uppercase mb-1">Played</div>
+                      <div id="playedNumberDash" class="h5 mb-0 fw-bold text-secondary"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-table-tennis fa-2x text-info"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Total Users -->
+            <div class="col-lg-6 col-xl-3  mb-4">
+              <div class="card border-0 border-left-warning shadow">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="fw-bold text-warning text-uppercase mb-1">Total Users</div>
+                      <div id="totalUsersDash" class="h5 mb-0 fw-bold text-secondary"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fa-solid fa-users-between-lines fa-2x text-warning"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Connected Users -->
+            <div class="col-lg-6 col-xl-3  mb-4">
+              <div class="card border-0 border-left-success shadow">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="fw-bold text-success text-uppercase mb-1">Connected</div>
+                      <div id="connectedUsersDash" class="h5 mb-0 fw-bold text-secondary"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fa-solid fa-plug-circle-bolt fa-2x text-success"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Victories -->
+            <div class="col-lg-6 col-xl-3  mb-4">
+              <div class="card border-0 border-left-success shadow">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="fw-bold text-success text-uppercase mb-1">Victories</div>
+                      <div id="victoriesNumberDash" class="h5 mb-0 fw-bold text-secondary"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-trophy fa-2x text-success"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Defeat -->
+            <div class="col-lg-6 col-xl-3  mb-4">
+              <div class="card border-0 border-left-danger shadow">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="fw-bold text-danger text-uppercase mb-1">Defeats</div>
+                      <div id="defeatsNumberDash" class="h5 mb-0 fw-bold text-secondary"></div>
+                    </div>
+                    <div class="col-auto">
+                      <!-- <i class="fas fa-trophy fa-flip-vertical fa-2x text-danger "></i> -->
+                      <i class="fa-solid fa-face-sad-tear fa-2x text-danger "></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Point Gained -->
+            <div class="col-lg-6 col-xl-3  mb-4">
+              <div class="card border-0 border-left-success shadow">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="fw-bold text-success text-uppercase mb-1">Point Gained</div>
+                      <div id="pointGainedNumberDash" class="h5 mb-0 fw-bold text-secondary"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-smile fa-2x text-success"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Point Lost -->
+            <div class="col-lg-6 col-xl-3  mb-4">
+              <div class="card border-0 border-left-danger shadow">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="fw-bold text-danger text-uppercase mb-1">Point Lost</div>
+                      <div id="pointLostNumberDash" class="h5 mb-0 fw-bold text-secondary"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-poo fa-2x text-danger"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Profile -->
+          <div class="row">
+            <div class="col-xl-5 mx-auto  m-md-auto">
+              <div class="mb-3">
+                <h1 class="display-1 fw-bold text-info text-center mb-0" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Dashboard</h1>
+                <h5 class="display-6 text-info text-center" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">transcendence</h5>
+              </div>
+            </div>
+            <div class="col-xl-7">
+              <div class="card border-0 shadow mb-4">
+                <div class="card-header py-3">
+                  <h5 class="m-0 font-weight-bold text-info text-center text-md-start">Profile</h5>
+                </div>
+                <div class="card-body" style="min-height: 447px;">
+                  <div class="row d-flex justify-content-center">
+                    <div class="col-auto">
+                      <img id="avatar-img_dash" src="" alt="avatarUser" class="rounded-3 shadow" style="max-height: 200px;">
+                    </div>
+                    <div class="col-auto my-auto">
+                      <h5 id="userNameDash" class="text-info text-center fs-3 mb-2 mt-3 mt-md-0"></h5>
+                      <h5 id="firstNameDash" class="text-secondary text-center fs-5"></h5>
+                      <h5 id="lastNameDash" class="text-secondary text-center fs-5"></h5>
+                      <h5 id="emailDash" class="text-secondary text-center fs-5"></h5>
+                      <h5 id="mobileDash" class="text-secondary text-center fst-italic fs-6"></h5>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                  <div class="col-auto mt-3">
+                    <hr class="border-secondary">
+                    <p id="joinedDash" class="lead fst-italic text-secondary text-center fs-6 mb-0"><small></small></p>
+                    <p id="lastLoginDash" class="lead fst-italic text-secondary text-center fs-6"><small></small></p>
+                    <hr class="border-secondary">
+                  </div>
+                  <div class="row w-100 mx-auto">
+                    <div class="col mt-2">
+                      <div class="mb-2 mx-auto" style="overflow-y: auto; height: 80px; max-width: 700px;">
+                        <p id="bioDash" class="px-2 lead fs-6 text-secondary text-center" style="word-break: break-all;"></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- Friends -->
+            <div class="col-xl-7 ">
+              <div class="card border-0 shadow mb-4">
+                <div class="card-header py-3">
+                  <h5 class="m-0 font-weight-bold text-info text-center text-md-start">Friends</h5>
+                </div>
+                <div class="card-body">
+                  <!-- Card Body -->
+                  <div id="friendShipBody-dashboard" style="overflow-y: auto; height: 415px;">
+                    <div id="friendsTextInfo" class="p-5 hidden-element">
+                      <h5 class="font-weight-bold text-center text-secondary">You don't have any friend yet</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Search For Friends -->
+            <div class="col-xl-5">
+              <div class="card border-0 shadow mb-4">
+                <div class="card-header py-2">
+                  <div class="row p-1">
+                    <div class="col-sm-auto">
+                      <h5 class=" text-info text-center text-sm-start">Search user</h5>
+                    </div>
+                    <div class="col-auto ms-auto me-auto me-sm-0 d-flex align-items-center">
+                      <i id="searchUserRefreshBtn" class="btn border-0 fa-solid fa-rotate-right fa-2x text-info me-2" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);"></i>
+                      <input id="searchUserInput" type="text" class="form-control border-info text-center text-info shadow" placeholder="Username">
+                      <i id="searchUserBtn" class="btn border-0 fa-solid fa-magnifying-glass fa-2x text-info ms-2" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);"></i>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Body -->
+                <div id="searchFriend-cardArea" class="card-body py-3" style="overflow-y: auto; height: 435px;"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Content Row -->
+          <div class="row">
+            <!-- Content Column -->
+            <div class="col-xl-6 mb-4">
+              <!-- Project Card Example -->
+              <div class="card border-0 shadow mb-4">
+                <div class="card-header py-3">
+                  <h5 class="m-0 font-weight-bold text-info text-center text-md-start">Stats</h5>
+                </div>
+                <div class="card-body">
+                  <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
+                  <div class="progress mb-4">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <h4 class="small font-weight-bold">Sales Tracking <span class="float-right">40%</span></h4>
+                  <div class="progress mb-4">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <h4 class="small font-weight-bold">Customer Database <span class="float-right">60%</span></h4>
+                  <div class="progress mb-4">
+                    <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <h4 class="small font-weight-bold">Payout Details <span class="float-right">80%</span></h4>
+                  <div class="progress mb-4">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <h4 class="small font-weight-bold">Account Setup <span class="float-right">Complete!</span></h4>
+                  <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6 mx-auto">
+              <div class="card border-0 shadow mb-4">
+                <div class="card-header py-3">
+                  <h5 class="m-0 font-weight-bold text-info text-center text-md-start">Win/Loose</h5>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                  <div class="chart-pie pt-2 pb-0">
+                    <div id="chartPieTextInfo" class="p-5 hidden-element">
+                      <h5 class="font-weight-bold text-center text-secondary">You need to play at least once to see some information here</h5>
+                    </div>
+
+                    <canvas id="myPieChart"></canvas>
+                  </div>
+                  <div>
+                    <i class="fas fa-circle text-success"></i> Victories
+                  </div>
+                  <div>
+                    <i class="fas fa-circle text-danger"></i> Defeats
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="gameHistory" class="unvisible">
+    <section id="gameHistory" class="unvisible fade-in">
       <div class="container p-3">
         <h1 class="display-1 fw-bold text-info text-center">Game History</h1>
       </div>
@@ -552,7 +791,7 @@
 
 
 
-    <section id="profile" class="unvisible">
+    <section id="profile" class="unvisible fade-in">
       <h1 class="display-1 fw-bold text-info text-center">Profile</h1>
 
       <div class="container p-3 mt-4 rounded-4 shadow-lg" style=" max-width: 700px;">
@@ -566,9 +805,13 @@
         </div>
         <hr class="px-5 text-info border-2">
         <div id="bioDiv">
-          <div id="bioProfileDiv">
-
-            <p id="bioProfile" class="lead fs-6 text-lighter text-secondary text-center"></p>
+          <div id="bioProfileDiv" >
+            <div class="row p-2">
+              <h5  class="text-info text-center fs-4">Bio</h5>
+              <div class="col mx-auto rounded-2" style="overflow-y: auto; max-height: 90px; max-width: 600px;">
+                <p id="bioProfile" class="px-2 lead fs-6 text-secondary text-center mb-0" style="word-break: break-all;"></p>
+              </div>
+            </div>
             <div class="d-flex justify-content-center">
               <i id="setBioIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleBio_createForm()"></i>
             </div>
@@ -577,17 +820,17 @@
         <hr class="px-5 text-info border-2">
         <div id="infosDiv">
             <div id="infosProfile">
-              <h5 id="firstNameProfile" class="text-info text-center fs-4"></h5></a>
-              <h5 id="lastNameProfile" class="text-info text-center fs-4"></h5></a>
-              <h5 id="userNameProfile" class="text-info text-center fs-4"></h5></a>
+              <h5 id="firstNameProfile" class="text-info text-center fs-4"></h5>
+              <h5 id="lastNameProfile" class="text-info text-center fs-4"></h5>
+              <h5 id="userNameProfile" class="text-info text-center fs-4"></h5>
               <div class="d-flex justify-content-center">
                 <i id="setInfoIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleInfos_createForm()"></i>
               </div>
             </div>
         </div>
-        <hr class="px-5 text-info border-2">
         <div id="emailDiv">
           <div id="emailProfileDiv">
+            <hr class="px-5 text-info border-2">
 
             <h5 id="emailProfile" class="text-info text-center fs-4"></h5>
             <div  class="d-flex justify-content-center">
@@ -742,25 +985,38 @@
     </div>
   </footer>
 
-    <script src="./js/websiteUtils.js"></script>
-    <script src="./js/websiteConfig.js"></script>
-    <script src="./js/requestAPI/register_login_logout.js"></script>
-    <script src="./js/requestAPI/manage_2FA.js"></script>
-    <script src="./js/requestAPI/manage_2FA_utils.js"></script>
-    <script src="./js/requestAPI/register_login_logout_utils.js"></script>
-    <script src="./js/requestAPI/updateUserInfos_createForms.js"></script>
-    <script src="./js/requestAPI/updateUserInfos_comAPI.js"></script>
-    <script src="./pong_game/js/handle_UI.js"></script>
-    <script src="./pong_game/js/gameConfig.js"></script>
-    <script src="./pong_game/js/create_gameSettings_menu.js"></script>
-    <script src="./pong_game/js/tournament/create_MatchMaking_menu.js"></script>
-    <script src="./pong_game/js/tournament/tournament_config.js"></script>
-    <script src="./pong_game/js/gameUtils.js"></script>
-    <script src="./pong_game/js/inputUtils.js"></script>
-    <script src="./pong_game/js/pong.js"></script>
 
+    <script src="website/websiteUtils.js"></script>
+    <script src="website/websiteConfig.js"></script>
+
+    <script src="register_login_logout/register_login_logout.js"></script>
+    <script src="register_login_logout/register_login_logout_utils.js"></script>
+
+    <script src="dashboard_profile/profile/manage_2FA.js"></script>
+    <script src="dashboard_profile/profile/manage_2FA_utils.js"></script>
+    <script src="dashboard_profile/profile/updateUserInfos_createForms.js"></script>
+    <script src="dashboard_profile/profile/updateUserInfos_comAPI.js"></script>
+    <script src="dashboard_profile/profile/profile.js"></script>
+    <script src="dashboard_profile/dashboard/Chart.js"></script>
+    <script src="dashboard_profile/dashboard/chart-pie.js"></script>
+    <script src="dashboard_profile/dashboard/dashboard.js"></script>
+    <script src="dashboard_profile/dashboard/dashboardUtils.js"></script>
+    <script src="dashboard_profile/commonUtils.js"></script>
+
+    <script src="pong_game/js/handle_UI.js"></script>
+    <script src="pong_game/js/gameConfig.js"></script>
+    <script src="pong_game/js/create_gameSettings_menu.js"></script>
+    <script src="pong_game/js/tournament/create_MatchMaking_menu.js"></script>
+    <script src="pong_game/js/tournament/tournament_config.js"></script>
+    <script src="pong_game/js/gameUtils.js"></script>
+    <script src="pong_game/js/inputUtils.js"></script>
+    <script src="pong_game/js/pong.js"></script>
+
+
+    <script src="https://kit.fontawesome.com/d4cc5cee10.js" crossorigin="anonymous"></script>
 
     <script src="./qrcodejs/qrcode.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </body>

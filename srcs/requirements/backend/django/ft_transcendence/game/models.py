@@ -8,5 +8,6 @@ class Game(models.Model):
 	final_score = models.CharField(max_length=25, default='0:0')
 	winner = models.ForeignKey(User, on_delete=models.PROTECT, related_name='winner', null=True, default=None)
 	game_type = models.CharField(max_length=25, default=None)
+	difficulty = models.CharField(max_length=25, default=None)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)

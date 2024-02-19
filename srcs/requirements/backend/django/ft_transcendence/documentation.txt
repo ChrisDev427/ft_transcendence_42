@@ -104,7 +104,7 @@ api/chat/message/  --> put a message in a discussion
 api/game/  --> Create a game
 	connected : ADMIN
 	method : GET POST
-	advice : post : - need player_one and player_two
+	advice : post : - need player_one, player_two, game_type, difficulty
 
 api/game/id --> update the game
 	connected : ADMIN

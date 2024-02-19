@@ -33,6 +33,14 @@ class GameView(APIView):
 			if existing_game:
 				if existing_game.winner is None:
 					return Response("game already exist", status=status.HTTP_400_BAD_REQUEST)
+			type_game = serializer.validated_data['game_type']
+			difficulty = serializer.validated_data['difficulty']
+			if type_game is None or difficulty is None:
+				return Response("missing game type or difficulty", status=status.HTTP_400_BAD_REQUEST)
+			elif type_game != "ia" and type_game != "pvp" and type_game != "tournament":
+				return Response("game type not valid", status=status.HTTP_400_BAD_REQUEST)
+			elif difficulty != "easy" and difficulty != "medium" and difficulty != "hard":
+				return Response("difficulty not valid", status=status.HTTP_400_BAD_REQUEST)
 			try :
 				user1 = UserProfile.objects.get(user=serializer.validated_data['player_one'])
 				user2 = UserProfile.objects.get(user=serializer.validated_data['player_two'])
@@ -50,7 +58,7 @@ class GameView(APIView):
 class GameDetailView(APIView):
 
 	permissions_classes = [IsAdminUser]
-	
+
 	def patch(self, request, id):
 		get_object_or_404(models.Game, pk = id)
 		game_entries = models.Game.objects.get(id=id)

@@ -6,7 +6,6 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.core.signing import TimestampSigner
 
-
 def enable_2fa_authenticator(user_profile):
     user_profile.totp_secret = pyotp.random_base32()
     user_profile.save()
@@ -15,19 +14,6 @@ def enable_2fa_authenticator(user_profile):
 def get_totp_uri(user_profile):
     totp = pyotp.TOTP(user_profile.totp_secret)
     return totp.provisioning_uri(user_profile.user.email, issuer_name="Pong_42")
-
-def verify_twilio_otp(user_profile, submitted_code):
-        account_sid = settings.TWILIO_SID
-        auth_token = settings.TWILIO_AUTH_TOKEN
-        client = Client(account_sid, auth_token)
-        verification_check = client.verify.v2.services(os.environ.get('TWILIO_SERVICE_SID')).verification_checks.create(
-        to=user_profile.mobile_number,
-        code=submitted_code
-        )
-        if verification_check.status == 'approved':
-         return True
-        else:
-         return False
 
 def send_otp(string, user_profile):
     if string == 'email':

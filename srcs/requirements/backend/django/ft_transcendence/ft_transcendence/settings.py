@@ -49,17 +49,20 @@ INSTALLED_APPS = [
 	'game',
 	'chat',
 	'friend_management',
+	'django_prometheus',
+	'background_task',
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
     # 'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
  # CORS settings (Cross-Origin Resource Sharing)
@@ -209,9 +212,7 @@ EMAIL_FROM = "Pong_Verfication"
 # EMAIL_HOST_USER et EMAIL_HOST_PASSWORD si nécessaire
 
 
-TWILIO_SID = os.environ.get('TWILIO_SID')
-TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
-TWILIO_SERVICE_ID = os.environ.get('TWILIO_SERVICE_ID')
+HTTPSMS_KEY = os.environ.get('HTTPSMS_KEY')
 
 PASSWORD_42 = "i8F6X2h8PZ2kyd"
 
