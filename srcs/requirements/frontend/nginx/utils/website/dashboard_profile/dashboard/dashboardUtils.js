@@ -228,17 +228,14 @@ document.getElementById('searchUserRefreshBtn').addEventListener('click', functi
   document.getElementById('searchUserInput').value = ''
 })
 
-
 function compare_input_usernames(value) {
+  const usernames = user_profiles.map(profile => profile.user.username.toLowerCase());
+  const lowercasedValue = value.toLowerCase();
 
-  const usernames = [];
-  for (let i = 0; i < user_profiles.length; i ++) {
-    // console.log(user_profiles[i]);
-    usernames.push(user_profiles[i].user.username)
-  }
   let matchedUsernames = usernames.filter(username =>
-    username.substring(0, value.length) === value.substring(0, value.length)
+    username.startsWith(lowercasedValue)
   );
+
   // return an array of usernames matched
   return matchedUsernames;
 }
@@ -275,7 +272,7 @@ function handleMatchedUsernames(matchedUsernames) {
         if (matchedUsernames[i] === user_profiles[j].user.username) {
           
           console.log(user_profiles[j]);
-          searchUser_createContent(user_profiles[j])
+          searchUser_createContent(user_profiles[j], i)
         }
       }
     }

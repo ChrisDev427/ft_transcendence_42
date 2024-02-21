@@ -384,7 +384,7 @@
 
     <section id="dashboard" class="unvisible fade-in">
       <!-- <h1 class="display-1 fw-bold text-info text-center">Dashboard</h1> -->
-      <div class="container-fluid p-4 mt-5 rounded-4 bg-secondary bg-opacity-10" style="max-width: 1600px;">
+      <div class="container-fluid p-3 mt-5 rounded-4 bg-secondary bg-opacity-10" style="max-width: 1600px;">
         <!-- Begin Page Content -->
         <div class="container-fluid p-4" style="max-width: 1600px;">
 
@@ -569,14 +569,54 @@
             <div class="col-xl-7 ">
               <div class="card border-0 shadow mb-4">
                 <div class="card-header py-3">
-                  <h5 class="m-0 font-weight-bold text-info text-center text-md-start">Friends</h5>
+                  <div class="row d-flex align-items-center">
+                    <div class="col-sm-auto me-auto">
+                      <h5 class="text-center text-sm-start text-info mb-0">Friends</h5>
+                    </div>
+                    <div class="col-sm-auto ms-auto">
+                      <div class="row d-felx justify-content-center">
+                        <div class="col-auto px-0">
+                          <h5 id="seeFriendRequest" role="button" class="text-center mb-0 mt-2 mt-sm-0 hidden-element fade-in" onclick="seeFriendRequest()" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); color: rgb(0, 218, 4);"></h5>
+                        </div>
+                        <div class="col-auto d-flex align-items-end" style="width: 40px;">
+                          <!-- <h5 id="seeFriendRequestCloseBtn" role="button" class="fs-6 text-danger hidden-element fade-in ms-0 mt-1 mb-0" onclick="closeFriendRequest()"><i class="fa-solid fa-square-xmark fs-5"></i></h5> -->
+                          <i id="seeFriendRequestCloseBtn" role="button" class="text-danger hidden-element fade-in fa-solid fa-square-xmark fs-5" onclick="closeFriendRequest()"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="card-body">
                   <!-- Card Body -->
                   <div id="friendShipBody-dashboard" style="overflow-y: auto; height: 415px;">
-                    <div id="friendsTextInfo" class="p-5 hidden-element">
+
+                    <div id="friendsTextInfo" class="p-5 hidden-element fade-in">
                       <h5 class="font-weight-bold text-center text-secondary">You don't have any friend yet</h5>
                     </div>
+
+                    <div id="requestDiv" class="hidden-element fade-in">
+
+                      <!-- <div class="row d-felx justify-content-center rounded-3">
+                        <div class="col-auto">
+                          <div class="row p-3 m-3 mx-auto rounded-3 d-felx justify-content-center rounded-3 shadow" style="max-width: 300px;">
+                            <div class="col-auto my-auto">
+                              <img src="img/img-chris.jpg" alt="" class="rounded-3 shadow" style="max-height: 150px;">
+                            </div>
+                            <div class="col-auto my-auto">
+                              <div class="row">
+                                <h5 class="text-info text-center fs-3 mb-2 mt-1 mt-md-0">Chris</h5>
+                              </div>
+                              <div class="row">
+                                <h5 role="button" onclick="" class="py-1 rounded shadow text-warning text-center fs-5">Deny</h5>
+                                <h5 role="button" onclick="" class="py-1 rounded shadow mt-2 text-center fs-5" style="color: rgb(0, 218, 4);">Accept</h5>
+                              </div>
+                            </div>
+                          </div>
+                        </div> -->
+                      <!-- </div> -->
+                      
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -794,6 +834,7 @@
     <script src="dashboard_profile/profile/updateUserInfos_createForms.js"></script>
     <script src="dashboard_profile/profile/updateUserInfos_comAPI.js"></script>
     <script src="dashboard_profile/profile/profile.js"></script>
+    <script src="dashboard_profile/profile/manageFriends.js"></script>
     <script src="dashboard_profile/dashboard/Chart.js"></script>
     <script src="dashboard_profile/dashboard/chart-pie.js"></script>
     <script src="dashboard_profile/dashboard/dashboard.js"></script>
