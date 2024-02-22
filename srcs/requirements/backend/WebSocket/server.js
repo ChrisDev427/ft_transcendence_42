@@ -24,16 +24,16 @@ class Session {
 
 const wss = new WebSocket.Server({ noServer: true });
 
-const messageHistoryBySession = {};
 const MAX_MESSAGES = 10;
-const messageHistory = [];
 const sessions = [];
 const connectedUsersBySession = {};
+const messageHistoryBySession = {};
+const messageHistory = [];
 
 
 wss.on('connection', (ws, req) => {
-    const ip = req.connection.remoteAddress;
-
+    const ip = sessionUsername
+    const username = 
     ws.userId = ip
     ws.sessionId = getSessionIdByUserId(ws.userId);
     console.log(`Client connected from IP: ${ip}`);
@@ -61,9 +61,13 @@ wss.on('connection', (ws, req) => {
             const username = ws.userId;
             const sessionId = getSessionIdByUserId(ws.userId);
 
-            
-
             if (data.action === 'sendMessage') {
+                const text = data.text;
+                console.log(text);
+                broadcastMessage({ action: 'receiveMessage', username, text });
+
+            }
+            if (data.action === 'sendMessageSession') {
                 const text = data.text;
 
                 console.log(text);
@@ -72,7 +76,6 @@ wss.on('connection', (ws, req) => {
                 console.log(connectedUsersBySession);
                 broadcastMessageSession({ action: 'receiveMessage', username, text }, sessionId);
 
-                // broadcastMessage({ action: 'receiveMessage', username, text });
             }
             // reception de demande de creation de session
             if (data.action === 'createSession') {
@@ -129,15 +132,14 @@ wss.on('connection', (ws, req) => {
                     // Ajout de l'utilisateur à la liste des utilisateurs connectés à la session
                     if (connectedUsersBySession[data.sessionId]) {
                         connectedUsersBySession[data.sessionId].push(ip);
-                        console.log(`${ip} join session!`, data.sessionId);
+                        console.log(`${data.username} join session!`, data.sessionId);
                         ws.sessionId = getSessionIdByUserId(ws.userId);
                         const sessionMessageHistory = messageHistoryBySession[data.sessionId] || [];
-                        ws.send(JSON.stringify({ type: "messageGeneral", messages: sessionMessageHistory }));
+                        ws.send(JSON.stringify({ type: "messageSession", messages: sessionMessageHistory }));
                 
                         console.log(connectedUsersBySession);
                     }
-                    // Envoyer un message de confirmation ou autres actions nécessaires
-                    // ws.send(JSON.stringify({ action: 'sessionJoined', sessionId }));
+
                 }
             }
 
@@ -168,7 +170,7 @@ function broadcastMessageSession(message, sessionId) {
         const clientSessionId = getSessionIdByUserId(client.userId);
 
         if (client.readyState === WebSocket.OPEN && clientSessionId === sessionId) {
-            client.send(JSON.stringify({ type: "messageGeneral", messages: latestMessages }));
+            client.send(JSON.stringify({ type: "messageSession", messages: latestMessages }));
         }
     });
 }
@@ -204,16 +206,14 @@ function isUserAlreadyConnected(userId, sessionId) {
 
 
 function userLeaveSession(sessionId) {
-    const sessionIndex = sessions.findIndex(session => session.sessionId === sessionId);
+    // const sessionIndex = sessions.findIndex(session => session.sessionId === sessionId);
 
-    const removedSession = sessions.splice(sessionIndex, 1)[0];
+    // const removedSession = sessions.splice(sessionIndex, 1)[0];
     
     delete messageHistoryBySession[sessionId];
     delete connectedUsersBySession[sessionId];
+    // console.log("test : ", sessionIndex)
     broadcastSessions();
-    console.log(sessions)
-
-
     console.log(sessions)
 }
 

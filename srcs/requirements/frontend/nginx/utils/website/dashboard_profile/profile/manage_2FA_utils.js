@@ -18,13 +18,8 @@ function check2FA(e) {
     // const passwordValue = passwordInput.value;
 
     // Retourne la promesse de l'appel fetch
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/manage_2FA_utils.js
-    return fetch('https://transcendence42.ddns.net/api/account/profile/' + usernameValue + '/', {
-        // return fetch('https://transcendence42.ddns.net:8000/api/account/profile/' + usernameValue, passwordValue, {
-=======
     return fetch(domainPath + '/api/account/profile/' + usernameValue + '/', {
         // return fetch('http://localhost:8000/api/account/profile/' + usernameValue, passwordValue, {
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/dashboard_profile/profile/manage_2FA_utils.js
       method: 'GET',
     })
     .then(response => {

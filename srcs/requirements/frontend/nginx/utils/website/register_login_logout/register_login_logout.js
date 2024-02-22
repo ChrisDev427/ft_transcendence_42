@@ -38,12 +38,8 @@ function requestLogin(formData) {
 
   verifyToken();
 
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/register_login_logout.js
-  fetch('https://transcendence42.ddns.net/api/account/login/', {
-=======
   // fetch('http://localhost:8000/api/account/login/', {
     fetch(domainPath + '/api/account/login/', {
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/register_login_logout/register_login_logout.js
     method: 'POST',
     body: formData
   })
@@ -68,7 +64,6 @@ function requestLogin(formData) {
     // Récupère les informations de l'utilisateur et le jeton d'accès
     console.log(data);
     // const userInformation = data.user;
-   
     localStorage.setItem('accessToken', data.access);
     localStorage.setItem('refreshToken', data.refresh);
     localStorage.setItem('connectType', 'signin');
@@ -151,12 +146,7 @@ function getAuthorizationCode() {
 
 async function exchangeCodeForToken(code) {
   try {
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/register_login_logout.js
-    const response = await fetch('https://transcendence42.ddns.net/api/account/o/token/?code=' + code);
-=======
-    // const response = await fetch('http://localhost:8000/api/account/o/token/?code=' + code);
     const response = await fetch(domainPath + '/api/account/o/token/?code=' + code);
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/register_login_logout/register_login_logout.js
 
     if (!response.ok) {
       throw new Error('Error : fetch : exchange token');
@@ -196,104 +186,6 @@ function removeParamURL() {
   window.history.replaceState({}, document.title, currentURL.href);
 }
 
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/register_login_logout.js
-//*********************************************************************************************************
-
-function getProfileInfos(token) {
-  console.log('GET PROFILE INFOS FUNCTION');
-  verifyToken();
-  fetch('https://transcendence42.ddns.net/api/account/profile/', {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-  })
-  .then(response => {
-      if (response.status === 200) {
-          // Authentification réussie
-          return response.json();
-      } else if (response.status === 401) {
-
-          console.error('Error : expired access token', response.status);
-
-          // getProfileInfos(localStorage.getItem('accessToken'));
-
-      } else {
-        // Gestion des erreurs lors de la récupération du profil
-        console.error('Erreur lors de la récupération du profil :', response.status);
-        throw new Error('Échec de la récupération du profil');
-    }
-  })
-  .then(data => {
-      // Récupère les informations de l'utilisateur
-      console.log('apiUrl ' + data.avatar.replace("http", "https"));
-      
-      two_fa = data.two_fa;
-      if (two_fa === true) {
-        document.getElementById('authTitle').classList.add('text-success');
-        document.getElementById('mobileDiv').classList.remove('hidden-element');
-        if(data.mobile_number !== "" && data.mobile_number_verified === false) {
-          document.getElementById('mobileNotVerified').classList.remove('hidden-element');
-          document.getElementById('mobileVerified').classList.add('hidden-element');
-
-        } else {
-          document.getElementById('mobileNotVerified').classList.add('hidden-element')
-          document.getElementById('mobileVerified').classList.remove('hidden-element');
-          document.getElementById('mobileVerified').textContent = data.mobile_number;
-
-        }
-      } else {
-        document.getElementById('mobileDiv').classList.add('hidden-element');
-      }
-      
-      console.log('two_fa = ' + two_fa)
-     
-      fetchAndDisplayImage(data.avatar.replace("http", "https"), token);
-      document.getElementById('firstNameProfile').textContent = data.user.first_name;
-      document.getElementById('lastNameProfile').textContent = data.user.last_name;
-      document.getElementById('userNameProfile').textContent = data.user.username;
-      document.getElementById('emailProfile').textContent = data.user.email;
-      document.getElementById('bioProfile').textContent = data.bio;
-      document.getElementById('username-profileDropdown').textContent = data.user.username;
-      document.getElementById('bio-profileDropdown').textContent = data.bio;
-     
-      userId = data.user.id;
-      username = data.user.username;
-  })
-  .catch(error => {
-    console.error('Erreur lors de la récupération du profil :', error);
-  });
-}
-
-function fetchAndDisplayImage(apiUrl, token) {
-  verifyToken();
-
-  fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Erreur lors du chargement de l\'image');
-    }
-    return response.blob();
-  })
-  .then(blob => {
-    // Crée une URL objet à partir du blob
-    const imageURL = URL.createObjectURL(blob);
-    // Met à jour la source de l'élément image avec l'id 'avatar-img'
-    document.getElementById('avatar-img').src = imageURL;
-    document.getElementById('avatar-img_profilDropdown').src = imageURL;
-  })
-  .catch(error => {
-    console.error('Erreur lors du chargement de l\'image :', error);
-  });
-}
-
-=======
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/register_login_logout/register_login_logout.js
 window.addEventListener('DOMContentLoaded', function () {
   var hash = window.location.hash.substring(1);
 
@@ -312,12 +204,7 @@ function verifyEmail() {
   console.log(token);
 
   if (token) {
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/register_login_logout.js
-    fetch("https://transcendence42.ddns.net/api/account/email/verify/?token=" + token)
-=======
-    // fetch("http://localhost:8000/api/account/email/verify/?token=" + token)
     fetch(domainPath + '/api/account/email/verify/?token=' + token)
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/register_login_logout/register_login_logout.js
     .then(response => {
       if (response.status === 200) {
         // Authentification réussie

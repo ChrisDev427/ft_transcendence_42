@@ -32,17 +32,8 @@
 
 
 <body>
-    <script>
-        const socket = new WebSocket('wss://transcendence42.ddns.net:90');
-        
-        socket.addEventListener('open', (event) => {
-            console.log('Connected to WebSocket server');
-        });
-        socket.addEventListener('close', (event) => {
-            console.log('Connection closed');
-        });
-  
-    </script>
+
+    
 
   <!-- 
 
@@ -196,6 +187,15 @@
           </div>
         </div>
       </div>
+      
+      <div id="chat-container">
+        <div id="chat-messages-general"></div>
+        <div id="input-container">
+          <input type="text" id="message-input_general" placeholder="Ecris un chat..." onkeydown="handleKeyPressGeneral(event)">
+          <button id="send-button" onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+
     </section>
     <section id="gameMenu" class="fade-in hidden-element">
       <h1 class="display-1 p-3 fw-bold text-info text-center">Pong</h1>
@@ -279,46 +279,10 @@
             <div id="chat-messages"></div>
             <div id="input-container">
               <input type="text" id="message-input" placeholder="Ecris un chat..." onkeydown="handleKeyPress(event)">
-              <button id="send-button" onclick="sendMessage()">Send</button>
+              <button id="send-button" onclick="sendMessageSession()">Send</button>
             </div>
           </div>
-          <script>
 
-              socket.addEventListener('message', (event) => {
-                  const messageContainer = document.getElementById('chat-messages');
-                  const receivedMessage = JSON.parse(event.data);
-      
-                  if (receivedMessage.type === 'messageGeneral') {
-                      const messages = receivedMessage.messages || [];
-                      const messagesToDisplay = messages.slice(-10);
-                      messageContainer.innerHTML = '';
-                      messagesToDisplay.forEach(msg => {
-                          messageContainer.innerHTML += `<div><strong>${msg.username}:</strong> ${msg.text}</div>`;
-                      });
-                      messageContainer.scrollTop = messageContainer.scrollHeight;
-                  }
-              });
-                      
-              function sendMessage() {
-                  const messageInput = document.getElementById('message-input');
-                  const message = messageInput.value.trim();
-          
-                  if (message !== '') {
-                      if (socket.readyState === WebSocket.OPEN) {
-                          socket.send(JSON.stringify({ action: 'sendMessage', text: message }));
-                          messageInput.value = '';
-                      } else {
-                          console.warn('La connexion WebSocket n\'est pas encore établie.');
-                      }
-                  }
-              }
-              
-              function handleKeyPress(event) {
-                  if (event.key === 'Enter') {
-                      sendMessage();
-                  }
-              }
-              </script>
 
               <!-- <div id="chat-container_session">
                 <div id="chat-messages_session"></div>
@@ -873,82 +837,6 @@
     <section id="sessions">
       <div id="sessionsList" style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;"></div>
 
-      <script>
-          // const socket = new WebSocket('ws://90.116.98.105:90');
-
-          socket.addEventListener('open', (event) => {
-              console.log('Connected to WebSocket server');
-          });
-
-          socket.addEventListener('message', (event) => {
-              console.log('Message from server:', event.data);
-
-              const data = JSON.parse(event.data);
-
-              if (data.action === 'updateSessions') {
-                  console.log('Updating sessions list...');
-                  updateSessionsList(data.sessions);
-              } else if (data.action === 'join') {
-                  console.log('Joining session with ID:', data.sessionId);              }
-          });
-
-          socket.addEventListener('close', (event) => {
-              console.log('Connection closed');
-          });
-
-          function updateSessionsList(sessions) {
-              const sessionsListElement = document.getElementById('sessionsList');
-              sessionsListElement.innerHTML = '';
-
-              sessions.forEach(session => {
-                  const sessionLink = document.createElement('a');
-                  sessionLink.href = `https://transcendence42.ddns.net/#playPong`;
-                  sessionLink.textContent = `Session ID: ${session.id}, Created At: ${session.createdAt}`;
-
-                  sessionLink.addEventListener('click', () => {
-                      socket.send(JSON.stringify({ action: 'join', sessionId: session.id }));
-                      
-                      leftPlayerName ="test";
-                      rightPlayerName="test1";
-
-                      level = 5;
-                      playOnline = true;
-                      twoPlayers = true;
-                      start = true;
-
-                      setPlayerNameToPrint(leftPlayerName, rightPlayerName);
-                      setHandToStart();
-                      printConsoleInfos();
-                      
-                      showSection("playPong");
-                      document.getElementById('gameDiv').classList.remove('hidden-element');
-                      run();
-
-                  });
-
-                  const sessionElement = document.createElement('p');
-                  sessionElement.appendChild(sessionLink);
-
-                  sessionsListElement.appendChild(sessionElement);
-              });
-
-              console.log('Updated sessions list:', sessions);
-          }
-          
-          document.addEventListener('DOMContentLoaded', function () {
-              window.addEventListener('hashchange', () => {
-                  const hash = window.location.hash;
-                  const match = hash.match(/^#playPong\/([a-zA-Z0-9-]+)$/);
-
-                  if (match) {
-                      const sessionId = match[1];
-                      console.log('Joining session with ID:', sessionId);
-                      // Ajoutez votre logique pour rejoindre la session ici
-                  }
-              });
-          });
-
-      </script>
     </section>
 
   </main>
@@ -992,6 +880,7 @@
     <script src="register_login_logout/register_login_logout.js"></script>
     <script src="register_login_logout/register_login_logout_utils.js"></script>
 
+    
     <script src="dashboard_profile/profile/manage_2FA.js"></script>
     <script src="dashboard_profile/profile/manage_2FA_utils.js"></script>
     <script src="dashboard_profile/profile/updateUserInfos_createForms.js"></script>
@@ -1011,7 +900,12 @@
     <script src="pong_game/js/gameUtils.js"></script>
     <script src="pong_game/js/inputUtils.js"></script>
     <script src="pong_game/js/pong.js"></script>
-
+    
+    <script src="serverNode/serverUtils.js"></script>
+    <script src="serverNode/sessionList.js"></script>
+    <script src="serverNode/generalChat.js"></script>
+    <script src="serverNode/sessionsChat.js"></script>
+    
 
     <script src="https://kit.fontawesome.com/d4cc5cee10.js" crossorigin="anonymous"></script>
 

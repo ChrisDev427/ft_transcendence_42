@@ -262,3 +262,6 @@ function profileAccess(connectWith) {
         document.getElementById('setInfoIc').classList.remove('unvisible');
     }
 }
+
+
+

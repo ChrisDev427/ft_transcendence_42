@@ -81,58 +81,58 @@ services:
       - "90:90"
     networks:
       - pong
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus_container
-    restart: always
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./requirements/backend/prometheus/:/etc/prometheus/
-    networks:
-      - pong
-    env_file: .env
+  # prometheus:
+  #   image: prom/prometheus
+  #   container_name: prometheus_container
+  #   restart: always
+  #   ports:
+  #     - "9090:9090"
+  #   volumes:
+  #     - ./requirements/backend/prometheus/:/etc/prometheus/
+  #   networks:
+  #     - pong
+  #   env_file: .env
 
-  grafana:
-    image: grafana/grafana
-    container_name: grafana_container
-    restart: always
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./requirements/backend/grafana:/var/lib/grafana
-      - ./requirements/backend/grafana/conf/defaults.ini:/usr/share/grafana/conf/defaults.ini
-    networks:
-      - pong
-    env_file: .env
+  # grafana:
+  #   image: grafana/grafana
+  #   container_name: grafana_container
+  #   restart: always
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./requirements/backend/grafana:/var/lib/grafana
+  #     - ./requirements/backend/grafana/conf/defaults.ini:/usr/share/grafana/conf/defaults.ini
+  #   networks:
+  #     - pong
+  #   env_file: .env
 
-  postgresql_exporter:
-    image: wrouesnel/postgres_exporter
-    container_name: postgresql_exporter_container
-    restart: always
-    ports:
-      - "9187:9187"
-    depends_on:
-      - postgresql
-    volumes:
-      - ./requirements/backend/postgresql/postgresql_exporter/custom-metrics.yml:/custom-metrics.yml
-    networks:
-      - pong
-    env_file: .env
+  # postgresql_exporter:
+  #   image: wrouesnel/postgres_exporter
+  #   container_name: postgresql_exporter_container
+  #   restart: always
+  #   ports:
+  #     - "9187:9187"
+  #   depends_on:
+  #     - postgresql
+  #   volumes:
+  #     - ./requirements/backend/postgresql/postgresql_exporter/custom-metrics.yml:/custom-metrics.yml
+  #   networks:
+  #     - pong
+  #   env_file: .env
 
-  nginx_exporter:
-    image: nginx/nginx-prometheus-exporter
-    container_name: nginx_exporter_container
-    command:
-      - '-nginx.scrape-uri=http://nginx/nginx_status'
-    depends_on:
-      - nginx
-    restart: always
-    ports:
-      - "9113:9113"
-    networks:
-      - pong
-    env_file: .env
+  # nginx_exporter:
+  #   image: nginx/nginx-prometheus-exporter
+  #   container_name: nginx_exporter_container
+  #   command:
+  #     - '-nginx.scrape-uri=http://nginx/nginx_status'
+  #   depends_on:
+  #     - nginx
+  #   restart: always
+  #   ports:
+  #     - "9113:9113"
+  #   networks:
+  #     - pong
+  #   env_file: .env
 
   # node_exporter:
   #   image: prom/node-exporter

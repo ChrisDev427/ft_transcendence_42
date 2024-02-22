@@ -3,7 +3,7 @@ function getProfileInfos() {
   console.log('function getProfileInfos()');
 
   verifyToken();
-  fetch('http://localhost:8000/api/account/profile/', {
+  fetch(domainPath + '/api/account/profile/', {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
@@ -52,6 +52,7 @@ function init2faProfile(data) {
 
 function initProfile(data) {
   sessionUsername = data.user.username;
+  init_socket();
   document.getElementById('firstNameProfile').textContent = data.user.first_name;
   document.getElementById('lastNameProfile').textContent = data.user.last_name;
   document.getElementById('userNameProfile').textContent = data.user.username;

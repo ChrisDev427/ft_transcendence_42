@@ -13,12 +13,8 @@ function modifyAvatar_API() {
         }
         else {
 
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/updateUserInfos_comAPI.js
-            fetch('https://transcendence42.ddns.net/api/account/avatar/', {
-=======
             // fetch('http://localhost:8000/api/account/avatar/', {
                 fetch(domainPath + '/api/account/avatar/', {
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/dashboard_profile/profile/updateUserInfos_comAPI.js
                 method: 'POST',
                 body: new FormData(e.target),
                 headers: {
@@ -57,12 +53,8 @@ function modifyBio_API() {
         }
         else {
 
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/updateUserInfos_comAPI.js
-            fetch('https://transcendence42.ddns.net/api/account/profile/', {
-=======
             // fetch('http://localhost:8000/api/account/profile/', {
                 fetch(domainPath + '/api/account/profile/', {
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/dashboard_profile/profile/updateUserInfos_comAPI.js
                 method: 'PATCH',
                 body: new FormData(e.target),
                 headers: {
@@ -116,13 +108,8 @@ function setMobile_API() {
             const tmp = countryCode.value + mobile.value;
             mobile.value = tmp;
            
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/updateUserInfos_comAPI.js
-
-            fetch('https://transcendence42.ddns.net/api/account/profile/', {
-=======
             // fetch('http://localhost:8000/api/account/profile/', {
                 fetch(domainPath + '/api/account/profile/', {
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/dashboard_profile/profile/updateUserInfos_comAPI.js
                 method: 'PATCH',
                 body: new FormData(e.target),
                 headers: {
@@ -173,14 +160,6 @@ function modifyInfos_API() {
         }
         else {
 
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/updateUserInfos_comAPI.js
-            fetch('https://transcendence42.ddns.net/api/account/profile/', {
-            method: 'PATCH',
-            body: new FormData(e.target),
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-            }
-=======
             // fetch('http://localhost:8000/api/account/profile/', {
             fetch(domainPath + '/api/account/profile/', {
                 method: 'PATCH',
@@ -188,7 +167,6 @@ function modifyInfos_API() {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
                 }
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/dashboard_profile/profile/updateUserInfos_comAPI.js
             })
             .then(response => {
                 console.log('response status:', response.status);
@@ -229,14 +207,6 @@ function modifyEmail_API() {
         }
         else {
 
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/updateUserInfos_comAPI.js
-            fetch('https://transcendence42.ddns.net/api/account/profile/', {
-            method: 'PATCH',
-            body: new FormData(e.target),
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-            }
-=======
             // fetch('http://localhost:8000/api/account/profile/', {
             fetch(domainPath + '/api/account/profile/', {
                 method: 'PATCH',
@@ -244,7 +214,6 @@ function modifyEmail_API() {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
                 }
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/dashboard_profile/profile/updateUserInfos_comAPI.js
             })
             .then(response => {
                 console.log('response status:', response.status);
@@ -292,14 +261,6 @@ function modifyPassword_API() {
         }
         else {
 
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/updateUserInfos_comAPI.js
-            fetch('https://transcendence42.ddns.net/api/account/profile/', {
-            method: 'PATCH',
-            body: new FormData(e.target),
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-            }
-=======
             // fetch('http://localhost:8000/api/account/profile/', {
             fetch(domainPath + '/api/account/profile/', {
                 method: 'PATCH',
@@ -307,7 +268,6 @@ function modifyPassword_API() {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
                 }
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/dashboard_profile/profile/updateUserInfos_comAPI.js
             })
             .then(response => {
 
@@ -340,12 +300,8 @@ function modify2FA_API() {
     document.getElementById('twofa-form').addEventListener('submit', function (e) {
         e.preventDefault();
 
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/updateUserInfos_comAPI.js
-        fetch('https://transcendence42.ddns.net/api/account/profile/', {
-=======
         // fetch('http://localhost:8000/api/account/profile/', {
         fetch(domainPath + '/api/account/profile/', {
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/dashboard_profile/profile/updateUserInfos_comAPI.js
             method: 'PATCH',
             body: new FormData(e.target),
             headers: {
@@ -380,12 +336,8 @@ function modify2FA_API() {
 function userLogout_API() {
     console.log('USER LOGOUT FUNCTION');
     verifyToken();
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/updateUserInfos_comAPI.js
-    fetch('https://transcendence42.ddns.net/api/account/logout/', {
-=======
     // fetch('http://localhost:8000/api/account/logout/', {
     fetch(domainPath + '/api/account/logout/', {
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/dashboard_profile/profile/updateUserInfos_comAPI.js
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
@@ -412,12 +364,8 @@ function eraseAccount_API() {
     document.getElementById('eraseAccount-form').addEventListener('submit', function (e) {
         e.preventDefault();
 
-<<<<<<< HEAD:srcs/requirements/frontend/nginx/utils/website/js/requestAPI/updateUserInfos_comAPI.js
-        fetch('https://transcendence42.ddns.net/api/account/profile/', {
-=======
         // fetch('http://localhost:8000/api/account/profile/', {
         fetch(domainPath + '/api/account/profile/', {
->>>>>>> origin/axel:srcs/requirements/frontend/nginx/utils/website/dashboard_profile/profile/updateUserInfos_comAPI.js
             method: 'DELETE',
             body: new FormData(e.target),
             headers: {

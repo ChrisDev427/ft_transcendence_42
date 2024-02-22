@@ -27,6 +27,7 @@ btn.createBtn.addEventListener("click", function() {
     document.getElementById('dificultyMenu').classList.remove('hidden-element');
     
 });
+
 btn.joinBtn.addEventListener("click", function() {
     
     btn.joinBtn.classList.add("disabled");
@@ -34,6 +35,7 @@ btn.joinBtn.addEventListener("click", function() {
     btn.joinBtn.classList.add("btn-info");
     btn.createBtn.classList.add("disabled");
     
+    console.log("session user join ", sessionUsername);
 
     // document.getElementById('sessions').classList.remove('hidden-element')
     showSection('sessions');
@@ -165,9 +167,10 @@ btn.twoPlayersBtn.addEventListener("click", function() {
             action: 'createSession',
             level: level,
             paddleHeight: paddleHeight,
-            id: 123,
-            username: "monkey",
+            // id: 123,
+            username: sessionUsername,
         });
+        console.log("session user create ",sessionUsername);
         socket.send(message);
     }
 
