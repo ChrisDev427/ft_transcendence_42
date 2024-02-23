@@ -27,7 +27,7 @@ def send_otp(string, user_profile):
         )
         return verification_code
     elif string == 'sms':
-        api_key = "7kWvMgyiinW0x4N3kJnmaXdNfLkZhfqeeM1TW_4WxoJTcH4Z9V1HVsvvp9sGsmri"
+        api_key = settings.HTTPSMS_KEY
         url = 'https://api.httpsms.com/v1/messages/send'
         headers = {
             'x-api-key': api_key,

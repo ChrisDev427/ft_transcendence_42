@@ -27,12 +27,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY_DJANGO')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'django_container:8000']
+ALLOWED_HOSTS = ['localhost', 'django_container:8000', os.environ.get('SITE_URL'),]
 # Application definition
 
-OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
-OAUTH_CLIENT_SECRET = os.environ.get('OAUTH_CLIENT_SECRET')
-OAUTH_REDIRECT_URI = os.environ.get('OAUTH_REDIRECT_URI')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -70,8 +67,7 @@ MIDDLEWARE = [
 # CORS_ALLOW_ANY_ORIGIN = True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost',
-	'https://transcendence42.ddns.net',
+    os.environ.get('SITE_URL'),
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -83,7 +79,6 @@ CORS_ALLOW_HEADERS = [
 	'token',
 ]
 
-SITE_URL = 'http://localhost'
 
 ROOT_URLCONF = 'ft_transcendence.urls'
 
@@ -172,6 +167,10 @@ REST_FRAMEWORK = {
     )
 }
 
+# Domain Name
+
+SITE_URL = os.environ.get('SITE_URL')
+
  # JWT settings
 
 SIMPLE_JWT = {
@@ -191,17 +190,16 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_APPLICATION_PASSWORD')
 EMAIL_FROM = "Pong_Verfication"
 
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'postfix_container'  # Nom du service Postfix dans docker-compose
-# EMAIL_PORT = 25
-# EMAIL_USE_TLS = False
-# EMAIL_HOST_USER et EMAIL_HOST_PASSWORD si nécessaire
-
-
 HTTPSMS_KEY = os.environ.get('HTTPSMS_KEY')
+HTTPSMS_URL = os.environ.get('HTTPSMS_URL')
+HTTPSMS_PHONE = os.environ.get('HTTPSMS_PHONE')
 
-PASSWORD_42 = "i8F6X2h8PZ2kyd"
+# OAUTH 42 settings
+
+OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
+OAUTH_CLIENT_SECRET = os.environ.get('OAUTH_CLIENT_SECRET')
+OAUTH_REDIRECT_URI = os.environ.get('OAUTH_REDIRECT_URI')
+OAUTH_PASSWORD_42 = os.environ.get('OAUTH_PASSWORD_42')
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
