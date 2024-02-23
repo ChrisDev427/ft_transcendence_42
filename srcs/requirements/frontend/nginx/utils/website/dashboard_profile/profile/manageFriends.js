@@ -1,7 +1,39 @@
-let friendRequestNb = 0;
+let friendRequestNb;
 let friendRequestId = [];
 
+// async function checkFriendRequest() {
+//   friendRequestNb = 0;
+//   try {
+//     const data = await fetchFriendRequest();
+
+//     if (data.length !== 0) {
+//       console.log("Check Request Data = ", data);
+
+//       for (let i = 0; i < data.length; i++) {
+//         if (data[i].is_accepted === false) {
+//           const requested_name = await fetchUsername(data[i].friend2);
+
+//           if (requested_name === sessionUsername) {
+//             const requester_name = await fetchUsername(data[i].friend1);
+//             friendRequestNb++;
+//             // friendRequestId.push(data[i].id);
+//             manageFriendRequest(requester_name, data[i].id);
+//           }
+//         } else {
+//           friendRequestNb = 0;
+//           const requestBtn = document.getElementById("seeFriendRequest");
+//           requestBtn.classList.add("hidden-element");
+//           // requestBtn.textContent = 'Friend Request ' + friendRequestNb;
+//         }
+//       }
+//     }
+//   } catch (error) {
+//     console.error("Error in checkFriendRequest:", error);
+//   }
+// }
 async function checkFriendRequest() {
+  friendRequestNb = 0;
+
   try {
     const data = await fetchFriendRequest();
 
@@ -18,12 +50,18 @@ async function checkFriendRequest() {
             // friendRequestId.push(data[i].id);
             manageFriendRequest(requester_name, data[i].id);
           }
-        } else {
-          friendRequestNb = 0;
-          const requestBtn = document.getElementById("seeFriendRequest");
-          requestBtn.classList.add("hidden-element");
-          // requestBtn.textContent = 'Friend Request ' + friendRequestNb;
         }
+      }
+
+      // Mettez à jour le texte du bouton après la boucle
+      const requestBtn = document.getElementById("seeFriendRequest");
+      requestBtn.textContent = 'Friend Request ' + friendRequestNb;
+
+      // Affichez ou masquez le bouton en fonction du nombre de demandes d'amis
+      if (friendRequestNb > 0) {
+        requestBtn.classList.remove("hidden-element");
+      } else {
+        requestBtn.classList.add("hidden-element");
       }
     }
   } catch (error) {
@@ -106,7 +144,7 @@ function manageFriendRequest(requesterName, requestId) {
 function friendRequest_createContent(requesterName, requestId) {
   const mainRow = document.createElement("div");
   mainRow.id = "requestDiv" + requestId;
-  mainRow.classList = "row d-felx justify-content-center rounded-3";
+  mainRow.classList = "col-auto";
 
   const mainCol = document.createElement("div");
   mainCol.classList = "col-auto";
@@ -173,11 +211,13 @@ function friendRequest_createContent(requesterName, requestId) {
   document.getElementById("denyBtn" + requestId).addEventListener("click", function () {
     console.log('deny pushed !');
       responseFriendRequest(requesterName, requestId, false)
+      // getDashboardInfos();
        
     });
   document.getElementById("acceptBtn" + requestId).addEventListener("click", function () {
     console.log('accept pushed !');
       responseFriendRequest(requesterName, requestId, true)
+      // getDashboardInfos();
        
     });
 }
@@ -187,9 +227,11 @@ function seeFriendRequest() {
   if (!friendTextInfo.classList.contains("hidden-element")) {
     friendTextInfo.classList.add("hidden-element");
   } else {
-    document
-      .getElementById("friendShipList-dashboard")
-      .classList.add("hidden-element");
+    const friendListDiv = document.getElementById('friendShipList-dashboard');
+    if (friendListDiv) {
+      friendListDiv.classList.add("hidden-element");
+    }
+
   }
   document.getElementById("seeFriendRequest").classList.add("icon-disabled");
   document
@@ -202,30 +244,46 @@ function seeFriendRequest() {
 }
 
 function closeFriendRequest() {
-  const friendTextInfo = document.getElementById("friendsTextInfo");
-  if (friendTextInfo.classList.contains("hidden-element")) {
-    friendTextInfo.classList.remove("hidden-element");
+  
+  const childCount_friendListDiv = document.getElementById('friendShipList-dashboard').childElementCount;
+  if (childCount_friendListDiv > 0) {
+    document.getElementById('friendShipList-dashboard').classList.remove('hidden-element');
+    document.getElementById('friendsTextInfo').classList.add('hidden-element');
+    // if (!document.getElementById('friendsTextInfo').classList.contains('hidden-element')) {
+    //   document.getElementById('friendsTextInfo').classList.add('hidden-element');
+    // }
   } else {
-    document
-      .getElementById("friendShipList-dashboard")
-      .classList.remove("hidden-element");
+    document.getElementById('friendsTextInfo').classList.remove('hidden-element');
   }
   document.getElementById("seeFriendRequest").classList.remove("icon-disabled");
-  document
-    .getElementById("seeFriendRequestCloseBtn")
-    .classList.add("hidden-element");
-  const requestDiv = document.getElementById("requestDiv");
-  if (requestDiv) {
-    requestDiv.classList.add("hidden-element");
-  }
+  document.getElementById("seeFriendRequestCloseBtn").classList.add("hidden-element");
+  document.getElementById("requestDiv").classList.add("hidden-element");
+ 
+  getDashboardInfos();
 }
 
 async function responseFriendRequest(requesterName, requestId, response) {
   console.log("responseFriendRequest()" + requestId);
   await fetchResponseRequest(requesterName, response);
   document.getElementById("requestDiv" + requestId).remove();
-  document.getElementById("seeFriendRequestCloseBtn").classList.add("hidden-element");
-  getDashboardInfos();
+
+  friendRequestNb--;
+  const requestBtn = document.getElementById("seeFriendRequest");
+  requestBtn.textContent = "Friend Request " + friendRequestNb;
+
+  const childCount_requestDiv = document.getElementById('requestDiv').childElementCount;
+  if (childCount_requestDiv === 0) {
+    document.getElementById("seeFriendRequest").classList.add("hidden-element");
+    document.getElementById("seeFriendRequestCloseBtn").classList.add("hidden-element");
+    const childCount_friendListDiv = document.getElementById('friendShipList-dashboard').childElementCount;
+    if (childCount_friendListDiv > 0) {
+      document.getElementById('friendShipList-dashboard').classList.remove('hidden-element');
+      document.getElementById('friendsTextInfo').classList.add('hidden-element');
+    } else {
+      document.getElementById('friendsTextInfo').classList.remove('hidden-element');
+    }
+    getDashboardInfos();
+  }
 }
 
 async function fetchResponseRequest(requesterName, boolResponse) {
@@ -288,36 +346,33 @@ function askFriend(toAskAsFriend) {
   console.log("to ask as friend = " + toAskAsFriend);
   verifyToken();
 
-    fetch(domainPath + "/api/friend_management/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Indiquez que le contenu est au format JSON
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-        body: JSON.stringify({
-          friend: toAskAsFriend,
-        }),
-    })
-    .then((response) => {
-      if (response.ok) {
-        // Demande d'ami réussie
-        console.log("asking " + toAskAsFriend + " as friend ok !");
-        return response.json();
+  return fetch(domainPath + "/api/friend_management/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
+    },
+    body: JSON.stringify({
+      friend: toAskAsFriend,
+    }),
+  })
+  .then((response) => {
+    if (response.ok) {
+      // Demande d'ami réussie
+      console.log("asking " + toAskAsFriend + " as friend ok !", response);
+      return response.json();
     } else {
-        console.error(
-            "Error : asking " + toAskAsFriend + " as friend !" + response.status
-            );
-            response.json().then((data) => {
-                console.log("Response data:", data);
-            });
-            throw new Error("ask friend :");
-        }
-    })
-    .then((data) => {
-        console.log('then !', data);
-        getDashboardInfos();
-    })
-    .catch((error) => {
-      console.error("Error : ", error);
-    });
+      // Gestion des erreurs
+      console.error("Error : asking " + toAskAsFriend + " as friend !");
+      return response.json();
+    }
+  })
+  .then((data) => {
+    return data; // Renvoyez les données pour les manipuler dans le prochain .then
+  })
+  .catch((error) => {
+    console.error("Error : ", error);
+    throw error; // Propagez l'erreur pour la gestion ultérieure
+  });
 }
+

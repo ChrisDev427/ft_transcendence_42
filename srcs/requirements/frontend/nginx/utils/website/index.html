@@ -45,23 +45,20 @@
   <header id="header" class="pb-5 mb-4">
     <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark bg-info py-1">
       <div class="container">
-        <a class="navbar-brand fw-bold btn" onclick="showSection('main')">ft_transcendence42</a>
+        <a class="navbar-brand fw-bold btn border-0" onclick="showSection('main')">ft_transcendence42</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
-
             <!-- DropDown Profile -->
             <li id="dropDownProfile" class="nav-item dropdown unvisible">
               <a class="nav-link bi-person-circle  fs-3" href="#" role="toggle" data-bs-toggle="dropdown" aria-expanded="false"></a>
               <div id="dropdown-menu" class="dropdown-menu bg-info py-0 border-0 fade-in">
-
                 <div class="card mx-auto pb-3 shadow-lg border-0" style="width: 18rem;">
                   <img id="avatar-img_profilDropdown" src="" class="card-img-top mx-auto mt-3 rounded" alt="avatar-img" style="width: 150px;">
                   <div class="card-body">
-                    <h4 id="username-profileDropdown" style="font-family: 'Bagel Fat One', sans-serif;" class="card-title text-info text-center mb-3"></h4>
+                    <h4 id="username-profileDropdown" style="font-family: 'Bagel Fat One', sans-serif;" class="card-title text-info text-center text-uppercase mb-3"></h4>
                     <p id="bio-profileDropdown" class="card-text text-secondary text-center fw-light"></p>
                     <div class="col d-flex justify-content-evenly mt-4">
                       <a class="btn btn-sm btn-outline-info fw-bold bi bi-speedometer" href="#dashboard" onclick="getDashboardInfos()"></a>
@@ -73,8 +70,6 @@
                 </div>
               </div>
             </li>
-
-
             <li class="nav-item  mt-2">
               <a class="nav-link fw-bold" href="#gameMenu">Play Pong</a>
             </li>
@@ -87,7 +82,6 @@
             <li class="nav-item mt-2">
               <a class="nav-link fw-bold" href="#aboutTheTeam">About the team</a>
             </li>
-
           </ul>
         </div>
       </div>
@@ -173,14 +167,47 @@
           <button type="button" class="btn btn-outline-info mx-2" id="mediumBtn">Medium</button>
           <button type="button" class="btn btn-outline-info" id="hardBtn">Hard</button>
         </div>
-
-
         <div id="gameModeMenu" class="col d-flex justify-content-center m-3 hidden-element">
           <button type="button" class="btn btn-outline-info disabled" id="onePlayerBtn">One Player</button>
           <button type="button" class="btn btn-outline-info disabled mx-2" id="twoPlayersBtn">Two Players</button>
           <button type="button" class="btn btn-outline-info disabled" id="tournamentBtn">Tournament</button>
         </div>
+        <div id="createRoomMenu" class="col d-flex justify-content-center m-3 hidden-element">
+          <button type="button" class="btn btn-outline-info disabled" id="createRoomBtn">Create Room</button>
+        </div>
       </div>
+
+      <!-- <div id="roomCreatedDiv" class="col-auto p-3 mx-auto rounded-4 shadow" style="max-width: 400px;">
+        <div id="waitingDiv">
+          <h5 class="fs-3 fw-bold text-info text-center">Room created !</h5>
+          <h5 class="fs-5 fw-bold text-secondary text-center">Please wait for someone to join the game</h5>
+
+          <div class="col mt-3 d-flex justify-content-center">
+            <div class="spinner-grow spinner-grow-sm text-info" role="status">
+            </div>
+            <div class="spinner-grow spinner-grow-sm text-info mx-2" role="status">
+            </div>
+            <div class="spinner-grow spinner-grow-sm text-info" role="status">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-auto mx-auto mt-3">
+              <h5 id="cancelCreatedRoomBtn" role="button" class="rounded shadow p-2 text-warning text-center fs-5">Cancel</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="roomJoined">
+        <div class="col-auto p-3 mx-auto rounded-4 shadow" style="max-width: 400px;">
+          <h5 class="fs-3 fw-bold text-info text-center">Chris joined the room</h5>
+
+        </div>
+
+      </div> -->
+
+
     </section>
 
     <section id="playPong" class="fade-in hidden-element">
@@ -539,7 +566,7 @@
                       <img id="avatar-img_dash" src="" alt="avatarUser" class="rounded-3 shadow" style="max-height: 200px;">
                     </div>
                     <div class="col-auto my-auto">
-                      <h5 id="userNameDash" class="text-info text-center fs-3 mb-2 mt-3 mt-md-0"></h5>
+                      <h5 id="userNameDash" class="text-info text-center text-uppercase fs-3 mb-2 mt-3 mt-md-0"></h5>
                       <h5 id="firstNameDash" class="text-secondary text-center fs-5"></h5>
                       <h5 id="lastNameDash" class="text-secondary text-center fs-5"></h5>
                       <h5 id="emailDash" class="text-secondary text-center fs-5"></h5>
@@ -579,7 +606,7 @@
                           <h5 id="seeFriendRequest" role="button" class="text-center mb-0 mt-2 mt-sm-0 hidden-element fade-in" onclick="seeFriendRequest()" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); color: rgb(0, 218, 4);"></h5>
                         </div>
                         <div class="col-auto d-flex align-items-end" style="width: 40px;">
-                          <!-- <h5 id="seeFriendRequestCloseBtn" role="button" class="fs-6 text-danger hidden-element fade-in ms-0 mt-1 mb-0" onclick="closeFriendRequest()"><i class="fa-solid fa-square-xmark fs-5"></i></h5> -->
+                          <h5 id="seeFriendRequestCloseBtn" role="button" class="fs-6 text-danger hidden-element fade-in ms-0 mt-1 mb-0" onclick="closeFriendRequest()"><i class="fa-solid fa-square-xmark fs-5"></i></h5>
                           <i id="seeFriendRequestCloseBtn" role="button" class="text-danger hidden-element fade-in fa-solid fa-square-xmark fs-5" onclick="closeFriendRequest()"></i>
                         </div>
                       </div>
@@ -594,8 +621,8 @@
                       <h5 class="font-weight-bold text-center text-secondary">You don't have any friend yet</h5>
                     </div>
 
-                    <div id="requestDiv" class="hidden-element fade-in">
-
+                    <div id="requestDiv" class="row d-felx justify-content-center hidden-element fade-in"></div>
+                    <div id="friendShipList-dashboard" class="px-3 mb-3 fade-in"></div>
                       <!-- <div class="row d-felx justify-content-center rounded-3">
                         <div class="col-auto">
                           <div class="row p-3 m-3 mx-auto rounded-3 d-felx justify-content-center rounded-3 shadow" style="max-width: 300px;">
@@ -615,7 +642,6 @@
                         </div> -->
                       <!-- </div> -->
                       
-                    </div>
 
                   </div>
                 </div>
@@ -739,9 +765,9 @@
         <hr class="px-5 text-info border-2">
         <div id="infosDiv">
             <div id="infosProfile">
+              <h5 id="userNameProfile" class="text-secondary text-center fs-4 text-uppercase"></h5>
               <h5 id="firstNameProfile" class="text-info text-center fs-4"></h5>
               <h5 id="lastNameProfile" class="text-info text-center fs-4"></h5>
-              <h5 id="userNameProfile" class="text-info text-center fs-4"></h5>
               <div class="d-flex justify-content-center">
                 <i id="setInfoIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleInfos_createForm()"></i>
               </div>

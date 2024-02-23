@@ -20,7 +20,6 @@ function getDashboardInfos() {
   })
   .then(data => {
 
-    console.log('apiUrl ' + data.avatar);
     initDashboard(data);
   })
   .catch(error => {
@@ -31,6 +30,7 @@ function getDashboardInfos() {
 function initDashboard(data) {
   
   checkFriendRequest();
+  get_users_data();
 
   document.getElementById('firstNameDash').textContent = data.user.first_name;
   document.getElementById('lastNameDash').textContent = data.user.last_name;
@@ -53,13 +53,12 @@ function initDashboard(data) {
   getAvatar(data.user.username)
   .then(imageURL => {
     document.getElementById('avatar-img_dash').src = imageURL;
+    manageFriends(data);
   })
   .catch(error => {
     console.error("Error : download avatar imgage 'initDashboard()' !", error);
   });
   
-  manageFriends(data);
-  get_users_data();
 }
 
 
@@ -73,7 +72,9 @@ function manageFriends(data) {
       document.getElementById('friendsTextInfo').classList.remove('hidden-element');
       console.log('No friendship to display in dashboard');
     } else {
-     
+      if (!document.getElementById('friendsTextInfo').classList.contains('hidden-element')) {
+        document.getElementById('friendsTextInfo').classList.add('hidden-element');
+      }
       friends_createContent(friendsArray);
     }
   })
@@ -83,17 +84,21 @@ function manageFriends(data) {
 }
 
 function friends_createContent(friendsArray) {
-  
+
+  const friendList = document.getElementById('friendShipList-dashboard');
+  while (friendList.firstChild) {
+    friendList.removeChild(friendList.firstChild);
+  }
   sortFriendsArray(friendsArray);
   
   for (let i = 0; i < friendsArray.length; i++) {
 
-    const mainDiv = document.createElement('div');
-    mainDiv.classList = 'px-3 mb-3 fade-in';
-    mainDiv.id = 'friendShipList-dashboard';
+    // const mainDiv = document.createElement('div');
+    // mainDiv.classList = 'px-3 mb-3 fade-in';
+    // mainDiv.id = 'friendShipList-dashboard';
     
     const rowDiv = document.createElement('div');
-    rowDiv.classList = 'row py-3 px-3 shadow-sm rounded-3 bg-info bg-opacity-10';
+    rowDiv.classList = 'row py-3 px-3 mb-3 shadow-sm rounded-3 bg-info bg-opacity-10 fade-in';
     rowDiv.id = 'friendList' + i;
     
     //*********************************************************************************
@@ -179,11 +184,11 @@ function friends_createContent(friendsArray) {
     rowDiv.appendChild(expandInfos);
     //************************************************************************
     
-    mainDiv.appendChild(rowDiv);
+    // mainDiv.appendChild(rowDiv);
 
     setTimeout(function() {
 
-      document.getElementById('friendShipBody-dashboard').appendChild(mainDiv);
+      document.getElementById('friendShipList-dashboard').appendChild(rowDiv);
 
       document.getElementById('friendExpand' + i).addEventListener('click', function() {
         const expandInfos = document.getElementById('expand' + i);
@@ -200,17 +205,14 @@ function friends_createContent(friendsArray) {
           document.getElementById('friendList' + i).remove();
           getDashboardInfos();
         })
-        
-
       })
     }, 300);
   }
   document.getElementById('spinner' + 'friendShipBody-dashboard').remove();
 }
 
-
 function friendExpandInfos_createContent(userObject, index) {
-  
+  console.log('userObject = ', userObject);
   const cardTitles = ['Victories', 'Defeats', 'Played', 'Friends'];
   const cardValue = [userObject.win, userObject.lose, userObject.win + userObject.lose, userObject.friend.length];
   const cardIcons = ['fas fa-trophy text-success', 'fa-solid fa-face-sad-tear text-danger', 'fas fa-table-tennis text-info', 'fa-solid fa-people-group text-primary'];
@@ -312,12 +314,12 @@ function friendExpandInfos_createContent(userObject, index) {
 
 function searchUser_createContent(friendObjet, index) {
 
-
   console.log('index = ' + index);
   console.log('friendObjet = ', friendObjet);
 
   const mainDiv = document.createElement('div');
   mainDiv.classList = 'col-sm-10 mx-auto bg-primary bg-opacity-10 rounded shadow p-3 mb-3 fade-in';
+  mainDiv.id = 'user_searchUser' + index;
 
   const rowDiv = document.createElement('div');
   rowDiv.classList = 'row';
@@ -364,7 +366,7 @@ function searchUser_createContent(friendObjet, index) {
     console.log('Valeur résolue de la promesse :', result);
     
     if (result === true) {
-      console.log('coucoucou');
+      
       const pendingRequest = document.createElement('h5');
       pendingRequest.classList = 'text-warning text-center';
       pendingRequest.textContent = 'Pending Request';
@@ -376,7 +378,7 @@ function searchUser_createContent(friendObjet, index) {
       div.appendChild(icon);
     } else {
       const btn = document.createElement('button');
-      btn.classList = 'btn btn-info text-white mx-auto';
+      btn.classList = 'btn btn-info text-white mx-auto shadow';
       btn.textContent = 'Ask as friend';
       btn.id = 'askFriendBtn' + index;
       div.appendChild(btn);
@@ -388,15 +390,23 @@ function searchUser_createContent(friendObjet, index) {
     setTimeout(function() {
       document.getElementById('searchFriend-cardArea').appendChild(mainDiv);
       
-      document.getElementById('askFriendBtn' + index).addEventListener('click', function() {
-        askFriend(friendObjet.user.username)
-        .then(() => {
-          searchUser_createContent(friendObjet, index);
+      const askFriendBtn = document.getElementById('askFriendBtn' + index);
+      if (askFriendBtn) {
+        askFriendBtn.addEventListener('click', function() {
+          askFriend(friendObjet.user.username)
+          .then((data) => {
+            if (data[0] === 'friendship already exist') {
+              askFriendBtn.classList.remove('btn-info', 'text-white');
+              askFriendBtn.classList.add('disabled', 'btn-warning', 'text-secondary');
+              askFriendBtn.textContent = 'Check your friend requests';
+            } else {
+              console.log('then after askAsFriend', data);
+              document.getElementById('user_searchUser' + index).remove();
+              searchUser_createContent(friendObjet, index);
+            }
+          })
         })
-      })
-      
-      
+      }
     }, 300)
   });
 }
-
