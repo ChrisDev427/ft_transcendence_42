@@ -12,6 +12,8 @@ const btn = {
     onePlayerBtn: document.getElementById("onePlayerBtn"),
     twoPlayersBtn: document.getElementById("twoPlayersBtn"),
     tournamentBtn: document.getElementById("tournamentBtn"),
+
+    createRoomBtn: document.getElementById("createRoomBtn"),
 };
 
 //************************************************************************************
@@ -23,7 +25,7 @@ btn.createBtn.addEventListener("click", function() {
     btn.createBtn.classList.add("btn-info");
     btn.joinBtn.classList.add("disabled");
    
-    document.getElementById('gameModeMenu').classList.remove('hidden-element');
+    document.getElementById('createRoomMenu').classList.remove('hidden-element');
     document.getElementById('dificultyMenu').classList.remove('hidden-element');
     
 });
@@ -78,9 +80,12 @@ btn.easyBtn.addEventListener("click", function() {
 
     if (playLocal) {
         btn.onePlayerBtn.classList.remove("disabled");
+        btn.twoPlayersBtn.classList.remove("disabled");
+        btn.tournamentBtn.classList.remove("disabled");
     }
-    btn.twoPlayersBtn.classList.remove("disabled");
-    btn.tournamentBtn.classList.remove("disabled");
+    if (playOnline) {
+        btn.createRoomBtn.classList.remove('disabled')
+    }
     // btn.onLineBtn.classList.remove("disabled");
     // btn.localBtn.classList.remove("disabled");
     
@@ -98,9 +103,12 @@ btn.mediumBtn.addEventListener("click", function() {
 
     if (playLocal) {
         btn.onePlayerBtn.classList.remove("disabled");
+        btn.twoPlayersBtn.classList.remove("disabled");
+        btn.tournamentBtn.classList.remove("disabled");
     }
-    btn.twoPlayersBtn.classList.remove("disabled");
-    btn.tournamentBtn.classList.remove("disabled");
+    if (playOnline) {
+        btn.createRoomBtn.classList.remove('disabled')
+    }
     // btn.onLineBtn.classList.remove("disabled");
     // btn.localBtn.classList.remove("disabled");
     
@@ -118,9 +126,12 @@ btn.hardBtn.addEventListener("click", function() {
 
     if (playLocal) {
         btn.onePlayerBtn.classList.remove("disabled");
+        btn.twoPlayersBtn.classList.remove("disabled");
+        btn.tournamentBtn.classList.remove("disabled");
     }
-    btn.twoPlayersBtn.classList.remove("disabled");
-    btn.tournamentBtn.classList.remove("disabled");
+    if (playOnline) {
+        btn.createRoomBtn.classList.remove('disabled')
+    }
     // btn.onLineBtn.classList.remove("disabled");
     // btn.localBtn.classList.remove("disabled");
     
@@ -153,14 +164,7 @@ btn.twoPlayersBtn.addEventListener("click", function() {
     btn.tournamentBtn.classList.add("disabled");
 
     twoPlayers = true;
-
-    if(playLocal) {
-        create_TwoPlayers_input();
-    }
-    if(playOnline) {
-
-
-    }
+    create_TwoPlayers_input();
 });
 
 btn.tournamentBtn.addEventListener("click", function() {
@@ -172,13 +176,12 @@ btn.tournamentBtn.addEventListener("click", function() {
     btn.tournamentBtn.classList.add("btn-info");
 
     tournament = true;
+    create_Tournament_mode();
+});
 
-    if(playLocal) {
-        create_Tournament_mode();
-    }
-    if(playOnline) {
+btn.createRoomBtn.addEventListener("click", function() {
 
-    }
+    create_room();
 });
 
 function initPlayBtn() {

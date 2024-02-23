@@ -130,46 +130,85 @@ function displaySpinner_dash(idDiv) {
 
 // Handle Users Data ----------------------------------------------------------------------------------
 
-function get_users_data() {
+// function get_users_data() {
 
+//   let totalUsers = 0;
+//   let connectedUsers = 0;
+//   user_profiles = [];
+
+
+//   fetchAccounts()
+//   .then(data => {
+//     // console.log('fetch accounts = ', data);
+//     for (let i = 0; i < data.length; i++) {
+//       // push in 'user_profiles[]' all profiles except current user and id=1(superUser)
+//       if (data[i].username !== sessionUsername && data[i].id !== 1 && data[i].is_active === true) {
+//         totalUsers++;
+       
+//         // console.log('fetch accounts = ', data[i].username);
+//         fetchUserProfile(data[i].username)
+//         .then((user) => {
+//           if (user.is_connected === true) {
+//             connectedUsers++;
+//             document.getElementById('totalUsersDash').textContent = totalUsers +1;
+//             document.getElementById('connectedUsersDash').textContent = connectedUsers +1;
+//           }
+//           user_profiles.push(user);
+//         })
+//         .catch((error) => {
+//           console.error('Error : fetchUserProfile() called from get_users_data()', error);
+          
+//         });
+//       }
+//     }
+//     // console.log(user_profiles);
+    
+
+
+
+//   })
+//   .catch((error) => {
+//     console.error('Error : get_users_data()', error);
+//   });
+// }
+
+function get_users_data() {
   let totalUsers = 0;
   let connectedUsers = 0;
   user_profiles = [];
 
-
   fetchAccounts()
-  .then(data => {
-    // console.log('fetch accounts = ', data);
-    for (let i = 0; i < data.length; i++) {
-      // push in 'user_profiles[]' all profiles except current user and id=1(superUser)
-      if (data[i].username !== sessionUsername && data[i].id !== 1 && data[i].is_active === true) {
-        totalUsers++;
-       
-        // console.log('fetch accounts = ', data[i].username);
-        fetchUserProfile(data[i].username)
-        .then((data) => {
-          if (data.is_connected === true) {
-            connectedUsers++;
-          }
-          user_profiles.push(data);
-        })
-        .catch((error) => {
-          console.error('Error : fetchUserProfile() called from get_users_data()', error);
-          
-        });
+    .then(data => {
+      const promises = [];
+
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].username !== sessionUsername && data[i].id !== 1 && data[i].is_active === true) {
+          totalUsers++;
+          promises.push(fetchUserProfile(data[i].username)
+            .then((user) => {
+              if (user.is_connected === true && user.user.username !== sessionUsername) {
+                connectedUsers++;
+              }
+              user_profiles.push(user);
+            })
+            .catch((error) => {
+              console.error('Error: fetchUserProfile() called from get_users_data()', error);
+            })
+          );
+        }
       }
-    }
-    // console.log(user_profiles);
-    
-    document.getElementById('totalUsersDash').textContent = totalUsers +1;
-    document.getElementById('connectedUsersDash').textContent = connectedUsers +1;
 
-
-
-  })
-  .catch((error) => {
-    console.error('Error : get_users_data()', error);
-  });
+      // Utilise Promise.all pour attendre la résolution de toutes les promesses
+      return Promise.all(promises);
+    })
+    .then(() => {
+      // Mettez à jour le DOM ou effectuez d'autres actions après la résolution de toutes les promesses
+      document.getElementById('totalUsersDash').textContent = totalUsers + 1;
+      document.getElementById('connectedUsersDash').textContent = connectedUsers + 1;
+    })
+    .catch((error) => {
+      console.error('Error: get_users_data()', error);
+    });
 }
 
 function fetchUserProfile(username) {
@@ -228,17 +267,14 @@ document.getElementById('searchUserRefreshBtn').addEventListener('click', functi
   document.getElementById('searchUserInput').value = ''
 })
 
-
 function compare_input_usernames(value) {
+  const usernames = user_profiles.map(profile => profile.user.username.toLowerCase());
+  const lowercasedValue = value.toLowerCase();
 
-  const usernames = [];
-  for (let i = 0; i < user_profiles.length; i ++) {
-    // console.log(user_profiles[i]);
-    usernames.push(user_profiles[i].user.username)
-  }
   let matchedUsernames = usernames.filter(username =>
-    username.substring(0, value.length) === value.substring(0, value.length)
+    username.startsWith(lowercasedValue)
   );
+
   // return an array of usernames matched
   return matchedUsernames;
 }
@@ -275,7 +311,7 @@ function handleMatchedUsernames(matchedUsernames) {
         if (matchedUsernames[i] === user_profiles[j].user.username) {
           
           console.log(user_profiles[j]);
-          searchUser_createContent(user_profiles[j])
+          searchUser_createContent(user_profiles[j], i)
         }
       }
     }
@@ -310,6 +346,7 @@ function isFriend(usernameFounded) {
 
 function getUserObject(userName) {
 
+  console.log('userName getUserObject = ' + userName);
   for (let i = 0; i < user_profiles.length; i++) {
     if (user_profiles[i].user.username === userName) {
       return user_profiles[i];

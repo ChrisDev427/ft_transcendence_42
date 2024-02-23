@@ -122,6 +122,9 @@ function userLogout() {
   });
 }
 document.getElementById('validLogout').addEventListener('click', function() {
+
+  document.getElementById('cancelLogout').classList.add('disabled');
+  document.getElementById('validLogout').classList.add('disabled');
   
   userLogout_API();
   const div1 = document.createElement('div');

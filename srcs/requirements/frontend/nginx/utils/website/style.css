@@ -76,7 +76,7 @@ input[type="text password"]::placeholder {
   cursor: pointer;
 }
 .icon-disabled {
-  opacity: 0.5; /* Vous pouvez ajuster cette valeur selon vos préférences */
+  opacity: 0.5 !important; /* Vous pouvez ajuster cette valeur selon vos préférences */
   pointer-events: none; /* Désactive les interactions avec l'icône */
 }
 .hidden-element {
