@@ -138,7 +138,9 @@ function itemsVisibility_logged_in() {
                             'profile',
                             'dashboard',
                             'dropDownProfile',
-                            'gameHistory'];
+                            'gameHistory',
+                            'displayChatBtn',
+                            'mainChat'];
 
     elementsToShow.forEach((elementId) => {
         const element = document.getElementById(elementId);
@@ -163,29 +165,31 @@ function itemsVisibility_logged_in() {
 
 function itemsVisibility_logged_out() {
 
-    const elementsToShow = ['friends-gameHistory-btn',
-                            'profile',
-                            'friends',
-                            'dropDownProfile',
-                            'gameHistory'];
-
-    elementsToShow.forEach((elementId) => {
-        const element = document.getElementById(elementId);
-        if (element) {
-            element.classList.add('unvisible');
-        }
-    });
-//----------------------------------------------------------------
-    const elementsToHide = ['nav-signIn',
+    const elementsToShow = ['nav-signIn',
                             'nav-signUp',
                             'signIn-signUp-btn',
                             'signIn',
                             'signUp'];
 
-    elementsToHide.forEach((elementId) => {
+    elementsToShow.forEach((elementId) => {
         const element = document.getElementById(elementId);
         if (element) {
             element.classList.remove('unvisible');
+        }
+    });
+//----------------------------------------------------------------
+    const elementsToHide = ['friends-gameHistory-btn',
+                            'profile',
+                            'dashboard',
+                            'dropDownProfile',
+                            'gameHistory',
+                            'displayChatBtn',
+                            'mainChat'];
+
+    elementsToHide.forEach((elementId) => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.classList.add('unvisible');
         }
     });
 }

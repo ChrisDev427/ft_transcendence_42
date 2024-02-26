@@ -1,7 +1,7 @@
 function getDashboardInfos() {
   console.log('function getDashboardInfos()');
   verifyToken();
-  fetch('http://localhost:8000/api/account/profile/', {
+  fetch(domainPath + '/api/account/profile/', {
     method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
@@ -127,7 +127,7 @@ function friends_createContent(friendsArray) {
     infosDiv.classList = 'col-auto mx-auto mx-sm-0';
     
     const userName = document.createElement('h5');
-    userName.classList = 'text-info text-center text-sm-start fs-3 mb-2 mt-1';
+    userName.classList = 'text-info text-center text-uppercase text-sm-start fs-3 mb-2 mt-1';
     userName.textContent = friendsArray[i][0];
     infosDiv.appendChild(userName);
     

@@ -69,7 +69,7 @@ function getFriendsUsername(data) {
 
 
 function fetchUsername(id) {
-  return fetch("http://localhost:8000/api/account/" + id)
+  return fetch(domainPath + '/api/account/' + id + '/')
     .then((response) => {
       if (!response.ok) {
         throw new Error(`Error fetching username for ID ${id}`);
@@ -84,7 +84,7 @@ function fetchUsername(id) {
 }
 
 function fetchFriendInfos(userName) {
-  return fetch("http://localhost:8000/api/account/profile/" + userName)
+  return fetch(domainPath + '/api/account/profile/' + userName + '/')
     .then((response) => {
       if (!response.ok) {
         throw new Error(`Error fetching friendInfos for username ${userName}`);
@@ -213,7 +213,7 @@ function get_users_data() {
 
 function fetchUserProfile(username) {
   // fetch all accounts
-  return fetch("http://localhost:8000/api/account/profile/" + username)
+  return fetch(domainPath + '/api/account/profile/' + username + '/')
     .then((response) => {
       if (!response.ok) {
         throw new Error('Error fetching user profile !');
@@ -231,7 +231,7 @@ function fetchUserProfile(username) {
 
 function fetchAccounts() {
   
-  return fetch("http://localhost:8000/api/account/")
+  return fetch(domainPath + '/api/account/')
     .then((response) => {
       if (!response.ok) {
         throw new Error('Error fetching userNames !');
