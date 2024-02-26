@@ -3,7 +3,7 @@ function getProfileInfos() {
   console.log('function getProfileInfos()');
 
   verifyToken();
-  fetch('http://localhost:8000/api/account/profile/', {
+  fetch(domainPath + '/api/account/profile/', {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
@@ -23,7 +23,7 @@ function getProfileInfos() {
   .then(data => {
 
     console.log('apiUrl ' + data.avatar);
-    
+
     two_fa = data.two_fa;
     if (two_fa === true) {
       init2faProfile(data);
@@ -36,7 +36,7 @@ function getProfileInfos() {
     console.error('Erreur lors de la récupération du profil :', error);
   });
 }
-  
+
 function init2faProfile(data) {
   document.getElementById('authTitle').classList.add('text-success');
   document.getElementById('mobileDiv').classList.remove('hidden-element');
@@ -50,8 +50,11 @@ function init2faProfile(data) {
   }
 }
 
+
 function initProfile(data) {
   sessionUsername = data.user.username;
+  waitForWebSocketConnection(sessionUsername);
+  console.log('Socket assigné:', socket);
   document.getElementById('firstNameProfile').textContent = data.user.first_name;
   document.getElementById('lastNameProfile').textContent = data.user.last_name;
   document.getElementById('userNameProfile').textContent = data.user.username;
@@ -68,6 +71,5 @@ function initProfile(data) {
   .catch(error => {
     console.error("Error : download avatar imgage 'initProfile()' !", error);
   });
-  
+
 }
-  

@@ -20,9 +20,9 @@ from .utils import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from friend_management.models import Friend_management
 from django.core.files.base import ContentFile
-
-
 import pyotp, uuid, os, requests
+
+
 
 class AllUserView(APIView):
     #permission_classes = [permissions.IsAdminUser]
@@ -113,7 +113,7 @@ class UserRegisterView(APIView):
                 return Response({"Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
             return Response("User created", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
 class VerifyEmailView(APIView):
     permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):

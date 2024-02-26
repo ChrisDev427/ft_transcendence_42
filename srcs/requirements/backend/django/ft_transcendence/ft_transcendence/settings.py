@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY_DJANGO')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'django_container:8000', os.environ.get('SITE_URL'),]
+ALLOWED_HOSTS = ['*']
 # Application definition
 
 
@@ -65,6 +66,7 @@ MIDDLEWARE = [
  # CORS settings (Cross-Origin Resource Sharing)
 
 # CORS_ALLOW_ANY_ORIGIN = True
+CORS_ALLOW_PRIVATE_NETWORK : True
 
 CORS_ALLOWED_ORIGINS = [
     os.environ.get('SITE_URL'),
@@ -77,6 +79,15 @@ CORS_ALLOW_HEADERS = [
 	'Content-Type',
 	'code',
 	'token',
+    'Access-Control-Allow-Origin',
+
+    'Referer',
+    'Sec-Ch-Ua',
+    'Sec-Ch-Ua-Mobile',
+    'Sec-Ch-Ua-Platform',
+    'User-Agent',
+    'Origin',
+    'Host',
 ]
 
 
@@ -202,5 +213,4 @@ OAUTH_REDIRECT_URI = os.environ.get('OAUTH_REDIRECT_URI')
 OAUTH_PASSWORD_42 = os.environ.get('OAUTH_PASSWORD_42')
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
 # SECURE_SSL_REDIRECT = True
