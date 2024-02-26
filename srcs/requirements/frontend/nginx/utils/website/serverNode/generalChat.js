@@ -1,19 +1,4 @@
 
-socket.addEventListener('message', (event) => {
-    const messageContainer = document.getElementById('chat-messages-general');
-    const receivedMessage = JSON.parse(event.data);
-
-    if (receivedMessage.type === 'messageGeneral') {
-        const messages = receivedMessage.messages || [];
-        const messagesToDisplay = messages.slice(-10);
-        messageContainer.innerHTML = '';
-        messagesToDisplay.forEach(msg => {
-            messageContainer.innerHTML += `<div><strong>${msg.username}:</strong> ${msg.text}</div>`;
-        });
-        messageContainer.scrollTop = messageContainer.scrollHeight;
-    }
-});
-        
 function sendMessage() {
     const messageInput = document.getElementById('message-input_general');
     const message = messageInput.value.trim();

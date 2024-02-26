@@ -170,8 +170,8 @@ btn.twoPlayersBtn.addEventListener("click", function() {
             // id: 123,
             username: sessionUsername,
         });
-        console.log("session user create ",sessionUsername);
-        socket.send(message);
+        socket.send(JSON.stringify({ action: 'createSession' }));
+        console.log("session user create ", sessionUsername);
     }
 
 });
@@ -190,19 +190,6 @@ btn.tournamentBtn.addEventListener("click", function() {
 });
 
 
-// socket.addEventListener('message', (event) => {
-//     try {
-//         const data = JSON.parse(event.data);
-
-//         if (data.action === 'sessionCreated') {
-//             const sessionId = data.sessionId;
-//             console.log(sessionId);
-            
-//         }
-//     } catch (error) {
-//         console.error('Error parsing message:', error);
-//     }
-// });
 
 function initPlayBtn() {
     const playBtn = document.getElementById("playBtn");
