@@ -124,13 +124,17 @@ class GameDetailView(APIView):
 				user2.games_id.add(id)
 				if winner == user1:
 					user1.win += 1
-				else :
 					user2.lose += 1
+				else :
+					user2.win += 1
+					user1.lose += 1
 				user2.is_ingame = False
 				user2.save()
 			else:
 				if winner == user1:
 					user1.win += 1
+				else :
+					user1.lose += 1
 			user1.is_ingame = False
 			user1.save()
 			return Response(serializer.data)
