@@ -142,9 +142,9 @@ function manageFriendRequest(requesterName, requestId) {
 }
 
 function friendRequest_createContent(requesterName, requestId) {
-  const mainRow = document.createElement("div");
-  mainRow.id = "requestDiv" + requestId;
-  mainRow.classList = "col-auto";
+  const mainDiv = document.createElement("div");
+  mainDiv.id = "requestDiv" + requestId;
+  mainDiv.classList = "col-auto";
 
   const mainCol = document.createElement("div");
   mainCol.classList = "col-auto";
@@ -178,7 +178,7 @@ function friendRequest_createContent(requesterName, requestId) {
   const row2 = document.createElement("div");
   row2.classList = "row";
   const username = document.createElement("h5");
-  username.classList = "text-info text-center fs-3 mb-2 mt-1";
+  username.classList = "text-info text-center text-uppercase fs-3 mb-2 mt-1";
   username.textContent = requesterName;
   row2.appendChild(username);
   col2.appendChild(row2);
@@ -204,9 +204,9 @@ function friendRequest_createContent(requesterName, requestId) {
   col2.appendChild(row3);
   row1.appendChild(col2);
   mainCol.appendChild(row1);
-  mainRow.appendChild(mainCol);
+  mainDiv.appendChild(mainCol);
 
-  document.getElementById("requestDiv").appendChild(mainRow);
+  document.getElementById("requestDiv").appendChild(mainDiv);
 
   document.getElementById("denyBtn" + requestId).addEventListener("click", function () {
     console.log('deny pushed !');
@@ -249,9 +249,6 @@ function closeFriendRequest() {
   if (childCount_friendListDiv > 0) {
     document.getElementById('friendShipList-dashboard').classList.remove('hidden-element');
     document.getElementById('friendsTextInfo').classList.add('hidden-element');
-    // if (!document.getElementById('friendsTextInfo').classList.contains('hidden-element')) {
-    //   document.getElementById('friendsTextInfo').classList.add('hidden-element');
-    // }
   } else {
     document.getElementById('friendsTextInfo').classList.remove('hidden-element');
   }
