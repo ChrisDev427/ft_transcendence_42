@@ -14,3 +14,9 @@ function showMainChat() {
 
     }
 }
+
+function chatProfile_createContent(username) {
+
+    console.log(username);
+
+}
