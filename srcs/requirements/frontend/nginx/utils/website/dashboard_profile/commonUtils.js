@@ -1,10 +1,10 @@
 function getAvatar(userName) {
     verifyToken();
     // console.log(userName);
-    
-    return fetch('http://localhost:8000/api/account/avatar/' + userName, {
+
+    return fetch(domainPath + '/api/account/avatar/' + userName + '/', {
         method: 'GET',
-        
+
     })
     .then(response => {
       if (!response.ok) {

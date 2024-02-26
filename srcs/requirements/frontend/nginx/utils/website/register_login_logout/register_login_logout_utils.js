@@ -207,8 +207,7 @@ function refreshAccessToken() {
         return;
     }
     // Effectuez une requête au point de terminaison de rafraîchissement du token côté serveur
-    // fetch('http://localhost:8000/api/account/token/refresh/', {
-        fetch(domainPath + '/api/account/token/refresh/', {
+    fetch('https://transcendence42.ddns.net/api/account/token/refresh/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -233,8 +232,7 @@ function refreshAccessToken() {
 }
 
 function verifyToken() {
-    // fetch('http://localhost:8000/api/account/token/verify/', {
-        fetch(domainPath + '/api/account/token/verify/', {
+    fetch('https://transcendence42.ddns.net/api/account/token/verify/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -268,3 +266,6 @@ function profileAccess(connectWith) {
         document.getElementById('setInfoIc').classList.remove('unvisible');
     }
 }
+
+
+

@@ -4,25 +4,7 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
   e.preventDefault();
   const formData = new FormData(e.target);
 
-  // Disable form
-  const signUpSection = document.getElementById('signUp');
-    // Parcourez tous les éléments descendants de la section
-    signUpSection.querySelectorAll('input, button').forEach((element) => {
-    element.disabled = true;  // Rendre l'élément inactif
-  });
-  // add spinner
-  const div1 = document.createElement('div');
-  div1.id = 'spinner';
-  div1.classList = 'd-flex justify-content-center';
-  
-  const div2 = document.createElement('div');
-  div2.classList = 'spinner-border text-info';
-  div2.role = 'status';
-  div1.appendChild(div2);
-  document.getElementById('signUpDiv').appendChild(div1);
-
-  // fetch('http://localhost:8000/api/account/register/', {
-    fetch(domainPath + '/api/account/register/', {
+  fetch('https://transcendence42.ddns.net/api/account/register/', {
   method: 'POST',
   body: formData
 
@@ -82,7 +64,6 @@ function requestLogin(formData) {
     // Récupère les informations de l'utilisateur et le jeton d'accès
     console.log(data);
     // const userInformation = data.user;
-   
     localStorage.setItem('accessToken', data.access);
     localStorage.setItem('refreshToken', data.refresh);
     localStorage.setItem('connectType', 'signin');
@@ -151,7 +132,7 @@ document.getElementById('validLogout').addEventListener('click', function() {
 // LOGIN WITH 42 ******************************************************************************************
 function loginWith42() {
   console.log('connect with 42 function');
-  const oauthUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-44e47265c9b8312f83a47d720211e265bef85a1c8fc632f8786fe9dcdade34d1&redirect_uri=http%3A%2F%2Flocalhost&response_type=code';
+  const oauthUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-44e47265c9b8312f83a47d720211e265bef85a1c8fc632f8786fe9dcdade34d1&redirect_uri=https%3A%2F%2Ftranscendence42.ddns.net&response_type=code';
   window.location.href = oauthUrl;
 }
 
@@ -168,7 +149,6 @@ function getAuthorizationCode() {
 
 async function exchangeCodeForToken(code) {
   try {
-    // const response = await fetch('http://localhost:8000/api/account/o/token/?code=' + code);
     const response = await fetch(domainPath + '/api/account/o/token/?code=' + code);
 
     if (!response.ok) {
@@ -227,7 +207,6 @@ function verifyEmail() {
   console.log(token);
 
   if (token) {
-    // fetch("http://localhost:8000/api/account/email/verify/?token=" + token)
     fetch(domainPath + '/api/account/email/verify/?token=' + token)
     .then(response => {
       if (response.status === 200) {

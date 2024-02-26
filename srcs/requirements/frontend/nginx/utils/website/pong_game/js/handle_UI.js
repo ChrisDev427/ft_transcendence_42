@@ -29,6 +29,7 @@ btn.createBtn.addEventListener("click", function() {
     document.getElementById('dificultyMenu').classList.remove('hidden-element');
     
 });
+
 btn.joinBtn.addEventListener("click", function() {
     
     btn.joinBtn.classList.add("disabled");
@@ -36,7 +37,10 @@ btn.joinBtn.addEventListener("click", function() {
     btn.joinBtn.classList.add("btn-info");
     btn.createBtn.classList.add("disabled");
     
+    console.log("session user join ", sessionUsername);
 
+    // document.getElementById('sessions').classList.remove('hidden-element')
+    showSection('sessions');
 });
 
 
@@ -164,6 +168,22 @@ btn.twoPlayersBtn.addEventListener("click", function() {
     btn.tournamentBtn.classList.add("disabled");
 
     twoPlayers = true;
+
+    if (playLocal) {
+        create_TwoPlayers_input();
+    }
+    if(playOnline) {
+
+        const message = JSON.stringify({ 
+            action: 'createSession',
+            level: level,
+            paddleHeight: paddleHeight,
+            // id: 123,
+            username: sessionUsername,
+        });
+        console.log("session user create ", sessionUsername);
+    }
+
     create_TwoPlayers_input();
 });
 
@@ -174,7 +194,7 @@ btn.tournamentBtn.addEventListener("click", function() {
     btn.tournamentBtn.classList.add("disabled");
     btn.tournamentBtn.classList.remove("btn-outline-info");
     btn.tournamentBtn.classList.add("btn-info");
-
+    
     tournament = true;
     create_Tournament_mode();
 });
@@ -182,11 +202,16 @@ btn.tournamentBtn.addEventListener("click", function() {
 btn.createRoomBtn.addEventListener("click", function() {
 
     create_room();
+    
+    create_Tournament_mode();
 });
+
+
 
 function initPlayBtn() {
     const playBtn = document.getElementById("playBtn");
     playBtn.addEventListener("click", function() {
+
         
         if(onePlayer) {
 
@@ -212,7 +237,9 @@ function initPlayBtn() {
             }
             leftPlayerName = playerName_1.value;
             rightPlayerName = playerName_2.value;
+
         }
+        
         else if(tournament) {
             console.log('tournament condition');
             for(let i = 0; i < tournamentSize; i++) {
@@ -247,6 +274,7 @@ function initPlayBtn() {
         reset_UI();
         removeInput();
         run();
+  
     });
 }
 
@@ -308,4 +336,6 @@ quitGameBtn.addEventListener("click", function() {
     resetGameValues();
     showSection('main');
 
+    const message = JSON.stringify({ action: 'quitSession' });
+    socket.send(message);
 });

@@ -16,9 +16,9 @@ function check2FA(e) {
 
     // const passwordInput = form.querySelector('input[name="password"]');
     // const passwordValue = passwordInput.value;
-  
+
     // Retourne la promesse de l'appel fetch
-    return fetch('http://localhost:8000/api/account/profile/' + usernameValue, {
+    return fetch(domainPath + '/api/account/profile/' + usernameValue + '/', {
         // return fetch('http://localhost:8000/api/account/profile/' + usernameValue, passwordValue, {
       method: 'GET',
     })
@@ -77,7 +77,7 @@ function handleBtn_2FA(formData) {
 
     // Cancel btn ----------------------------------------------------------------------
     document.getElementById('two_fa_cancelBtn').addEventListener('click', function() {
-       
+
         signIn_form_state('on');
         document.getElementById('manage_two_fa-div').remove();
         document.getElementById('signin-form').addEventListener('submit', formSubmitHandler_login);
@@ -115,7 +115,7 @@ function disable2FABtn() {
 }
 
 function alert_sendCode_error(errorMessage) {
-    
+
     const spinner = document.getElementById('spinner');
     if (spinner) {
         spinner.remove();
@@ -141,7 +141,7 @@ function alert_sendCode_error(errorMessage) {
     button.addEventListener('click', function() {
         document.getElementById('btnDiv').classList.remove('hidden-element');
         reset2FABtn();
-       
+
     })
 
 }
@@ -162,12 +162,12 @@ function reset2FABtn() {
 }
 
 function displayQRcode(totpUrl) {
-    
+
     new QRCode(document.getElementById("qrcode"), {
         text: totpUrl,
         width: 160,
         height: 160,
         correctLevel: QRCode.CorrectLevel.H,
-       
+
     });
 }

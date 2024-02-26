@@ -252,7 +252,7 @@ function verifyMobile_API() {
         const inputOTP = form.querySelector('input[name="codeOTP"]');
         const OTPValue = inputOTP.value;
 
-        fetch('http://localhost:8000/api/account/mobile/verify/?otp=' + OTPValue, {
+        fetch('https://transcendence42.ddns.net/api/account/mobile/verify/?otp=' + OTPValue, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
@@ -280,7 +280,7 @@ function sendCode(formData, method) {
     
     formData.append('send_method', method);
 
-    fetch('http://localhost:8000/api/account/otp/', {
+    fetch('https://transcendence42.ddns.net/api/account/otp/', {
         method: 'POST',
         body: formData
     })

@@ -19,17 +19,33 @@ function run() {
    
     if (p_keyPressed && rightPaddleY > 0) {
         rightPaddleY -= level + 1.8;
+        sendPaddlePositions(leftPaddleY, rightPaddleY)
     } else if (l_keyPressed && rightPaddleY + paddleHeight < canvas.height) {
         rightPaddleY += level + 1.8;
+        sendPaddlePositions(leftPaddleY, rightPaddleY)
     }
     if(twoPlayers || tournament) {
         if (q_keyPressed && leftPaddleY > 0) {
             leftPaddleY -= level + 1.8;
+            sendPaddlePositions(leftPaddleY, rightPaddleY)
         } else if (a_keyPressed && leftPaddleY + paddleHeight < canvas.height) {
             leftPaddleY += level + 1.8;
+            sendPaddlePositions(leftPaddleY, rightPaddleY)
         }
     }
+
+    sendPaddlePositions(leftPaddleY, rightPaddleY)
+    function sendPaddlePositions(leftPaddleY, rightPaddleY) {
+
+        const message = JSON.stringify({
+            action: 'updatePaddlePositions',
+            leftPaddleY: leftPaddleY,
+            rightPaddleY: rightPaddleY
+        });
     
+        socket.send(message);
+    }
+
     // Ball Update Position
     ballX += ballSpeedX;
     ballY += ballSpeedY;

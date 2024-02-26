@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY_DJANGO')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['nginx_container', 'localhost', 'websocket']
+ALLOWED_HOSTS = ['*']
 # Application definition
 
 OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
@@ -48,25 +49,34 @@ INSTALLED_APPS = [
 	'game',
 	'chat',
 	'friend_management',
+	'django_prometheus',
+	'background_task',
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
  # CORS settings (Cross-Origin Resource Sharing)
 
-CORS_ALLOW_ANY_ORIGIN = True
+# CORS_ALLOW_ANY_ORIGIN = True
+CORS_ALLOW_PRIVATE_NETWORK : True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost',
+    "https://transcendence42.ddns.net",
+    # "https://transcendence42.ddns.net:90",
+    
+    "https://90.116.1.104",
+    # 'http://localhost',
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -76,9 +86,18 @@ CORS_ALLOW_HEADERS = [
 	'Content-Type',
 	'code',
 	'token',
+    'Access-Control-Allow-Origin',
+
+    'Referer',
+    'Sec-Ch-Ua',
+    'Sec-Ch-Ua-Mobile',
+    'Sec-Ch-Ua-Platform',
+    'User-Agent',
+    'Origin',
+    'Host',
 ]
 
-SITE_URL = 'http://localhost'
+SITE_URL = 'https://transcendence42.ddns.net'
 
 ROOT_URLCONF = 'ft_transcendence.urls'
 
@@ -194,12 +213,9 @@ EMAIL_FROM = "Pong_Verfication"
 # EMAIL_HOST_USER et EMAIL_HOST_PASSWORD si nécessaire
 
 
-TWILIO_SID = os.environ.get('TWILIO_SID')
-TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
-TWILIO_SERVICE_ID = os.environ.get('TWILIO_SERVICE_ID')
+HTTPSMS_KEY = os.environ.get('HTTPSMS_KEY')
 
 PASSWORD_42 = "i8F6X2h8PZ2kyd"
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
 # SECURE_SSL_REDIRECT = True
