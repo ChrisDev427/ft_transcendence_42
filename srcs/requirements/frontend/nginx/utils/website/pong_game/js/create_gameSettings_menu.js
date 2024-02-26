@@ -223,5 +223,73 @@ function create_Tournament_inputs() {
     targetContainer.appendChild(div);
 
     initPlayBtn();
-
 }
+
+function create_room() {
+
+    document.getElementById('containerGameMenu').classList.add('hidden-element');
+
+    navbarSwitch('off');
+
+
+    reset_UI();
+
+    const mainDiv = document.createElement('div');
+    mainDiv.id = 'roomCreatedDiv';
+    mainDiv.classList = 'col-auto p-3 mx-auto rounded-4 shadow fade-in';
+    mainDiv.style.maxWidth = '400px';
+    
+    const secDiv = document.createElement('div');
+    secDiv.id = 'waitingDiv';
+    
+    const title = document.createElement('h5');
+    title.classList = 'fs-3 fw-bold text-info text-center';
+    title.textContent = 'Room created !';
+    secDiv.appendChild(title);
+
+    const text = document.createElement('h5');
+    text.classList = 'fs-5 fw-bold text-secondary text-center';
+    text.textContent = 'Please wait for someone to join the game';
+    secDiv.appendChild(text);
+
+    const spinnersDiv = document.createElement('div');
+    spinnersDiv.classList = 'col mt-3 d-flex justify-content-center';
+    for (let i = 0; i < 3; i++) {
+        const div = document.createElement('div');
+        div.role = 'status';
+        if (i === 1) {
+            div.classList = 'spinner-grow spinner-grow-sm text-info mx-2';
+        } else {
+            div.classList = 'spinner-grow spinner-grow-sm text-info';
+        }
+        spinnersDiv.appendChild(div);
+    }
+    secDiv.appendChild(spinnersDiv);
+
+    const row = document.createElement('div');
+    row.classList = 'row';
+    const col = document.createElement('div');
+    col.classList = 'col-auto mx-auto mt-3';
+    const cancelBtn = document.createElement('h5');
+    cancelBtn.id = 'cancelCreatedRoomBtn';
+    cancelBtn.classList = 'rounded shadow p-2 text-warning text-center fs-5';
+    cancelBtn.role = 'button';
+    cancelBtn.textContent = 'Cancel';
+    col.appendChild(cancelBtn);
+    row.appendChild(col);
+    secDiv.appendChild(row);
+    mainDiv.appendChild(secDiv);
+
+    document.getElementById('gameMenu').appendChild(mainDiv);
+
+    document.getElementById('cancelCreatedRoomBtn').addEventListener('click', function() {
+        document.getElementById('roomCreatedDiv').remove();
+        document.getElementById('containerGameMenu').classList.remove('hidden-element');
+        document.getElementById('createRoomMenu').classList.add('hidden-element');
+
+       navbarSwitch('on');
+    })
+    socket.send(JSON.stringify({ action: 'createSession' }));
+}
+
+

@@ -26,7 +26,7 @@
 
   <!-- Custom styles for this template-->
   <!-- <link href="dashboard/sb-admin-2.min.css" rel="stylesheet"> -->
-
+ 
 
 </head>
 
@@ -81,23 +81,20 @@
   <header id="header" class="pb-5 mb-4">
     <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark bg-info py-1">
       <div class="container">
-        <a class="navbar-brand fw-bold btn" onclick="showSection('main')">ft_transcendence42</a>
+        <a class="navbar-brand fw-bold btn border-0" onclick="showSection('main')">ft_transcendence42</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
-
             <!-- DropDown Profile -->
             <li id="dropDownProfile" class="nav-item dropdown unvisible">
               <a class="nav-link bi-person-circle  fs-3" href="#" role="toggle" data-bs-toggle="dropdown" aria-expanded="false"></a>
               <div id="dropdown-menu" class="dropdown-menu bg-info py-0 border-0 fade-in">
-
                 <div class="card mx-auto pb-3 shadow-lg border-0" style="width: 18rem;">
                   <img id="avatar-img_profilDropdown" src="" class="card-img-top mx-auto mt-3 rounded" alt="avatar-img" style="width: 150px;">
                   <div class="card-body">
-                    <h4 id="username-profileDropdown" style="font-family: 'Bagel Fat One', sans-serif;" class="card-title text-info text-center mb-3"></h4>
+                    <h4 id="username-profileDropdown" style="font-family: 'Bagel Fat One', sans-serif;" class="card-title text-info text-center text-uppercase mb-3"></h4>
                     <p id="bio-profileDropdown" class="card-text text-secondary text-center fw-light"></p>
                     <div class="col d-flex justify-content-evenly mt-4">
                       <a class="btn btn-sm btn-outline-info fw-bold bi bi-speedometer" href="#dashboard" onclick="getDashboardInfos()"></a>
@@ -109,8 +106,6 @@
                 </div>
               </div>
             </li>
-
-
             <li class="nav-item  mt-2">
               <a class="nav-link fw-bold" href="#gameMenu">Play Pong</a>
             </li>
@@ -123,7 +118,6 @@
             <li class="nav-item mt-2">
               <a class="nav-link fw-bold" href="#aboutTheTeam">About the team</a>
             </li>
-
           </ul>
         </div>
       </div>
@@ -219,12 +213,13 @@
           <button type="button" class="btn btn-outline-info mx-2" id="mediumBtn">Medium</button>
           <button type="button" class="btn btn-outline-info" id="hardBtn">Hard</button>
         </div>
-
-
         <div id="gameModeMenu" class="col d-flex justify-content-center m-3 hidden-element">
           <button type="button" class="btn btn-outline-info disabled" id="onePlayerBtn">One Player</button>
           <button type="button" class="btn btn-outline-info disabled mx-2" id="twoPlayersBtn">Two Players</button>
           <button type="button" class="btn btn-outline-info disabled" id="tournamentBtn">Tournament</button>
+        </div>
+        <div id="createRoomMenu" class="col d-flex justify-content-center m-3 hidden-element">
+          <button type="button" class="btn btn-outline-info disabled" id="createRoomBtn">Create Room</button>
         </div>
       </div>
     </section>
@@ -474,10 +469,8 @@
 
     <section id="dashboard" class="unvisible fade-in">
       <!-- <h1 class="display-1 fw-bold text-info text-center">Dashboard</h1> -->
-      <div class="container-fluid p-4 mt-5 rounded-4 bg-secondary bg-opacity-10" style="max-width: 1600px;">
+      <div class="container p-3 mt-5 rounded-4 bg-secondary bg-opacity-10" style="max-width: 1500px;">
         <!-- Begin Page Content -->
-        <div class="container-fluid p-4" style="max-width: 1600px;">
-
           <!-- Top Cards -->
           <div class="row ">
             <!-- Friends -->
@@ -629,7 +622,7 @@
                       <img id="avatar-img_dash" src="" alt="avatarUser" class="rounded-3 shadow" style="max-height: 200px;">
                     </div>
                     <div class="col-auto my-auto">
-                      <h5 id="userNameDash" class="text-info text-center fs-3 mb-2 mt-3 mt-md-0"></h5>
+                      <h5 id="userNameDash" class="text-info text-center text-uppercase fs-3 mb-2 mt-3 mt-md-0"></h5>
                       <h5 id="firstNameDash" class="text-secondary text-center fs-5"></h5>
                       <h5 id="lastNameDash" class="text-secondary text-center fs-5"></h5>
                       <h5 id="emailDash" class="text-secondary text-center fs-5"></h5>
@@ -659,14 +652,31 @@
             <div class="col-xl-7 ">
               <div class="card border-0 shadow mb-4">
                 <div class="card-header py-3">
-                  <h5 class="m-0 font-weight-bold text-info text-center text-md-start">Friends</h5>
+                  <div class="row d-flex align-items-center">
+                    <div class="col-sm-auto me-auto">
+                      <h5 class="text-center text-sm-start text-info mb-0">Friends</h5>
+                    </div>
+                    <div class="col-sm-auto ms-auto">
+                      <div class="row d-felx justify-content-center">
+                        <div class="col-auto px-0">
+                          <h5 id="seeFriendRequest" role="button" class="text-center mb-0 mt-2 mt-sm-0 hidden-element fade-in" onclick="seeFriendRequest()" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); color: rgb(0, 218, 4);"></h5>
+                        </div>
+                        <div class="col-auto d-flex align-items-end" style="width: 40px;">
+                          <h5 id="seeFriendRequestCloseBtn" role="button" class="fs-6 text-danger hidden-element fade-in ms-0 mt-1 mb-0" onclick="closeFriendRequest()"><i class="fa-solid fa-square-xmark fs-5"></i></h5>
+                          <i id="seeFriendRequestCloseBtn" role="button" class="text-danger hidden-element fade-in fa-solid fa-square-xmark fs-5" onclick="closeFriendRequest()"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="card-body">
                   <!-- Card Body -->
                   <div id="friendShipBody-dashboard" style="overflow-y: auto; height: 415px;">
-                    <div id="friendsTextInfo" class="p-5 hidden-element">
+                    <div id="friendsTextInfo" class="p-5 hidden-element fade-in">
                       <h5 class="font-weight-bold text-center text-secondary">You don't have any friend yet</h5>
                     </div>
+                    <div id="requestDiv" class="row d-felx justify-content-center hidden-element fade-in"></div>
+                    <div id="friendShipList-dashboard" class="px-3 mb-3 fade-in"></div>
                   </div>
                 </div>
               </div>
@@ -748,14 +758,86 @@
               </div>
             </div>
           </div>
-        </div>
       </div>
     </section>
 
     <section id="gameHistory" class="unvisible fade-in">
-      <div class="container p-3">
-        <h1 class="display-1 fw-bold text-info text-center">Game History</h1>
-      </div>
+      
+        <div class="container-fluid p-3 mt-5 rounded-4 bg-secondary bg-opacity-10" style="max-width: 1600px;">
+          <h1 class="display-1 fw-bold text-info text-center">Game History</h1>
+        
+          <div class="col-sm-10 mx-auto mt-4 ">
+            <div class="card border-0 shadow mb-4">
+              <div class="card-header py-3">
+                <div class="row d-flex align-items-center">
+                  <div class="col-sm-auto me-auto">
+                    <h5 class="text-center text-sm-start text-info mb-0">History</h5>
+                  </div>
+                </div>
+              </div>
+              <!-- Card Body -->
+              <div class="card-body">
+                <div id="gameHistory-cardBody" style="overflow-y: auto; min-height: 470px; max-height: 700px;">
+                  <div id="historyTextInfo" class="p-5 fade-in hidden-element">
+                    <h5 class="fw-bold text-center text-secondary">There is no history to display !</h5>
+                  </div>
+                  <div id="historyList" class="row px-3 d-felx justify-content-center fade-in">
+
+                    <div class="col-sm-auto px-4 py-3 m-2 rounded-3 bg-success bg-opacity-10 shadow" >
+                      <div class="row d-felx justify-content-center">
+                        <div class="col-auto mt-2"> 
+                          <img src="img/img-chris.jpg" alt="user-avatar" class="rounded-3 shadow" style="max-height: 100px;">
+                        </div>
+                        <div class="col-auto mt-2">
+                          <img src="img/img_axel.jpg" alt="user-avatar" class="rounded-3 shadow" style="max-height: 100px;">
+                        </div>
+                      </div>
+                      <div class="col-auto my-auto">
+                        <h5 class="text-info text-center fs-3 mb-2 mt-1">Christophe / Axel</h5>
+                        <h5 id="scoreHistory" class="text-secondary text-center fs-4">10 / 4</h5>
+                      </div>
+                      <hr class="mt-1">
+                      <div class="row d-felx justify-content-between">
+                        <div class="col-auto ">
+                          <i class="fa-solid fa-calendar-days text-secondary"></i>
+                        </div>
+                        <div class="col-auto">
+                          <p id="dateHistory" class="fw-bold fst-italic text-secondary text-center fs-6 mb-0">2024-02-16</p>
+                        </div>
+                      </div>
+                      <div class="row d-felx justify-content-between">
+                        <div class="col-auto ">
+                          <i class="fa-regular fa-clock text-secondary"></i>
+                        </div>
+                        <div class="col-auto">
+                          <p id="dateHistory" class="fw-bold fst-italic text-secondary text-center fs-6 mb-0">07:28:28</p>
+                        </div>
+                      </div>
+                      <div class="row d-felx justify-content-between">
+                        <div class="col-auto ">
+                          <i class="fa-solid fa-stopwatch text-secondary"></i>
+                        </div>
+                        <div class="col-auto">
+                          <p id="dateHistory" class="fw-bold fst-italic text-secondary text-center fs-6 mb-0">00:8:12</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    
+
+                  
+
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="container-fluid p-4" style="max-width: 1600px;">
+          </div> -->
+        </div>
+      <!-- </div> -->
     </section>
 
 
@@ -789,9 +871,9 @@
         <hr class="px-5 text-info border-2">
         <div id="infosDiv">
             <div id="infosProfile">
+              <h5 id="userNameProfile" class="text-secondary text-center fs-4 text-uppercase"></h5>
               <h5 id="firstNameProfile" class="text-info text-center fs-4"></h5>
               <h5 id="lastNameProfile" class="text-info text-center fs-4"></h5>
-              <h5 id="userNameProfile" class="text-info text-center fs-4"></h5>
               <div class="d-flex justify-content-center">
                 <i id="setInfoIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleInfos_createForm()"></i>
               </div>
@@ -839,6 +921,62 @@
       </div>
     </section>
 
+    <div id="mainChat" class="unvisible">
+      <div id="chat" class="p-2 fade-in chat-container shadow-lg" >
+        <div id="chat-area" class=" mb-2 " style="overflow-y: auto; height: 310px;">
+
+          <div id="chat-messages">
+            <p class="fw-semibold fst-italic text-secondary m-0"><small>Paul:</small></p>
+            <div class="lh-1 fw-semibold p-2 text-white bg-secondary rounded-bottom-4 rounded-end-4 me-auto mb-2 fade-in" style="max-width: 210px;">
+              <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+            </div>
+          </div>
+          <div id="chat-messages">
+            <div class="lh-1 fw-semibold p-2 text-white bg-info rounded-bottom-4 rounded-start-4  ms-auto mb-2 fade-in" style="max-width: 210px;">
+              <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+            </div>
+          </div>
+          <div id="chat-messages">
+            <div class="lh-1 fw-semibold p-2 text-white bg-info rounded-bottom-4 rounded-start-4  ms-auto mb-2 fade-in" style="max-width: 210px;">
+              <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+            </div>
+          </div>
+          <div id="chat-messages">
+            <div class="lh-1 fw-semibold p-2 text-white bg-info rounded-bottom-4 rounded-start-4  ms-auto mb-2 fade-in" style="max-width: 210px;">
+              <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+            </div>
+          </div>
+          <div id="chat-messages">
+            <p class="fw-semibold fst-italic text-secondary m-0"><small>Axel:</small></p>
+            <div class="lh-1 fw-semibold p-2 text-white bg-secondary rounded-bottom-4 rounded-end-4 me-auto mb-2 fade-in" style="max-width: 210px;">
+              <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+            </div>
+          </div>
+          <div id="chat-messages">
+            <div class="lh-1 fw-semibold p-2 text-white bg-info rounded-bottom-4 rounded-start-4  ms-auto mb-2 fade-in" style="max-width: 210px;">
+              <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+            </div>
+          </div>
+          <div id="chat-messages">
+            <p class="fw-semibold fst-italic text-secondary m-0"><small>Axel:</small></p>
+            <div class="lh-1 fw-semibold p-2 text-white bg-secondary rounded-bottom-4 rounded-end-4 me-auto mb-2 fade-in" style="max-width: 210px;">
+              <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+            </div>
+          </div>
+
+         
+        </div>
+        <div id="mainChat-form" class="form-control border-0 p-0">
+          <textarea class="form-control border-info" id="chat-input" style="min-height: 60px; max-height: 60px;"></textarea>
+          <!-- <i class="fa-solid fa-share fa-2x text-info" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);"></i> -->
+          
+        </div>    
+        <div class="d-flex justify-content-end">
+          <!-- <button class="btn btn-sm btn-outline-info mt-2 w-100 shadow" onclick="sendMessage()">Send</button>  -->
+          <h5 class="text-info fst-italic me-1" onclick="sendMessage()" role="button" style="text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.952);">Send</h5>
+        </div>
+      </div>
+    </div>
     <section id="sessions">
       <div id="sessionsList" style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;"></div>
 
@@ -848,31 +986,36 @@
 
   <footer id="footer" class="bg-info fixed-bottom" >
     <div class="container">
-      <div class="row">
-        <div class="col-6 p-1 image-container">
-          <a href="https://42nice.fr/" target="_blank" rel="nofollow">
-            <img src="img/42Nice-logo-white.png" alt="logo_42" class="custom-logo normal-logo" style="width: 150px;">
-            <img src="img/42Nice-logo-blue.png" alt="logo_42" class="custom-logo hover-logo" style="width: 150px;">
-          </a>
+      <div class="row d-flex justify-content-between">
+        <div class="col-auto d-flex justify-content-between">
+          <div class="col-auto p-1 image-container my-auto">
+            <a href="https://42nice.fr/" target="_blank" rel="nofollow">
+              <img src="img/42Nice-logo-white.png" alt="logo_42" class="custom-logo normal-logo" style="width: 110px;">
+              <img src="img/42Nice-logo-blue.png" alt="logo_42" class="custom-logo hover-logo" style="width: 110px;">
+            </a>
+          </div>
+          <div class="col-auto ms-5 my-auto">
+            <ul class="list-inline fs-3 my-auto">
+              <li class="list-inline-item">
+                <a class="text-white" href="https://www.linkedin.com/company/42nice/" target="_blank" rel="nofollow">
+                  <i class="bi-linkedin custom-icon-footer "></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-white" href="https://www.instagram.com/42Nice/?hl=fr" target="_blank" rel="nofollow">
+                  <i class="bi-instagram  custom-icon-footer "></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-white" href="https://twitter.com/42NiceSud" target="_blank" rel="nofollow">
+                  <i class="bi-twitter custom-icon-footer "></i>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="col-6  d-flex align-items-end justify-content-end">
-          <ul class="list-inline fs-4">
-            <li class="list-inline-item">
-              <a class="text-white" href="https://www.linkedin.com/company/42nice/" target="_blank" rel="nofollow">
-              <i class="bi-linkedin custom-icon-footer "></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a class="text-white" href="https://www.instagram.com/42Nice/?hl=fr" target="_blank" rel="nofollow">
-              <i class="bi-instagram  custom-icon-footer "></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a class="text-white" href="https://twitter.com/42NiceSud" target="_blank" rel="nofollow">
-              <i class="bi-twitter custom-icon-footer fs-3"></i>
-              </a>
-            </li>
-          </ul>
+        <div id="displayChatBtn" class="col-auto fs-1 p-0  unvisible">
+          <i id="mainChatBtn" class="bi bi-chat-text-fill text-secondary custom-icon-footer me-2" role="button" onclick="showMainChat()"></i> 
         </div>
       </div>
     </div>
@@ -883,6 +1026,7 @@
 
     <script src="website/websiteUtils.js"></script>
     <script src="website/websiteConfig.js"></script>
+    <script src="website/chat.js"></script>
 
     <script src="register_login_logout/register_login_logout.js"></script>
     <script src="register_login_logout/register_login_logout_utils.js"></script>
@@ -893,6 +1037,7 @@
     <script src="dashboard_profile/profile/updateUserInfos_createForms.js"></script>
     <script src="dashboard_profile/profile/updateUserInfos_comAPI.js"></script>
     <script src="dashboard_profile/profile/profile.js"></script>
+    <script src="dashboard_profile/profile/manageFriends.js"></script>
     <script src="dashboard_profile/dashboard/Chart.js"></script>
     <script src="dashboard_profile/dashboard/chart-pie.js"></script>
     <script src="dashboard_profile/dashboard/dashboard.js"></script>

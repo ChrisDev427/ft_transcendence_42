@@ -67,19 +67,28 @@ waitForWebSocketConnection().then((socket) => {
     });
 
 
-    // socket.addEventListener('message', (event) => {
-    //     const messageContainer = document.getElementById('chat-messages-general');
-    //     const receivedMessage = JSON.parse(event.data);
-    //     if (receivedMessage.type === 'messageGeneral') {
-    //         const messages = receivedMessage.messages || [];
-    //         const messagesToDisplay = messages.slice(-10);
-    //         messageContainer.innerHTML = '';
-    //         messagesToDisplay.forEach(msg => {
-    //             messageContainer.innerHTML += `<div><strong>${msg.username}:</strong> ${msg.text}</div>`;
-    //         });
-    //         messageContainer.scrollTop = messageContainer.scrollHeight;
-    //     }
-    // });
+    socket.addEventListener('message', (event) => {
+        const messageContainer = document.getElementById('chat-messages-general');
+        const receivedMessage = JSON.parse(event.data);
+        if (receivedMessage.type === 'messageGeneral') {
+            const messages = receivedMessage.messages || [];
+            const messagesToDisplay = messages.slice(-10);
+            messageContainer.innerHTML = '';
+            messagesToDisplay.forEach(msg => {
+                messageContainer.innerHTML += `<div><strong>${msg.username}:</strong> ${msg.text}</div>`;
+            });
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+    });
+
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+
+        if (data.action === 'confirmJoin') {
+            console.log(data.username, "a rejoind la session");
+            
+        }
+    });
     
     socket.addEventListener('message', (event) => {
         const messageContainer = document.getElementById('chat-messages_session');
@@ -98,7 +107,7 @@ waitForWebSocketConnection().then((socket) => {
         }
     });
 
-    
+
 }).catch((error) => {
     console.error('Une erreur s\'est produite lors de la connexion WebSocket:', error);
 });

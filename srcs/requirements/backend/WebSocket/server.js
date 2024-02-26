@@ -114,7 +114,7 @@ wss.on('connection', (ws, req) => {
                 const sessionId = ID ? ID : "Unknown Session";
                 
 
-                // console.log(`UserID: ${ip}`);
+                // console.log(`UserID: ${username}`);
                 // console.log(`Session ID: ${sessionId}`);
                 // console.log('Left Paddle Y:', leftPaddleY);
                 // console.log('Right Paddle Y:', rightPaddleY);
@@ -137,12 +137,14 @@ wss.on('connection', (ws, req) => {
                         console.log(`${data.username} join session!`, data.sessionId);
                         ws.sessionId = data.sessionId;
                         // getSessionIdByUserId(username);
-                        const sessionMessageHistory = messageHistoryBySession[data.sessionId] || [];
-                        ws.send(JSON.stringify({ type: "messageSession", messages: sessionMessageHistory }));
-                
+
+                        // const sessionMessageHistory = messageHistoryBySession[data.sessionId] || [];
+                        // ws.send(JSON.stringify({ type: "messageSession", messages: sessionMessageHistory }));
+                        
+                        ws.send(JSON.stringify({ action: 'confirmJoin', username }));
+                        
                         console.log(connectedUsersBySession);
                     }
-
                 }
             }
 
@@ -171,7 +173,7 @@ function broadcastMessageSession(message, sessionId) {
     const latestMessages = messageHistoryBySession[sessionId];
     wss.clients.forEach(client => {
         const clientSessionId = getSessionIdByUserId(client.userId);
-        
+        console.log("client user id:",client.userId)
         if (client.readyState === WebSocket.OPEN && clientSessionId === sessionId) {
             console.log(clientSessionId)
             client.send(JSON.stringify({ type: "messageSession", messages: latestMessages }));

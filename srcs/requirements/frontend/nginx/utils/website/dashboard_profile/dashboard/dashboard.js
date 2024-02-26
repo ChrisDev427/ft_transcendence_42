@@ -1,7 +1,7 @@
 function getDashboardInfos() {
   console.log('function getDashboardInfos()');
   verifyToken();
-  fetch('http://localhost:8000/api/account/profile/', {
+  fetch(domainPath + '/api/account/profile/', {
     method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
@@ -20,7 +20,6 @@ function getDashboardInfos() {
   })
   .then(data => {
 
-    console.log('apiUrl ' + data.avatar);
     initDashboard(data);
   })
   .catch(error => {
@@ -29,13 +28,9 @@ function getDashboardInfos() {
 }
 
 function initDashboard(data) {
-  // const friendShipList = document.getElementById('friendShipList-dashboard');
-  // if (friendShipList) {
-    
-  //   document.querySelectorAll('#friendShipList-dashboard').forEach((element) => {
-  //     element.remove();
-  // });
-  // }
+  
+  checkFriendRequest();
+  get_users_data();
 
   document.getElementById('firstNameDash').textContent = data.user.first_name;
   document.getElementById('lastNameDash').textContent = data.user.last_name;
@@ -58,18 +53,17 @@ function initDashboard(data) {
   getAvatar(data.user.username)
   .then(imageURL => {
     document.getElementById('avatar-img_dash').src = imageURL;
+    manageFriends(data);
   })
   .catch(error => {
     console.error("Error : download avatar imgage 'initDashboard()' !", error);
   });
   
-  manageFriends(data);
-  get_users_data();
 }
 
 
 function manageFriends(data) {
-  console.log('dashFriendsInitContent()');
+  console.log('manageFriends()');
   displaySpinner_dash('friendShipBody-dashboard');
   createFriendArray(data)
   .then(friendsArray => {
@@ -78,27 +72,34 @@ function manageFriends(data) {
       document.getElementById('friendsTextInfo').classList.remove('hidden-element');
       console.log('No friendship to display in dashboard');
     } else {
-     
+      if (!document.getElementById('friendsTextInfo').classList.contains('hidden-element')) {
+        document.getElementById('friendsTextInfo').classList.add('hidden-element');
+      }
       friends_createContent(friendsArray);
     }
   })
   .catch(error => {
-    console.error("Error in dashFriendsInitContent():", error);
+    console.error("Error in manageFriends():", error);
   });
 }
 
 function friends_createContent(friendsArray) {
 
+  const friendList = document.getElementById('friendShipList-dashboard');
+  while (friendList.firstChild) {
+    friendList.removeChild(friendList.firstChild);
+  }
   sortFriendsArray(friendsArray);
   
   for (let i = 0; i < friendsArray.length; i++) {
 
-    const mainDiv = document.createElement('div');
-    mainDiv.classList = 'px-3 mb-3 fade-in';
-    mainDiv.id = 'friendShipList-dashboard';
+    // const mainDiv = document.createElement('div');
+    // mainDiv.classList = 'px-3 mb-3 fade-in';
+    // mainDiv.id = 'friendShipList-dashboard';
     
     const rowDiv = document.createElement('div');
-    rowDiv.classList = 'row py-3 px-3 shadow-sm rounded-3 bg-info bg-opacity-10';
+    rowDiv.classList = 'row py-3 px-3 mb-3 shadow-sm rounded-3 bg-info bg-opacity-10 fade-in';
+    rowDiv.id = 'friendList' + i;
     
     //*********************************************************************************
     
@@ -126,7 +127,7 @@ function friends_createContent(friendsArray) {
     infosDiv.classList = 'col-auto mx-auto mx-sm-0';
     
     const userName = document.createElement('h5');
-    userName.classList = 'text-info text-center text-sm-start fs-3 mb-2 mt-1';
+    userName.classList = 'text-info text-center text-uppercase text-sm-start fs-3 mb-2 mt-1';
     userName.textContent = friendsArray[i][0];
     infosDiv.appendChild(userName);
     
@@ -183,11 +184,11 @@ function friends_createContent(friendsArray) {
     rowDiv.appendChild(expandInfos);
     //************************************************************************
     
-    mainDiv.appendChild(rowDiv);
+    // mainDiv.appendChild(rowDiv);
 
     setTimeout(function() {
 
-      document.getElementById('friendShipBody-dashboard').appendChild(mainDiv);
+      document.getElementById('friendShipList-dashboard').appendChild(rowDiv);
 
       document.getElementById('friendExpand' + i).addEventListener('click', function() {
         const expandInfos = document.getElementById('expand' + i);
@@ -197,14 +198,21 @@ function friends_createContent(friendsArray) {
           expandInfos.classList.add('hidden-element');
         }
       })
+      document.getElementById('removeFriendBtn' + i).addEventListener('click', function() {
+        fetchRemoveFriendship(friendsArray[i][0])
+        .then((data) => {
+          console.log('then remove', data);
+          document.getElementById('friendList' + i).remove();
+          getDashboardInfos();
+        })
+      })
     }, 300);
   }
   document.getElementById('spinner' + 'friendShipBody-dashboard').remove();
 }
 
-
 function friendExpandInfos_createContent(userObject, index) {
-  
+  console.log('userObject = ', userObject);
   const cardTitles = ['Victories', 'Defeats', 'Played', 'Friends'];
   const cardValue = [userObject.win, userObject.lose, userObject.win + userObject.lose, userObject.friend.length];
   const cardIcons = ['fas fa-trophy text-success', 'fa-solid fa-face-sad-tear text-danger', 'fas fa-table-tennis text-info', 'fa-solid fa-people-group text-primary'];
@@ -217,12 +225,8 @@ function friendExpandInfos_createContent(userObject, index) {
   mainDiv.classList = 'col-12 mt-3 hidden-element';
   mainDiv.id = 'expand' + index;
 
-  // const hr1 = document.createElement('hr');
-  // hr1.classList = 'border-secondary';
-  // mainDiv.appendChild(hr1);
-
   const mainRow = document.createElement('div');
-  mainRow.classList = 'row p-4 d-flex justify-content-evenly bg-success bg-opacity-25 rounded-3 shadow-sm';
+  mainRow.classList = 'row p-3 pt-4 d-flex justify-content-evenly bg-success bg-opacity-25 rounded-3 shadow-sm';
 
   for (let i = 0; i < 4; i++) {
 
@@ -288,30 +292,34 @@ function friendExpandInfos_createContent(userObject, index) {
   small2.textContent = 'last login : ' + handleDates(userObject.user.last_login);
   p2.appendChild(small2);
   infosDiv.appendChild(p2);
+  
+  const hr = document.createElement('hr');
+  hr.classList = 'border-secondary';
+  infosDiv.appendChild(hr);
   mainRow.appendChild(infosDiv);
-
 
   const btnDiv = document.createElement('div');
   btnDiv.classList = 'd-flex justify-content-center';
   const btn = document.createElement('button');
-  btn.classList = 'btn btn-sm btn-warning text-white';
-  btn.id = 'removeFriendBtn';
+  btn.classList = 'btn btn-sm btn-outline-danger';
+  btn.id = 'removeFriendBtn' + index;
   btn.textContent = 'Remove friendship';
   btnDiv.appendChild(btn);
   infosDiv.appendChild(btnDiv);
+  
   mainDiv.appendChild(mainRow);
-
-  // const hr2 = document.createElement('hr');
-  // hr2.classList = 'border-secondary';
-  // mainDiv.appendChild(hr2);
 
   return mainDiv;  
 }
 
-function searchUser_createContent(friendObjet) {
+function searchUser_createContent(friendObjet, index) {
+
+  console.log('index = ' + index);
+  console.log('friendObjet = ', friendObjet);
 
   const mainDiv = document.createElement('div');
   mainDiv.classList = 'col-sm-10 mx-auto bg-primary bg-opacity-10 rounded shadow p-3 mb-3 fade-in';
+  mainDiv.id = 'user_searchUser' + index;
 
   const rowDiv = document.createElement('div');
   rowDiv.classList = 'row';
@@ -351,22 +359,54 @@ function searchUser_createContent(friendObjet) {
 
   const div = document.createElement('div');
   div.classList = 'col-sm-3 d-flex justify-content-center align-items-center';
-  if (!isFriend(friendObjet.user.username)) {
-    const btn = document.createElement('button');
-    btn.classList = 'btn btn-info text-white mx-auto';
-    btn.textContent = 'Ask as friend';
-    btn.id = 'askFriendBtn';
-    div.appendChild(btn);
-  } else {
-    const icon = document.createElement('i');
-    icon.classList = 'fa-solid fa-user-group fa-3x text-info';
-    icon.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.3)';
-    div.appendChild(icon);
-  }
-  rowDiv.appendChild(div);
 
-  mainDiv.appendChild(rowDiv);
-  setTimeout(function() {
-    document.getElementById('searchFriend-cardArea').appendChild(mainDiv);
-  }, 300)
+  
+  checkPendingRequest(friendObjet.user.username)
+  .then((result) => {
+    console.log('Valeur résolue de la promesse :', result);
+    
+    if (result === true) {
+      
+      const pendingRequest = document.createElement('h5');
+      pendingRequest.classList = 'text-warning text-center';
+      pendingRequest.textContent = 'Pending Request';
+      div.appendChild(pendingRequest);
+    } else if (isFriend(friendObjet.user.username) === true) {
+      const icon = document.createElement('i');
+      icon.classList = 'fa-solid fa-user-group fa-3x text-info';
+      icon.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.3)';
+      div.appendChild(icon);
+    } else {
+      const btn = document.createElement('button');
+      btn.classList = 'btn btn-info text-white mx-auto shadow';
+      btn.textContent = 'Ask as friend';
+      btn.id = 'askFriendBtn' + index;
+      div.appendChild(btn);
+      
+    }
+    rowDiv.appendChild(div);
+    
+    mainDiv.appendChild(rowDiv);
+    setTimeout(function() {
+      document.getElementById('searchFriend-cardArea').appendChild(mainDiv);
+      
+      const askFriendBtn = document.getElementById('askFriendBtn' + index);
+      if (askFriendBtn) {
+        askFriendBtn.addEventListener('click', function() {
+          askFriend(friendObjet.user.username)
+          .then((data) => {
+            if (data[0] === 'friendship already exist') {
+              askFriendBtn.classList.remove('btn-info', 'text-white');
+              askFriendBtn.classList.add('disabled', 'btn-warning', 'text-secondary');
+              askFriendBtn.textContent = 'Check your friend requests';
+            } else {
+              console.log('then after askAsFriend', data);
+              document.getElementById('user_searchUser' + index).remove();
+              searchUser_createContent(friendObjet, index);
+            }
+          })
+        })
+      }
+    }, 300)
+  });
 }

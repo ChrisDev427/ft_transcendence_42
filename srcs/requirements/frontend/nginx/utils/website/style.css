@@ -21,7 +21,10 @@ input[type="text password"]::placeholder {
 
   color: rgba(0, 179, 255, 0.351);
 }
-
+.rotate-180 {
+  display: inline-block;
+  transform: rotate(180deg) !important;
+}
 /* #friendShipList-dashboard, #main, #gameMenu, #playPong, #aboutTheTeam, #signIn, #signUp, #dashboard, #gameHistory, #profile, #alert-bg-blur, #alert-bg-blur {
   opacity: 0;
   animation: fadeIn 0.3s ease-in-out forwards;
@@ -69,14 +72,14 @@ input[type="text password"]::placeholder {
   height: 100%;
   background-color: rgba(210, 210, 210, 0.5); /* Fond semi-transparent noir pour le flou */
   backdrop-filter: blur(6px); /* Flou appliqué à l'arrière-plan */
-  z-index: 1100; /* Placez l'arrière-plan au-dessus de tout sauf la boîte de dialogue */
+  z-index: 1300; /* Placez l'arrière-plan au-dessus de tout sauf la boîte de dialogue */
 
 }
 .cursor-pointer {
   cursor: pointer;
 }
 .icon-disabled {
-  opacity: 0.5; /* Vous pouvez ajuster cette valeur selon vos préférences */
+  opacity: 0.5 !important; /* Vous pouvez ajuster cette valeur selon vos préférences */
   pointer-events: none; /* Désactive les interactions avec l'icône */
 }
 .hidden-element {
@@ -129,6 +132,18 @@ input[type="text password"]::placeholder {
   display: inline-block; /* ou display: block; selon le besoin */
 }
 
+.chat-container {
+  z-index: 1200;
+  position: fixed;
+  bottom: 55px;
+  right: 10px;
+  width: 300px;
+  height: 420px;
+  
+  border-radius: 15px;
+  background-color: rgba(0, 191, 255, 0.208); /* Couleur de fond avec opacité */
+  backdrop-filter: blur(5px); /* Effet de flou */
+}
 
 .chart-pie {
   position: relative;
