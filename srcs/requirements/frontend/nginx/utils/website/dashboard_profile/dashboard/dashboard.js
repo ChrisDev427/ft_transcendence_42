@@ -1,7 +1,7 @@
 function getDashboardInfos() {
   console.log('function getDashboardInfos()');
   verifyToken();
-  fetch('http://localhost:8000/api/account/profile/', {
+  fetch(domainPath + '/api/account/profile/', {
     method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
