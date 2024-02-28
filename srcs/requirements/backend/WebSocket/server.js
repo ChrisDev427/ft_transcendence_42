@@ -1,11 +1,12 @@
 const WebSocket = require('ws');
-const https = require('https');
+// const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
-const server = https.createServer({
-    cert: fs.readFileSync('certificate.crt'),
-    key: fs.readFileSync('private.key'),
+const server = http.createServer({
+    // cert: fs.readFileSync('certificate.crt'),
+    // key: fs.readFileSync('private.key'),
 });
 
 
@@ -18,7 +19,7 @@ class Session {
         this.paddleHeight = paddleHeight;
         this.user_id = user_id;
         this.username = username;
-        
+
     }
 }
 
@@ -64,7 +65,8 @@ wss.on('connection', (ws, req) => {
             if (data.action === 'sendMessage') {
                 const text = data.text;
                 console.log(text);
-                broadcastMessage({ action: 'receiveMessage', username, text });
+                const time = getTime();
+                broadcastMessage({ action: 'receiveMessage', username, text, time });
             }
 
             if (data.action === 'sendMessageSession') {
@@ -83,13 +85,13 @@ wss.on('connection', (ws, req) => {
                     console.log(`${username} est deja connecte a une session`);
 
                 } else {
-                    
+
                     const sessionId = uuidv4();
                     const session = new Session(sessionId, new Date(), username, data.level, data.paddleHeight, data.id, data.username);
                     sessions.push(session);
 
                     console.log(`${username} Session created :`, sessionId, data.level, data.paddleHeight, data.id, data.username);
-                    
+
                     connectedUsersBySession[sessionId] = [];
                     connectedUsersBySession[sessionId].push(username);
                     console.log(`${username} join session!`, sessionId);
@@ -99,20 +101,20 @@ wss.on('connection', (ws, req) => {
                     console.log(connectedUsersBySession);
 
                     ws.send(JSON.stringify({ action: 'sessionCreated', sessionId }));
-                    
+
                     // envoie a tout les utilisateurs
                     broadcastSessions();
                 }
-                
+
 
             } if (data.action === 'updatePaddlePositions') {
                 const { leftPaddleY, rightPaddleY } = data;
-            
+
                 const ID = Object.keys(connectedUsersBySession).find(sessionId =>
                     connectedUsersBySession[sessionId].includes(username)
                 );
                 const sessionId = ID ? ID : "Unknown Session";
-                
+
 
                 // console.log(`UserID: ${username}`);
                 // console.log(`Session ID: ${sessionId}`);
@@ -122,13 +124,13 @@ wss.on('connection', (ws, req) => {
             } else if (data.action === 'quitSession') {
                 userLeaveSession(username);
                 console.log(`${username} Client quit the session`, data.sessionId);
-                
+
             } else if (data.action === 'join') {
-                
-            
+
+
                 if (isUserAlreadyConnected(username, data.sessionId)) {
                     console.log(`${username} est deja connecte a une session`);
-                    
+
 
                 } else {
                     // Ajout de l'utilisateur à la liste des utilisateurs connectés à la session
@@ -140,9 +142,10 @@ wss.on('connection', (ws, req) => {
 
                         // const sessionMessageHistory = messageHistoryBySession[data.sessionId] || [];
                         // ws.send(JSON.stringify({ type: "messageSession", messages: sessionMessageHistory }));
-                        
-                        ws.send(JSON.stringify({ action: 'confirmJoin', username }));
-                        
+
+                        sessionconf(ws.userId, data.sessionId);
+                        console.log("lolol", ws.userId);
+
                         console.log(connectedUsersBySession);
                     }
                 }
@@ -161,6 +164,19 @@ wss.on('connection', (ws, req) => {
     });
 });
 
+function sessionconf(username, sessionId){
+    for (const client of wss.clients) {
+        const clientSessionId = getSessionIdByUserId(client.userId);
+        console.log("Comparing:", clientSessionId, sessionId);
+
+        if (client.readyState === WebSocket.OPEN && clientSessionId === sessionId) {
+            console.log("client user id:", clientSessionId, sessionId, client.userId);
+            const response = client.send(JSON.stringify({ action: 'confirmJoin', username }));
+            console.log(response);
+        }
+    }
+}
+
 function broadcastMessageSession(message, sessionId) {
     if (!messageHistoryBySession[sessionId]) {
         messageHistoryBySession[sessionId] = [];
@@ -177,7 +193,6 @@ function broadcastMessageSession(message, sessionId) {
         if (client.readyState === WebSocket.OPEN && clientSessionId === sessionId) {
             console.log(clientSessionId)
             client.send(JSON.stringify({ type: "messageSession", messages: latestMessages }));
-            // client.send(JSON.stringify({ type: "messageGeneral", messages: latestMessages }));
         }
     });
 
@@ -223,7 +238,7 @@ function userLeaveSession(sessionId) {
     // const sessionIndex = sessions.findIndex(session => session.sessionId === sessionId);
 
     // const removedSession = sessions.splice(sessionIndex, 1)[0];
-    
+
     // const index = connectedUsersBySession[sessionId].indexOf('yu');
     // if (index !== -1) {
     //     connectedUsersBySession[sessionId].splice(index, 1);
@@ -289,3 +304,14 @@ const port = 90;
 server.listen(port, '0.0.0.0', () => {
     console.log(`Serveur WebSocket écoutant sur le port ${port}`);
 });
+
+function getTime() {
+    const currentDate = new Date();
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+  
+    const dateTimeString = `${hours}:${minutes}:${seconds}`;
+  
+    return dateTimeString;
+}

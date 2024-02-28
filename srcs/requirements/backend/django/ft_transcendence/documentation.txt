@@ -103,10 +103,13 @@ api/chat/message/  --> put a message in a discussion
 
 api/game/  --> Create a game
 	connected : ADMIN
-	method : GET POST
-	advice : post : - need player_one, player_two, game_type, difficulty
+	method : POST
+	advice : - need player_one, player_two(if not game_type = ia), game_type (ia/pvp/tournament), difficulty(easy/medium/hard)
 
-api/game/id --> update the game
+api/game/id --> view a game or update the game
+	connected : YES
+	method : GET
+
 	connected : ADMIN
 	method : PATCH
-	advice : - need id, winner, final_score
+	advice : - need id, winner, final_score (format "d:d")

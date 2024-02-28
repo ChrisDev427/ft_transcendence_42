@@ -45,11 +45,12 @@ class oauth_login(APIView):
             'grant_type': 'authorization_code',
             'code': code,
             'redirect_uri': settings.SITE_URL,
-            'client_id': os.environ.get('OAUTH_CLIENT_ID'),
-            'client_secret': os.environ.get('OAUTH_SECRET'),
+            'client_id': settings.OAUTH_CLIENT_ID,
+            'client_secret': settings.OAUTH_CLIENT_SECRET,
         }
         response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
         if response.status_code != 200:
+            print(response.json())
             return Response(response.json(), status=response.status_code)
         profile = requests.get('https://api.intra.42.fr/v2/me', headers={'Authorization': 'Bearer ' + response.json()['access_token']})
         if profile.status_code != 200:
@@ -61,7 +62,7 @@ class oauth_login(APIView):
         except User.DoesNotExist:
             user = User.objects.create_user(
                 username = profile['login'],
-                password = settings.PASSWORD_42,
+                password = settings.OAUTH_PASSWORD_42,
                 first_name = profile['first_name'],
                 last_name = profile['last_name'],
                 email=profile['email'],
@@ -263,6 +264,8 @@ class LoginView(TokenObtainPairView):
             user = authenticate(username=username, password=password)
             if user is None:
                 return Response(status=status.HTTP_404_NOT_FOUND)
+            elif user.is_staff:
+                return Response({**response.data}, status=status.HTTP_200_OK)
             elif not user.is_active:
                 return Response({"email not verified"}, status=status.HTTP_401_UNAUTHORIZED)
             try:

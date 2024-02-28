@@ -203,7 +203,6 @@ btn.createRoomBtn.addEventListener("click", function() {
 
     create_room();
     
-    create_Tournament_mode();
 });
 
 

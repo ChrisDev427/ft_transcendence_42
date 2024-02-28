@@ -31,9 +31,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 # Application definition
 
-OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
-OAUTH_CLIENT_SECRET = os.environ.get('OAUTH_CLIENT_SECRET')
-OAUTH_REDIRECT_URI = os.environ.get('OAUTH_REDIRECT_URI')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -72,11 +69,7 @@ MIDDLEWARE = [
 CORS_ALLOW_PRIVATE_NETWORK : True
 
 CORS_ALLOWED_ORIGINS = [
-    "https://transcendence42.ddns.net",
-    # "https://transcendence42.ddns.net:90",
-    
-    "https://90.116.1.104",
-    # 'http://localhost',
+    os.environ.get('SITE_URL'),
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -97,7 +90,6 @@ CORS_ALLOW_HEADERS = [
     'Host',
 ]
 
-SITE_URL = 'https://transcendence42.ddns.net'
 
 ROOT_URLCONF = 'ft_transcendence.urls'
 
@@ -186,6 +178,10 @@ REST_FRAMEWORK = {
     )
 }
 
+# Domain Name
+
+SITE_URL = os.environ.get('SITE_URL')
+
  # JWT settings
 
 SIMPLE_JWT = {
@@ -205,17 +201,16 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_APPLICATION_PASSWORD')
 EMAIL_FROM = "Pong_Verfication"
 
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'postfix_container'  # Nom du service Postfix dans docker-compose
-# EMAIL_PORT = 25
-# EMAIL_USE_TLS = False
-# EMAIL_HOST_USER et EMAIL_HOST_PASSWORD si nécessaire
-
-
 HTTPSMS_KEY = os.environ.get('HTTPSMS_KEY')
+HTTPSMS_URL = os.environ.get('HTTPSMS_URL')
+HTTPSMS_PHONE = os.environ.get('HTTPSMS_PHONE')
 
-PASSWORD_42 = "i8F6X2h8PZ2kyd"
+# OAUTH 42 settings
+
+OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
+OAUTH_CLIENT_SECRET = os.environ.get('OAUTH_CLIENT_SECRET')
+OAUTH_REDIRECT_URI = os.environ.get('OAUTH_REDIRECT_URI')
+OAUTH_PASSWORD_42 = os.environ.get('OAUTH_PASSWORD_42')
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # SECURE_SSL_REDIRECT = True

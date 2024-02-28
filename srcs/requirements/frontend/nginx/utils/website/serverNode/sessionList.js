@@ -5,12 +5,12 @@ function updateSessionsList(sessions) {
 
     sessions.forEach(session => {
         const sessionLink = document.createElement('a');
-        sessionLink.href = `https://transcendence42.ddns.net/#playPong`;
+        sessionLink.href = `http://localhost/#playPong`;
         sessionLink.textContent = `Session Name: ${session.username}, Created At: ${session.createdAt}`;
         sessionLink.addEventListener('click', () => {
 
             socket.send(JSON.stringify({ action: 'join', sessionId: session.id, username:session }));
-            
+
             leftPlayerName ="test";
             rightPlayerName="test1";
 
@@ -22,7 +22,7 @@ function updateSessionsList(sessions) {
             setPlayerNameToPrint(leftPlayerName, rightPlayerName);
             setHandToStart();
             printConsoleInfos();
-            
+
             showSection("playPong");
             document.getElementById('gameDiv').classList.remove('hidden-element');
             run();
