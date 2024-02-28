@@ -9,6 +9,9 @@ const server = http.createServer({
     // key: fs.readFileSync('private.key'),
 });
 
+const fetch = require('node-fetch');
+
+
 
 class Session {
     constructor(sessionId, createdAt, ip, level, paddleHeight, user_id, username) {
