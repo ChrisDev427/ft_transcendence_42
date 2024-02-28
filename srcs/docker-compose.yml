@@ -83,6 +83,8 @@ services:
     #   - ./requirements/backend/WebSocket:/app
     networks:
       - pong
+    # environment:
+    # - NODE_TLS_REJECT_UNAUTHORIZED=0
 
   # prometheus:
   #   image: prom/prometheus

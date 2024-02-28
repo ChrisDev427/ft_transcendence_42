@@ -53,8 +53,9 @@ function init2faProfile(data) {
 
 function initProfile(data) {
   sessionUsername = data.user.username;
-  waitForWebSocketConnection(sessionUsername);
-  console.log('Socket assigné:', socket);
+  waitForWebSocketConnection(localStorage.getItem('accessToken'));
+  console.log('token', localStorage.getItem('accessToken'));
+
   document.getElementById('firstNameProfile').textContent = data.user.first_name;
   document.getElementById('lastNameProfile').textContent = data.user.last_name;
   document.getElementById('userNameProfile').textContent = data.user.username;
