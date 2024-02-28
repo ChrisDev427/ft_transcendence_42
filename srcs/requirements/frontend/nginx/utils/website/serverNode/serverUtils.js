@@ -1,9 +1,10 @@
 
 let socket;
+let chatInit = false;
 
 function waitForWebSocketConnection(token) {
     return new Promise((resolve, reject) => {
-        socket = new WebSocket(`ws://localhost:90?token=${token}`);
+        socket = new WebSocket(domainPath.replace("http", "ws").replace(':8000', '') + ':90?token=' + token);
 
         socket.addEventListener('open', () => {
             console.log('Connected to WebSocket server');
@@ -30,7 +31,8 @@ function waitForWebSocketConnection(token) {
         if (data.action === 'updateSessions') {
             console.log('Updating sessions list...');
             updateSessionsList(data.sessions);
-        }
+        } else if (data.action === 'join') {
+            console.log('Joining session with ID:', data.sessionId , data.userame);}
     });
 
     socket.addEventListener('message', (event) => {
@@ -49,16 +51,36 @@ function waitForWebSocketConnection(token) {
 
 
     socket.addEventListener('message', (event) => {
-        const messageContainer = document.getElementById('chat-messages-general');
         const receivedMessage = JSON.parse(event.data);
         if (receivedMessage.type === 'messageGeneral') {
-            const messages = receivedMessage.messages || [];
-            const messagesToDisplay = messages.slice(-10);
-            messageContainer.innerHTML = '';
+            const messages = receivedMessage.messages;
+            console.log(messages)
+            let messagesToDisplay;
+            if (!chatInit) {
+                messagesToDisplay = messages.slice(-10);
+            } else {
+                messagesToDisplay = messages.slice(-1);
+            }
             messagesToDisplay.forEach(msg => {
-                messageContainer.innerHTML += `<div><strong>${msg.username}:</strong> ${msg.text}</div>`;
+
+                chatGeneral_createContent(msg.username, msg.text, msg.time);
             });
+            const messageContainer = document.getElementById('chat-area');
             messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+        chatInit = true;
+    });
+
+
+
+
+
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+
+        if (data.action === 'confirmJoin') {
+            console.log(data.username, "a rejoind la session");
+
         }
     });
 

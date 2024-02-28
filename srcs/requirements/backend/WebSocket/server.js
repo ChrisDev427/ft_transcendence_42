@@ -1,13 +1,18 @@
 const WebSocket = require('ws');
-// const https = require('https');
-const http = require('http');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
-const server = http.createServer({
-    // cert: fs.readFileSync('certificate.crt'),
-    // key: fs.readFileSync('private.key'),
-});
+if (process.env.SITE_URL === 'http://localhost') {
+    const http = require('http');
+    const server = http.createServer();
+    var local = true;
+} else {
+    const https = require('https');
+    const server = https.createServer({
+        cert: fs.readFileSync('certificate.crt'),
+        key: fs.readFileSync('private.key'),
+    });
+}
 
 const fetch = require('node-fetch');
 
@@ -35,17 +40,28 @@ const messageHistory = [];
 
 
 
-function UserConnexion(token) {
+function UserConnexion(token, local) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await fetch("http://django_container:8000/api/account/profile/", {
-                method: 'GET',
-                headers: {
-                    Host: "localhost",
-                    Authorization: "Bearer " + token,
-                },
-            });
-
+            if (local)
+            {
+                const response = await fetch("http://django_container:8000/api/account/profile/", {
+                    method: 'GET',
+                    headers: {
+                        Host: "localhost",
+                        Authorization: "Bearer " + token,
+                    },
+                });
+            }
+            else
+            {
+                const response = await fetch("https://transcendence42.ddns.net/api/account/profile/", {
+                    method: 'GET',
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                });
+            }
             if (response.status === 200) {
                 console.log('login success');
                 const data = await response.json();
@@ -69,7 +85,7 @@ wss.on('connection', async (ws, req) => {
     const token = urlParams.get('token');
 
     // User connexion
-    const test = await UserConnexion(token);
+    const test = await UserConnexion(token, local);
     ws.userId = test.user.username;
 
 
@@ -100,7 +116,9 @@ wss.on('connection', async (ws, req) => {
             // chat general
             if (data.action === 'sendMessage') {
                 const text = data.text;
-                broadcastMessage({ action: 'receiveMessage', username, text });
+                console.log(text);
+                const time = getTime();
+                broadcastMessage({ action: 'receiveMessage', username, text, time });
             }
 
             // chat session
@@ -313,3 +331,14 @@ const port = 90;
 server.listen(port, '0.0.0.0', () => {
     console.log(`Serveur WebSocket écoutant sur le port ${port}`);
 });
+
+function getTime() {
+    const currentDate = new Date();
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+    const dateTimeString = `${hours}:${minutes}:${seconds}`;
+
+    return dateTimeString;
+}

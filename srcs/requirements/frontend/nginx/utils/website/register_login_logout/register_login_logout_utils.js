@@ -1,6 +1,6 @@
 function alert_register_fail(message) {
 
-    document.getElementById('spinner').remove();
+    // document.getElementById('spinner').remove();
 
     let div = document.createElement('div');
     div.classList = 'w-75 mx-auto alert alert-danger alert-dismissible fade show text-center text-danger shadow ';
@@ -29,7 +29,7 @@ function alert_register_fail(message) {
 
 function alert_register_success() {
 
-    document.getElementById('spinner').remove();
+    // document.getElementById('spinner').remove();
 
     let div = document.createElement('div');
     div.classList = 'w-75 mx-auto alert alert-success text-center text-success shadow';
@@ -267,5 +267,33 @@ function profileAccess(connectWith) {
     }
 }
 
+function usernameLength(input) {
+    if(input.length > 11) {
+        alert_register('Username is too long, 11 characters max !');
+        return true;
+    }
+    return false;
+}
 
+function alert_register(message) {
 
+    let div = document.createElement('div');
+    div.classList = 'mt-3 mb-0 alert alert-danger alert-dismissible fade show text-center text-danger shadow ';
+    div.role = 'alert';
+    div.id = 'alert';
+    div.textContent = message;
+
+    let button = document.createElement('button');
+    button.classList = 'btn-close';
+    button.id = 'alertButton';
+    button.setAttribute('data-bs-dismiss', 'alert');
+    button.setAttribute('aria-label', 'Close');
+    div.appendChild(button);
+   
+    let targetDiv = document.getElementById('signup-form');
+    targetDiv.appendChild(div);
+
+    button.addEventListener("click", function() {
+        button.remove();
+    });
+}

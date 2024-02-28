@@ -2,34 +2,38 @@
 
 document.getElementById('signup-form').addEventListener('submit', function(e) {
   e.preventDefault();
+
   const formData = new FormData(e.target);
-
-  fetch(domainPath + '/api/account/register/', {
-  method: 'POST',
-  body: formData
-
-  })
-  .then(response => {
-    console.log('response = ' + response);
-
-    if (response.status === 201) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
-      console.log('Register Success !' + response.status);
+  const inputUsername = formData.get('username');
+  if (!usernameLength(inputUsername)) {
+    
+    fetch(domainPath + '/api/account/register/', {
+      method: 'POST',
+      body: formData
+      
+    })
+    .then(response => {
+      console.log('response = ' + response);
+      
+      if (response.status === 201) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
+        console.log('Register Success !' + response.status);
       alert_register_success();
       e.target.reset();
     } else {
       response.json().then((jsonData) => {
-      console.error('Erreur lors de l\'inscription : ' + Object.values(jsonData));
-      alert_register_fail("Registration error : " + Object.values(jsonData));
+        console.error('Erreur lors de l\'inscription : ' + Object.values(jsonData));
+        alert_register_fail("Registration error : " + Object.values(jsonData));
       })
       .catch((error) => {
         console.error('Erreur lors de la récupération du contenu JSON de la réponse : ' + error);
       });
       e.target.reset();
     }
-  })
-  .catch(error => {
-    console.error('Erreur lors de la soumission du formulaire :', error);
-  });
+    })
+    .catch(error => {
+      console.error('Erreur lors de la soumission du formulaire :', error);
+    });
+  }
 });
 
 // LOGIN -------------------------------------------------------------------------
@@ -70,6 +74,7 @@ function requestLogin(formData) {
     getProfileInfos();
     // getDashboardInfos();
     profileAccess(localStorage.getItem('connectType'));
+    // waitForWebSocketConnection(data.user.username);
   })
   .catch(error => {
     console.error('Error : form submit :', error);

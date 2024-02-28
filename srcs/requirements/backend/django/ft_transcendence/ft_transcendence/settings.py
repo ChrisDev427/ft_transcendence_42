@@ -70,7 +70,7 @@ CORS_ALLOW_PRIVATE_NETWORK : True
 
 CORS_ALLOWED_ORIGINS = [
     os.environ.get('SITE_URL'),
-    'http://websocket',
+    'https://websocket',
 ]
 
 CORS_ALLOW_HEADERS = [

@@ -3,6 +3,7 @@ let connectedFrom_desktop = false;
 let two_fa = false;
 let sessionUsername;
 
+
 //****** DOMAIN URLS *********************
 const domainPath = 'http://localhost:8000';
 // const domainPath = 'https://transcendence42.ddns.net';
