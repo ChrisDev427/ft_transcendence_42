@@ -289,7 +289,7 @@ class LoginView(TokenObtainPairView):
             user_profile.save()
             profile_serializer = UserProfileSerializer(user_profile, context={'request': request})
         return Response({**response.data, **profile_serializer.data}, status=status.HTTP_200_OK)
-
+ 
 class LogoutView(APIView):
     def get(self, request):
         user = request.user

@@ -1,14 +1,8 @@
 
-
-
-// printConsoleInfos();
-// Fonction principale de mise à jour et de rendu
 function run() {
     
     if(!start) {
-        // if(tournament) {
-        //     nextMatch();
-        // }
+       
         return;
     }
   
@@ -34,7 +28,6 @@ function run() {
         }
     }
 
-    sendPaddlePositions(leftPaddleY, rightPaddleY)
     function sendPaddlePositions(leftPaddleY, rightPaddleY) {
 
         const message = JSON.stringify({
@@ -108,9 +101,3 @@ function run() {
     requestAnimationFrame(run);
 }
 printGame();
-
-// // Set Players Names
-// setPlayerNameToPrint();
-// setHandToStart();
-// // Lancer le jeu en appelant la fonction update
-// run();

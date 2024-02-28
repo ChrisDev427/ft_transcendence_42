@@ -2,24 +2,9 @@
 let socket;
 let chatInit = false;
 
-// function init_socket() {
-//     socket = new WebSocket(`wss://transcendence42.ddns.net:90?username=${sessionUsername}`);
-
-//     socket.addEventListener('open', (event) => {
-//         console.log('Connected to WebSocket server', sessionUsername);
-//     });
-
-//     socket.addEventListener('close', (event) => {
-//         console.log('Connection closed');
-//     });
-
-//     return socket;
-// }
-
-
-function waitForWebSocketConnection(sessionUsername) {
+function waitForWebSocketConnection(token) {
     return new Promise((resolve, reject) => {
-        socket = new WebSocket(`ws://localhost:90?username=${sessionUsername}`);
+        socket = new WebSocket(`ws://localhost:90?token=${token}`);
 
         socket.addEventListener('open', () => {
             console.log('Connected to WebSocket server');
@@ -46,8 +31,7 @@ function waitForWebSocketConnection(sessionUsername) {
         if (data.action === 'updateSessions') {
             console.log('Updating sessions list...');
             updateSessionsList(data.sessions);
-        } else if (data.action === 'join') {
-            console.log('Joining session with ID:', data.sessionId , data.userame);}
+        }
     });
 
     socket.addEventListener('message', (event) => {
@@ -104,7 +88,7 @@ function waitForWebSocketConnection(sessionUsername) {
 
         if (data.action === 'confirmJoin') {
             console.log(data.username, "a rejoind la session");
-            
+
         }
     });
 
@@ -129,3 +113,17 @@ function waitForWebSocketConnection(sessionUsername) {
     console.error('Une erreur s\'est produite lors de la connexion WebSocket:', error);
 });
 }
+// function init_socket() {
+//     socket = new WebSocket(`wss://transcendence42.ddns.net:90?username=${sessionUsername}`);
+
+//     socket.addEventListener('open', (event) => {
+//         console.log('Connected to WebSocket server', sessionUsername);
+//     });
+
+//     socket.addEventListener('close', (event) => {
+//         console.log('Connection closed');
+//     });
+
+//     return socket;
+// }
+
