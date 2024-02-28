@@ -6,7 +6,7 @@ function updateSessionsList(sessions) {
     sessions.forEach(session => {
         const sessionLink = document.createElement('a');
         sessionLink.href = `https://transcendence42.ddns.net/#playPong`;
-        sessionLink.textContent = `Session Name: ${session.username}, Created At: ${session.createdAt}`;
+        sessionLink.textContent = `Session ID: ${session.id}, Created At: ${session.createdAt}, By : ${session.CreatorUsername}`;
         sessionLink.addEventListener('click', () => {
 
             socket.send(JSON.stringify({ action: 'join', sessionId: session.id, username:session }));

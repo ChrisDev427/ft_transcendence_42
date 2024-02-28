@@ -1,24 +1,9 @@
 
 let socket;
 
-// function init_socket() {
-//     socket = new WebSocket(`wss://transcendence42.ddns.net:90?username=${sessionUsername}`);
-
-//     socket.addEventListener('open', (event) => {
-//         console.log('Connected to WebSocket server', sessionUsername);
-//     });
-
-//     socket.addEventListener('close', (event) => {
-//         console.log('Connection closed');
-//     });
-
-//     return socket;
-// }
-
-
-function waitForWebSocketConnection(sessionUsername) {
+function waitForWebSocketConnection(token) {
     return new Promise((resolve, reject) => {
-        socket = new WebSocket(`wss://transcendence42.ddns.net:90?username=${sessionUsername}`);
+        socket = new WebSocket(`wss://transcendence42.ddns.net:90?token=${token}`);
 
         socket.addEventListener('open', () => {
             console.log('Connected to WebSocket server');
@@ -34,24 +19,20 @@ function waitForWebSocketConnection(sessionUsername) {
             console.log('WebSocket connection closed');
             reject(new Error('WebSocket connection closed'));
         });
-    });
-}
-
-
-waitForWebSocketConnection().then((socket) => {
+    })
+.then((socket) => {
     console.log('WebSocket connection is ready');
-        
-    
-    socket.addEventListener('message', (event) => {    
+
+
+    socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         console.log(data.action);
         if (data.action === 'updateSessions') {
             console.log('Updating sessions list...');
             updateSessionsList(data.sessions);
-        } else if (data.action === 'join') {
-            console.log('Joining session with ID:', data.sessionId , data.userame);              }
+        }
     });
-    
+
     socket.addEventListener('message', (event) => {
         try {
             const data = JSON.parse(event.data);
@@ -59,7 +40,7 @@ waitForWebSocketConnection().then((socket) => {
             if (data.action === 'sessionCreated') {
                 const sessionId = data.sessionId;
                 console.log(sessionId);
-                
+
             }
         } catch (error) {
             console.error('Error parsing message:', error);
@@ -86,15 +67,15 @@ waitForWebSocketConnection().then((socket) => {
 
         if (data.action === 'confirmJoin') {
             console.log(data.username, "a rejoind la session");
-            
+
         }
     });
-    
+
     socket.addEventListener('message', (event) => {
         const messageContainer = document.getElementById('chat-messages_session');
         const receivedMessage = JSON.parse(event.data);
         console.log(receivedMessage)
-        
+
         if (receivedMessage.type === 'messageSession') {
             console.log("salut");
             const messages = receivedMessage.messages || [];
@@ -106,8 +87,22 @@ waitForWebSocketConnection().then((socket) => {
             messageContainer.scrollTop = messageContainer.scrollHeight;
         }
     });
-
-
-}).catch((error) => {
+})
+.catch((error) => {
     console.error('Une erreur s\'est produite lors de la connexion WebSocket:', error);
 });
+}
+// function init_socket() {
+//     socket = new WebSocket(`wss://transcendence42.ddns.net:90?username=${sessionUsername}`);
+
+//     socket.addEventListener('open', (event) => {
+//         console.log('Connected to WebSocket server', sessionUsername);
+//     });
+
+//     socket.addEventListener('close', (event) => {
+//         console.log('Connection closed');
+//     });
+
+//     return socket;
+// }
+

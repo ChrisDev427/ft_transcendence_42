@@ -34,7 +34,6 @@ function run() {
         }
     }
 
-    sendPaddlePositions(leftPaddleY, rightPaddleY)
     function sendPaddlePositions(leftPaddleY, rightPaddleY) {
 
         const message = JSON.stringify({

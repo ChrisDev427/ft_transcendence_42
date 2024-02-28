@@ -32,7 +32,7 @@ class Friend_managementView(APIView):
 				Friend_management.objects.get(friend1=user2, friend2=user1)
 			except Friend_management.DoesNotExist:
 				Friend_management.objects.create(friend1=user1, friend2=user2, requester=user1)
-				return Response({"friendship asked"}, status=status.HTTP_201_CREATED)
+				return Response({"message: ","friendship asked"}, status=status.HTTP_201_CREATED)
 		return Response({"friendship already exist"}, status=status.HTTP_400_BAD_REQUEST)
 
 	def patch(self, request):
