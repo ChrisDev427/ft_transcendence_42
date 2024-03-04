@@ -151,14 +151,7 @@ function modifyInfos_API() {
     document.getElementById('modifyProfileInfos-form').addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const firstName = document.getElementById('first_nameModifyProfile');
-        const lastName = document.getElementById('last_nameModifyProfile');
-        const userName = document.getElementById('usernameModifyProfile');
-
-        if (firstName.value === '' || lastName.value === '' || userName.value === '') {
-            alert_modify_error('infosProfile', 'Empty field(s) !');
-        }
-        else {
+        if (checkInput_modifyInfos()) {
 
             // fetch('http://localhost:8000/api/account/profile/', {
             fetch(domainPath + '/api/account/profile/', {
@@ -470,6 +463,30 @@ function alert_modify_error(targetDiv, message) {
         document.getElementById(targetDiv).classList.remove('hidden-element');
         enableProfileBtn();
     });
+}
+
+function checkInput_modifyInfos() {
+    const userName = document.getElementById('usernameModifyProfile');
+    const firstName = document.getElementById('first_nameModifyProfile');
+    const lastName = document.getElementById('last_nameModifyProfile');
+
+    if (firstName.value === '' || lastName.value === '' || userName.value === '') {
+        alert_modify_error('infosProfile', 'Empty field(s) !');
+        return false;
+    }
+    if (firstName.value.length > 11) {
+        alert_modify_error('infosProfile', 'Firstname is too long, 11 characters max !');
+        return false;
+    }
+    if (lastName.value.length > 11) {
+        alert_modify_error('infosProfile', 'Lastname is too long, 11 characters max !');
+        return false;
+    }
+    if (userName.value.length > 11) {
+        alert_modify_error('infosProfile', 'Username is too long, 11 characters max !');
+        return false;
+    }
+    return true;
 }
 
 function sendHeartbeat_API() {

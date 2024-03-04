@@ -4,7 +4,8 @@ let chatInit = false;
 
 function waitForWebSocketConnection(token) {
     return new Promise((resolve, reject) => {
-        socket = new WebSocket(`ws://localhost:90?token=${token}`);
+        socket = new WebSocket('ws://localhost:90?token=' + token);
+        // socket = new WebSocket(domainPath.replace("http", "ws").replace(':8000', '') + ':90?token=' + token);
 
         socket.addEventListener('open', () => {
             console.log('Connected to WebSocket server');
@@ -61,7 +62,7 @@ function waitForWebSocketConnection(token) {
                 messagesToDisplay = messages.slice(-1);
             }
             messagesToDisplay.forEach(msg => {
-                
+
                 chatGeneral_createContent(msg.username, msg.text, msg.time);
             });
             const messageContainer = document.getElementById('chat-area');

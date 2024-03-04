@@ -153,7 +153,7 @@ function handleInfos_createForm() {
     formDiv.method = 'patch';
     mainDiv.appendChild(formDiv);
 
-    const inputsName = ["first_name", "last_name", "username"];
+    const inputsName = ["username", "first_name", "last_name"];
     for (let i = 0; i < 3; i++) {
         const input = document.createElement('input');
 

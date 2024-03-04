@@ -5,7 +5,8 @@ function updateSessionsList(sessions) {
 
     sessions.forEach(session => {
         const sessionLink = document.createElement('a');
-        sessionLink.href = domainPath + `/#playPong`;
+        // sessionLink.href = `https://transcendence42.ddns.net/#playPong`;
+        sessionLink.href = domainName + '#playPong';
         sessionLink.textContent = `Session ID: ${session.id}, Created At: ${session.createdAt}, By : ${session.CreatorUsername}`;
         sessionLink.addEventListener('click', () => {
 

@@ -1,13 +1,22 @@
 const WebSocket = require('ws');
-// const https = require('https');
-const http = require('http');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
+let server;
+let local = false;
+if (process.env.SITE_URL === 'http://localhost') {
+    const http = require('http');
+    server = http.createServer();
+    local = true;
+} else {
+    const https = require('https');
+    server = https.createServer({
+        cert: fs.readFileSync('certificate.crt'),
+        key: fs.readFileSync('private.key'),
+    });
+}
 
-const server = http.createServer({
-    // cert: fs.readFileSync('certificate.crt'),
-    // key: fs.readFileSync('private.key'),
-});
+const fetch = require('node-fetch');
+
 
 
 class Session {
@@ -26,22 +35,35 @@ const connectedUsersBySession = {};
 const messageHistoryBySession = {};
 const messageHistory = [];
 
-var fetch = require("node-fetch");
+// var fetch = require("node-fetch");
 // import fetch from 'node-fetch';
 // const http = require('node:http');
 
 
 
-function UserConnexion(token) {
+function UserConnexion(token, local) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await fetch("http://localhost:8000/api/account/profile/", {
-                method: 'GET',
-                headers: {
-                    Authorization: "Bearer " + token,
-                },
-            });
-
+            let response;
+            if (local)
+            {
+                response = await fetch("http://django_container:8000/api/account/profile/", {
+                    method: 'GET',
+                    headers: {
+                        Host: "localhost",
+                        Authorization: "Bearer " + token,
+                    },
+                });
+            }
+            else
+            {
+                response = await fetch("https://transcendence42.ddns.net/api/account/profile/", {
+                    method: 'GET',
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                });
+            }
             if (response.status === 200) {
                 console.log('login success');
                 const data = await response.json();
@@ -65,7 +87,7 @@ wss.on('connection', async (ws, req) => {
     const token = urlParams.get('token');
 
     // User connexion
-    const test = await UserConnexion(token);
+    const test = await UserConnexion(token, local);
     ws.userId = test.user.username;
 
 
@@ -96,7 +118,9 @@ wss.on('connection', async (ws, req) => {
             // chat general
             if (data.action === 'sendMessage') {
                 const text = data.text;
-                broadcastMessage({ action: 'receiveMessage', username, text });
+                console.log(text);
+                const time = getTime();
+                broadcastMessage({ action: 'receiveMessage', username, text, time });
             }
 
             // chat session
@@ -104,7 +128,9 @@ wss.on('connection', async (ws, req) => {
                 const text = data.text;
                 broadcastMessageSession({ action: 'receiveMessage', username, text,  }, sessionId);
             }
-
+            if (data.action === 'cancelSession') {
+                userLeaveSession(ws.sessionId, username);
+            }
             // reception de demande de creation de session
             if (data.action === 'createSession') {
                 if (isUserAlreadyConnected(username, data.sessionId)) {
@@ -112,24 +138,47 @@ wss.on('connection', async (ws, req) => {
 
                 } else {
                     const sessionId = uuidv4();
-                    const session = new Session(sessionId, new Date(), username);
-                    sessions.push(session);
-                    console.log(`Session created :`, sessionId, username);
-                    
-                    connectedUsersBySession[sessionId] = [];
-                    connectedUsersBySession[sessionId].push(username);
-                    console.log(`${username} join session!`, sessionId);
-                    ws.sessionId = sessionId;
+                    if (data.isPrivate === "true"){
+                        const session = new Session(sessionId, new Date(), username, true);
+                        sessions.push(session);
+                        console.log(`Session private created :`, sessionId, username);
+                        
+                        connectedUsersBySession[sessionId] = [];
+                        connectedUsersBySession[sessionId].push(username);
+                        console.log(`${username} join session!`, sessionId);
+                        ws.sessionId = sessionId;
+    
+                        console.log(connectedUsersBySession);
+                        ws.send(JSON.stringify({ action: 'sessionCreated', sessionId }));
 
-                    console.log(connectedUsersBySession);
-                    ws.send(JSON.stringify({ action: 'sessionCreated', sessionId }));
-                    broadcastSessions();
+                        // invite le client respectif
+                        wss.clients.forEach(client => {
+                            console.log(client.userId);
+                            if (client.readyState === WebSocket.OPEN && client.userId === data.username) {
+                                client.send(JSON.stringify({ type: "reciveInviteSession", session: session }));
+                            }
+                        });
+                    
+                    } else {
+                        const session = new Session(sessionId, new Date(), username, false);
+                        sessions.push(session);
+                        console.log(`Session created :`, sessionId, username);
+                        
+                        connectedUsersBySession[sessionId] = [];
+                        connectedUsersBySession[sessionId].push(username);
+                        console.log(`${username} join session!`, sessionId);
+                        ws.sessionId = sessionId;
+    
+                        console.log(connectedUsersBySession);
+                        ws.send(JSON.stringify({ action: 'sessionCreated', sessionId }));
+                        broadcastSessions();
+                    }
                 }
             }
 
             if (data.action === 'updatePaddlePositions') {
                 const { leftPaddleY, rightPaddleY } = data;
-            
+
                 const ID = Object.keys(connectedUsersBySession).find(sessionId =>
                     connectedUsersBySession[sessionId].includes(username)
                 );
@@ -187,7 +236,7 @@ function sessionconf(username, sessionId){
     for (const client of wss.clients) {
         const clientSessionId = getSessionIdByUserId(client.userId);
         if (client.readyState === WebSocket.OPEN && clientSessionId === sessionId) {
-            const response = client.send(JSON.stringify({ action: 'confirmJoin', username }));
+            client.send(JSON.stringify({ action: 'confirmJoin', username }));
         }
     }
 }
@@ -241,9 +290,10 @@ function isUserAlreadyConnected(userId, sessionId) {
 function userLeaveSession(sessionId, username) {
 
     if (connectedUsersBySession[sessionId]){
-
+        
         const indexToRemove = connectedUsersBySession[sessionId].indexOf(username);
-    
+        console.log(username," c'est deconnectee de ", sessionId);
+        
         if (indexToRemove !== -1) {
             connectedUsersBySession[sessionId].splice(indexToRemove, 1);
 
@@ -251,8 +301,9 @@ function userLeaveSession(sessionId, username) {
             if (connectedUsersBySession[sessionId].length === 0) {
                 delete connectedUsersBySession[sessionId];
                 if (messageHistoryBySession[sessionId])
-                    delete messageHistoryBySession[sessionId];
-                const indexSessions = sessions.findIndex(session => session.sessionId === sessionId);
+                delete messageHistoryBySession[sessionId];
+            const indexSessions = sessions.findIndex(session => session.sessionId === sessionId);
+            console.log("session supprimee : ", sessionId);
                 
                 if (indexSessions !== -1) {
                     sessions.splice(indexSessions, 1);
@@ -272,7 +323,6 @@ function broadcastMessage(message) {
     const latestMessages = messageHistory.slice(-MAX_MESSAGES);
     wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
-            console.log('message = ' + latestMessages);
             client.send(JSON.stringify({ type: "messageGeneral", messages: latestMessages }));
         }
     });
@@ -310,3 +360,14 @@ const port = 90;
 server.listen(port, '0.0.0.0', () => {
     console.log(`Serveur WebSocket écoutant sur le port ${port}`);
 });
+
+function getTime() {
+    const currentDate = new Date();
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+  
+    const dateTimeString = `${hours}:${minutes}:${seconds}`;
+  
+    return dateTimeString;
+}

@@ -2,16 +2,11 @@ FROM node:14
 
 WORKDIR /app
 
-# COPY package*.json ./
-
-
-
 RUN npm install ws
 
 RUN npm install uuid
 
 RUN npm install node-fetch@2
-
 
 COPY . .
 

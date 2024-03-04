@@ -70,7 +70,7 @@ CORS_ALLOW_PRIVATE_NETWORK : True
 
 CORS_ALLOWED_ORIGINS = [
     os.environ.get('SITE_URL'),
-    'http://websocket',
+    'https://websocket',
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -215,6 +215,3 @@ OAUTH_PASSWORD_42 = os.environ.get('OAUTH_PASSWORD_42')
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # SECURE_SSL_REDIRECT = True
-
-# SECURE_SSL_CERTIFICATE = '/app/certificate.crt'
-# SECURE_SSL_KEY = '/app/private.key'
