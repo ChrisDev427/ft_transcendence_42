@@ -2,13 +2,15 @@ const WebSocket = require('ws');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
+let server;
+
 if (process.env.SITE_URL === 'http://localhost') {
     const http = require('http');
-    const server = http.createServer();
+    server = http.createServer();
     var local = true;
 } else {
     const https = require('https');
-    const server = https.createServer({
+    server = https.createServer({
         cert: fs.readFileSync('certificate.crt'),
         key: fs.readFileSync('private.key'),
     });
@@ -43,9 +45,10 @@ const messageHistory = [];
 function UserConnexion(token, local) {
     return new Promise(async (resolve, reject) => {
         try {
+            let response;
             if (local)
             {
-                const response = await fetch("http://django_container:8000/api/account/profile/", {
+                response = await fetch("http://django_container:8000/api/account/profile/", {
                     method: 'GET',
                     headers: {
                         Host: "localhost",
@@ -55,7 +58,7 @@ function UserConnexion(token, local) {
             }
             else
             {
-                const response = await fetch("https://transcendence42.ddns.net/api/account/profile/", {
+                response = await fetch("https://transcendence42.ddns.net/api/account/profile/", {
                     method: 'GET',
                     headers: {
                         Authorization: "Bearer " + token,

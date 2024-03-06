@@ -83,6 +83,7 @@ services:
     #   - ./requirements/backend/WebSocket:/app
     networks:
       - pong
+    env_file: .env
     # environment:
     # - NODE_TLS_REJECT_UNAUTHORIZED=0
 
