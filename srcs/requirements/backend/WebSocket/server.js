@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 
 let server;
 
-if (process.env.SITE_URL === 'http://localhost:8001') {
+if (process.env.SITE_URL === 'http://localhost') {
     const http = require('http');
     server = http.createServer();
     var local = true;

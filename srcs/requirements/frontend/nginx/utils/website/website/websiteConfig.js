@@ -5,7 +5,7 @@ let sessionUsername;
 
 
 //****** DOMAIN URLS *********************
-const domainPath = 'http://localhost:8000';
+const domainPath = process.env.SITE_PROTOCOL + process.env.SITE_URL + ':' + process.env.SITE_PORT;
 // const domainPath = 'https://transcendence42.ddns.net';
 
 if ('ontouchstart' in window || navigator.maxTouchPoints) {

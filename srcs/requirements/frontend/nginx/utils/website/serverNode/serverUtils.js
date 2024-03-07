@@ -4,7 +4,7 @@ let chatInit = false;
 
 function waitForWebSocketConnection(token) {
     return new Promise((resolve, reject) => {
-        socket = new WebSocket(domainPath.replace("http", "ws").replace(':8000', '') + ':9000?token=' + token);
+        socket = new WebSocket('ws://localhost:9000');
 
         socket.addEventListener('open', () => {
             console.log('Connected to WebSocket server');

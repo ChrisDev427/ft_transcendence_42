@@ -28,6 +28,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY_DJANGO')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Domain Name
+
+SITE_URL = os.environ.get('SITE_PROTOCOL') + os.environ.get('SITE_URL') + ":" + os.environ.get('SITE_PORT')
+
 ALLOWED_HOSTS = ['*']
 # Application definition
 
@@ -55,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'django.middleware.common.CommonMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -69,10 +73,8 @@ MIDDLEWARE = [
 CORS_ALLOW_PRIVATE_NETWORK : True
 
 CORS_ALLOWED_ORIGINS = [
-    os.environ.get('SITE_URL'),
-    'https://websocket',
-	'http://localhost:8001',
-	'https://transcendence42.ddns.net',
+	SITE_URL,
+    # "http://django_container:8000",
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -83,7 +85,6 @@ CORS_ALLOW_HEADERS = [
 	'code',
 	'token',
     'Access-Control-Allow-Origin',
-
     'Referer',
     'Sec-Ch-Ua',
     'Sec-Ch-Ua-Mobile',
@@ -177,13 +178,9 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 	'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-		# 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     )
 }
 
-# Domain Name
-
-SITE_URL = os.environ.get('SITE_URL')
 
  # JWT settings
 
@@ -212,7 +209,7 @@ HTTPSMS_PHONE = os.environ.get('HTTPSMS_PHONE')
 
 OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
 OAUTH_CLIENT_SECRET = os.environ.get('OAUTH_CLIENT_SECRET')
-OAUTH_REDIRECT_URI = os.environ.get('OAUTH_REDIRECT_URI')
+OAUTH_REDIRECT_URI = SITE_URL
 OAUTH_PASSWORD_42 = os.environ.get('OAUTH_PASSWORD_42')
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
