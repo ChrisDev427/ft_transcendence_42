@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 
 let server;
 
-if (process.env.SITE_URL === 'http://localhost') {
+if (process.env.SITE_URL === 'http://localhost:8001') {
     const http = require('http');
     server = http.createServer();
     var local = true;
@@ -329,7 +329,7 @@ server.on('upgrade', (request, socket, head) => {
     });
 });
 
-const port = 90;
+const port = 9000;
 
 server.listen(port, '0.0.0.0', () => {
     console.log(`Serveur WebSocket écoutant sur le port ${port}`);

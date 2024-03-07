@@ -44,7 +44,7 @@ class oauth_login(APIView):
         data = {
             'grant_type': 'authorization_code',
             'code': code,
-            'redirect_uri': settings.SITE_URL,
+            'redirect_uri': settings.OAUTH_REDIRECT_URI,
             'client_id': settings.OAUTH_CLIENT_ID,
             'client_secret': settings.OAUTH_CLIENT_SECRET,
         }
@@ -54,6 +54,7 @@ class oauth_login(APIView):
             return Response(response.json(), status=response.status_code)
         profile = requests.get('https://api.intra.42.fr/v2/me', headers={'Authorization': 'Bearer ' + response.json()['access_token']})
         if profile.status_code != 200:
+            print(profile.json())
             return Response(profile.json(), status=profile.status_code)
         profile = profile.json()
         try:
@@ -110,10 +111,11 @@ class UserRegisterView(APIView):
             except Exception as e:
                 user_profile.delete()
                 user.delete()
+                print(e)
                 return Response({"Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
             return Response("User created", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 class VerifyEmailView(APIView):
     permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
@@ -226,6 +228,8 @@ class ProfileView(APIView):
                 user_profile.save()
             if request_copy.get('username'):
                 request_copy['username'] = str.lower(request_copy['username'])
+                if user.objects.filter(username=request_copy['username']).exists():
+                    return Response({"username already exists"}, status=status.HTTP_400_BAD_REQUEST)
             serializer.save()
             serializer = UserSerializer(user, data=request_copy, partial=True, context={'request': request})
             if serializer.is_valid():
@@ -245,7 +249,7 @@ class ProfileView(APIView):
 
 class getProfileView(APIView):
     def get(self, request, username):
-        user_profile = get_object_or_404(UserProfile, user__username=username)
+        user_profile = get_object_or_404(UserProfile, user__username=str.lower(username))
         serializer = UserProfileSerializer(user_profile)
         return Response(serializer.data)
 
@@ -289,7 +293,7 @@ class LoginView(TokenObtainPairView):
             user_profile.save()
             profile_serializer = UserProfileSerializer(user_profile, context={'request': request})
         return Response({**response.data, **profile_serializer.data}, status=status.HTTP_200_OK)
- 
+
 class LogoutView(APIView):
     def get(self, request):
         user = request.user

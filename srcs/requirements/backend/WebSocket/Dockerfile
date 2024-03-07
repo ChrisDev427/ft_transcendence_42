@@ -12,7 +12,7 @@ COPY . .
 
 # RUN cp package.json /app/node_modules/node-fetch/package.json
 
-EXPOSE 90
+EXPOSE 9000
 
 CMD ["node", "server.js"]
 

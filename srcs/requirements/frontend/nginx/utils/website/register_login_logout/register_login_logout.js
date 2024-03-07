@@ -6,15 +6,15 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
   const formData = new FormData(e.target);
   const inputUsername = formData.get('username');
   if (!usernameLength(inputUsername)) {
-    
+
     fetch(domainPath + '/api/account/register/', {
       method: 'POST',
       body: formData
-      
+
     })
     .then(response => {
       console.log('response = ' + response);
-      
+
       if (response.status === 201) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
         console.log('Register Success !' + response.status);
       alert_register_success();
@@ -137,7 +137,7 @@ document.getElementById('validLogout').addEventListener('click', function() {
 // LOGIN WITH 42 ******************************************************************************************
 function loginWith42() {
   console.log('connect with 42 function');
-  const oauthUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-44e47265c9b8312f83a47d720211e265bef85a1c8fc632f8786fe9dcdade34d1&redirect_uri=https%3A%2F%2Ftranscendence42.ddns.net&response_type=code';
+  const oauthUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-44e47265c9b8312f83a47d720211e265bef85a1c8fc632f8786fe9dcdade34d1&redirect_uri=http%3A%2F%2Flocalhost%3A8001&response_type=code';
   window.location.href = oauthUrl;
 }
 

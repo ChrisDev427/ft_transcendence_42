@@ -71,6 +71,8 @@ CORS_ALLOW_PRIVATE_NETWORK : True
 CORS_ALLOWED_ORIGINS = [
     os.environ.get('SITE_URL'),
     'https://websocket',
+	'http://localhost:8001',
+	'https://transcendence42.ddns.net',
 ]
 
 CORS_ALLOW_HEADERS = [
