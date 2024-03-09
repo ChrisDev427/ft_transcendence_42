@@ -175,7 +175,7 @@ class ProfileView(APIView):
                 friend.save()
                 return Response("friend requested", status=status.HTTP_200_OK)
             if request_copy.get('email'):
-                if user.check_password(settings.PASSWORD_42):
+                if user.check_password(settings.OAUTH_PASSWORD_42):
                     return Response({"42 user can't change email"}, status=status.HTTP_401_UNAUTHORIZED)
                 email = str.lower(request_copy.get('email'))
                 if User.objects.filter(email=email).exists():
@@ -191,7 +191,7 @@ class ProfileView(APIView):
                 user.save()
             if request_copy.get('new_password') and user.check_password(request_copy.get('password')):
                 new_password = request_copy.get('new_password')
-                if user.check_password(settings.PASSWORD_42):
+                if user.check_password(settings.OAUTH_PASSWORD_42):
                     return Response({"42 user can't change password"}, status=status.HTTP_401_UNAUTHORIZED)
                 elif user.check_password(request_copy.get('password')) == False:
                     return Response({"wrong password"}, status=status.HTTP_400_BAD_REQUEST)
@@ -203,7 +203,7 @@ class ProfileView(APIView):
                 user.save()
                 return Response("password updated", status=status.HTTP_200_OK)
             if request_copy.get('two_fa_on'):
-                if user.check_password(settings.PASSWORD_42):
+                if user.check_password(settings.OAUTH_PASSWORD_42):
                     return Response({"42 user can't enable 2fa"}, status=status.HTTP_401_UNAUTHORIZED)
                 user_profile.totp_secret = enable_2fa_authenticator(user_profile)
                 user_profile.two_fa = True
@@ -375,7 +375,6 @@ class SendOTPView(APIView):
                 return Response({"mobile number is missing"}, status=status.HTTP_400_BAD_REQUEST)
             elif user_profile.mobile_number_verified == False:
                 return Response({"mobile number not verified"}, status=status.HTTP_401_UNAUTHORIZED)
-        print(user_profile)
         user_profile.otp = str()
         user_profile.otp = send_otp(send_method, user_profile)
         if user_profile.otp == None:

@@ -1,6 +1,5 @@
 Django==3.2.4
 djangorestframework
-# sudo dnf install postgresql-devel
 psycopg2 # for postgres
 djangorestframework-simplejwt==4.6
 Pillow # for image upload

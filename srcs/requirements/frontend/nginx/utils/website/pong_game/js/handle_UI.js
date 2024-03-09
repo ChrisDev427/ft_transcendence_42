@@ -183,8 +183,6 @@ btn.twoPlayersBtn.addEventListener("click", function() {
         });
         console.log("session user create ", sessionUsername);
     }
-
-    create_TwoPlayers_input();
 });
 
 btn.tournamentBtn.addEventListener("click", function() {

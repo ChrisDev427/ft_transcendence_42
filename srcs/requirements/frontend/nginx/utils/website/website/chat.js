@@ -24,7 +24,7 @@ function chatGeneral_createContent(username, message, time) {
         const timeDiv = document.createElement('div');
         timeDiv.classList = 'row p-0';
         const timeText = document.createElement('p');
-        timeText.classList = 'col-12 fw-light fst-italic text-secondary text-end text-opacity-50 m-0';
+        timeText.classList = 'col-12 fw-light fst-italic text-warning text-end m-0';
         const small2 = document.createElement('small');
         small2.textContent = time;
         
@@ -45,7 +45,7 @@ function chatGeneral_createContent(username, message, time) {
         usernameDiv.classList = 'row';
 
         const usernameText = document.createElement('p');
-        usernameText.classList = 'col-4 fw-semibold fst-italic text-secondary m-0';
+        usernameText.classList = 'col-4 fw-semibold fst-italic text-warning m-0';
         usernameText.id = username + '_btnProfileChat';
 
         const small1 = document.createElement('small');
@@ -56,7 +56,7 @@ function chatGeneral_createContent(username, message, time) {
         usernameDiv.appendChild(usernameText);
         
         const timeText = document.createElement('p');
-        timeText.classList = 'col-4 fw-light fst-italic text-end text-secondary text-opacity-50 m-0 p-0';
+        timeText.classList = 'col-4 fw-light fst-italic text-end text-warning m-0 p-0';
         const small2 = document.createElement('small');
         small2.textContent = time;
         timeText.appendChild(small2);

@@ -1,14 +1,8 @@
 
-
-
-// printConsoleInfos();
-// Fonction principale de mise à jour et de rendu
 function run() {
     
     if(!start) {
-        // if(tournament) {
-        //     nextMatch();
-        // }
+       
         return;
     }
   
@@ -107,9 +101,3 @@ function run() {
     requestAnimationFrame(run);
 }
 printGame();
-
-// // Set Players Names
-// setPlayerNameToPrint();
-// setHandToStart();
-// // Lancer le jeu en appelant la fonction update
-// run();

@@ -39,8 +39,8 @@
 </head>
 
 
-<body>
-  <!--
+<body style="background-color:rgb(170, 170, 170);">
+  <!-- 
 
     document.addEventListener('mousemove', (event) => {
       const coordinates = {
@@ -86,7 +86,7 @@
   </div>
 
 
-  <header id="header" class="pb-5 mb-4">
+  <header id="header" class="pb-5 mb-3">
     <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark bg-info py-1">
       <div class="container">
         <a class="navbar-brand fw-bold btn border-0" onclick="showSection('main')">ft_transcendence42</a>
@@ -135,8 +135,8 @@
   <main>
 
     <section id="main" class="d-flex justify-content-center fade-in hidden-element">
-      <div class="container rounded-4 shadow" >
-        <div class="col d-flex justify-content-center mx-4">
+      <div class="container bg-white rounded-bottom-4 shadow" >
+        <div class="col d-flex justify-content-center mt-4 mx-4">
           <h1 class="display-2 text-info fw-bold">ft_transcendence</h1>
         </div>
         <div class="col-8 d-flex justify-content-center mx-auto">
@@ -198,8 +198,10 @@
 
     </section>
     <section id="gameMenu" class="fade-in hidden-element">
-      <h1 class="display-1 p-3 fw-bold text-info text-center">Pong</h1>
-      <div id="containerGameMenu" class="container rounded-4 shadow p-2" style="width: 90%; max-width: 400px;">
+      <div id="containerGameMenu" class="container bg-white rounded-bottom-4 shadow p-2" style="width: 90%; max-width: 600px;">
+        <h1 class="display-1 fw-bold  text-info text-center">Pong</h1>
+        <hr class="text-info">
+
           <div class="col d-flex justify-content-end p-2">
             <button type="button" class="btn btn-sm btn-outline-info me-1" id="resetBtnUI">reset</button>
             <button type="button" class="btn btn-sm btn-outline-danger" id="clBtnUI">quit</button>
@@ -325,10 +327,10 @@
         <h1 class="display-1 fw-bold  text-info text-center">The team</h1>
         <div class="row py-2 d-flex justify-content-center">
 
-          <div class="col-12 col-md-5 me-md-5 pt-4 rounded shadow">
-            <img src="img/img-chris.jpg" alt="img_chris" class="w-50  d-block mx-auto m-4 shadow-lg" style="border-radius: 8px;">
+          <div class="col-12 col-md-5 me-md-5 pt-4 rounded shadow bg-white">
+            <img src="img/img-chris.jpg" alt="img_chris" class="d-block mx-auto m-4 shadow-lg" style="border-radius: 8px; width: 200px;">
             <h4 class="fw-bold text-center cl-text">Christophe MASSA</h4>
-            <ul class="list-inline text-center fs-4">
+            <ul class="list-inline text-center fs-4 mb-0">
               <li class="list-inline-item">
                 <a class="text-info" href="https://github.com/ChrisDev427" target="_blank" rel="nofollow">
                   <i class="bi-github custom-icon p-2"></i>
@@ -345,15 +347,15 @@
                 </a>
               </li>
             </ul>
-            <p class="fw-light text-center text-secondary my-4 p-2">
+            <p class="fw-light text-center text-secondary p-2">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
 
-          <div class="col-12 col-md-5 mt-5 mt-md-0 pt-4 rounded shadow">
-            <img src="img/img_axel.jpg" alt="img_axel" class="w-50  d-block mx-auto m-4 shadow-lg" style="border-radius: 8px;">
+          <div class="col-12 col-md-5 mt-5 mt-md-0 pt-4 rounded shadow bg-white">
+            <img src="img/img_axel.jpg" alt="img_axel" class="d-block mx-auto m-4 shadow-lg" style="border-radius: 8px; width: 200px;">
             <h4 class="fw-bold text-center cl-text">Axel FERNANDEZ</h4>
-            <ul class="list-inline text-center fs-4">
+            <ul class="list-inline text-center fs-4 mb-0">
               <li class="list-inline-item">
                 <a class="text-info" href="https://github.com/AxelFdez" target="_blank" rel="nofollow">
                   <i class="bi-github custom-icon p-2"></i>
@@ -370,7 +372,7 @@
                 </a>
               </li>
             </ul>
-            <p class="fw-light text-center text-secondary my-4 p-2">
+            <p class="fw-light text-center text-secondary p-2">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
@@ -378,10 +380,10 @@
 
           <div class="row py-2 mt-4 d-flex justify-content-center">
 
-          <div class="col-12 col-md-5 me-md-5 pt-4 rounded shadow">
-            <img src="img/img_paul.jpg" alt="img_axel" class="w-50 d-block mx-auto m-4 shadow-lg" style="border-radius: 5px;">
+          <div class="col-12 col-md-5 me-md-5 pt-4 rounded shadow bg-white">
+            <img src="img/img_paul.jpg" alt="img_axel" class="d-block mx-auto m-4 shadow-lg" style="border-radius: 5px; width: 200px;">
             <h4 class="fw-bold text-center cl-text">Paul SCHEMITH</h4>
-            <ul class="list-inline text-center fs-4">
+            <ul class="list-inline text-center fs-4 mb-0">
               <li class="list-inline-item">
                 <a class="text-info" href="https://github.com/Monkey42Github" target="_blank" rel="nofollow">
                   <i class="bi-github custom-icon p-2"></i>
@@ -398,15 +400,15 @@
                 </a>
               </li>
             </ul>
-            <p class="fw-light text-center text-secondary my-4 p-2">
+            <p class="fw-light text-center text-secondary p-2">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
 
-          <div class="col-12 col-md-5 mt-5 mt-md-0 pt-4 rounded shadow">
-            <img src="img/img_youssef.JPG" alt="img_axel" class="w-50 d-block mx-auto m-4 shadow-lg" style="border-radius: 5px;">
+          <div class="col-12 col-md-5 mt-5 mt-md-0 pt-4 rounded shadow bg-white">
+            <img src="img/img_youssef.JPG" alt="img_axel" class="d-block mx-auto m-4 shadow-lg" style="border-radius: 5px; width: 200px;">
             <h4 class="fw-bold text-center cl-text">Youssef BOUGHANMI</h4>
-            <ul class="list-inline text-center fs-4">
+            <ul class="list-inline text-center fs-4 mb-0">
               <li class="list-inline-item">
                 <a class="text-info" href="https://github.com/YoussefBOUGHANMI" target="_blank" rel="nofollow">
                   <i class="bi-github custom-icon p-2"></i>
@@ -423,7 +425,7 @@
                 </a>
               </li>
             </ul>
-            <p class="fw-light text-center text-secondary my-4 p-2">
+            <p class="fw-light text-center text-secondary p-2">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
@@ -435,9 +437,9 @@
 
     <section id="signIn" class="fade-in hidden-element">
       <div id="signInDiv" class="container p-3">
-        <h1 class="display-1 fw-bold text-info text-center">Sign In</h1>
         <div class="row">
-          <div class="col-md-5 col-lg-4 my-4 mx-auto shadow px-3 py-4 rounded">
+          <div class="col-md-5 col-lg-4 my-4 mx-auto shadow px-3 py-4 rounded bg-white">
+            <h1 class="display-1 fw-bold text-info text-center mb-4">Sign In</h1>
             <form method="POST" class="form-control border-0" id="signin-form">
               <input type="text" class="form-control mb-3 border-info text-center text-info" id="signIn-username" name="username" placeholder="Username">
               <input type="password" class="form-control mb-3 border-info text-center text-info" autocomplete="current-password" id="signIn-password" name="password" placeholder="Password">
@@ -451,9 +453,9 @@
     </section>
     <section id="signUp" class="fade-in hidden-element">
       <div id="signUpDiv" class="container p-3">
-        <h1 class="display-1 fw-bold text-info text-center">Sign Up</h1>
         <div class="row">
-          <div class="col-md-5 col-lg-4 my-4 mx-auto shadow px-3 py-4 rounded">
+          <div class="col-md-5 col-lg-4 my-4 mx-auto shadow px-3 py-4 rounded bg-white">
+            <h1 class="display-1 fw-bold text-info text-center mb-4">Sign Up</h1>
             <form method="post" class="form-control border-0" id="signup-form">
               <input type="text" class="form-control mb-3 border-info text-center text-info" name="first_name" id="firstname" placeholder="First name">
               <input type="text" class="form-control mb-3 border-info text-center text-info" name="last_name" id="lastname" placeholder="Last name">
@@ -477,7 +479,7 @@
 
     <section id="dashboard" class="unvisible fade-in">
       <!-- <h1 class="display-1 fw-bold text-info text-center">Dashboard</h1> -->
-      <div class="container p-3 mt-5 rounded-4 bg-secondary bg-opacity-10" style="max-width: 1500px;">
+      <div class="container p-3 pt-4 rounded-bottom-4 bg-white" style="max-width: 1500px;">
         <!-- Begin Page Content -->
           <!-- Top Cards -->
           <div class="row ">
@@ -769,8 +771,7 @@
     </section>
 
     <section id="gameHistory" class="unvisible fade-in">
-
-        <div class="container-fluid p-3 mt-5 rounded-4 bg-secondary bg-opacity-10" style="max-width: 1600px;">
+        <div class="container-fluid bg-white p-3  rounded-bottom-4" style="max-width: 1600px;">
           <h1 class="display-1 fw-bold text-info text-center">Game History</h1>
 
           <div class="col-sm-10 mx-auto mt-4 ">
@@ -850,9 +851,11 @@
 
 
     <section id="profile" class="unvisible fade-in">
-      <h1 class="display-1 fw-bold text-info text-center">Profile</h1>
+      
+      <div class="container bg-white p-3 rounded-bottom-4 shadow-lg" style=" max-width: 900px;">
+        <h1 class="display-1 fw-bold text-info text-center">Profile</h1>
+        <hr class="px-5 text-info border-2">
 
-      <div class="container p-3 mt-4 rounded-4 shadow-lg" style=" max-width: 700px;">
         <div id="avatarDiv">
           <div id="avatarProfile" class="col d-flex justify-content-center">
             <img id="avatar-img" src="" alt="avatarUser" class="rounded-3 my-2" style="max-width: 200px;">
@@ -966,7 +969,7 @@
 
           </div>
 
-          <div id="chat-messages-general" class="">
+          <div id="chat-messages-general" class="px-2">
 
             <!-- <div id="chat-message">
               <p id="paul" class="fw-semibold fst-italic text-secondary m-0"><small role="button">Paul:</small></p>
@@ -1021,7 +1024,7 @@
           </div>
           <div class="d-flex justify-content-end">
             <!-- <button class="btn btn-sm btn-outline-info mt-2 w-100 shadow" onclick="sendMessage()">Send</button>  -->
-            <h5 class="text-info fst-italic me-1" onclick="sendMessage()" role="button" style="text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.952);">Send</h5>
+            <h5 class="text-info fst-italic me-1" onclick="sendMessage()" role="button" style="text-shadow: 2px 2px 4px rgba(150, 150, 150, 0.952);">Send</h5>
           </div>
         </div>
       </div>
