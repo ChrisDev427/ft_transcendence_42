@@ -16,22 +16,16 @@ Including another URLconf
 """
 from django.urls import include, path
 from django.contrib import admin
-#from rest_framework import routers
 
-#router = routers.DefaultRouter()
-#router.register(r'users', views.UserViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    #path('api/', include('account.urls')),
 	path('', include('django_prometheus.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-	path('admin/', admin.site.urls),
+	# path('admin/', admin.site.urls),
 	path('api/account/', include('account.urls')),
 	path('api/game/', include('game.urls')),
 	path('api/chat/', include('chat.urls')),
 	path('api/friend_management/', include('friend_management.urls')),
 ]
-
-#urlpatterns += router.urls

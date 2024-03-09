@@ -32,7 +32,7 @@ DEBUG = True
 
 SITE_URL = os.environ.get('SITE_PROTOCOL') + os.environ.get('SITE_URL') + ":" + os.environ.get('SITE_PORT')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.environ.get('SITE_URL')]
 # Application definition
 
 
@@ -59,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -74,7 +74,6 @@ CORS_ALLOW_PRIVATE_NETWORK : True
 
 CORS_ALLOWED_ORIGINS = [
 	SITE_URL,
-    # "http://django_container:8000",
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -93,7 +92,6 @@ CORS_ALLOW_HEADERS = [
     'Origin',
     'Host',
 ]
-
 
 ROOT_URLCONF = 'ft_transcendence.urls'
 

@@ -289,7 +289,7 @@ function alert_register(message) {
     button.setAttribute('data-bs-dismiss', 'alert');
     button.setAttribute('aria-label', 'Close');
     div.appendChild(button);
-   
+
     let targetDiv = document.getElementById('signup-form');
     targetDiv.appendChild(div);
 

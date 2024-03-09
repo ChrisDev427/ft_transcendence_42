@@ -76,19 +76,6 @@ services:
       - grafana
     env_file: .env
 
-  # websocket:
-  #   container_name: websocket
-  #   build: ./requirements/backend/WebSocket
-  #   ports:
-  #     - "9000:9000"
-  #   # volumes:
-  #   #   - ./requirements/backend/WebSocket:/app
-  #   networks:
-  #     - pong
-  #   env_file: .env
-  #   # environment:
-  #   # - NODE_TLS_REJECT_UNAUTHORIZED=0
-
   prometheus:
     image: prom/prometheus
     container_name: prometheus_container
@@ -132,7 +119,7 @@ services:
     image: nginx/nginx-prometheus-exporter
     container_name: nginx_exporter_container
     command:
-      - '-nginx.scrape-uri=http://nginx_container:8002/nginx_status/'
+      - '--nginx.scrape-uri=${SITE_PROTOCOL}nginx_container:${SITE_PORT}/nginx_status/'
     depends_on:
       - nginx
     restart: always

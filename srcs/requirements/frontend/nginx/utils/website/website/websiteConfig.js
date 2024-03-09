@@ -3,9 +3,8 @@ let connectedFrom_desktop = false;
 let two_fa = false;
 let sessionUsername;
 
-
 //****** DOMAIN URLS *********************
-const domainPath = process.env.SITE_PROTOCOL + process.env.SITE_URL + ':' + process.env.SITE_PORT;
+const domainPath = "https://transcendence42.ddns.net:8002";
 // const domainPath = 'https://transcendence42.ddns.net';
 
 if ('ontouchstart' in window || navigator.maxTouchPoints) {

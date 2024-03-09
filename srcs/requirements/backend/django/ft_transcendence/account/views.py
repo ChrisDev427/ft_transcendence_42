@@ -21,6 +21,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from friend_management.models import Friend_management
 from django.core.files.base import ContentFile
 import pyotp, uuid, os, requests
+from django.db.models import Q
+from game.models import Game
 
 
 

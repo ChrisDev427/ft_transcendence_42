@@ -107,7 +107,7 @@ function setMobile_API() {
             }
             const tmp = countryCode.value + mobile.value;
             mobile.value = tmp;
-           
+
             // fetch('http://localhost:8000/api/account/profile/', {
                 fetch(domainPath + '/api/account/profile/', {
                 method: 'PATCH',
@@ -271,7 +271,7 @@ function modifyPassword_API() {
             })
             .then(response => {
 
-                if (response.ok) { 
+                if (response.ok) {
                     console.log('Modify Password Success!');
                     alert_modify_success('changeEraseBtn', 'Success');
                 } else {
@@ -280,7 +280,7 @@ function modifyPassword_API() {
                 }
             })
             .then(errorData => {
-                
+
                 if (errorData) {
                     alert_modify_error('changeEraseBtn', Object.values(errorData));
                     console.error('Error Data:', errorData);
@@ -312,7 +312,7 @@ function modify2FA_API() {
             console.log('response status:', response.status);
 
             if (response.ok) {
-                
+
                 console.log('Modify 2FA Success!');
                 getProfileInfos();
                 alert_modify_success('authProfile', 'Success');
@@ -407,7 +407,7 @@ function alert_modify_success(targetDiv, message) {
 
     const modifyForm = document.getElementById('modifyForm');
     modifyForm.querySelectorAll('input, button').forEach((element) => {
-        element.disabled = true; 
+        element.disabled = true;
     });
 
     const div = document.createElement('div');
