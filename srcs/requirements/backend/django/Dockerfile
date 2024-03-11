@@ -5,8 +5,8 @@ WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY certificate.crt /app
-COPY private.key /app
+# COPY certificate.crt /app
+# COPY private.key /app
 
 EXPOSE 8000
 

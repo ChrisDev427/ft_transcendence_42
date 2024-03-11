@@ -32,11 +32,15 @@ DEBUG = True
 
 SITE_URL = os.environ.get('SITE_PROTOCOL') + os.environ.get('SITE_URL') + ":" + os.environ.get('SITE_PORT')
 
-ALLOWED_HOSTS = [os.environ.get('SITE_URL')]
+# ALLOWED_HOSTS = [os.environ.get('SITE_URL'), 'localhost']
+ALLOWED_HOSTS = ['*']
+
 # Application definition
 
 
 INSTALLED_APPS = [
+	'websocket',
+	'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,6 +57,8 @@ INSTALLED_APPS = [
 	'django_prometheus',
 	'background_task',
 ]
+
+ASGI_APPLICATION = "ft_transcendence.asgi.application"
 
 MIDDLEWARE = [
     'django_prometheus.middleware.PrometheusBeforeMiddleware',

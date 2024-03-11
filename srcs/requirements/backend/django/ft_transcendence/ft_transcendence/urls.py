@@ -28,4 +28,5 @@ urlpatterns = [
 	path('api/game/', include('game.urls')),
 	path('api/chat/', include('chat.urls')),
 	path('api/friend_management/', include('friend_management.urls')),
+	path('api/ws/', include('websocket.urls')),
 ]
