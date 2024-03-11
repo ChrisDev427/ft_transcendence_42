@@ -11,3 +11,4 @@ requests-oauthlib # for oauth2
 django-prometheus # for prometheus - monitoring
 django-background-tasks # for background tasks
 channels==3.0.3 # for websockets
+channels-redis # for websockets

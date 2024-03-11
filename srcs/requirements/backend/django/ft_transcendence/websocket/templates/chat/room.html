@@ -14,24 +14,18 @@
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
         const chatSocket = new WebSocket(
-            'wss://transcendence42.ddns.net:8002'
+            'ws://localhost:8000'
             + '/api/ws/'
             + roomName
             + '/'
         );
-
-        chatSocket.onerror = function(error) {
-    console.error('WebSocket Error: ', error);
-};
-
-
+        console.log(chatSocket);
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             document.querySelector('#chat-log').value += (data.message + '\n');
         };
 
         chatSocket.onclose = function(e) {
-            console.log(e.code);
             console.error('Chat socket closed unexpectedly');
         };
 

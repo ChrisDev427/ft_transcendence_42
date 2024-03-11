@@ -59,6 +59,14 @@ INSTALLED_APPS = [
 ]
 
 ASGI_APPLICATION = "ft_transcendence.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis_container", 6379)],
+        },
+    },
+}
 
 MIDDLEWARE = [
     'django_prometheus.middleware.PrometheusBeforeMiddleware',

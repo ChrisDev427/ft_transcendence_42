@@ -5,7 +5,11 @@ services:
     build: ./requirements/backend/django
     restart: on-failure
     command: >
-      sh -c "python manage.py makemigrations
+      sh -c "python manage.py makemigrations game &&
+             python manage.py makemigrations friend_management &&
+             python manage.py makemigrations chat &&
+             python manage.py makemigrations account &&
+             python manage.py makemigrations &&
              python manage.py migrate &&
              python manage.py shell < create_superuser.py &&
              python manage.py runserver 0.0.0.0:8000"
@@ -34,6 +38,18 @@ services:
       - pong
     depends_on:
       - django
+    env_file: .env
+
+  redis:
+    image: redis:latest
+    container_name: redis_container
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - pong
+    volumes:
+      - ./requirements/backend/redis:/data
     env_file: .env
 
   postgresql:

@@ -74,7 +74,7 @@ function requestLogin(formData) {
     getProfileInfos();
     // getDashboardInfos();
     profileAccess(localStorage.getItem('connectType'));
-    // waitForWebSocketConnection(data.user.username);
+    //waitForWebSocketConnection(data.user.username);
   })
   .catch(error => {
     console.error('Error : form submit :', error);
