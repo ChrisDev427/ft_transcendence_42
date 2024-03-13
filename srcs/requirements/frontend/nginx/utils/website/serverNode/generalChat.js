@@ -8,7 +8,8 @@ function sendMessage() {
             socket.send(JSON.stringify({
                 'messageType' : "classic",
                 'owner': username,
-                'message': message
+                'message': message,
+                'time' : new Date().toLocaleTimeString()
             }));
             messageInput.value = '';
         } else {

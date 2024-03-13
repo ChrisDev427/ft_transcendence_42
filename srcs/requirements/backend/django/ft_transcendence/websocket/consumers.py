@@ -9,7 +9,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
         query_params = parse_qs(self.scope['query_string'].decode())
-        self.user_username = query_params.get('user_username', [None])[0].capitalize()
+        self.user_username = query_params.get('user_username', [None])[0]
         # Join room group
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
@@ -27,10 +27,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json["message"]
         # owner = text_data_json["owner"]
         messageType = text_data_json["messageType"]
+        time = text_data_json["time"]
         # print (f"User {self.user_username} connected to room {self.room_name}")
         # Send message to room group
         await self.channel_layer.group_send(
-            self.room_group_name, {"type": "chat.message" ,"messageType": messageType, "message": message, "owner": self.user_username}
+            self.room_group_name, {"type": "chat.message" ,"messageType": messageType, "message": message, "owner": self.user_username, "time": time}
         )
 
     # Receive message from room group
@@ -38,12 +39,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = event["message"]
         messageType = event["messageType"]
         owner = event["owner"]
+        time = event["time"]
         # Send message to WebSocket
-        await self.send(text_data=json.dumps({"message": message, "owner": owner, "messageType" : messageType}))
+        await self.send(text_data=json.dumps({"message": message, "owner": owner, "messageType" : messageType, "time": event["time"]}))
 
     async def chat_disconnect(self, event):
         # Envoyer un message pour informer que l'utilisateur s'est déconnecté
-        owner = event["user_username"].capitalize()
+        owner = event["user_username"]
         await self.send(
             text_data=json.dumps(
                 {"message": "", "owner": owner, "messageType": "offline"}

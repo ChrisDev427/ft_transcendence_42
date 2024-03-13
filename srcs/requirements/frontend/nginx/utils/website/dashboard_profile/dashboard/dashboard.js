@@ -32,6 +32,9 @@ function initDashboard(data) {
   checkFriendRequest();
   get_users_data();
 
+  console.log('data = = ', data);
+  // getGameInfos(1);
+
   document.getElementById('firstNameDash').textContent = data.user.first_name;
   document.getElementById('lastNameDash').textContent = data.user.last_name;
   document.getElementById('userNameDash').textContent = data.user.username;

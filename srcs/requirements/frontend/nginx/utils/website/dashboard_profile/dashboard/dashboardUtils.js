@@ -354,3 +354,33 @@ function getUserObject(userName) {
   }
   return null;
 }
+
+function getGameInfos(id) {
+
+  console.log('function getGameInfos(id)');
+  verifyToken();
+  fetch(domainPath + '/api/game/' + id + '/', {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+    }
+  })
+  .then(response => {
+    if (response.ok) {
+       
+      return response.json();
+    } 
+    else {
+      console.error('Error : getGameInfos', response.status);
+      throw new Error('Échec de la récupération du dashboard');
+    }
+  })
+  .then(data => {
+
+    console.log('check game = ', data);
+    console.log('data.player_one = ', data.player_one.user.username);
+  })
+  .catch(error => {
+    console.error('Erreur lors de la récupération des games', error);
+  });
+}

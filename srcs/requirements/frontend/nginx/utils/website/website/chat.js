@@ -1,7 +1,7 @@
 let mutedFriends = [];
 
 function showMainChat() {
-    
+
     const mainChat = document.getElementById('mainChat');
     if (mainChat.classList.contains('unvisible')) {
         mainChat.classList.remove('unvisible');
@@ -12,13 +12,37 @@ function showMainChat() {
     }
 }
 
-function chatGeneral_createContent(username, message, time) {
+function chatGeneral_createContent(username, message, time, messageType) {
 
     const mainDiv = document.createElement('div');
     const small = document.createElement('small');
     small.textContent = message;
 
-    if (mutedFriends.includes(username)) {return;}
+    if (messageType !== 'classic') {
+        const timeDiv = document.createElement('div');
+        timeDiv.classList = 'row p-0';
+        const timeText = document.createElement('p');
+        timeText.classList = 'col-12 fw-light fst-italic text-warning text-end m-0';
+        const small2 = document.createElement('small');
+        small2.textContent = time;
+        timeText.appendChild(small2);
+        timeDiv.appendChild(timeText);
+        mainDiv.appendChild(timeDiv);
+        const div = document.createElement('div');
+        if (messageType === 'online') {
+            small.textContent = username + ' is connected';
+            div.classList = 'lh-1 fw-semibold p-2 text-white bg-success rounded-bottom-4 rounded-start-4 ms-auto mb-2 text-break fade-in';
+        }
+        else if (messageType === 'offline'){
+            small.textContent = username + ' is disconnected';
+            div.classList = 'lh-1 fw-semibold p-2 text-white bg-danger rounded-bottom-4 rounded-start-4 ms-auto mb-2 text-break fade-in';
+        }
+        div.style.maxWidth = '210px';
+        div.appendChild(small);
+        mainDiv.appendChild(div);
+        document.getElementById('chat-messages-general').appendChild(mainDiv);
+        return;
+    }
 
     if (username === sessionUsername) {
         const timeDiv = document.createElement('div');
@@ -27,20 +51,20 @@ function chatGeneral_createContent(username, message, time) {
         timeText.classList = 'col-12 fw-light fst-italic text-warning text-end m-0';
         const small2 = document.createElement('small');
         small2.textContent = time;
-        
+
         timeText.appendChild(small2);
         timeDiv.appendChild(timeText);
         mainDiv.appendChild(timeDiv);
         const div = document.createElement('div');
         div.classList = 'lh-1 fw-semibold p-2 text-white bg-info rounded-bottom-4 rounded-start-4 ms-auto mb-2 text-break fade-in';
         div.style.maxWidth = '210px';
-       
+
         div.appendChild(small);
         mainDiv.appendChild(div);
         document.getElementById('chat-messages-general').appendChild(mainDiv);
 
     } else {
-        
+
         const usernameDiv = document.createElement('div');
         usernameDiv.classList = 'row';
 
@@ -54,7 +78,7 @@ function chatGeneral_createContent(username, message, time) {
         small1.role = 'button';
         usernameText.appendChild(small1);
         usernameDiv.appendChild(usernameText);
-        
+
         const timeText = document.createElement('p');
         timeText.classList = 'col-4 fw-light fst-italic text-end text-warning m-0 p-0';
         const small2 = document.createElement('small');
@@ -68,13 +92,13 @@ function chatGeneral_createContent(username, message, time) {
         const div = document.createElement('div');
         div.classList = 'lh-1 fw-semibold p-2 text-white bg-secondary rounded-bottom-4 rounded-end-4 me-auto mb-2 text-break fade-in';
         div.style.maxWidth = '210px';
-       
+
         div.appendChild(small);
         mainDiv.appendChild(div);
         document.getElementById('chat-messages-general').appendChild(mainDiv);
-        
+
         usernameText.addEventListener('click', function() {
-            chatProfile_createContent(username); 
+            chatProfile_createContent(username);
         })
     }
 }
@@ -88,10 +112,10 @@ function chatProfile_createContent(username) {
 
         const mainDiv = document.createElement('div');
         mainDiv.classList = 'row p-1 d-flex justify-content-center fade-in';
-        
+
         const imgDiv = document.createElement('div');
         imgDiv.classList = 'col-auto';
-        
+
         const img = document.createElement('img');
         getAvatar(username)
         .then(imageURL => {
@@ -105,10 +129,10 @@ function chatProfile_createContent(username) {
         img.style.maxHeight = '80px';
         imgDiv.appendChild(img);
         mainDiv.appendChild(imgDiv);
-        
+
         const infoDiv1 = document.createElement('div');
         infoDiv1.classList = 'col-auto my-auto';
-        
+
         const userName = document.createElement('h5');
         userName.classList = 'text-center text-info text-uppercase';
         userName.textContent = data.user.username;
@@ -118,46 +142,46 @@ function chatProfile_createContent(username) {
         firstName.classList = 'text-center text-secondary mb-0';
         firstName.textContent = data.user.first_name;
         infoDiv1.appendChild(firstName);
-        
+
         const lastName = document.createElement('h5');
         lastName.classList = 'text-center text-secondary mb-0';
         lastName.textContent = data.user.last_name;
         infoDiv1.appendChild(lastName);
-        
+
         mainDiv.appendChild(infoDiv1);
-        
+
         const infoDiv2 = document.createElement('div');
-        
+
         const hr1 = document.createElement('hr');
         hr1.classList = 'mb-1';
         infoDiv2.appendChild(hr1);
-        
+
         const friends = document.createElement('h5');
         friends.classList = 'text-center text-primary mb-0';
         friends.textContent = 'Friends - ' + data.friend.length;
         infoDiv2.appendChild(friends);
-        
+
         const played = document.createElement('h5');
         played.classList = 'text-center text-info mb-0';
         played.textContent = 'Played - ' + (data.win + data.lose);
         infoDiv2.appendChild(played);
-        
+
         const victories = document.createElement('h5');
         victories.classList = 'text-center text-success mb-0';
         victories.textContent = 'Victories - ' + data.win;
         infoDiv2.appendChild(victories);
-        
+
         const defeats = document.createElement('h5');
         defeats.classList = 'text-center text-danger mb-0';
         defeats.textContent = 'Defeats - ' + data.lose;
         infoDiv2.appendChild(defeats);
-        
+
         const hr2 = document.createElement('hr');
         hr2.classList = 'mt-1 mb-2';
         infoDiv2.appendChild(hr2);
-        
+
         mainDiv.appendChild(infoDiv2);
-        
+
         const btnsRow = document.createElement('div');
         btnsRow.classList = 'row d-flex justify-content-between';
 
@@ -179,7 +203,7 @@ function chatProfile_createContent(username) {
         }
         mute_icon.role = 'button';
         btnsDiv.appendChild(mute_icon);
-        
+
         const unMute_icon = document.createElement('i');
         unMute_icon.id = 'unMute-icon';
         if (!mutedFriends.includes(username)) {
@@ -192,20 +216,20 @@ function chatProfile_createContent(username) {
         btnsRow.appendChild(btnsDiv);
 
         mainDiv.appendChild(btnsRow);
-        
+
         const closeBtn = document.createElement('h5');
         closeBtn.classList = 'col-auto text-info fst-italic text-center fs-6 mb-0 mt-2';
         closeBtn.textContent = 'Close';
         closeBtn.role = 'button';
         mainDiv.appendChild(closeBtn);
-        
+
         document.getElementById('chatProfile').appendChild(mainDiv);
-        
+
         document.getElementById('chat-messages-general').classList.add('unvisible');
         document.getElementById('chatProfile').classList.remove('unvisible');
-        
+
         mute_icon.addEventListener('click', function() {
-            
+
             if (mute_icon.classList.contains('text-secondary')) {
 
                 mute_icon.classList.remove('text-secondary');
@@ -217,12 +241,12 @@ function chatProfile_createContent(username) {
 
                 mutedFriends.push(username);
                 console.log(mutedFriends);
-                
+
             }
         })
 
         unMute_icon.addEventListener('click', function() {
-            
+
             if (unMute_icon.classList.contains('text-secondary')) {
 
                 unMute_icon.classList.remove('text-secondary');
@@ -230,7 +254,7 @@ function chatProfile_createContent(username) {
                 unMute_icon.classList.add('text-success');
                 mute_icon.classList.add('text-secondary');
                 mute_icon.classList.add('text-opacity-50');
-                mute_icon.classList.remove('text-success'); 
+                mute_icon.classList.remove('text-success');
 
                 mutedFriends.pop(username);
                 console.log(mutedFriends);
@@ -249,7 +273,7 @@ function chatProfile_createContent(username) {
         })
 
         closeBtn.addEventListener('click', function() {
-            
+
             document.getElementById('chat-messages-general').classList.remove('unvisible');
             document.getElementById('chatProfile').classList.add('unvisible');
             mainDiv.remove();
@@ -265,10 +289,10 @@ function inviteFriendToPlayFromChat_createContent(username) {
     mainDiv.id = 'inviteToPlayDiv';
     mainDiv.classList = 'col-auto p-3 bg-white  rounded-4 fade-in';
     mainDiv.style.height = '300px';
-    
+
     const secDiv = document.createElement('div');
     secDiv.id = 'waitingDiv';
-    
+
     const title = document.createElement('h5');
     title.classList = 'fs-3 pt-3 fw-bold text-info text-capitalize text-center';
     title.textContent = 'Invite ' + username + ' to play !';
@@ -360,10 +384,10 @@ function inviteFriendCreateSession_createContent(username, level) {
     mainDiv.id = 'inviteToPlayDiv';
     mainDiv.classList = 'col-auto p-3 bg-white  rounded-4 fade-in';
     mainDiv.style.height = '300px';
-    
+
     const secDiv = document.createElement('div');
     secDiv.id = 'waitingDiv';
-    
+
     const title = document.createElement('h5');
     title.classList = 'fs-3 pt-5 fw-bold text-info text-center';
     title.textContent = 'Invitation sent !';
@@ -410,7 +434,7 @@ function inviteFriendCreateSession_createContent(username, level) {
         document.getElementById('mainChat-form').classList.remove('unvisible');
         const messageContainer = document.getElementById('chat-area');
         messageContainer.scrollTop = messageContainer.scrollHeight;
-        
+
 
     })
 

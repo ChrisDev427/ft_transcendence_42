@@ -52,6 +52,7 @@ function init2faProfile(data) {
 
 
 function initProfile(data) {
+  sessionUsername = data.user.username;
   waitForWebSocketConnection(data.user.username);
 
   document.getElementById('firstNameProfile').textContent = data.user.first_name;
