@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
         getDashboardInfos()
         profileAccess(localStorage.getItem('connectType'));
         itemsVisibility_logged_in();
-        profileAccess(localStorage.getItem('connectType'));
+        // profileAccess(localStorage.getItem('connectType'));
 
 
         console.log('AccessToken:', storedAccessToken);

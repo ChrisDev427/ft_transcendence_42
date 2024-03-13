@@ -9,6 +9,7 @@ function showMainChat() {
     } else {
         mainChat.classList.add('unvisible');
         document.getElementById('mainChatBtn').classList.remove('text-secondary');
+
     }
 }
 
@@ -24,7 +25,7 @@ function chatGeneral_createContent(username, message, time) {
         const timeDiv = document.createElement('div');
         timeDiv.classList = 'row p-0';
         const timeText = document.createElement('p');
-        timeText.classList = 'col-12 fw-light fst-italic text-warning text-end m-0';
+        timeText.classList = 'col-12 fw-light fst-italic text-secondary text-end m-0';
         const small2 = document.createElement('small');
         small2.textContent = time;
         
@@ -32,7 +33,7 @@ function chatGeneral_createContent(username, message, time) {
         timeDiv.appendChild(timeText);
         mainDiv.appendChild(timeDiv);
         const div = document.createElement('div');
-        div.classList = 'lh-1 fw-semibold p-2 text-white bg-info rounded-bottom-4 rounded-start-4 ms-auto mb-2 text-break fade-in';
+        div.classList = 'lh-1 fw-semibold p-2 text-white bg-info bg-opacity-75 rounded-bottom-4 rounded-start-4 ms-auto mb-2 text-break fade-in';
         div.style.maxWidth = '210px';
        
         div.appendChild(small);
@@ -45,7 +46,7 @@ function chatGeneral_createContent(username, message, time) {
         usernameDiv.classList = 'row';
 
         const usernameText = document.createElement('p');
-        usernameText.classList = 'col-4 fw-semibold fst-italic text-warning m-0';
+        usernameText.classList = 'col-4 fw-semibold fst-italic text-info m-0';
         usernameText.id = username + '_btnProfileChat';
 
         const small1 = document.createElement('small');
@@ -56,7 +57,7 @@ function chatGeneral_createContent(username, message, time) {
         usernameDiv.appendChild(usernameText);
         
         const timeText = document.createElement('p');
-        timeText.classList = 'col-4 fw-light fst-italic text-end text-warning m-0 p-0';
+        timeText.classList = 'col-4 fw-light fst-italic text-end text-secondary m-0 p-0';
         const small2 = document.createElement('small');
         small2.textContent = time;
         timeText.appendChild(small2);
@@ -66,7 +67,7 @@ function chatGeneral_createContent(username, message, time) {
         mainDiv.appendChild(usernameDiv);
 
         const div = document.createElement('div');
-        div.classList = 'lh-1 fw-semibold p-2 text-white bg-secondary rounded-bottom-4 rounded-end-4 me-auto mb-2 text-break fade-in';
+        div.classList = 'lh-1 fw-semibold p-2 text-white bg-secondary bg-opacity-75 rounded-bottom-4 rounded-end-4 me-auto mb-2 text-break fade-in';
         div.style.maxWidth = '210px';
        
         div.appendChild(small);
