@@ -139,8 +139,7 @@ function itemsVisibility_logged_in() {
                             'dashboard',
                             'dropDownProfile',
                             'gameHistory',
-                            'displayChatBtn',
-                            'mainChat'];
+                            'displayChatBtn'];
 
     elementsToShow.forEach((elementId) => {
         const element = document.getElementById(elementId);
