@@ -236,7 +236,7 @@ function create_room() {
 
     const mainDiv = document.createElement('div');
     mainDiv.id = 'roomCreatedDiv';
-    mainDiv.classList = 'col-auto p-3 mx-auto rounded-4 shadow fade-in';
+    mainDiv.classList = 'col-auto p-3 mx-auto rounded-4 bg-white shadow mt-5 fade-in';
     mainDiv.style.maxWidth = '400px';
     
     const secDiv = document.createElement('div');
