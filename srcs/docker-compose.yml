@@ -5,10 +5,10 @@ services:
     build: ./requirements/backend/django
     restart: on-failure
     command: >
-      sh -c "python manage.py makemigrations game &&
+      sh -c "python manage.py makemigrations account &&
              python manage.py makemigrations friend_management &&
              python manage.py makemigrations chat &&
-             python manage.py makemigrations account &&
+             python manage.py makemigrations game &&
              python manage.py makemigrations &&
              python manage.py migrate &&
              python manage.py shell < create_superuser.py &&
@@ -29,7 +29,10 @@ services:
     container_name: django_background_worker
     build: ./requirements/backend/django
     restart: on-failure
-    command: python manage.py process_tasks
+    command: >
+     sh -c "python manage.py makemigrations &&
+            python manage.py migrate &&
+            python manage.py process_tasks"
     ports:
      - "8001:8001"
     volumes:

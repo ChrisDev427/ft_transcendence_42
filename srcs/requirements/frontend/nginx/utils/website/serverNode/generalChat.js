@@ -5,7 +5,11 @@ function sendMessage() {
 
     if (message !== '') {
         if (socket.readyState === WebSocket.OPEN) {
-            socket.send(JSON.stringify({ action: 'sendMessage', text: message }));
+            socket.send(JSON.stringify({
+                'messageType' : "classic",
+                'owner': username,
+                'message': message
+            }));
             messageInput.value = '';
         } else {
             console.warn('La connexion WebSocket n\'est pas encore établie.');
