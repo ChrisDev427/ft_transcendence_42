@@ -19,24 +19,24 @@ const btn = {
 //************************************************************************************
 
 btn.createBtn.addEventListener("click", function() {
-    
+
     btn.createBtn.classList.add("disabled");
     btn.createBtn.classList.remove("btn-outline-info");
     btn.createBtn.classList.add("btn-info");
     btn.joinBtn.classList.add("disabled");
-   
+
     document.getElementById('createRoomMenu').classList.remove('hidden-element');
     document.getElementById('dificultyMenu').classList.remove('hidden-element');
-    
+
 });
 
 btn.joinBtn.addEventListener("click", function() {
-    
+
     btn.joinBtn.classList.add("disabled");
     btn.joinBtn.classList.remove("btn-outline-info");
     btn.joinBtn.classList.add("btn-info");
     btn.createBtn.classList.add("disabled");
-    
+
     console.log("session user join ", sessionUsername);
 
     // document.getElementById('sessions').classList.remove('hidden-element')
@@ -47,22 +47,22 @@ btn.joinBtn.addEventListener("click", function() {
 //************************************************************************************
 
 btn.localBtn.addEventListener("click", function() {
-    
+
     btn.localBtn.classList.add("disabled");
     btn.localBtn.classList.remove("btn-outline-info");
     btn.localBtn.classList.add("btn-info");
     btn.onLineBtn.classList.add("disabled");
-    
+
     document.getElementById('dificultyMenu').classList.remove('hidden-element');
     document.getElementById('gameModeMenu').classList.remove('hidden-element');
-    
+
     playLocal = true;
     playOnline = false;
 });
 btn.onLineBtn.addEventListener("click", function() {
-    
+
     btn.localBtn.classList.add("disabled");
-    
+
     btn.onLineBtn.classList.add("disabled");
     btn.onLineBtn.classList.remove("btn-outline-info");
     btn.onLineBtn.classList.add("btn-info");
@@ -92,13 +92,13 @@ btn.easyBtn.addEventListener("click", function() {
     }
     // btn.onLineBtn.classList.remove("disabled");
     // btn.localBtn.classList.remove("disabled");
-    
+
     level = 3;
     paddleHeight = 110;
 });
 
 btn.mediumBtn.addEventListener("click", function() {
-    
+
     btn.easyBtn.classList.add("disabled");
     btn.mediumBtn.classList.add("disabled");
     btn.mediumBtn.classList.remove("btn-outline-info");
@@ -115,13 +115,13 @@ btn.mediumBtn.addEventListener("click", function() {
     }
     // btn.onLineBtn.classList.remove("disabled");
     // btn.localBtn.classList.remove("disabled");
-    
+
     level = 5;
     paddleHeight = 80;
 });
 
 btn.hardBtn.addEventListener("click", function() {
-    
+
     btn.easyBtn.classList.add("disabled");
     btn.mediumBtn.classList.add("disabled");
     btn.hardBtn.classList.add("disabled");
@@ -138,7 +138,7 @@ btn.hardBtn.addEventListener("click", function() {
     }
     // btn.onLineBtn.classList.remove("disabled");
     // btn.localBtn.classList.remove("disabled");
-    
+
     level = 7;
     paddleHeight = 60;
 });
@@ -160,7 +160,7 @@ btn.onePlayerBtn.addEventListener("click", function() {
 });
 
 btn.twoPlayersBtn.addEventListener("click", function() {
-    
+
     btn.onePlayerBtn.classList.add("disabled");
     btn.twoPlayersBtn.classList.add("disabled");
     btn.twoPlayersBtn.classList.remove("btn-outline-info");
@@ -174,7 +174,7 @@ btn.twoPlayersBtn.addEventListener("click", function() {
     }
     if(playOnline) {
 
-        const message = JSON.stringify({ 
+        const message = JSON.stringify({
             action: 'createSession',
             level: level,
             paddleHeight: paddleHeight,
@@ -192,7 +192,7 @@ btn.tournamentBtn.addEventListener("click", function() {
     btn.tournamentBtn.classList.add("disabled");
     btn.tournamentBtn.classList.remove("btn-outline-info");
     btn.tournamentBtn.classList.add("btn-info");
-    
+
     tournament = true;
     create_Tournament_mode();
 });
@@ -200,7 +200,7 @@ btn.tournamentBtn.addEventListener("click", function() {
 btn.createRoomBtn.addEventListener("click", function() {
 
     create_room();
-    
+
 });
 
 
@@ -209,7 +209,7 @@ function initPlayBtn() {
     const playBtn = document.getElementById("playBtn");
     playBtn.addEventListener("click", function() {
 
-        
+
         if(onePlayer) {
 
             const playerName = document.getElementById("name");
@@ -224,7 +224,7 @@ function initPlayBtn() {
         else if(twoPlayers) {
             const playerName_1 = document.getElementById("playerName_1");
             const playerName_2 = document.getElementById("playerName_2");
-           
+
             if(emptyInput(playerName_1) || emptyInput(playerName_2)) {
                 return;
             }
@@ -236,19 +236,19 @@ function initPlayBtn() {
             rightPlayerName = playerName_2.value;
 
         }
-        
+
         else if(tournament) {
             console.log('tournament condition');
             for(let i = 0; i < tournamentSize; i++) {
-                
+
                 const playerNameInput = document.getElementById("playerName" + (i+1));
-               
+
                 if(emptyInput(playerNameInput)) {
                     return;
                 }
                 if(checkDblName(playerNameInput)) {
                     return;
-                } 
+                }
                 const playerName = shorteredName(playerNameInput);
                 tournamentPlayers.push({...playerObj, name: playerName});
             }
@@ -267,11 +267,11 @@ function initPlayBtn() {
         printConsoleInfos();
         hideCurrentSection();
         showSection('playPong');
-        document.getElementById('gameDiv').classList.remove('hidden-element'); 
+        document.getElementById('gameDiv').classList.remove('hidden-element');
         reset_UI();
         removeInput();
         run();
-  
+
     });
 }
 
@@ -329,7 +329,7 @@ resetBtnUI.addEventListener('click', function() {
 
 const quitButton = document.getElementById("quitGameBtn");
 quitGameBtn.addEventListener("click", function() {
-    
+
     resetGameValues();
     showSection('main');
 

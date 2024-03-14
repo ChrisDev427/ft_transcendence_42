@@ -1,3 +1,4 @@
+let socket;
 
 function sendMessage() {
     const messageInput = document.getElementById('message-input_general');

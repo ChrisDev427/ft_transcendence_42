@@ -11,7 +11,7 @@ function create_OnePlayer_input() {
 
     let div = document.createElement('div');
     div.className = 'col d-flex justify-content-center mt-5';
-    
+
     // Creation de l'input
     let input = document.createElement('input');
     input.className = 'form-control border-info w-50';
@@ -41,7 +41,7 @@ function create_OnePlayer_input() {
     // Ajout de l'élément div principal à la section spécifiée
     mySection.appendChild(mainDiv);
     initPlayBtn();
-    
+
 }
 
 function create_TwoPlayers_input() {
@@ -56,7 +56,7 @@ function create_TwoPlayers_input() {
 
     let div = document.createElement('div');
     div.className = 'col d-flex justify-content-center mt-5';
-    
+
     // Creation de l'input 1
     let input1 = document.createElement('input');
     input1.className = 'form-control border-info w-50 me-2';
@@ -98,7 +98,7 @@ function create_TwoPlayers_input() {
 
 
 function create_Tournament_mode() {
-    
+
     const div = document.createElement('div');
     div.classList = 'col d-flex justify-content-center m-2';
     div.id = 'tournamentModeBtn';
@@ -109,7 +109,7 @@ function create_Tournament_mode() {
     fourPlayersBtn.className = 'btn btn-outline-info mx-1';
     fourPlayersBtn.id = 'fourPlayersBtn';
     fourPlayersBtn.textContent = '4 Players';
-    
+
     let heightPlayersBtn = document.createElement('button');
     heightPlayersBtn.type = 'button';
     heightPlayersBtn.className = 'btn btn-outline-info mx-1';
@@ -121,7 +121,7 @@ function create_Tournament_mode() {
     sixteenPlayersBtn.className = 'btn btn-outline-info mx-1';
     sixteenPlayersBtn.id = 'sixteenPlayersBtn';
     sixteenPlayersBtn.textContent = '16 Players';
-    
+
     // Ajout des boutons à l'élément div des boutons
     div.appendChild(fourPlayersBtn);
     div.appendChild(heightPlayersBtn);
@@ -151,7 +151,7 @@ function init_Tournament_mode_buttons() {
         sixteenPlayersBtn.classList.add('disabled');
 
         tournamentSize = 4;
-        
+
         create_Tournament_inputs();
     });
 
@@ -164,7 +164,7 @@ function init_Tournament_mode_buttons() {
         sixteenPlayersBtn.classList.add('disabled');
 
         tournamentSize = 8;
-        
+
         create_Tournament_inputs();
     });
 
@@ -177,7 +177,7 @@ function init_Tournament_mode_buttons() {
         sixteenPlayersBtn.classList.add('btn-info');
 
         tournamentSize = 16;
-        
+
         create_Tournament_inputs();
     });
 }
@@ -225,6 +225,140 @@ function create_Tournament_inputs() {
     initPlayBtn();
 }
 
+let socketSession;
+
+function initGameSession() {
+    sessionId = "test";
+    socketSession = new WebSocket('ws://localhost:8000/api/ws/session/?game_session=' + sessionId);
+
+    socketSession.addEventListener('open', (event) => {
+        console.log('Connected to WebSocketSession game session', sessionId);
+    });
+
+    socketSession.addEventListener('close', (event) => {
+        console.log('Connection to WebSocketSession game session closed');
+    });
+
+    return socketSession;
+}
+
+function updateSessionsList(sessions) {
+    // const sessionsListElement = document.getElementById('sessionsList');
+    // sessionsListElement.innerHTML = '';
+
+    let index = 1;
+    sessions.forEach(session => {
+        sessions_createContent(session, index);
+        index++;
+        // const sessionLink = document.createElement('a');
+        // // sessionLink.href = `https://transcendence42.ddns.net/#playPong`;
+        // sessionLink.href = '#playPong';
+        // sessionLink.textContent = `Session ID: ${session.id}, Created At: ${session.createdAt}, By : ${session.CreatorUsername}`;
+        // sessionLink.addEventListener('click', () => {
+
+        //     socket.send(JSON.stringify({ action: 'join', sessionId: session.id, username:session }));
+
+        //     leftPlayerName ="test";
+        //     rightPlayerName="test1";
+
+        //     level = 5;
+        //     playOnline = true;
+        //     twoPlayers = true;
+        //     start = true;
+
+        //     setPlayerNameToPrint(leftPlayerName, rightPlayerName);
+        //     setHandToStart();
+        //     printConsoleInfos();
+
+        //     showSection("playPong");
+        //     document.getElementById('gameDiv').classList.remove('hidden-element');
+        //     run();
+
+        // });
+
+        // const sessionElement = document.createElement('p');
+        // sessionElement.appendChild(sessionLink);
+
+        // sessionsListElement.appendChild(sessionElement);
+    });
+
+    console.log('Updated sessions list:', sessions);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    window.addEventListener('hashchange', () => {
+        const hash = window.location.hash;
+        const match = hash.match(/^#playPong\/([a-zA-Z0-9-]+)$/);
+
+        if (match) {
+            const sessionId = match[1];
+            console.log('Joining session with ID:', sessionId);
+        }
+    });
+});
+
+function  sessions_createContent(session, index) {
+
+    document.getElementById('sessionListeEmpty').classList.add('hidden-element');
+
+    const div = document.createElement('div');
+    div.id = 'joinCard' + index;
+    div.classList = 'col-auto m-2 p-3 rounded-4 shadow';
+
+    const title = document.createElement('h5');
+    title.classList = 'fs-3 fw-bold text-info text-center';
+    title.textContent = 'Room ' + index;
+    div.appendChild(title);
+
+    const creator = document.createElement('h5');
+    creator.classList = 'fs-5 fw-bold text-secondary text-center';
+    creator.textContent = 'Creator : ' + session.CreatorUsername;
+    div.appendChild(creator);
+
+    const level = document.createElement('h5');
+    level.classList = 'fs-5 fw-bold text-secondary text-center';
+    level.textContent = 'Level : ' + session.level;
+    div.appendChild(level);
+
+    const joinBtn = document.createElement('h5');
+    joinBtn.id = 'joinRoomBtn';
+    joinBtn.classList = 'fs-3 fw-bold text-success text-center';
+    joinBtn.textContent = 'Play !';
+    joinBtn.role = 'button';
+    div.appendChild(joinBtn);
+
+    document.getElementById('sessionsList').appendChild(div);
+
+    joinBtn.addEventListener('click', function() {
+        joinSession(session, index);
+    })
+
+
+}
+
+function joinSession(session, index) {
+
+    socket.send(JSON.stringify({ action: 'join', sessionId: session.id, username:session }));
+
+    leftPlayerName = session.CreatorUsername;
+    rightPlayerName= sessionUsername;
+    level = session.level;
+    playOnline = true;
+    twoPlayers = true;
+    start = true
+    setPlayerNameToPrint(leftPlayerName, rightPlayerName);
+    printConsoleInfos();
+    showSection("playPong");
+    document.getElementById('gameDiv').classList.remove('hidden-element');
+    run();
+
+    document.getElementById('joinCard' + index).remove();
+    if (document.getElementById('sessionsList').childElementCount == 0 ) {
+        document.getElementById('sessionListeEmpty').classList.remove('hidden-element');
+    }
+}
+
+
 function create_room() {
 
     document.getElementById('containerGameMenu').classList.add('hidden-element');
@@ -238,10 +372,10 @@ function create_room() {
     mainDiv.id = 'roomCreatedDiv';
     mainDiv.classList = 'col-auto p-3 mx-auto rounded-4 bg-white shadow mt-5 fade-in';
     mainDiv.style.maxWidth = '400px';
-    
+
     const secDiv = document.createElement('div');
     secDiv.id = 'waitingDiv';
-    
+
     const title = document.createElement('h5');
     title.classList = 'fs-3 fw-bold text-info text-center';
     title.textContent = 'Room created !';
@@ -289,7 +423,7 @@ function create_room() {
 
        navbarSwitch('on');
     })
-    socket.send(JSON.stringify({ action: 'createSession' }));
+    socket.send(JSON.stringify({ messageType: 'createSession' , time : new Date().toLocaleTimeString(), owner : sessionUsername}));
 }
 
 

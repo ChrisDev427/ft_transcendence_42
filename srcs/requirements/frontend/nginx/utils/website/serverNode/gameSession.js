@@ -1,4 +1,29 @@
 
+function initGameSession() {
+    sessionId = uuidv4();
+    socket = new WebSocket('ws://localhost:8000/api/ws/session/?game_session=' + sessionId);
+
+    socket.addEventListener('open', (event) => {
+        console.log('Connected to WebSocket game session', sessionId);
+    });
+
+    socket.addEventListener('close', (event) => {
+        console.log('Connection to WebSocket game session closed');
+    });
+
+    return socket;
+}
+
+ socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        console.log(data);
+        if (data.action === 'updateSessions') {
+            console.log('Updating sessions list...');
+            updateSessionsList(data.sessions);
+        }
+    });
+
+
 function updateSessionsList(sessions) {
     // const sessionsListElement = document.getElementById('sessionsList');
     // sessionsListElement.innerHTML = '';
