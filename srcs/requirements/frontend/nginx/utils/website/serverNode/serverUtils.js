@@ -117,33 +117,21 @@ function waitForWebSocketConnection(username) {
     console.log('WebSocket connection is ready');
 
 
-    // socket.addEventListener('message', (event) => {
-    //     const data = JSON.parse(event.data);
-    //     console.log(data.action);
-    //     if (data.action === 'updateSessions') {
-    //         console.log('Updating sessions list...');
-    //         updateSessionsList(data.sessions);
-    //     }
-    // });
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'updateSessions') {
+            console.log('Updating sessions list...');
+            console.log(data.sessions);
+            updateSessionsList(data.sessions);
+        }
+    });
+    
 
-    // socket.addEventListener('message', (event) => {
-    //     try {
-    //         const data = JSON.parse(event.data);
 
-    //         if (data.action === 'sessionCreated') {
-    //             const sessionId = data.sessionId;
-    //             console.log(sessionId);
-
-    //         }
-    //     } catch (error) {
-    //         console.error('Error parsing message:', error);
-    //     }
-    // });
 
 
     socket.addEventListener('message', (event) => {
         const receivedMessage = JSON.parse(event.data);
-        console.log(receivedMessage)
         // if (receivedMessage.messageType === 'classic') {
             // const messages = receivedMessage.message;
             // console.log("message receive")
@@ -167,24 +155,44 @@ function waitForWebSocketConnection(username) {
 
 
 
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'positionBall') {
+            // console.log("positionBall : ", data.ballX, data.ballY);
+            ballX = data.ballX;
+            ballY = data.ballY;
+        }
+    });
+
+
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
 
-        if (data.action === 'confirmJoin') {
+        if (data.messageType === 'confirmJoin') {
             console.log(data.username, "a rejoind la session");
+            console.log(data.username, "a rejoind la session", data.level);
+            leftPlayerName =sessionUsername;
+            rightPlayerName=data.username;
 
+
+            start = true;
+
+            setPlayerNameToPrint(leftPlayerName, rightPlayerName);
+            // setHandToStart();
+            leftPaddleHand = true;
+
+            printConsoleInfos();
+
+            showSection("playPong");
+            document.getElementById('gameDiv').classList.remove('hidden-element');
+            run();
+
+            showSection('playPong');
         }
     });
 
-    socket.addEventListener('message', (event) => {
-        const data = JSON.parse(event.data);
 
-        if (data.action === 'confirmJoin') {
-            console.log(data.username, "a rejoind la session");
-
-        }
-    });
 
     // socket.addEventListener('message', (event) => {
     //     const messageContainer = document.getElementById('chat-messages_session');
