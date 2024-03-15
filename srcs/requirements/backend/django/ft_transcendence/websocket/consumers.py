@@ -150,7 +150,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 session = find_session_by_id(data["sessionId"])
                 session.add_player(self.user_username)
 
-                print(session.players)
 
                 
                 await self.channel_layer.group_send(
@@ -172,6 +171,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.room_group_name, { "type": "session.list" ,"messageType": "updateSessions", "session": sessions_json}
             )
 
+        if (messageType == "values"):
+            session = search_player_in_game(self.user_username)
+ 
+            await self.channel_layer.group_send(
+                self.room_group_name, 
+                {
+                    "type": "value.game",
+                    "messageType": "values",
+                    "players": session.players,
+                    "spaceBarPressed":data["spaceBarPressed"],
+                    "leftPaddleHand": data["leftPaddleHand"],
+                    "rightPaddleHand": data["rightPaddleHand"],
+                    "leftPlayerScore": data["leftPlayerScore"],
+                    "rightPlayerScore": data["rightPlayerScore"],
+                    "ballLaunched": data["ballLaunched"],
+                    "username": self.user_username
+                }
+            )
+        
+
         if(messageType == "updateBallPositions"):
             session = search_player_in_game(self.user_username)
  
@@ -186,6 +205,57 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "username": self.user_username
                 }
             )
+        
+        if (messageType == "updatePaddlePositions"):
+            session = search_player_in_game(self.user_username)
+ 
+            await self.channel_layer.group_send(
+                self.room_group_name, 
+                {
+                    "type": "position.Paddle",
+                    "messageType": "position", 
+                    "players": session.players,
+                    "pos": data["pos"],
+                    "cote": data["cote"],
+                    "username": self.user_username
+                }
+            )
+
+
+
+    async def value_game(self, event):
+        message_type = event.get("messageType")
+
+        username = event.get("username")
+        players = event.get("players")
+        for player in players:
+            if player == self.user_username and username != self.user_username:
+                await self.send(text_data=json.dumps({
+                    'messageType': message_type,
+                    'spaceBarPressed': event.get("spaceBarPressed"),
+                    'leftPaddleHand': event.get("leftPaddleHand"),
+                    'rightPaddleHand': event.get("rightPaddleHand"),
+                    'leftPlayerScore': event.get("leftPlayerScore"),
+                    'rightPlayerScore': event.get("rightPlayerScore"),
+                    'ballLaunched': event.get("ballLaunched"),
+                    'pos': event.get("pos"),
+                    'cote': event.get("cote")
+                }))
+               
+
+    async def position_Paddle(self, event):
+        message_type = event.get("messageType")
+
+        username = event.get("username")
+        players = event.get("players")
+        for player in players:
+            if player == self.user_username and username != self.user_username:
+                await self.send(text_data=json.dumps({
+                    'messageType': message_type,
+                    'pos': event.get("pos"),
+                    'cote': event.get("cote")
+                }))
+
 
     async def position_Ball(self, event):
         message_type = event.get("messageType")
@@ -194,12 +264,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         players = event.get("players")
         for player in players:
             if player == self.user_username and username != self.user_username:
-                print("ballx ", event.get("ballX"))
                 await self.send(text_data=json.dumps({
                     'messageType': message_type,
                     'ballX': event.get("ballX"),
                     'ballY': event.get("ballY")
                 }))
+
 
 
 
@@ -222,9 +292,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         confirme = event.get("confirme")
 
         players = event.get("players")
-        print(players)
         for player in players:
-            print(player)
             if player == self.user_username:
                 await self.send(text_data=json.dumps({
                     'messageType': message_type,
@@ -277,7 +345,6 @@ def remove_player_sessions(username):
                 session.remove_player(username)
                 if not session.players:
                     sessions.remove(session)
-                    print(sessions)
     return False
 
 

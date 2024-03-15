@@ -159,7 +159,7 @@ function run() {
 
 
 
-            // sendValue(spaceBarPressed, rightPaddleHand, leftPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched);
+            sendValue(spaceBarPressed, rightPaddleHand, leftPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched);
             
 
 
@@ -192,8 +192,8 @@ function run() {
                 leftPaddleY = (canvas.height - paddleHeight) / 2;
                 rightPaddleY = (canvas.height - paddleHeight) / 2;
                 
-                // sendPaddlePositions(leftPaddleY, "left");
-                // sendPaddlePositions(rightPaddleY, "right");
+                sendPaddlePositions(leftPaddleY, "left");
+                sendPaddlePositions(rightPaddleY, "right");
 
 
 
@@ -223,8 +223,8 @@ function run() {
     
                 leftPaddleY = (canvas.height - paddleHeight) / 2;
                 rightPaddleY = (canvas.height - paddleHeight) / 2;
-                // sendPaddlePositions(leftPaddleY, "left");
-                // sendPaddlePositions(rightPaddleY, "right");
+                sendPaddlePositions(leftPaddleY, "left");
+                sendPaddlePositions(rightPaddleY, "right");
 
 
 

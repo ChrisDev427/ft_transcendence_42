@@ -164,6 +164,30 @@ function waitForWebSocketConnection(username) {
         }
     });
 
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'values') {
+            spaceBarPressed = data.spaceBarPressed,
+            leftPaddleHand = data.leftPaddleHand,
+            rightPaddleHand = data.rightPaddleHand,
+            leftPlayerScore = data.leftPlayerScore,
+            rightPlayerScore = data.rightPlayerScore,
+            ballLaunched = data.ballLaunched
+        }
+    });
+
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'position') {
+            console.log( data.pos, data.cote);
+            if (data.cote == "left"){
+                leftPaddleY = data.pos;
+            }
+            else{
+                rightPaddleY = data.pos;
+            }
+        }
+    });
 
 
     socket.addEventListener('message', (event) => {
