@@ -1,8 +1,10 @@
 # chat/consumers.py
 import json
-
+import pytz
+fuseau_france = pytz.timezone('Europe/Paris')
 from channels.generic.websocket import AsyncWebsocketConsumer
 from urllib.parse import parse_qs
+from datetime import datetime
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -17,7 +19,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         # Leave room group
         await self.channel_layer.group_send(
-            self.room_group_name, {"type": "chat.disconnect", "user_username": self.user_username}
+            self.room_group_name, {"type": "chat.disconnect", "user_username": self.user_username, "time": datetime.now(fuseau_france).strftime("%H:%M:%S")}
         )
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
@@ -25,7 +27,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
-        # owner = text_data_json["owner"]
         messageType = text_data_json["messageType"]
         time = text_data_json["time"]
         # print (f"User {self.user_username} connected to room {self.room_name}")
@@ -41,13 +42,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         owner = event["owner"]
         time = event["time"]
         # Send message to WebSocket
-        await self.send(text_data=json.dumps({"message": message, "owner": owner, "messageType" : messageType, "time": event["time"]}))
+        await self.send(text_data=json.dumps({"message": message, "owner": owner, "messageType" : messageType, "time": time}))
 
     async def chat_disconnect(self, event):
         # Envoyer un message pour informer que l'utilisateur s'est déconnecté
         owner = event["user_username"]
+        time = event["time"]
         await self.send(
             text_data=json.dumps(
-                {"message": "", "owner": owner, "messageType": "offline"}
+                {"message": "", "owner": owner, "messageType": "offline", "time": time}
             )
         )

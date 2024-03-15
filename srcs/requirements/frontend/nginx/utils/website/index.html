@@ -106,7 +106,7 @@
                     <p id="bio-profileDropdown" class="card-text text-secondary text-center fw-light"></p>
                     <div class="col d-flex justify-content-evenly mt-4">
                       <a class="btn btn-sm btn-outline-info fw-bold bi bi-speedometer" href="#dashboard" onclick="getDashboardInfos()"></a>
-                      <a class="btn btn-sm btn-outline-info fw-bold bi bi-database-fill" href="#gameHistory"></a>
+                      <!-- <a class="btn btn-sm btn-outline-info fw-bold bi bi-database-fill" href="#gameHistory"></a> -->
                       <a class="btn btn-sm btn-outline-info fw-bold bi-person-circle" href="#profile"></a>
                       <a class="btn btn-sm btn-outline-danger fw-bold bi-plug-fill" onclick="userLogout()"></a>
                     </div>
@@ -450,7 +450,7 @@
       <div class="container p-3 pt-5 rounded-bottom-4 bg-white" style="max-width: 1500px;">
         <div class="row ">
           <!-- Friends -->
-          <div class="col-lg-6 col-xl-3  mb-4">
+          <div class="col-sm-6 col-lg-3  mb-4">
             <div class="card border-0 border-left-primary shadow">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -466,7 +466,7 @@
             </div>
           </div>
           <!-- Played -->
-          <div class="col-lg-6 col-xl-3  mb-4">
+          <div class="col-sm-6 col-lg-3  mb-4">
             <div class="card border-0 border-left-info shadow">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -482,7 +482,7 @@
             </div>
           </div>
           <!-- Total Users -->
-          <div class="col-lg-6 col-xl-3  mb-4">
+          <div class="col-sm-6 col-lg-3  mb-4">
             <div class="card border-0 border-left-warning shadow">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -498,7 +498,7 @@
             </div>
           </div>
           <!-- Connected Users -->
-          <div class="col-lg-6 col-xl-3  mb-4">
+          <div class="col-sm-6 col-lg-3  mb-4">
             <div class="card border-0 border-left-success shadow">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -514,7 +514,7 @@
             </div>
           </div>
           <!-- Victories -->
-          <div class="col-lg-6 col-xl-3  mb-4">
+          <div class="col-sm-6 col-lg-3  mb-4">
             <div class="card border-0 border-left-success shadow">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -530,7 +530,7 @@
             </div>
           </div>
           <!-- Defeat -->
-          <div class="col-lg-6 col-xl-3  mb-4">
+          <div class="col-sm-6 col-lg-3  mb-4">
             <div class="card border-0 border-left-danger shadow">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -539,14 +539,14 @@
                     <div id="defeatsNumberDash" class="h5 mb-0 fw-bold text-secondary"></div>
                   </div>
                   <div class="col-auto">
-                    <!-- <i class="fas fa-trophy fa-flip-vertical fa-2x text-danger "></i> -->
+                    <i class="fas fa-trophy fa-flip-vertical fa-2x text-danger "></i>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <!-- Point Gained -->
-          <div class="col-lg-6 col-xl-3  mb-4">
+          <div class="col-sm-6 col-lg-3  mb-4">
             <div class="card border-0 border-left-success shadow">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -562,7 +562,7 @@
             </div>
           </div>
           <!-- Point Lost -->
-          <div class="col-lg-6 col-xl-3  mb-4">
+          <div class="col-sm-6 col-lg-3  mb-4">
             <div class="card border-0 border-left-danger shadow">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -620,11 +620,11 @@
                 <h5 class="m-0 font-weight-bold text-info text-center text-md-start">Win/Loose</h5>
               </div>
               <div class="card-body">
-                <div class="chart-pie pt-2 pb-0">
+                <div class="chart-pie">
                   <div id="chartPieTextInfo" class="p-5 hidden-element">
                     <h5 class="font-weight-bold text-center text-secondary">You need to play at least once to see some information here</h5>
                   </div>
-                  <canvas id="myPieChart"></canvas>
+                  <canvas id="myPieChart" class="mt-5"></canvas>
                 </div>
               </div>
               <div class="ms-2">
@@ -695,7 +695,7 @@
             <div class="card-header py-3">
               <div class="row d-flex align-items-center">
                 <div class="col-sm-auto me-auto">
-                  <h5 class="text-center text-sm-start text-info mb-0">History</h5>
+                  <h5 class="text-center text-sm-start text-info mb-0">Games History</h5>
                 </div>
               </div>
             </div>
@@ -705,10 +705,10 @@
                 <div id="historyTextInfo" class="p-5 fade-in hidden-element">
                   <h5 class="fw-bold text-center text-secondary">There is no history to display !</h5>
                 </div>
-                <div id="historyList" class="row px-3 d-felx justify-content-center fade-in">
+                <div id="historyList" class="row px-3 d-felx justify-content-center fade-in hidden-element">
 
 
-                  <div class="col-sm-auto px-4 py-3 m-2 rounded-3 bg-success bg-opacity-10 shadow" >
+                  <!-- <div class="col-sm-auto px-4 py-3 m-2 rounded-3 bg-success bg-opacity-10 shadow" >
                     <div class="row d-felx justify-content-center">
                       <div class="col-auto mt-2">
                         <img src="img/img-chris.jpg" alt="user-avatar" class="rounded-3 shadow" style="max-height: 100px;">
@@ -717,6 +717,7 @@
                         <img src="img/img_axel.jpg" alt="user-avatar" class="rounded-3 shadow" style="max-height: 100px;">
                       </div>
                     </div>
+
                     <div class="col-auto my-auto">
                       <h5 class="text-info text-center fs-3 mb-2 mt-1">Christophe / Axel</h5>
                       <h5 id="scoreHistory" class="text-secondary text-center fs-4">10 / 4</h5>
@@ -725,11 +726,10 @@
 
                     <div class="row d-felx justify-content-between">
                       <div class="col-auto ">
-                        <i class="fa-solid fa-gauge-high  text-secondary"></i>
-
+                        <i class="fa-solid fa-gauge-high text-secondary"></i>
                       </div>
                       <div class="col-auto">
-                        <p id="dateHistory" class="fw-bold fst-italic text-secondary text-center fs-6 mb-0">hard</p>
+                        <p id="dateHistory" class="fw-bold fst-italic text-secondary fs-6 mb-0">hard</p>
                       </div>
                     </div>
 
@@ -738,26 +738,28 @@
                         <i class="fa-solid fa-calendar-days text-secondary"></i>
                       </div>
                       <div class="col-auto">
-                        <p id="dateHistory" class="fw-bold fst-italic text-secondary text-center fs-6 mb-0">2024-02-16</p>
+                        <p id="dateHistory" class="fw-bold fst-italic text-secondary fs-6 mb-0">2024-02-16</p>
                       </div>
                     </div>
+
                     <div class="row d-felx justify-content-between">
                       <div class="col-auto ">
                         <i class="fa-regular fa-clock text-secondary"></i>
                       </div>
                       <div class="col-auto">
-                        <p id="dateHistory" class="fw-bold fst-italic text-secondary text-center fs-6 mb-0">07:28:28</p>
+                        <p id="dateHistory" class="fw-bold fst-italic text-secondary fs-6 mb-0">07:28:28</p>
                       </div>
                     </div>
+
                     <div class="row d-felx justify-content-between">
                       <div class="col-auto ">
                         <i class="fa-solid fa-stopwatch text-secondary"></i>
                       </div>
                       <div class="col-auto">
-                        <p id="dateHistory" class="fw-bold fst-italic text-secondary text-center fs-6 mb-0">00:8:12</p>
+                        <p id="dateHistory" class="fw-bold fst-italic text-secondary fs-6 mb-0">00:8:12</p>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
 
                 </div>
@@ -767,79 +769,6 @@
         </div>
       </div>
     </section>
-
-    <section id="gameHistory" class="unvisible fade-in">
-        <div class="container-fluid bg-white p-3  rounded-bottom-4" style="max-width: 1600px;">
-          <h1 class="display-1 fw-bold text-info text-center">Game History</h1>
-
-          <div class="col-sm-10 mx-auto mt-4 ">
-            <div class="card border-0 shadow mb-4">
-              <div class="card-header py-3">
-                <div class="row d-flex align-items-center">
-                  <div class="col-sm-auto me-auto">
-                    <h5 class="text-center text-sm-start text-info mb-0">History</h5>
-                  </div>
-                </div>
-              </div>
-              <!-- Card Body -->
-              <div class="card-body">
-                <div id="gameHistory-cardBody" style="overflow-y: auto; min-height: 470px; max-height: 700px;">
-                  <div id="historyTextInfo" class="p-5 fade-in hidden-element">
-                    <h5 class="fw-bold text-center text-secondary">There is no history to display !</h5>
-                  </div>
-                  <div id="historyList" class="row px-3 d-felx justify-content-center fade-in">
-
-                    <div class="col-sm-auto px-4 py-3 m-2 rounded-3 bg-success bg-opacity-10 shadow" >
-                      <div class="row d-felx justify-content-center">
-                        <div class="col-auto mt-2">
-                          <img src="img/img-chris.jpg" alt="user-avatar" class="rounded-3 shadow" style="max-height: 100px;">
-                        </div>
-                        <div class="col-auto mt-2">
-                          <img src="img/img_axel.jpg" alt="user-avatar" class="rounded-3 shadow" style="max-height: 100px;">
-                        </div>
-                      </div>
-                      <div class="col-auto my-auto">
-                        <h5 class="text-info text-center fs-3 mb-2 mt-1">Christophe / Axel</h5>
-                        <h5 id="scoreHistory" class="text-secondary text-center fs-4">10 / 4</h5>
-                      </div>
-                      <hr class="mt-1">
-                      <div class="row d-felx justify-content-between">
-                        <div class="col-auto ">
-                          <i class="fa-solid fa-calendar-days text-secondary"></i>
-                        </div>
-                        <div class="col-auto">
-                          <p id="dateHistory" class="fw-bold fst-italic text-secondary text-center fs-6 mb-0">2024-02-16</p>
-                        </div>
-                      </div>
-                      <div class="row d-felx justify-content-between">
-                        <div class="col-auto ">
-                          <i class="fa-regular fa-clock text-secondary"></i>
-                        </div>
-                        <div class="col-auto">
-                          <p id="dateHistory" class="fw-bold fst-italic text-secondary text-center fs-6 mb-0">07:28:28</p>
-                        </div>
-                      </div>
-                      <div class="row d-felx justify-content-between">
-                        <div class="col-auto ">
-                          <i class="fa-solid fa-stopwatch text-secondary"></i>
-                        </div>
-                        <div class="col-auto">
-                          <p id="dateHistory" class="fw-bold fst-italic text-secondary text-center fs-6 mb-0">00:8:12</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- <div class="container-fluid p-4" style="max-width: 1600px;">
-          </div> -->
-        </div>
-      <!-- </div> -->
-    </section>
-
-
 
     <section id="profile" class="unvisible fade-in">
 
@@ -925,144 +854,25 @@
     <div id="mainChat" class="unvisible">
       <div id="chat" class="p-2 fade-in chat-container " >
         <div id="chat-area" class=" mb-2 " style="overflow-y: auto; height: 310px;">
-
-          <div id="chatProfile" class="bg-white p-2 m-2 rounded-3 shadow unvisible">
-
-<!--
-            <div class="row p-1 d-flex justify-content-center">
-              <div class="col-auto">
-                <img src="img/img_paul.jpg" alt="avatarImg" class="rounded-2 shadow" style="max-height: 80px;">
-              </div>
-              <div class="col-auto my-auto">
-                <h5 class="text-center text-info text-uppercase">Paul</h5>
-                <h5 class="text-center text-secondary mb-0">Paul</h5>
-                <h5 class="text-center text-secondary mb-0">Schemit</h5>
-              </div>
-              <div class="">
-                <hr class="mb-1">
-                <h5 class="text-center text-primary mb-0">Friends - 2</h5>
-                <h5 class="text-center text-info mb-0">Played - 2</h5>
-                <h5 class="text-center text-success mb-0">Victories - 2</h5>
-                <h5 class="text-center text-danger mb-0 ">Defeats - 2</h5>
-                <hr class="mt-1 mb-2">
-              </div>
-              <div class="row d-flex justify-content-evenly">
-
-                <i id="muteOn-icon" class="col-auto fa-solid fa-comment fa-2x text-info" role="button"></i>
-                <div class="col-auto ">
-                  <i id="muteOff-icon" class="fa-solid fa-comment-slash fa-2x text-secondary me-3" role="button"></i>
-                  <i id="muteOn-icon" class="fa-solid fa-comment fa-2x text-info" role="button"></i>
-                </div>
-              </div>
-                <h5 class="text-success text-end fs-6 mb-0">Close</h5>
-            </div> -->
-
-
-          </div>
-
-          <div id="chat-messages-general" class="px-2">
-
-            <!-- <div id="chat-message">
-              <p id="paul" class="fw-semibold fst-italic text-secondary m-0"><small role="button">Paul:</small></p>
-              <div class="lh-1 fw-semibold p-2 text-white bg-secondary rounded-bottom-4 rounded-end-4 me-auto mb-2 fade-in" style="max-width: 210px;">
-                <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-              </div>
-            </div>
-
-
-
-            <div id="chat-message">
-              <div class="lh-1 fw-semibold p-2 text-white bg-info rounded-bottom-4 rounded-start-4  ms-auto mb-2 fade-in" style="max-width: 210px;">
-                <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-              </div>
-            </div>
-            <div id="chat-message">
-              <div class="lh-1 fw-semibold p-2 text-white bg-info rounded-bottom-4 rounded-start-4  ms-auto mb-2 fade-in" style="max-width: 210px;">
-                <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-              </div>
-            </div>
-            <div id="chat-message">
-              <div class="lh-1 fw-semibold p-2 text-white bg-info rounded-bottom-4 rounded-start-4  ms-auto mb-2 fade-in" style="max-width: 210px;">
-                <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-              </div>
-            </div>
-            <div id="chat-message">
-              <p class="fw-semibold fst-italic text-secondary m-0"><small>Axel:</small></p>
-              <div class="lh-1 fw-semibold p-2 text-white bg-secondary rounded-bottom-4 rounded-end-4 me-auto mb-2 fade-in" style="max-width: 210px;">
-                <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-              </div>
-            </div>
-            <div id="chat-message">
-              <div class="lh-1 fw-semibold p-2 text-white bg-info rounded-bottom-4 rounded-start-4  ms-auto mb-2 fade-in" style="max-width: 210px;">
-                <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-              </div>
-            </div>
-            <div id="chat-message">
-              <p class="fw-semibold fst-italic text-secondary m-0"><small>Axel:</small></p>
-              <div class="lh-1 fw-semibold p-2 text-white bg-secondary rounded-bottom-4 rounded-end-4 me-auto mb-2 fade-in" style="max-width: 210px;">
-                <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-              </div>
-            </div> -->
-          </div>
-
-
+          <div id="chatProfile" class="bg-white p-2 m-2 rounded-3 shadow unvisible"></div>
+          <div id="chat-messages-general" class="px-2"></div>
         </div>
         <div id="mainChat-form">
           <div  class="form-control border-0 p-0">
             <input class="form-control border-info" id="message-input_general" type="text"  onkeydown="handleKeyPressGeneral(event)"></input>
-            <!-- <i class="fa-solid fa-share fa-2x text-info" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);"></i> -->
-
-          </div>
-          <div class="d-flex justify-content-end">
-            <!-- <button class="btn btn-sm btn-outline-info mt-2 w-100 shadow" onclick="sendMessage()">Send</button>  -->
-            <!-- <h5 class="text-info fst-italic me-1" onclick="sendMessage()" role="button" style="text-shadow: 2px 2px 4px rgba(150, 150, 150, 0.952);">Send</h5> -->
           </div>
         </div>
       </div>
     </div>
 
-
     <section id="sessions">
       <div class="container bg-white rounded-bottom-4 shadow " >
         <h1 class="display-1 fw-bold text-info text-center">Rooms</h1>
-
         <h5 id="sessionListeEmpty" class="fs-3 fw-bold text-secondary text-center mt-4">No rooms available</h5>
         <div style="overflow-y: auto;  max-height: 450px;">
-
-          <div id="sessionsList" class="row p-3 d-flex justify-content-center">
-
-
-            <!-- <div class="col-auto m-2 p-3 rounded-4 shadow">
-              <h5 class="fs-3 fw-bold text-info text-center ">Room 1</h5>
-              <h5 class="fs-5 fw-bold text-secondary text-center ">Creator : Chris2Nissa</h5>
-              <h5 class="fs-5 fw-bold text-secondary text-center">Level : hard</h5>
-              <h5 class="fs-3 fw-bold text-success text-center ">Play !</h5>
-            </div>
-            <div class="col-auto m-2 p-3 rounded-4 shadow">
-              <h5 class="fs-3 fw-bold text-info text-center ">Room 1</h5>
-              <h5 class="fs-5 fw-bold text-secondary text-center ">Creator : Chris</h5>
-              <h5 class="fs-5 fw-bold text-secondary text-center">Level : hard</h5>
-              <h5 class="fs-3 fw-bold text-success text-center ">Play !</h5>
-            </div>
-            <div class="col-auto m-2 p-3 rounded-4 shadow">
-              <h5 class="fs-3 fw-bold text-info text-center ">Room 1</h5>
-              <h5 class="fs-5 fw-bold text-secondary text-center ">Creator : AAA</h5>
-              <h5 class="fs-5 fw-bold text-secondary text-center">Level : hard</h5>
-              <h5 class="fs-3 fw-bold text-success text-center ">Play !</h5>
-            </div>
-            <div class="col-auto m-2 p-3 rounded-4 shadow">
-              <h5 class="fs-3 fw-bold text-info text-center ">Room 1</h5>
-              <h5 class="fs-5 fw-bold text-secondary text-center ">Creator : BBBBB</h5>
-              <h5 class="fs-5 fw-bold text-secondary text-center">Level : hard</h5>
-              <h5 class="fs-3 fw-bold text-success text-center ">Play !</h5>
-            </div> -->
-
-          </div>
-
-
+          <div id="sessionsList" class="row p-3 d-flex justify-content-center"></div>
         </div>
       </div>
-
     </section>
 
   </main>
@@ -1104,9 +914,6 @@
     </div>
   </footer>
 
-
-
-
     <script src="website/websiteUtils.js"></script>
     <script src="website/websiteConfig.js"></script>
     <script src="website/chat.js"></script>
@@ -1135,8 +942,6 @@
     <script src="pong_game/js/gameUtils.js"></script>
     <script src="pong_game/js/inputUtils.js"></script>
     <script src="pong_game/js/pong.js"></script>
-
-
 
     <script src="https://kit.fontawesome.com/d4cc5cee10.js" crossorigin="anonymous"></script>
 
