@@ -52,8 +52,10 @@ services:
     networks:
       - pong
     volumes:
+      - ./requirements/backend/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
       - ./requirements/backend/redis:/data
     env_file: .env
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
 
   postgresql:
     image: postgres:15.5

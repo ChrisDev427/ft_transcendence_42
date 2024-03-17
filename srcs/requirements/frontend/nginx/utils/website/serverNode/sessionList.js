@@ -1,5 +1,6 @@
 
-function updateSessionsList(sessions) {
+function updateSessionsList(sessions, peer) {
+
     let index = 1;
     var sessions = JSON.parse(sessions);
 
@@ -14,7 +15,7 @@ function updateSessionsList(sessions) {
     }
 
     sessions.forEach(session => {
-        sessions_createContent(session, index);
+        sessions_createContent(session, index, peer);
         index++;
         const sessionLink = document.createElement('a');
 
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function  sessions_createContent(session, index) {
+function  sessions_createContent(session, index, peer) {
 
     document.getElementById('sessionListeEmpty').classList.add('hidden-element');
 
@@ -73,22 +74,31 @@ function  sessions_createContent(session, index) {
 
     joinBtn.addEventListener('click', function() {
         // document.getElementById('joinCard' + index).remove();
-        joinSession(session, index);
+        joinSession(session, index, peer);
     })
 
 
 }
 
-function joinSession(session, index) {
+function joinSession(session, index, peer) {
 
-    socket.send(JSON.stringify({ messageType: 'join', sessionId: session.sessionId }));
-    
+    // console.log('session creator:', session.CreatorUsername);
+    // console.log('session username:', sessionUsername);
+    // peer = new SimplePeer({initiator: false});
+    // peer.on('signal', (dataPeer) => {
+    // console.log('Peer signal:', dataPeer);
+    // });
+    // socket.send(JSON.stringify({ messageType: 'join', sessionId: session.sessionId, peerId: peer }));
+
+             socket.send(JSON.stringify({ messageType: 'join', sessionId: session.sessionId }));
+
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
 
         if (data.messageType === 'confirmJoin') {
             if (data.confirme == true){
-            
+                peer.signal(data.peerId);
+                console.log ("connecté au peerID : ", data.peerId);
                 leftPlayerName = session.CreatorUsername;
                 rightPlayerName= sessionUsername;
                 level = session.level;
@@ -100,7 +110,7 @@ function joinSession(session, index) {
                 showSection("playPong");
                 document.getElementById('gameDiv').classList.remove('hidden-element');
                 run();
-            
+
                 document.getElementById('joinCard' + index).remove();
                 if (document.getElementById('sessionsList').childElementCount == 0 ) {
                     document.getElementById('sessionListeEmpty').classList.remove('hidden-element');

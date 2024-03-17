@@ -84,6 +84,7 @@
 
 
 let socket;
+let peer;
 let chatInit = false;
 
 function waitForWebSocketConnection(username) {
@@ -122,12 +123,22 @@ function waitForWebSocketConnection(username) {
         if (data.messageType === 'updateSessions') {
             console.log('Updating sessions list...');
             console.log(data.sessions);
-            updateSessionsList(data.sessions);
+            updateSessionsList(data.sessions, peer);
         }
     });
-    
 
 
+    // socket.addEventListener('message', (event) => {
+    //     const data = JSON.parse(event.data);
+    //     if (data.messageType === 'confirmCreat') {
+    //         peer = new SimplePeer({initiator: true, trickle: false});
+    //         peer.on('signal', (data) => {
+    //             console.log('Peer signal:', data);
+    //             socket.send(JSON.stringify({ messageType: 'createPeer', sessionId: data.sessionId, peerId: data }));
+    //         }
+    //         );
+    //     }
+    // });
 
 
     socket.addEventListener('message', (event) => {
@@ -164,10 +175,38 @@ function waitForWebSocketConnection(username) {
         }
     });
 
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'position') {
+            console.log( data.pos, data.cote);
+            if (data.cote == "left"){
+                leftPaddleY = data.pos;
+            }
+            else{
+                rightPaddleY = data.pos;
+            }
+        }
+    });
+
 
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
+
+        // peer.on('connect', () => {
+        //     console.log('Peer connected');
+        // });
+        // peer.signal(data.peerId);
+        // peer.on('data', (data) => {
+        //     console.log('Peer data:', data.toString());
+        // });
+        // peer.on('error', (error) => {
+        //     console.error('Peer error:', error);
+        // });
+        // peer.on('close', () => {
+        //     console.log('Peer closed');
+        // });
+        // peer.send('Hello, im', sessionUsername);
 
         if (data.messageType === 'confirmJoin') {
             console.log(data.username, "a rejoind la session");

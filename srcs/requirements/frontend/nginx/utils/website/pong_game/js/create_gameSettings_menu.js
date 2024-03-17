@@ -242,13 +242,13 @@ function initGameSession() {
     return socketSession;
 }
 
-function updateSessionsList(sessions) {
+function updateSessionsList(sessions, peer) {
     // const sessionsListElement = document.getElementById('sessionsList');
     // sessionsListElement.innerHTML = '';
 
     let index = 1;
     sessions.forEach(session => {
-        sessions_createContent(session, index);
+        sessions_createContent(session, index, peer);
         index++;
         // const sessionLink = document.createElement('a');
         // // sessionLink.href = `https://transcendence42.ddns.net/#playPong`;
@@ -330,33 +330,38 @@ function  sessions_createContent(session, index) {
     document.getElementById('sessionsList').appendChild(div);
 
     joinBtn.addEventListener('click', function() {
-        joinSession(session, index);
+        joinSession(session, index, peer);
     })
 
 
 }
 
-function joinSession(session, index) {
+// function joinSession(session, index, peer) {
 
-    socket.send(JSON.stringify({ action: 'join', sessionId: session.id, username:session }));
+//     peer = new SimplePeer();
+//     peer.on('signal', (data) => {
+//         console.log('Peer signal:', data);
+//         socket.send(JSON.stringify({ messageType: 'join', peerId: data, sessionId: session.id, username:sessionUsername }));
+//     });
+//         // socket.send(JSON.stringify({ action: 'join', sessionId: session.id, username:session }));
 
-    leftPlayerName = session.CreatorUsername;
-    rightPlayerName= sessionUsername;
-    level = session.level;
-    playOnline = true;
-    twoPlayers = true;
-    start = true
-    setPlayerNameToPrint(leftPlayerName, rightPlayerName);
-    printConsoleInfos();
-    showSection("playPong");
-    document.getElementById('gameDiv').classList.remove('hidden-element');
-    run();
+//     leftPlayerName = session.CreatorUsername;
+//     rightPlayerName= sessionUsername;
+//     level = session.level;
+//     playOnline = true;
+//     twoPlayers = true;
+//     start = true
+//     setPlayerNameToPrint(leftPlayerName, rightPlayerName);
+//     printConsoleInfos();
+//     showSection("playPong");
+//     document.getElementById('gameDiv').classList.remove('hidden-element');
+//     run();
 
-    document.getElementById('joinCard' + index).remove();
-    if (document.getElementById('sessionsList').childElementCount == 0 ) {
-        document.getElementById('sessionListeEmpty').classList.remove('hidden-element');
-    }
-}
+//     document.getElementById('joinCard' + index).remove();
+//     if (document.getElementById('sessionsList').childElementCount == 0 ) {
+//         document.getElementById('sessionListeEmpty').classList.remove('hidden-element');
+//     }
+// }
 
 
 function create_room() {
@@ -366,6 +371,13 @@ function create_room() {
         const data = JSON.parse(event.data);
         if (data.messageType === 'confirmCreat') {
             if (data.confirme == "true"){
+
+                peer = new SimplePeer({initiator: true, trickle: false});
+                peer.on('signal', (dataPeer) => {
+                    console.log('Peer signal:', dataPeer);
+                    socket.send(JSON.stringify({ messageType: 'createPeer', sessionId: data.sessionId, peerId: dataPeer }));
+                }
+                );
                 document.getElementById('containerGameMenu').classList.add('hidden-element');
 
                 navbarSwitch('off');

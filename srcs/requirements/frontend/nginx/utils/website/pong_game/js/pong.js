@@ -4,7 +4,10 @@
 // printConsoleInfos();
 // Fonction principale de mise à jour et de rendu
 
+let i = 0;
+
 function run() {
+
 
     printGame();
     printInfos();
@@ -17,7 +20,7 @@ function run() {
     }
     // serve();
 
-    
+
 
     if (playLocal){
         serve();
@@ -66,7 +69,7 @@ function run() {
             }
             leftPaddleY = (canvas.height - paddleHeight) / 2;
             rightPaddleY = (canvas.height - paddleHeight) / 2;
-            
+
         }
         // Left Paddle Bounce
         if (
@@ -94,7 +97,7 @@ function run() {
         }
 
     }
-    
+
 
 
 
@@ -109,10 +112,10 @@ function run() {
 
 
     if (playOnline){
-   
-        
-        
-        
+
+
+
+
         if (leftPlayerName == sessionUsername){
             if (q_keyPressed && leftPaddleY > 0) {
                 leftPaddleY -= level + 1.8;
@@ -138,18 +141,18 @@ function run() {
                 sendPaddlePositions(rightPaddleY, "right")
             }
         }
-        
 
-        
 
-  
-        
-        
+
+
+
+
+
         if (leftPlayerName == sessionUsername){
             serve();
             // sendPaddlePositions(leftPaddleY, "left");
             // sendPaddlePositions(rightPaddleY, "right");
-            
+
             // Ball Update Position
             ballX += ballSpeedX;
             ballY += ballSpeedY;
@@ -160,7 +163,7 @@ function run() {
 
 
             // sendValue(spaceBarPressed, rightPaddleHand, leftPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched);
-            
+
 
 
 
@@ -191,16 +194,12 @@ function run() {
                 }
                 leftPaddleY = (canvas.height - paddleHeight) / 2;
                 rightPaddleY = (canvas.height - paddleHeight) / 2;
-                
-                // sendPaddlePositions(leftPaddleY, "left");
-                // sendPaddlePositions(rightPaddleY, "right");
 
-
-
-
+                sendPaddlePositions(leftPaddleY, "left");
+                sendPaddlePositions(rightPaddleY, "right");
                 // sendValue(spaceBarPressed,leftPaddleHand, rightPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched)
             }
-    
+
             // Left Paddle Bounce
             if (
                 ballX - ballSize < paddleWidth &&
@@ -220,20 +219,20 @@ function run() {
                 } else {
                     applauseFX.play();
                 }
-    
+
                 leftPaddleY = (canvas.height - paddleHeight) / 2;
                 rightPaddleY = (canvas.height - paddleHeight) / 2;
-                // sendPaddlePositions(leftPaddleY, "left");
-                // sendPaddlePositions(rightPaddleY, "right");
+                sendPaddlePositions(leftPaddleY, "left");
+                sendPaddlePositions(rightPaddleY, "right");
 
 
 
                 // sendValue(spaceBarPressed,leftPaddleHand, rightPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched)
             }
-                
+
         }
-        
-        
+
+
     }
     // Appeler la fonction update à la prochaine frame
     requestAnimationFrame(run);
@@ -264,6 +263,7 @@ function sendPaddlePositions(pos, cote) {
         messageType: 'updatePaddlePositions',
         pos: pos,
         cote: cote,
+        time: new Date().toLocaleTimeString()
     });
 
     socket.send(message);
