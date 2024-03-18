@@ -89,7 +89,7 @@ let chatInit = false;
 function waitForWebSocketConnection(username) {
     return new Promise((resolve, reject) => {
         if (!socket || socket.readyState !== WebSocket.OPEN)
-                     socket = new WebSocket('ws://localhost:8000/api/ws/general/?user_username=' + username);
+                     socket = new WebSocket('ws://localhost:8000/ws/general/?user_username=' + username);
 
         socket.addEventListener('open', () => {
             console.log('Connected to WebSocket server');
@@ -179,7 +179,9 @@ function waitForWebSocketConnection(username) {
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.messageType === 'position') {
-            console.log( data.pos, data.cote);
+            
+            
+            // console.log( data.pos, data.cote);
             if (data.cote == "left"){
                 leftPaddleY = data.pos;
             }

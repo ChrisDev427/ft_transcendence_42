@@ -4,7 +4,9 @@ import uuid
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from urllib.parse import parse_qs
+import datetime
 
+import time as tr
 class Session:
     def __init__(self, session_id, creator_username, is_private, level):
         self.session_id = session_id
@@ -208,9 +210,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
         if (messageType == "updatePaddlePositions"):
             session = search_player_in_game(self.user_username)
- 
+
+     
+
             await self.channel_layer.group_send(
-                self.room_group_name, 
+                self.room_group_name,
                 {
                     "type": "position.Paddle",
                     "messageType": "position", 
@@ -246,14 +250,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def position_Paddle(self, event):
         message_type = event.get("messageType")
 
+
         username = event.get("username")
         players = event.get("players")
         for player in players:
             if player == self.user_username and username != self.user_username:
+            
+
                 await self.send(text_data=json.dumps({
                     'messageType': message_type,
                     'pos': event.get("pos"),
-                    'cote': event.get("cote")
+                    'cote': event.get("cote"),
                 }))
 
 
