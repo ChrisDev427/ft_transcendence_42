@@ -1,46 +1,29 @@
 
 function updateSessionsList(sessions) {
-    // const sessionsListElement = document.getElementById('sessionsList');
-    // sessionsListElement.innerHTML = '';
-
     let index = 1;
+    var sessions = JSON.parse(sessions);
+
+    const to_remove = document.getElementById("sessionsList");
+    const childCount = to_remove.childElementCount;
+
+    if (childCount > 0){
+
+        while(to_remove.firstChild){
+            to_remove.removeChild(to_remove.firstChild)
+        }
+    }
+
     sessions.forEach(session => {
         sessions_createContent(session, index);
         index++;
-        // const sessionLink = document.createElement('a');
-        // // sessionLink.href = `https://transcendence42.ddns.net/#playPong`;
-        // sessionLink.href = '#playPong';
-        // sessionLink.textContent = `Session ID: ${session.id}, Created At: ${session.createdAt}, By : ${session.CreatorUsername}`;
-        // sessionLink.addEventListener('click', () => {
+        const sessionLink = document.createElement('a');
 
-        //     socket.send(JSON.stringify({ action: 'join', sessionId: session.id, username:session }));
-
-        //     leftPlayerName ="test";
-        //     rightPlayerName="test1";
-
-        //     level = 5;
-        //     playOnline = true;
-        //     twoPlayers = true;
-        //     start = true;
-
-        //     setPlayerNameToPrint(leftPlayerName, rightPlayerName);
-        //     setHandToStart();
-        //     printConsoleInfos();
-
-        //     showSection("playPong");
-        //     document.getElementById('gameDiv').classList.remove('hidden-element');
-        //     run();
-
-        // });
-
-        // const sessionElement = document.createElement('p');
-        // sessionElement.appendChild(sessionLink);
-
-        // sessionsListElement.appendChild(sessionElement);
     });
 
     console.log('Updated sessions list:', sessions);
 }
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('hashchange', () => {
@@ -86,7 +69,10 @@ function  sessions_createContent(session, index) {
 
     document.getElementById('sessionsList').appendChild(div);
 
+
+
     joinBtn.addEventListener('click', function() {
+        // document.getElementById('joinCard' + index).remove();
         joinSession(session, index);
     })
 
@@ -95,22 +81,36 @@ function  sessions_createContent(session, index) {
 
 function joinSession(session, index) {
 
-    socket.send(JSON.stringify({ action: 'join', sessionId: session.id, username:session }));
+    socket.send(JSON.stringify({ messageType: 'join', sessionId: session.sessionId }));
+    
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
 
-    leftPlayerName = session.CreatorUsername;
-    rightPlayerName= sessionUsername;
-    level = session.level;
-    playOnline = true;
-    twoPlayers = true;
-    start = true
-    setPlayerNameToPrint(leftPlayerName, rightPlayerName);
-    printConsoleInfos();
-    showSection("playPong");
-    document.getElementById('gameDiv').classList.remove('hidden-element');
-    run();
+        if (data.messageType === 'confirmJoin') {
+            if (data.confirme == true){
+            
+                leftPlayerName = session.CreatorUsername;
+                rightPlayerName= sessionUsername;
+                level = session.level;
+                playOnline = true;
+                twoPlayers = true;
+                start = true
+                setPlayerNameToPrint(leftPlayerName, rightPlayerName);
+                printConsoleInfos();
+                showSection("playPong");
+                document.getElementById('gameDiv').classList.remove('hidden-element');
+                run();
+            
+                document.getElementById('joinCard' + index).remove();
+                if (document.getElementById('sessionsList').childElementCount == 0 ) {
+                    document.getElementById('sessionListeEmpty').classList.remove('hidden-element');
+                }
 
-    document.getElementById('joinCard' + index).remove();
-    if (document.getElementById('sessionsList').childElementCount == 0 ) {
-        document.getElementById('sessionListeEmpty').classList.remove('hidden-element');
-    }
+            }
+            else{
+                console.log("tu es deja dans une room");
+            }
+
+        }
+    });
 }

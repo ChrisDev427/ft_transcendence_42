@@ -175,13 +175,16 @@ btn.twoPlayersBtn.addEventListener("click", function() {
     if(playOnline) {
 
         const message = JSON.stringify({ 
-            action: 'createSession',
+            messageType: 'createSession',
             level: level,
-            paddleHeight: paddleHeight,
+            // paddleHeight: paddleHeight,
+
             // id: 123,
-            username: sessionUsername,
+            // username: sessionUsername,
         });
         console.log("session user create ", sessionUsername);
+        // socket.send(message);
+
     }
 });
 
@@ -333,6 +336,6 @@ quitGameBtn.addEventListener("click", function() {
     resetGameValues();
     showSection('main');
 
-    const message = JSON.stringify({ action: 'quitSession' });
+    const message = JSON.stringify({ messageType: 'quitSession' });
     socket.send(message);
 });
