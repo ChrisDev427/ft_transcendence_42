@@ -6,11 +6,15 @@
 
 let i = 0;
 
-function run() {
+function run(peer) {
 
+    // console.log("peer", peer);
 
-    printGame();
-    printInfos();
+    peer.send('Hello');
+    peer.on('data', (data) => {
+        console.log('Données reçues de l\'autre pair :', data );
+        // Faites quelque chose avec les données reçues...
+    });
 
     if(!start) {
         // if(tournament) {
@@ -121,24 +125,24 @@ function run() {
                 leftPaddleY -= level + 1.8;
                 printConsoleInfos();
 
-                sendPaddlePositions(leftPaddleY, "left")
+                // sendPaddlePositions(leftPaddleY, "left")
             } else if (a_keyPressed && leftPaddleY + paddleHeight < canvas.height) {
                 leftPaddleY += level + 1.8;
                 printConsoleInfos();
 
-                sendPaddlePositions(leftPaddleY, "left")
+                // sendPaddlePositions(leftPaddleY, "left")
             }
         }
         else{
             if (q_keyPressed && rightPaddleY > 0) {
                 rightPaddleY -= level + 1.8;
-                sendPaddlePositions(rightPaddleY, "right")
-                printConsoleInfos();
+                // sendPaddlePositions(rightPaddleY, "right")
+                // printConsoleInfos();
             } else if (a_keyPressed && rightPaddleY + paddleHeight < canvas.height) {
                 rightPaddleY += level + 1.8;
-                printConsoleInfos();
+                // printConsoleInfos();
 
-                sendPaddlePositions(rightPaddleY, "right")
+                // sendPaddlePositions(rightPaddleY, "right")
             }
         }
 
@@ -156,7 +160,7 @@ function run() {
             // Ball Update Position
             ballX += ballSpeedX;
             ballY += ballSpeedY;
-            sendBallPositions(ballX, ballY);
+            // sendBallPositions(ballX, ballY);
 
 
 
@@ -222,8 +226,8 @@ function run() {
 
                 leftPaddleY = (canvas.height - paddleHeight) / 2;
                 rightPaddleY = (canvas.height - paddleHeight) / 2;
-                sendPaddlePositions(leftPaddleY, "left");
-                sendPaddlePositions(rightPaddleY, "right");
+                // sendPaddlePositions(leftPaddleY, "left");
+                // sendPaddlePositions(rightPaddleY, "right");
 
 
 
@@ -231,8 +235,11 @@ function run() {
             }
 
         }
-
-
+        // peer.send('Hello, im', sessionUsername);
+        // peer.on('data', (data) => {
+        //     console.log('Données reçues de l\'autre pair :', data);
+        //     // Faites quelque chose avec les données reçues...
+        // });
     }
     // Appeler la fonction update à la prochaine frame
     requestAnimationFrame(run);

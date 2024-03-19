@@ -8,10 +8,10 @@ from datetime import datetime
 import pytz
 
 class Session:
-    def __init__(self, session_id, creator_username, creator_peer_id, is_private, level):
+    def __init__(self, session_id, creator_username, peer_creator, is_private, level):
         self.session_id = session_id
         self.creator_username = creator_username
-        # self.creator_peer_id = creator_peer_id
+        self.peer_creator = peer_creator,
         self.is_private = is_private
         self.level = level
         self.players = []
@@ -20,7 +20,7 @@ class Session:
         return {
             "sessionId": self.session_id,
             "CreatorUsername": self.creator_username,
-            # "CreatorPeerId": self.creator_peer_id,
+            "CreatorPeerId": self.peer_creator,
             "isPrivate": self.is_private,
             "level": self.level,
             "players": self.players
@@ -102,14 +102,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         "confirme": "false",
                         "username": self.user_username,
                         "players": self.user_username,
+                        "CreatorPeerId" : data["peerId"]
                     }
                 )
 
             else:
                 level = data["level"]
+                creatorPeer = data["peerId"]
                 sessionId = str(uuid.uuid4())
 
-                session = Session(sessionId, self.user_username, None, "false", level)
+                session = Session(sessionId, self.user_username, creatorPeer, "false", level)
                 session.add_player(self.user_username)
 
                 await self.channel_layer.group_send(
@@ -119,12 +121,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         "messageType": "confirmCreat",
                         "confirme": "true",
                         "username": self.user_username,
+                        "creatorPeer": creatorPeer,
                         "players": self.user_username,
                         "sessionId": sessionId,
                     }
                 )
 
-                print("Session created :", sessionId, self.user_username, level)
+                print("Session created :", sessionId, self.user_username, level,)
 
                 sessions.append(session)
 
@@ -141,12 +144,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
         #     session = find_session_by_id(sessionId)
         #     if session and session.creator_username == self.user_username:
         #         session.creator_peer_id = data["peerId"]
-        #         print("Peer created :", sessionId, self.user_username, session.creator_peer_id)
-
-
+                # print("Peer created :", session.creator_peer_id)
+        if(messageType == "playerPeer"):
+            sessionId = data["sessionId"]
+            session = find_session_by_id(sessionId)
+            session_json = convert_list_json()
+            await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "send.playerPeer",
+                        "messageType": "receivePlayerPeer",
+                        "players": session.players,
+                        "playerPeer": data["playerPeer"],
+                        "sessionCreator": session.creator_username,
+                        "session" : session_json
+                    }
+                )
 
         if(messageType == "join"):
 
+            print("sessions = ", sessions)
             if (search_player_in_game(self.user_username)):
                 print(self.user_username, "deja dans une room")
                 await self.channel_layer.group_send(
@@ -154,18 +171,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     {
                         "type": "confirm.creat",
                         "messageType": "confirmJoin",
-                        "confirme": "true", # erreur ?
+                        "confirme": "false",
                         "username": self.user_username,
-                        "players": self.user_username
+                        "players": self.user_username,
                     }
                 )
 
             else:
                 session = find_session_by_id(data["sessionId"])
                 session.add_player(self.user_username)
-                print (data)
-                # peerId = data["peerId"]
-
 
 
                 await self.channel_layer.group_send(
@@ -173,12 +187,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     {
                         "type": "confirm_join",
                         "messageType": "confirmJoin",
-                        "confirme": True,
+                        "confirme": "true",
                         "username": self.user_username,
+                        "peerCreator": session.peer_creator,
                         "players": session.players,
-                        # "peerId": peerId,
-                        # "sessionUsername": session.creator_username,
-                        # "sessionPeerId": session.creator_peer_id,
+                        "sessionUsername": session.creator_username,
+                        "sessionId": session.session_id
                     }
                 )
 
@@ -189,6 +203,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_send(
                 self.room_group_name, { "type": "session.list" ,"messageType": "updateSessions", "session": sessions_json}
             )
+
 
         if (messageType == "values"):
             session = search_player_in_game(self.user_username)
@@ -291,8 +306,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }))
 
 
-
-
     async def confirm_creat(self, event):
         message_type = event.get("messageType")
         confirme = event.get("confirme")
@@ -312,24 +325,33 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message_type = event.get("messageType")
         confirme = event.get("confirme")
         sessionCreator = event.get("sessionUsername")
-        # sessionPeerId = event.get("sessionPeerId")
+        sessionId = event.get("sessionId")
 
         players = event.get("players")
+
         for player in players:
-            if player == sessionCreator:
+            if player == self.user_username and player != sessionCreator:
                 await self.send(text_data=json.dumps({
                     'messageType': message_type,
                     'username': event.get("username"),
                     'confirme': confirme,
-                    # 'peerId': sessionPeerId
+                    'peerCreator': event.get("peerCreator"),
+                    'sessionId': sessionId,
                 }))
-                continue
-            if player == self.user_username:
+
+
+    async def send_playerPeer(self, event):
+        message_type = event.get("messageType")
+        players = event.get("players")
+        playerPeer = event.get("playerPeer")
+        sessionCreator = event.get("sessionCreator")
+
+        for player in players:
+            if player == self.user_username and player == sessionCreator:
                 await self.send(text_data=json.dumps({
                     'messageType': message_type,
-                    'username': event.get("username"),
-                    'confirme': confirme,
-                    # 'peerId': event.get("peerId")
+                    'players': players,
+                    'playerPeer': playerPeer,
                 }))
 
 
@@ -394,3 +416,4 @@ def convert_list_json():
         sessions_json.append(session.to_json())
     sessions_json2 = json.dumps(sessions_json)
     return(sessions_json2)
+ 

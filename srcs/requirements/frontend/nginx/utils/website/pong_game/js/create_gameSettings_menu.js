@@ -365,19 +365,17 @@ function  sessions_createContent(session, index) {
 
 
 function create_room() {
-    socket.send(JSON.stringify({ messageType: 'createSession', level:level }));
+    peer = new SimplePeer({initiator: true})
+    peer.once('signal', (dataPeer) => {
+        console.log('PeerCreator signal:', dataPeer);
+        socket.send(JSON.stringify({ messageType: 'createSession', level:level , peerId: dataPeer}));
+    });
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.messageType === 'confirmCreat') {
             if (data.confirme == "true"){
 
-                peer = new SimplePeer({initiator: true, trickle: false});
-                peer.on('signal', (dataPeer) => {
-                    console.log('Peer signal:', dataPeer);
-                    socket.send(JSON.stringify({ messageType: 'createPeer', sessionId: data.sessionId, peerId: dataPeer }));
-                }
-                );
                 document.getElementById('containerGameMenu').classList.add('hidden-element');
 
                 navbarSwitch('off');
@@ -443,6 +441,8 @@ function create_room() {
                 })
             }
             else{
+                //close le peer
+                peer.close();
                 console.log("Tu es deja dans une room");
             }
         }
