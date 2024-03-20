@@ -16,7 +16,7 @@ function updateSessionsList(sessions) {
     sessions.forEach(session => {
         sessions_createContent(session, index);
         index++;
-        const sessionLink = document.createElement('a');
+        // const sessionLink = document.createElement('a');
 
     });
 
@@ -81,11 +81,12 @@ function  sessions_createContent(session, index) {
 
 function joinSession(session, index) {
 
-    socket.send(JSON.stringify({ messageType: 'join', sessionId: session.sessionId }));
+    console.log('joinSession()');
     
+    socket.send(JSON.stringify({ messageType: 'join', sessionId: session.sessionId }));
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
-
+        
         if (data.messageType === 'confirmJoin') {
             if (data.confirme == true){
             
@@ -96,10 +97,10 @@ function joinSession(session, index) {
                 twoPlayers = true;
                 start = true
                 setPlayerNameToPrint(leftPlayerName, rightPlayerName);
-                printConsoleInfos();
+                // printConsoleInfos();
                 showSection("playPong");
                 document.getElementById('gameDiv').classList.remove('hidden-element');
-                run();
+                // run();
             
                 document.getElementById('joinCard' + index).remove();
                 if (document.getElementById('sessionsList').childElementCount == 0 ) {

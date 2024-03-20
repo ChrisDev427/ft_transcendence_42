@@ -3,7 +3,7 @@ function create_OnePlayer_input() {
 
     // Input part --------------------------------------------------------------
     const mainDiv = document.createElement('div');
-    mainDiv.id = 'inputDiv';
+    mainDiv.id = 'input-Div';
 
     let hr = document.createElement('hr');
     hr.classList = 'text-info mt-4';
@@ -48,7 +48,7 @@ function create_TwoPlayers_input() {
 
     // Input part --------------------------------------------------------------
     const mainDiv = document.createElement('div');
-    mainDiv.id = 'inputDiv';
+    mainDiv.id = 'input-Div';
 
     let hr = document.createElement('hr');
     hr.classList = 'text-info mt-4';
@@ -185,7 +185,7 @@ function init_Tournament_mode_buttons() {
 function create_Tournament_inputs() {
 
     const div = document.createElement('div');
-    div.id = 'inputDiv';
+    div.id = 'input-Div';
     const hr = document.createElement('hr');
     hr.classList = 'text-info my-4';
     div.appendChild(hr);

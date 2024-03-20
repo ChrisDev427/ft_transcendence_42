@@ -100,7 +100,7 @@ function waitForWebSocketConnection(username) {
                 'message' : "",
                 'time' : new Date().toLocaleTimeString(),
             }));
-            // chatGeneral_createContent(username, "is connected", new Date().toLocaleTimeString(), "online");
+            chatGeneral_createContent(username, "is connected", new Date().toLocaleTimeString(), "online");
         });
 
         socket.addEventListener('error', (error) => {
@@ -113,108 +113,164 @@ function waitForWebSocketConnection(username) {
             reject(new Error('WebSocket connection closed'));
         });
     })
-.then((socket) => {
+    .then((socket) => {
     console.log('WebSocket connection is ready');
-
-
     socket.addEventListener('message', (event) => {
+        console.log('LISTEN');
         const data = JSON.parse(event.data);
-        if (data.messageType === 'updateSessions') {
-            console.log('Updating sessions list...');
-            console.log(data.sessions);
-            updateSessionsList(data.sessions);
+        
+        switch (data.messageType) {
+            case 'updateSessions':
+                console.log('Updating sessions list...');
+                console.log(data.sessions);
+                updateSessionsList(data.sessions);
+                break;
+            
+            case 'positionBall':
+                ballX = data.ballX;
+                ballY = data.ballY;
+                break;
+            
+            case 'values':
+                spaceBarPressed = data.spaceBarPressed;
+                leftPaddleHand = data.leftPaddleHand;
+                rightPaddleHand = data.rightPaddleHand;
+                leftPlayerScore = data.leftPlayerScore;
+                rightPlayerScore = data.rightPlayerScore;
+                ballLaunched = data.ballLaunched;
+                break;
+            
+            case 'position':
+                console.log('data.pos, data.cote = ' + data.pos, data.cote);
+                if (data.cote === 'left') {
+                    leftPaddleY = data.pos;
+                } else {
+                    rightPaddleY = data.pos;
+                }
+                break;
+            
+            case 'confirmJoin':
+                console.log('JOIN');
+                console.log(data.username, "a rejoind la session", data.level);
+                leftPlayerName = sessionUsername;
+                rightPlayerName = data.username;
+                start = true;
+                setPlayerNameToPrint(leftPlayerName, rightPlayerName);
+                leftPaddleHand = true;
+                printConsoleInfos();
+                showSection("playPong");
+                document.getElementById('gameDiv').classList.remove('hidden-element');
+                run();
+                break;
+            
+            default:
+                console.log('Unhandled messageType:', data.messageType);
+                break;
         }
     });
+    
+
+    // socket.addEventListener('message', (event) => {
+    //     const data = JSON.parse(event.data);
+    //     if (data.messageType === 'updateSessions') {
+    //         console.log('Updating sessions list...');
+    //         console.log(data.sessions);
+    //         updateSessionsList(data.sessions);
+    //     }
+    // });
     
 
 
 
 
-    socket.addEventListener('message', (event) => {
-        const receivedMessage = JSON.parse(event.data);
-        // if (receivedMessage.messageType === 'classic') {
-            // const messages = receivedMessage.message;
-            // console.log("message receive")
-            // console.log(messages)
-            // let messagesToDisplay;
-            // if (!chatInit) {
-            //     messagesToDisplay = messages.slice(-10);
-            // } else {
-            //     messagesToDisplay = messages.slice(-1);
-            // }
-            // messagesToDisplay.forEach(msg => {
+    // socket.addEventListener('message', (event) => {
+    //     const receivedMessage = JSON.parse(event.data);
+    //     // if (receivedMessage.messageType === 'classic') {
+    //         // const messages = receivedMessage.message;
+    //         // console.log("message receive")
+    //         // console.log(messages)
+    //         // let messagesToDisplay;
+    //         // if (!chatInit) {
+    //         //     messagesToDisplay = messages.slice(-10);
+    //         // } else {
+    //         //     messagesToDisplay = messages.slice(-1);
+    //         // }
+    //         // messagesToDisplay.forEach(msg => {
 
-            chatGeneral_createContent(receivedMessage.owner, receivedMessage.message, receivedMessage.time, receivedMessage.messageType);
-            // });
-            const messageContainer = document.getElementById('chat-area');
-            messageContainer.scrollTop = messageContainer.scrollHeight;
-        // }
-        chatInit = true;
-    });
-
-
+    //         chatGeneral_createContent(receivedMessage.owner, receivedMessage.message, receivedMessage.time, receivedMessage.messageType);
+    //         // });
+    //         const messageContainer = document.getElementById('chat-area');
+    //         messageContainer.scrollTop = messageContainer.scrollHeight;
+    //     // }
+    //     chatInit = true;
+    // });
 
 
-    socket.addEventListener('message', (event) => {
-        const data = JSON.parse(event.data);
-        if (data.messageType === 'positionBall') {
-            // console.log("positionBall : ", data.ballX, data.ballY);
-            ballX = data.ballX;
-            ballY = data.ballY;
-        }
-    });
-
-    socket.addEventListener('message', (event) => {
-        const data = JSON.parse(event.data);
-        if (data.messageType === 'values') {
-            spaceBarPressed = data.spaceBarPressed,
-            leftPaddleHand = data.leftPaddleHand,
-            rightPaddleHand = data.rightPaddleHand,
-            leftPlayerScore = data.leftPlayerScore,
-            rightPlayerScore = data.rightPlayerScore,
-            ballLaunched = data.ballLaunched
-        }
-    });
-
-    socket.addEventListener('message', (event) => {
-        const data = JSON.parse(event.data);
-        if (data.messageType === 'position') {
-            console.log( data.pos, data.cote);
-            if (data.cote == "left"){
-                leftPaddleY = data.pos;
-            }
-            else{
-                rightPaddleY = data.pos;
-            }
-        }
-    });
 
 
-    socket.addEventListener('message', (event) => {
-        const data = JSON.parse(event.data);
+    // socket.addEventListener('message', (event) => {
+    //     const data = JSON.parse(event.data);
+    //     if (data.messageType === 'positionBall') {
+    //         // console.log("positionBall : ", data.ballX, data.ballY);
+    //         ballX = data.ballX;
+    //         ballY = data.ballY;
+    //     }
+    // });
 
-        if (data.messageType === 'confirmJoin') {
-            console.log(data.username, "a rejoind la session");
-            console.log(data.username, "a rejoind la session", data.level);
-            leftPlayerName =sessionUsername;
-            rightPlayerName=data.username;
+    // socket.addEventListener('message', (event) => {
+    //     const data = JSON.parse(event.data);
+    //     if (data.messageType === 'values') {
+    //         spaceBarPressed = data.spaceBarPressed,
+    //         leftPaddleHand = data.leftPaddleHand,
+    //         rightPaddleHand = data.rightPaddleHand,
+    //         leftPlayerScore = data.leftPlayerScore,
+    //         rightPlayerScore = data.rightPlayerScore,
+    //         ballLaunched = data.ballLaunched
+    //     }
+    // });
+
+    // socket.addEventListener('message', (event) => {
+    //     const data = JSON.parse(event.data);
+    //     if (data.messageType === 'position') {
+    //         console.log( 'data.pos, data.cote = ' + data.pos, data.cote);
+    //         if (data.cote == "left") {
+    //             leftPaddleY = data.pos;
+    //         }
+    //         else {
+    //             rightPaddleY = data.pos;
+    //         }
+    //     }
+    // });
 
 
-            start = true;
+    // socket.addEventListener('message', (event) => {
 
-            setPlayerNameToPrint(leftPlayerName, rightPlayerName);
-            // setHandToStart();
-            leftPaddleHand = true;
+    //     console.log('confirm join listen');
 
-            printConsoleInfos();
+    //     const data = JSON.parse(event.data);
 
-            showSection("playPong");
-            document.getElementById('gameDiv').classList.remove('hidden-element');
-            run();
+    //     if (data.messageType === 'confirmJoin') {
+    //     console.log('JOIN');
+            
+    //         console.log(data.username, "a rejoind la session", data.level);
+    //         leftPlayerName = sessionUsername;
+    //         rightPlayerName = data.username;
 
-            showSection('playPong');
-        }
-    });
+
+    //         start = true;
+
+    //         setPlayerNameToPrint(leftPlayerName, rightPlayerName);
+    //         // setHandToStart();
+    //         leftPaddleHand = true;
+
+    //         printConsoleInfos();
+
+    //         showSection("playPong");
+    //         document.getElementById('gameDiv').classList.remove('hidden-element');
+    //         run();
+
+    //     }
+    // });
 
 
 

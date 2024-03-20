@@ -242,11 +242,11 @@ function verifyToken() {
     })
     .then(response => {
         if (response.ok) {
-            console.log('acces token verified');
+            // console.log('acces token verified');
 
         } else {
             refreshAccessToken()
-            console.log('refreshAccessToken() called');
+            // console.log('refreshAccessToken() called');
         }
     })
 }

@@ -39,7 +39,7 @@
 </head>
 
 
-<body style="background-color:rgb(170, 170, 170);">
+<body style="background-color:rgb(94, 94, 94);">
   <!--
 
     document.addEventListener('mousemove', (event) => {
@@ -88,22 +88,27 @@
 
   <header id="header" class="pb-5 mb-3">
     <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark bg-info py-1">
-      <div class="container">
-        <a class="navbar-brand fw-bold btn border-0" onclick="showSection('main')">ft_transcendence42</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+      <div class="container" style="min-height: 45px">
+        <h5 class="text-white fw-bold fs-4" role="button" onclick="showSection('main')">ft_transcendence</h5>
+        
+        <button class="navbar-toggler border-0 fa-solid fa-bars" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <!-- <span class="navbar-toggler-icon"></span> -->
+          <!-- <i class="fa-solid fa-bars"></i> -->
+          <!-- <i class="fas fa-poo fa-2x text-danger"></i> -->
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
             <!-- DropDown Profile -->
             <li id="dropDownProfile" class="nav-item dropdown unvisible">
-              <a class="nav-link bi-person-circle  fs-3" href="#" role="toggle" data-bs-toggle="dropdown" aria-expanded="false"></a>
+              <a class="nav-link bi-person-circle text-white fs-3" href="#" role="toggle" data-bs-toggle="dropdown" aria-expanded="false"></a>
               <div id="dropdown-menu" class="dropdown-menu bg-info py-0 border-0 fade-in">
                 <div class="card mx-auto pb-3 shadow-lg border-0" style="width: 18rem;">
-                  <img id="avatar-img_profilDropdown" src="" class="card-img-top mx-auto mt-3 rounded" alt="avatar-img" style="width: 150px;">
+                  <img id="avatar-img_profilDropdown" src="" class="card-img-top mx-auto mt-3 rounded" alt="avatar-img" style="width: 100px;">
                   <div class="card-body">
                     <h4 id="username-profileDropdown" style="font-family: 'Bagel Fat One', sans-serif;" class="card-title text-info text-center text-uppercase mb-3"></h4>
-                    <p id="bio-profileDropdown" class="card-text text-secondary text-center fw-light"></p>
+                    <div style="overflow-y: auto; max-height: 100px;">
+                      <p id="bio-profileDropdown" class="card-text text-center fw-light"></p>
+                    </div>
                     <div class="col d-flex justify-content-evenly mt-4">
                       <a class="btn btn-sm btn-outline-info fw-bold bi bi-speedometer" href="#dashboard" onclick="getDashboardInfos()"></a>
                       <!-- <a class="btn btn-sm btn-outline-info fw-bold bi bi-database-fill" href="#gameHistory"></a> -->
@@ -115,16 +120,16 @@
               </div>
             </li>
             <li class="nav-item  mt-2">
-              <a class="nav-link fw-bold" href="#gameMenu">Play Pong</a>
+              <a class="nav-link fw-bold  text-white" href="#gameMenu">Play Pong</a>
             </li>
             <li id="nav-signIn" class="nav-item mt-2">
-              <a class="nav-link fw-bold" href="#signIn">Sign In</a>
+              <a class="nav-link fw-bold  text-white" href="#signIn">Sign In</a>
             </li>
             <li id="nav-signUp" class="nav-item mt-2">
-              <a class="nav-link fw-bold" href="#signUp">Sign Up</a>
+              <a class="nav-link fw-bold  text-white" href="#signUp">Sign Up</a>
             </li>
             <li class="nav-item mt-2">
-              <a class="nav-link fw-bold" href="#aboutTheTeam">About the team</a>
+              <a class="nav-link fw-bold  text-white" href="#aboutTheTeam">About the team</a>
             </li>
           </ul>
         </div>
@@ -135,7 +140,7 @@
   <main>
 
     <section id="main" class="d-flex justify-content-center fade-in hidden-element">
-      <div class="container bg-white rounded-bottom-4 shadow" >
+      <div class="container bg-white rounded-bottom-4 shadow" style="max-width: 1000px;">
         <div class="col d-flex justify-content-center mt-4 mx-4">
           <h1 class="display-2 text-info fw-bold">ft_transcendence</h1>
         </div>
@@ -143,10 +148,10 @@
           <img class="w-75" style="opacity: 70%;" src="img/img-cartoon.png" alt="img-cartoon">
         </div>
         <div class="row ">
-          <div class="col-lg-9">
-            <H3 class="display-6 text-center text-md-end  fw-bold py-2">Welcome to ft_transcendence</H3>
+          <div class="col-lg-9 px-5 my-auto mt-3">
+            <!-- <H3 class="display-6 text-center text-md-end  fw-bold py-2">Welcome to ft_transcendence</H3> -->
             <H4 class="text-center text-md-end text-secondary fw-bold ">The last common core project at school 42</H4>
-            <p class="lead fs-5 text-center text-secondary">The ft_transcendence project is a complex and ambitious endeavor aiming
+            <p class="lead fs-5 text-center text-black">The ft_transcendence project is a complex and ambitious endeavor aiming
               to create an online gaming platform based on table tennis (ping-pong). It is a large-scale project implementing diverse
               features, ranging from user management to real-time table tennis matches.
               It is a versatile project that combines aspects of web development, real-time functionality, and tournament management
@@ -155,33 +160,33 @@
             </p>
           </div>
 
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-3 mb-3 p-3">
             <div class="col d-flex justify-content-center mt-4 mb-2 mb-lg-5">
-              <a class="btn btn-info text-light shadow p-4 w-75" href="#gameMenu">Play Pong</a>
+              <a class="btn btn-info text-light fw-bold shadow p-4 w-75" href="#gameMenu">Play Pong</a>
             </div>
 
             <!-- TO HIDE WHEN USER IS CONNECTED -->
             <div id="signIn-signUp-btn">
               <div class="col d-flex justify-content-center mb-2">
-                <a class="btn btn-outline-info  shadow p-2 w-75" href="#signIn">Sign In</a>
+                <a class="btn btn-outline-info  fw-bold shadow p-2 w-75" href="#signIn">Sign In</a>
               </div>
               <div class="col d-flex justify-content-center mb-2">
-                <a class="btn btn-outline-info  shadow p-2 w-75" href="#signUp">Sign Up</a>
+                <a class="btn btn-outline-info  fw-bold shadow p-2 w-75" href="#signUp">Sign Up</a>
               </div>
             </div>
 
             <!-- TO SHOW WHEN USER IS CONNECTED -->
             <div id="friends-gameHistory-btn" class="unvisible">
               <div class="col d-flex justify-content-center mb-2">
-                <a class="btn btn-outline-info  shadow p-2 w-75" href="#dashboard" onclick="getDashboardInfos()">Dashboard</a>
+                <a class="btn btn-outline-info  fw-bold shadow p-2 w-75" href="#dashboard" onclick="getDashboardInfos()">Dashboard</a>
               </div>
               <div class="col d-flex justify-content-center mb-2">
-                <a class="btn btn-outline-info  shadow p-2 w-75" href="#gameHistory">Game History</a>
+                <a class="btn btn-outline-info  fw-bold shadow p-2 w-75" href="#gameHistory">Game History</a>
               </div>
             </div>
 
             <div class="col d-flex justify-content-center ">
-              <a class="btn btn-outline-info  shadow p-2 w-75 mb-4" href="#aboutTheTeam">About the team</a>
+              <a class="btn btn-outline-info fw-bold shadow p-2 w-75 mb-4" href="#aboutTheTeam">About the team</a>
             </div>
           </div>
         </div>
@@ -198,17 +203,17 @@
 
     </section>
     <section id="gameMenu" class="fade-in hidden-element">
-      <div id="containerGameMenu" class="container bg-white rounded-bottom-4 shadow p-2" style="width: 90%; max-width: 600px;">
+      <div id="containerGameMenu" class="container bg-white rounded-bottom-4 shadow p-2" style="width: 90%; max-width: 400px;">
         <h1 class="display-1 fw-bold  text-info text-center">Pong</h1>
         <hr class="text-info">
 
-          <div class="col d-flex justify-content-end p-2">
-            <button type="button" class="btn btn-sm btn-outline-info me-1" id="resetBtnUI">reset</button>
-            <button type="button" class="btn btn-sm btn-outline-danger" id="clBtnUI">quit</button>
-          </div>
-          <div class="col d-flex justify-content-center">
-            <h1 class="text-info display-6">Settings</h1>
-          </div>
+        <div class="col d-flex justify-content-end p-2">
+          <button type="button" class="btn btn-sm btn-outline-info me-1" id="resetBtnUI">reset</button>
+          <button type="button" class="btn btn-sm btn-outline-danger" id="clBtnUI">quit</button>
+        </div>
+        <div class="col d-flex justify-content-center">
+          <h1 class="text-info display-6">Settings</h1>
+        </div>
         <hr class="text-info mb-4">
         <div class="col d-flex justify-content-center m-3">
           <button type="button" class="btn btn-outline-info mx-2" id="localBtn">Local</button>
@@ -231,6 +236,7 @@
         <div id="createRoomMenu" class="col d-flex justify-content-center m-3 hidden-element">
           <button type="button" class="btn btn-outline-info disabled" id="createRoomBtn">Create Room</button>
         </div>
+    
       </div>
     </section>
 
@@ -274,7 +280,7 @@
               </div>
             </div>
 
-            <div id="chat-container_session" class="container bg-light bg-opacity-50 rounded-4 my-3 shadow-lg p-2" style="height: 150px; max-width: 300px;">
+            <div id="chat-container_session" class="container bg-light bg-opacity-50 rounded-4 my-3 shadow-lg p-2 hidden-element" style="height: 150px; max-width: 300px;">
               <div id="chat-messages_session" class="" style="overflow-y: auto; height: 100px;"></div>
               <input class="form-control form-control-sm border-info" type="text" id="message-input_session" placeholder="Ecris un chat session..." onkeydown="handleKeyPress(event)">
 
@@ -291,114 +297,127 @@
 
 
     <section id="aboutTheTeam" class="fade-in hidden-element">
-      <div class="container p-3 pb-5 bg-white shadow rounded-bottom-4" >
+      <div class="container p-5 bg-white shadow rounded-bottom-4" style="max-width: 1500px;">
         <h1 class="display-1 fw-bold text-info text-center">The team</h1>
-        <div class="row py-2 d-flex justify-content-center">
+        <div class="row py-2 d-flex justify-content-evenly">
 
-          <div class="col-12 col-md-5 me-md-5 pt-4 rounded shadow bg-white">
-            <img src="img/img-chris.jpg" alt="img_chris" class="d-block mx-auto m-4 shadow-lg" style="border-radius: 8px; width: 200px;">
-            <h4 class="fw-bold text-center cl-text">Christophe MASSA</h4>
-            <ul class="list-inline text-center fs-4 mb-0">
-              <li class="list-inline-item">
-                <a class="text-info" href="https://github.com/ChrisDev427" target="_blank" rel="nofollow">
-                  <i class="bi-github custom-icon p-2"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a class="text-info" href="https://www.linkedin.com/in/christophe-massa-2406b4273/" target="_blank" rel="nofollow">
-                  <i class="bi-linkedin custom-icon p-2"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a class="text-info" href="mailto:chrisdev427@gmail.com" target="_blank" rel="nofollow">
-                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
-                </a>
-              </li>
-            </ul>
-            <p class="fw-light text-center text-secondary p-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+          <div class="col-12 col-sm-6 col-lg-3 pt-4">
+            <div class="p-3 rounded shadow bg-white">
+
+              <img src="img/img-chris.jpg" alt="img_chris" class="d-block mx-auto m-4 shadow-lg" style="border-radius: 8px; width: 120px;">
+              <h4 class="fw-bold text-center cl-text">Christophe MASSA</h4>
+              
+              <ul class="list-inline text-center fs-3 mb-0">
+                <li class="list-inline-item">
+                  <a class="text-info" href="https://github.com/ChrisDev427" target="_blank" rel="nofollow">
+                    <i class="bi-github custom-icon p-2"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="text-info" href="https://www.linkedin.com/in/christophe-massa-2406b4273/" target="_blank" rel="nofollow">
+                    <i class="bi-linkedin custom-icon p-2"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="text-info" href="mailto:chrisdev427@gmail.com" target="_blank" rel="nofollow">
+                    <i class="bi-envelope-at-fill custom-icon p-2 fs-2"></i>
+                  </a>
+                </li>
+              </ul>
+              <p class="fw-light text-center p-2">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+            </div>
           </div>
 
-          <div class="col-12 col-md-5 mt-5 mt-md-0 pt-4 rounded shadow bg-white">
-            <img src="img/img_axel.jpg" alt="img_axel" class="d-block mx-auto m-4 shadow-lg" style="border-radius: 8px; width: 200px;">
-            <h4 class="fw-bold text-center cl-text">Axel FERNANDEZ</h4>
-            <ul class="list-inline text-center fs-4 mb-0">
-              <li class="list-inline-item">
-                <a class="text-info" href="https://github.com/AxelFdez" target="_blank" rel="nofollow">
-                  <i class="bi-github custom-icon p-2"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a class="text-info" href="https://www.linkedin.com/in/axelfernandez06/" target="_blank" rel="nofollow">
-                  <i class="bi-linkedin custom-icon p-2"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a class="text-info" href="mailto:axe06@hotmail.fr" target="_blank" rel="nofollow">
-                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
-                </a>
-              </li>
-            </ul>
-            <p class="fw-light text-center text-secondary p-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+          <div class="col-12 col-sm-6 col-lg-3 pt-4">
+            <div class="p-3 rounded shadow bg-white">
+
+              <img src="img/img_axel.jpg" alt="img_axel" class="d-block mx-auto m-4 shadow-lg" style="border-radius: 8px; width: 120px;">
+              <h4 class="fw-bold text-center cl-text">Axel FERNANDEZ</h4>
+              <ul class="list-inline text-center fs-3 mb-0">
+                <li class="list-inline-item">
+                  <a class="text-info" href="https://github.com/AxelFdez" target="_blank" rel="nofollow">
+                    <i class="bi-github custom-icon p-2"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="text-info" href="https://www.linkedin.com/in/axelfernandez06/" target="_blank" rel="nofollow">
+                    <i class="bi-linkedin custom-icon p-2"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="text-info" href="mailto:axe06@hotmail.fr" target="_blank" rel="nofollow">
+                    <i class="bi-envelope-at-fill custom-icon p-2 fs-2"></i>
+                  </a>
+                </li>
+              </ul>
+              <p class="fw-light text-center p-2">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+            </div>
           </div>
+          <!-- </div> -->
+
+          <!-- <div class="row py-2 mt-4 d-flex justify-content-center"> -->
+
+          <div class="col-12 col-sm-6 col-lg-3 pt-4">
+            <div class="p-3 rounded shadow bg-white">
+
+              <img src="img/img_paul.jpg" alt="img_axel" class="d-block mx-auto m-4 shadow-lg" style="border-radius: 5px; width: 120px;">
+              <h4 class="fw-bold text-center cl-text">Paul SCHEMITH</h4>
+              <ul class="list-inline text-center fs-3 mb-0">
+                <li class="list-inline-item">
+                  <a class="text-info" href="https://github.com/Monkey42Github" target="_blank" rel="nofollow">
+                    <i class="bi-github custom-icon p-2"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="text-info" href="https://www.linkedin.com/in/paul-schemith/" target="_blank" rel="nofollow">
+                    <i class="bi-linkedin custom-icon p-2"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="text-info" href="mailto:paulschemith95@gmail.com" target="_blank" rel="nofollow">
+                    <i class="bi-envelope-at-fill custom-icon p-2 fs-2"></i>
+                  </a>
+                </li>
+              </ul>
+              <p class="fw-light text-center p-2">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+            </div>
           </div>
 
-          <div class="row py-2 mt-4 d-flex justify-content-center">
+          <div class="col-12 col-sm-6 col-lg-3 pt-4">
+            <div class="p-3 rounded shadow bg-white">
 
-          <div class="col-12 col-md-5 me-md-5 pt-4 rounded shadow bg-white">
-            <img src="img/img_paul.jpg" alt="img_axel" class="d-block mx-auto m-4 shadow-lg" style="border-radius: 5px; width: 200px;">
-            <h4 class="fw-bold text-center cl-text">Paul SCHEMITH</h4>
-            <ul class="list-inline text-center fs-4 mb-0">
-              <li class="list-inline-item">
-                <a class="text-info" href="https://github.com/Monkey42Github" target="_blank" rel="nofollow">
-                  <i class="bi-github custom-icon p-2"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a class="text-info" href="https://www.linkedin.com/in/paul-schemith/" target="_blank" rel="nofollow">
-                  <i class="bi-linkedin custom-icon p-2"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a class="text-info" href="mailto:paulschemith95@gmail.com" target="_blank" rel="nofollow">
-                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
-                </a>
-              </li>
-            </ul>
-            <p class="fw-light text-center text-secondary p-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
-
-          <div class="col-12 col-md-5 mt-5 mt-md-0 pt-4 rounded shadow bg-white">
-            <img src="img/img_youssef.JPG" alt="img_axel" class="d-block mx-auto m-4 shadow-lg" style="border-radius: 5px; width: 200px;">
-            <h4 class="fw-bold text-center cl-text">Youssef BOUGHANMI</h4>
-            <ul class="list-inline text-center fs-4 mb-0">
-              <li class="list-inline-item">
-                <a class="text-info" href="https://github.com/YoussefBOUGHANMI" target="_blank" rel="nofollow">
-                  <i class="bi-github custom-icon p-2"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a class="text-info" href="https://www.linkedin.com/in/youssef-boughanmi/" target="_blank" rel="nofollow">
-                  <i class="bi-linkedin custom-icon p-2"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a class="text-info" href="" target="_blank" rel="nofollow">
-                  <i class="bi-envelope-at-fill custom-icon p-2 fs-3"></i>
-                </a>
-              </li>
-            </ul>
-            <p class="fw-light text-center text-secondary p-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+              <img src="img/img_youssef.JPG" alt="img_axel" class="d-block mx-auto m-4 shadow-lg" style="border-radius: 5px; width: 120px;">
+              <h4 class="fw-bold text-center cl-text">Youssef BOUGHANMI</h4>
+              <ul class="list-inline text-center fs-3 mb-0">
+                <li class="list-inline-item">
+                  <a class="text-info" href="https://github.com/YoussefBOUGHANMI" target="_blank" rel="nofollow">
+                    <i class="bi-github custom-icon p-2"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="text-info" href="https://www.linkedin.com/in/youssef-boughanmi/" target="_blank" rel="nofollow">
+                    <i class="bi-linkedin custom-icon p-2"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="text-info" href="" target="_blank" rel="nofollow">
+                    <i class="bi-envelope-at-fill custom-icon p-2 fs-2"></i>
+                  </a>
+                </li>
+              </ul>
+              <p class="fw-light text-center p-2">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+            </div>
           </div>
         </div>
-        </div>
+        <!-- </div> -->
       </div>
     </section>
 
@@ -409,8 +428,8 @@
           <div class="col-md-5 col-lg-4 my-4 mx-auto shadow px-3 py-4 rounded bg-white">
             <h1 class="display-1 fw-bold text-info text-center mb-4">Sign In</h1>
             <form method="POST" class="form-control border-0" id="signin-form">
-              <input type="text" class="form-control mb-3 border-info text-center text-info" id="signIn-username" name="username" placeholder="Username">
-              <input type="password" class="form-control mb-3 border-info text-center text-info" autocomplete="current-password" id="signIn-password" name="password" placeholder="Password">
+              <input type="text" class="form-control mb-3 border-info text-center text-info" autocomplete="username" id="signIn-username" name="username" placeholder="Username">
+              <input type="password" class="form-control mb-3 border-info text-center text-info" autocomplete="signIn-password" id="signIn-password" name="password" placeholder="Password">
               <button id="signInBtn" class="btn btn-info text-white w-100 mt-3" type="submit">Sign in</button>
             </form>
             <hr class="border-info mb-4">
@@ -429,7 +448,7 @@
               <input type="text" class="form-control mb-3 border-info text-center text-info" name="last_name" id="lastname" placeholder="Last name">
               <input type="text" class="form-control mb-3 border-info text-center text-info" id="username" name="username" aria-describedby="inputGroupPrepend2" placeholder="User name">
               <input type="email" class="form-control mb-3 border-info text-center text-info" id="email" name="email" aria-describedby="emailHelp" placeholder="Email">
-              <input type="password" class="form-control mb-3 border-info text-center text-info" autocomplete="new-password" id="signUp-password" name="password" placeholder="Password">
+              <input type="password" class="form-control mb-3 border-info text-center text-info" autocomplete="off" id="signUp-password" name="password" placeholder="Password">
               <button id="signUpBtn" class="btn btn-info text-white w-100 mt-3" type="submit">Sign up</button>
             </form>
           </div>
@@ -447,7 +466,7 @@
 
     <section id="dashboard" class="unvisible fade-in">
       <!-- <h1 class="display-1 fw-bold text-info text-center">Dashboard</h1> -->
-      <div class="container p-3 pt-5 rounded-bottom-4 bg-white" style="max-width: 1500px;">
+      <div class="container p-5 rounded-bottom-4 bg-white" style="max-width: 1300px;">
         <div class="row ">
           <!-- Friends -->
           <div class="col-sm-6 col-lg-3  mb-4">
@@ -580,15 +599,15 @@
         </div>
         <!-- Profile -->
         <div class="row">
-          <div class="col-xl-7">
+          <div class="col-md-7">
             <div class="card border-0 shadow mb-4">
               <div class="card-header py-3">
                 <h5 class="m-0 font-weight-bold text-info text-center text-md-start">Profile</h5>
               </div>
-              <div class="card-body" style="min-height: 447px;">
+              <div class="card-body">
                 <div class="row d-flex justify-content-center">
                   <div class="col-auto">
-                    <img id="avatar-img_dash" src="" alt="avatarUser" class="rounded-3 shadow" style="max-height: 200px;">
+                    <img id="avatar-img_dash" src="" alt="avatarUser" class="rounded-3 shadow" style="height: 120px;">
                   </div>
                   <div class="col-auto my-auto">
                     <h5 id="userNameDash" class="text-info text-center text-uppercase fs-3 mb-2 mt-3 mt-md-0"></h5>
@@ -598,33 +617,33 @@
                     <h5 id="mobileDash" class="text-secondary text-center fst-italic fs-6"></h5>
                   </div>
                 </div>
-                <div class="col-auto mt-3">
+                <div class="col-auto mt-4">
                   <hr class="border-secondary">
-                  <p id="joinedDash" class="lead fst-italic text-secondary text-center fs-6 mb-0"><small></small></p>
-                  <p id="lastLoginDash" class="lead fst-italic text-secondary text-center fs-6"><small></small></p>
+                  <p id="joinedDash" class="lead fst-italic text-center fs-6 mb-0"><small></small></p>
+                  <p id="lastLoginDash" class="lead fst-italic text-center fs-6"><small></small></p>
                   <hr class="border-secondary">
                 </div>
                 <div class="row w-100 mx-auto">
                   <div class="col mt-2">
-                    <div class="mb-2 mx-auto" style="overflow-y: auto; height: 80px; max-width: 700px;">
-                      <p id="bioDash" class="px-2 lead fs-6 text-secondary text-center" style="word-break: break-all;"></p>
+                    <div class="mb-2 mx-auto" style="overflow-y: auto; height: 50px; max-width: 700px;">
+                      <p id="bioDash" class="px-2 lead fs-6 text-center" style="word-break: break-all;"></p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-xl-5 mx-auto">
-            <div class="card border-0 shadow mb-4" style="height: 505px;">
+          <div class="col-md-5 mx-auto">
+            <div class="card border-0 shadow mb-4" >
               <div class="card-header py-3">
                 <h5 class="m-0 font-weight-bold text-info text-center text-md-start">Win/Loose</h5>
               </div>
               <div class="card-body">
                 <div class="chart-pie">
-                  <div id="chartPieTextInfo" class="p-5 hidden-element">
+                  <div id="chartPieTextInfo" class="p-4 hidden-element">
                     <h5 class="font-weight-bold text-center text-secondary">You need to play at least once to see some information here</h5>
                   </div>
-                  <canvas id="myPieChart" class="mt-5"></canvas>
+                  <canvas id="myPieChart" class="mt-3"></canvas>
                 </div>
               </div>
               <div class="ms-2">
@@ -660,7 +679,7 @@
               </div>
               <div class="card-body">
                 <!-- Card Body -->
-                <div id="friendShipBody-dashboard" style="overflow-y: auto; height: 415px;">
+                <div id="friendShipBody-dashboard" style="overflow-y: auto; height: 290px;">
                   <div id="friendsTextInfo" class="p-5 hidden-element fade-in">
                     <h5 class="font-weight-bold text-center text-secondary">You don't have any friend yet</h5>
                   </div>
@@ -671,22 +690,22 @@
             </div>
           </div>
           <!-- Search For Friends -->
-          <div class="col-xl-4">
+          <div class="col-xl-4" style="max-width: 420px;">
             <div class="card border-0 shadow mb-4">
               <div class="card-header py-2">
-                <div class="row p-1">
-                  <div class="col-sm-auto my-auto">
+                <div class="row d-flex justify-content-between">
+                  <div class="col-sm-auto my-auto pt-2">
                     <h5 class=" text-info text-center text-sm-start">Search user</h5>
                   </div>
-                  <div class="col-auto ms-auto me-auto me-sm-0 d-flex align-items-center">
-                    <i id="searchUserRefreshBtn" class="btn border-0 fa-solid fa-rotate-right fa-2x text-info me-1" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);"></i>
+                  <div class="col-auto mx-auto mx-sm-0 me-md-1 p-0 d-flex align-items-center">
+                    <i id="searchUserRefreshBtn" class="btn border-0 fa-solid fa-rotate-right fs-4 text-info me-1 p-0" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);"></i>
                     <input id="searchUserInput" type="text" class="form-control form-control-sm border-info text-center text-info shadow" placeholder="Username">
-                    <i id="searchUserBtn" class="btn border-0 fa-solid fa-magnifying-glass fa-2x text-info ms-1" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);"></i>
+                    <i id="searchUserBtn" class="btn border-0 fa-solid fa-magnifying-glass fs-4 text-info ms-1 p-0" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);"></i>
                   </div>
                 </div>
               </div>
               <!-- Card Body -->
-              <div id="searchFriend-cardArea" class="card-body py-3" style="overflow-y: auto; height: 435px;"></div>
+              <div id="searchFriend-cardArea" class="card-body py-3" style="overflow-y: auto; height: 322px;"></div>
             </div>
           </div>
         </div>
@@ -701,7 +720,7 @@
             </div>
             <!-- Card Body -->
             <div class="card-body">
-              <div id="gameHistory-cardBody" style="overflow-y: auto; min-height: 470px; max-height: 700px;">
+              <div id="gameHistory-cardBody" style="overflow-y: auto; min-height: 350px; max-height: 500px;">
                 <div id="historyTextInfo" class="p-5 fade-in hidden-element">
                   <h5 class="fw-bold text-center text-secondary">There is no history to display !</h5>
                 </div>
@@ -772,13 +791,13 @@
 
     <section id="profile" class="unvisible fade-in">
 
-      <div class="container bg-white p-3 rounded-bottom-4 shadow-lg" style=" max-width: 900px;">
+      <div class="container bg-white p-3 rounded-bottom-4 shadow-lg" style=" max-width: 600px;">
         <h1 class="display-1 fw-bold text-info text-center">Profile</h1>
         <hr class="px-5 text-info border-2">
 
         <div id="avatarDiv">
           <div id="avatarProfile" class="col d-flex justify-content-center">
-            <img id="avatar-img" src="" alt="avatarUser" class="rounded-3 my-2" style="max-width: 200px;">
+            <img id="avatar-img" src="" alt="avatarUser" class="rounded-3 my-2" style="max-width: 150px;">
             <div class="d-flex align-items-end">
               <i id="setAvatarIc" class="fs-5 text-secondary bi bi-gear cursor-pointer" onclick="handleAvatar_createForm()"></i>
             </div>
@@ -789,8 +808,8 @@
           <div id="bioProfileDiv" >
             <div class="row p-2">
               <h5  class="text-info text-center fs-4">Bio</h5>
-              <div class="col mx-auto rounded-2" style="overflow-y: auto; max-height: 90px; max-width: 600px;">
-                <p id="bioProfile" class="px-2 lead fs-6 text-secondary text-center mb-0" style="word-break: break-all;"></p>
+              <div class="col mx-auto rounded-2" style="overflow-y: auto; max-height: 60px; max-width: 600px;">
+                <p id="bioProfile" class="px-2 lead fs-6 text-center mb-0" style="word-break: break-all;"></p>
               </div>
             </div>
             <div class="d-flex justify-content-center">
@@ -853,11 +872,11 @@
 
     <div id="mainChat" class="unvisible">
       <div id="chat" class="p-2 fade-in chat-container " >
-        <div id="chat-area" class=" mb-2 " style="overflow-y: auto; height: 310px;">
+        <div id="chat-area" class=" mb-2 " style="overflow-y: auto; height: 325px;">
           <div id="chatProfile" class="bg-white p-2 m-2 rounded-3 shadow unvisible"></div>
           <div id="chat-messages-general" class="px-2"></div>
         </div>
-        <div id="mainChat-form">
+        <div id="mainChat-form" class="px-2">
           <div  class="form-control border-0 p-0">
             <input class="form-control border-info" id="message-input_general" type="text"  onkeydown="handleKeyPressGeneral(event)"></input>
           </div>
@@ -865,7 +884,7 @@
       </div>
     </div>
 
-    <section id="sessions">
+    <section id="sessions" class="fade-in">
       <div class="container bg-white rounded-bottom-4 shadow " >
         <h1 class="display-1 fw-bold text-info text-center">Rooms</h1>
         <h5 id="sessionListeEmpty" class="fs-3 fw-bold text-secondary text-center mt-4">No rooms available</h5>

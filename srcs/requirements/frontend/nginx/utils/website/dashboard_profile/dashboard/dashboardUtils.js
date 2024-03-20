@@ -283,7 +283,7 @@ function handleMatchedUsernames(matchedUsernames) {
 
   
   if (matchedUsernames.length === 0) {
-    console.log("Usernames correspondants :", matchedUsernames);
+    // console.log("Usernames correspondants :", matchedUsernames);
 
     const div = document.createElement('div');
     div.id = 'searchUserNotFound';
@@ -310,7 +310,7 @@ function handleMatchedUsernames(matchedUsernames) {
         
         if (matchedUsernames[i] === user_profiles[j].user.username) {
           
-          console.log(user_profiles[j]);
+          // console.log(user_profiles[j]);
           searchUser_createContent(user_profiles[j], i)
         }
       }
@@ -346,7 +346,7 @@ function isFriend(usernameFounded) {
 
 function getUserObject(userName) {
 
-  console.log('userName getUserObject = ' + userName);
+  // console.log('userName getUserObject = ' + userName);
   for (let i = 0; i < user_profiles.length; i++) {
     if (user_profiles[i].user.username === userName) {
       return user_profiles[i];
@@ -383,7 +383,7 @@ async function getGamesInfos(games) {
       }
 
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       const score = data.final_score.split(':');
       const scorePlayer_1 = parseInt(score[0]);
       const scorePlayer_2 = parseInt(score[1]);

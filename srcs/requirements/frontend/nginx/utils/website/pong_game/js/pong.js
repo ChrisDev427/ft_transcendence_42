@@ -5,24 +5,13 @@
 // Fonction principale de mise à jour et de rendu
 
 function run() {
-
-    printGame();
-    printInfos();
-
-    if(!start) {
-        // if(tournament) {
-        //     nextMatch();
-        // }
-        return;
-    }
-    // serve();
-
+    console.log('run');
+    if(!start) {return;}
     
-
     if (playLocal){
         serve();
-
-
+        printGame();
+        printInfos();
 
         if (p_keyPressed && rightPaddleY > 0) {
             rightPaddleY -= level + 1.8;
@@ -36,15 +25,12 @@ function run() {
                 leftPaddleY += level + 1.8;
             }
         }
-
         ballX += ballSpeedX;
         ballY += ballSpeedY;
-
         // Bouncing Sides
         if (ballY + ballSize > canvas.height || ballY - ballSize < 0) {
             ballSpeedY = -ballSpeedY;
         }
-
         // Right Paddle Bounce
         if (
             ballX + ballSize > canvas.width - paddleWidth &&
@@ -66,7 +52,6 @@ function run() {
             }
             leftPaddleY = (canvas.height - paddleHeight) / 2;
             rightPaddleY = (canvas.height - paddleHeight) / 2;
-            
         }
         // Left Paddle Bounce
         if (
@@ -87,60 +72,48 @@ function run() {
             } else {
                 applauseFX.play();
             }
-
             leftPaddleY = (canvas.height - paddleHeight) / 2;
             rightPaddleY = (canvas.height - paddleHeight) / 2;
-
         }
-
     }
     
-
-    if (playOnline){
-   
-        
-        
+    if (playOnline) {
         
         if (leftPlayerName == sessionUsername){
 
             if (q_keyPressed && leftPaddleY > 0) {
                 leftPaddleY -= level + 1.8;
-                // printConsoleInfos();
-
-                sendPaddlePositions(leftPaddleY, "left")
+                console.log('left player move up');
+                sendPaddlePositions(leftPaddleY, "left");
             } else if (a_keyPressed && leftPaddleY + paddleHeight < canvas.height) {
                 leftPaddleY += level + 1.8;
-                // printConsoleInfos();
-
-                sendPaddlePositions(leftPaddleY, "left")
+                console.log('left player move down');
+                sendPaddlePositions(leftPaddleY, "left");
             }
-        }else {
+
+        } else {
+            
             if (q_keyPressed && rightPaddleY > 0) {
                 rightPaddleY -= level + 1.8;
-                sendPaddlePositions(rightPaddleY, "right")
-                // printConsoleInfos();
+                console.log('right player move up');
+                sendPaddlePositions(rightPaddleY, "right");
+                
             } else if (a_keyPressed && rightPaddleY + paddleHeight < canvas.height) {
                 rightPaddleY += level + 1.8;
-                // printConsoleInfos();
-
-                sendPaddlePositions(rightPaddleY, "right")
+                console.log('left player move down');
+                sendPaddlePositions(rightPaddleY, "right");
             }
         }
         
-
-
-
         if (leftPlayerName == sessionUsername){
             serve();
-            // sendPaddlePositions(leftPaddleY, "left");
-            // sendPaddlePositions(rightPaddleY, "right");
             
             // Ball Update Position
             ballX += ballSpeedX;
             ballY += ballSpeedY;
-            sendBallPositions(ballX, ballY);
+            // sendBallPositions(ballX, ballY);
 
-            sendValue(spaceBarPressed, rightPaddleHand, leftPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched);
+            // sendValue(spaceBarPressed, rightPaddleHand, leftPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched);
             
             // sendPaddlePositions(rightPaddleY, "right");
 
@@ -173,7 +146,7 @@ function run() {
                 sendPaddlePositions(leftPaddleY, "left");
                 sendPaddlePositions(rightPaddleY, "right");
 
-                // sendValue(spaceBarPressed,leftPaddleHand, rightPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched)
+                sendValue(spaceBarPressed,leftPaddleHand, rightPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched)
             }
     
             // Left Paddle Bounce
@@ -201,9 +174,11 @@ function run() {
                 sendPaddlePositions(leftPaddleY, "left");
                 sendPaddlePositions(rightPaddleY, "right");
 
-                // sendValue(spaceBarPressed,leftPaddleHand, rightPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched)
+                sendValue(spaceBarPressed,leftPaddleHand, rightPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched)
             }
         }
+        printGame();
+        printInfos();
     }
     // Appeler la fonction update à la prochaine frame
     requestAnimationFrame(run);
@@ -249,17 +224,3 @@ function sendValue(spaceBarPressed, rightPaddleHand, leftPaddleHand, leftPlayerS
     });
     socket.send(message);
 }
-
-
-// function sendValue(spaceBarPressed,leftPaddleHand, rightPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched){
-//     const message = JSON.stringify({
-//         action: 'values',
-//         spaceBarPressed: spaceBarPressed,
-//         leftPaddleHand: leftPaddleHand,
-//         rightPaddleHand: rightPaddleHand,
-//         leftPlayerScore: leftPlayerScore,
-//         rightPlayerScore: rightPlayerScore,
-//         ballLaunched: ballLaunched,
-//     });
-//     socket.send(message);
-// }

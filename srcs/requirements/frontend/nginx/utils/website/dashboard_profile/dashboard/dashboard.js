@@ -1,5 +1,5 @@
 function getDashboardInfos() {
-  console.log('function getDashboardInfos()');
+  // console.log('function getDashboardInfos()');
   
   verifyToken();
   fetch(domainPath + '/api/account/profile/', {
@@ -72,7 +72,7 @@ function initDashboard(data) {
 }
 
 function manageFriends(data) {
-  console.log('manageFriends()');
+  // console.log('manageFriends()');
   displaySpinner_dash('friendShipBody-dashboard');
   createFriendArray(data)
   .then(friendsArray => {
@@ -213,7 +213,7 @@ function friends_createContent(friendsArray) {
 }
 
 function friendExpandInfos_createContent(userObject, index) {
-  console.log('userObject = ', userObject);
+  
   const cardTitles = ['Victories', 'Defeats', 'Played', 'Friends'];
   const cardValue = [userObject.win, userObject.lose, userObject.win + userObject.lose, userObject.friend.length];
   const cardIcons = ['fas fa-trophy text-success', 'fa-solid fa-face-sad-tear text-danger', 'fas fa-table-tennis text-info', 'fa-solid fa-people-group text-primary'];
@@ -414,7 +414,7 @@ function searchUser_createContent(friendObjet, index) {
 
 function gameHistory_createContent(gameInfos, score1, score2) {
 
-  console.log('data infos = ', gameInfos);
+  // console.log('data infos = ', gameInfos);
   const timeValues = handleDateTime();
   const mainDiv = document.createElement('div');
   if (gameInfos.winner === sessionUsername) {
