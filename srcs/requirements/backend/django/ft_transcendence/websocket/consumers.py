@@ -350,8 +350,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             if player == self.user_username and player == sessionCreator:
                 await self.send(text_data=json.dumps({
                     'messageType': message_type,
-                    'players': players,
                     'playerPeer': playerPeer,
+                    'player' : players[1]
                 }))
 
 
@@ -416,4 +416,3 @@ def convert_list_json():
         sessions_json.append(session.to_json())
     sessions_json2 = json.dumps(sessions_json)
     return(sessions_json2)
- 

@@ -10,23 +10,12 @@ function createPeer(sessionId)
         socket.send(JSON.stringify({ messageType: 'creatorPeer', sessionId: sessionId, peerCreator: dataPeer }));
     });
 
-
-
-
-
-    // peer.on('connect', () => {
-    //     console.log('Connected to peer');
-    // }
-    // );
-    // peer2.on('connect', () => {
-    //     console.log('Connected to peer2');
-    // });
 }
 
 function waitForWebSocketConnection(username) {
     return new Promise((resolve, reject) => {
         if (!socket || socket.readyState !== WebSocket.OPEN)
-                     socket = new WebSocket('ws://localhost:8000/api/ws/general/?user_username=' + username);
+                     socket = new WebSocket('ws://10.12.2.6:8000/api/ws/general/?user_username=' + username);
 
         socket.addEventListener('open', () => {
             console.log('Connected to WebSocket server');
@@ -97,16 +86,15 @@ function waitForWebSocketConnection(username) {
                 // Vous pouvez mettre ici le code pour gérer la fermeture de la connexion
             });
             peer.on('connect', () => {
-                console.log("connecté au peerID : ", data.peerId);
-                console.log(data.username, "a rejoind la session");
-                console.log(data.username, "a rejoind la session", data.level);
+                console.log("connecté au peerID : ", data.playerPeer);
+                console.log(data.player, "a rejoind la session", data.level);
                 leftPlayerName =sessionUsername;
-                rightPlayerName=data.username;
+                rightPlayerName=data.player;
 
 
                 start = true;
 
-                setPlayerNameToPrint("leftPlayerName", "rightPlayerName");
+                setPlayerNameToPrint(leftPlayerName, rightPlayerName);
                 // setHandToStart();
                 leftPaddleHand = true;
 
@@ -115,7 +103,15 @@ function waitForWebSocketConnection(username) {
                 showSection("playPong");
                 document.getElementById('gameDiv').classList.remove('hidden-element');
                 // createPeer(data.sessionId)
-                run(peer);
+                peer.on('data', (data) => {
+                    // Convertir les données en objet JavaScript si nécessaire
+                    const gameData = JSON.parse(data);
+                    console.log('Nouvelles données de jeu reçues :', gameData);
+                    // Traiter les nouvelles données de jeu
+                    rightPaddleY = gameData.rightPaddleY;
+                    // processGameData(gameData);
+                });
+                onlineRun(peer);
                 // console.log("peer = ", peer);
 
                 showSection('playPong');
@@ -211,6 +207,7 @@ function  sessions_createContent(session, index) {
 
 }
 
+//start game for joiner
 function joinSession(session, index) {
 
     console.log('session creator:', session.CreatorUsername);
@@ -246,7 +243,23 @@ function joinSession(session, index) {
                     peer2.on('connect', () => {
                         console.log("connecté au peerID : ", data.peerId);
                     });
-                    run(peer2);
+                    peer2.on('data', (data) => {
+                        // Convertir les données en objet JavaScript si nécessaire
+                        const gameData = JSON.parse(data);
+                        console.log('Nouvelles données de jeu reçues :', gameData);
+                        if (gameData.messageType === 'reset') {
+                            rightPaddleY = gameData.rightPaddleY;
+                        }
+                        else {
+                        // Traiter les nouvelles données de jeu
+                        processGameData(gameData);
+                        }
+
+                    });
+
+                    
+
+                    onlineRun(peer2);
 
                     document.getElementById('joinCard' + index).remove();
                     if (document.getElementById('sessionsList').childElementCount == 0 ) {
