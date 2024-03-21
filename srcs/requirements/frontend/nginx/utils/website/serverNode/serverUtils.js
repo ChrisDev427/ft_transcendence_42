@@ -100,7 +100,7 @@ function waitForWebSocketConnection(username) {
                 'message' : "",
                 'time' : new Date().toLocaleTimeString(),
             }));
-            chatGeneral_createContent(username, "is connected", new Date().toLocaleTimeString(), "online");
+            // chatGeneral_createContent(username, "is connected", new Date().toLocaleTimeString(), "online");
         });
 
         socket.addEventListener('error', (error) => {

@@ -226,12 +226,16 @@ function create_Tournament_inputs() {
 }
 
 function create_room() {
+
     socket.send(JSON.stringify({ messageType: 'createSession', level:level }));
 
     socket.addEventListener('message', (event) => {
+        
         const data = JSON.parse(event.data);
         if (data.messageType === 'confirmCreat') {
+
             if (data.confirme == "true"){
+
                 document.getElementById('containerGameMenu').classList.add('hidden-element');
     
                 navbarSwitch('off');

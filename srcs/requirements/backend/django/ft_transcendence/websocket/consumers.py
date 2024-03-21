@@ -311,6 +311,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Send message to WebSocket
         await self.send(text_data=json.dumps({"messageType" : messageType, "sessions": event["session"]}))
 
+
+
     # Receive message from room group
     async def chat_message(self, event):
         messageType = event["messageType"]
@@ -330,6 +332,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
         )
 
+
+
+
 def search_player_in_game(username):
     for session in sessions:
         for player in session.players:
@@ -345,6 +350,7 @@ def remove_player_sessions(username):
                 if not session.players:
                     sessions.remove(session)
     return False
+
 
 def find_session_by_id(session_id):
     for session in sessions:
