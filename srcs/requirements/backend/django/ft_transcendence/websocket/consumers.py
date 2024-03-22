@@ -93,9 +93,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.room_group_name, {"type": "chat.message" ,"messageType": messageType, "message": message, "owner": self.user_username, "time": time}
             )
 
+
+
         if (messageType == "sendMessageSession"):
+            sessionUsername = data["sessionUsername"]
             message = data["message"]
-            print (message)
+            time = data["time"]
+            session = search_player_in_game(sessionUsername)
+            
+            await self.channel_layer.group_send(
+                self.room_group_name, {"type": "chat.session" ,"messageType": "messageSession", "message": message, "owner": self.user_username, "time": time, "players": session.players}
+            )
+
+
+
 
         if (messageType == "createSession"):
             if (search_player_in_game(self.user_username)):
@@ -274,6 +285,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
 
+    async def chat_session(self, event):
+        players = event.get("players")
+        messageType = event["messageType"]
+        message = event["message"]
+        owner = event["owner"]
+        time = event["time"]
+        # Send message to WebSocket
+        for player in players:
+            if player == self.user_username:
+                await self.send(text_data=json.dumps({"message": message, "owner": owner, "messageType" : messageType, "time": time}))
 
     async def value_game(self, event):
         message_type = event.get("messageType")
