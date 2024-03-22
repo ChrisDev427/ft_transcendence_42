@@ -218,7 +218,7 @@ function onlineRun(peer) {
         // lastUpdateSentTime = currentTime;
     // }
 // Appeler la fonction update à la prochaine frame
-    requestAnimationFrame(() => OnlineRun(peer));
+    requestAnimationFrame(() => onlineRun(peer));
 }
 
 

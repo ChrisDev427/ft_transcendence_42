@@ -15,7 +15,7 @@ function createPeer(sessionId)
 function waitForWebSocketConnection(username) {
     return new Promise((resolve, reject) => {
         if (!socket || socket.readyState !== WebSocket.OPEN)
-                     socket = new WebSocket('ws://10.12.2.6:8000/api/ws/general/?user_username=' + username);
+                     socket = new WebSocket('wss://10.12.2.6:8002/ws/general/?user_username=' + username);
 
         socket.addEventListener('open', () => {
             console.log('Connected to WebSocket server');
@@ -98,7 +98,7 @@ function waitForWebSocketConnection(username) {
                 // setHandToStart();
                 leftPaddleHand = true;
 
-                printConsoleInfos();
+                // printConsoleInfos();
 
                 showSection("playPong");
                 document.getElementById('gameDiv').classList.remove('hidden-element');
@@ -106,7 +106,7 @@ function waitForWebSocketConnection(username) {
                 peer.on('data', (data) => {
                     // Convertir les données en objet JavaScript si nécessaire
                     const gameData = JSON.parse(data);
-                    console.log('Nouvelles données de jeu reçues :', gameData);
+                    // console.log('Nouvelles données de jeu reçues :', gameData);
                     // Traiter les nouvelles données de jeu
                     rightPaddleY = gameData.rightPaddleY;
                     // processGameData(gameData);
@@ -224,7 +224,7 @@ function joinSession(session, index) {
                 peer2.signal(data.peerCreator[0]);
 
                 peer2.on('signal', (dataPeer) => {
-                    console.log('Peer2 signal:', dataPeer);
+                    // console.log('Peer2 signal:', dataPeer);
                     socket.send(JSON.stringify({ messageType: 'playerPeer', sessionId: session.sessionId, playerPeer: dataPeer }));
                 });
 
@@ -246,7 +246,7 @@ function joinSession(session, index) {
                     peer2.on('data', (data) => {
                         // Convertir les données en objet JavaScript si nécessaire
                         const gameData = JSON.parse(data);
-                        console.log('Nouvelles données de jeu reçues :', gameData);
+                        // console.log('Nouvelles données de jeu reçues :', gameData);
                         if (gameData.messageType === 'reset') {
                             rightPaddleY = gameData.rightPaddleY;
                         }
@@ -257,7 +257,7 @@ function joinSession(session, index) {
 
                     });
 
-                    
+
 
                     onlineRun(peer2);
 

@@ -13,6 +13,11 @@ class GameView(APIView):
 
 	permissions_classes = [IsAdminUser]
 
+	def get(self, request):
+		games = models.Game.objects.all()
+		serializer = serializers.GameSerializer(games, many=True, context={'request': request})
+		return Response(serializer.data)
+
 	def post(self, request):
 		serializer = serializers.GameSerializer(data=request.data, partial=True)
 		if serializer.is_valid():
@@ -33,7 +38,7 @@ class GameView(APIView):
 				try:
 					user2 = UserProfile.objects.get(user__username=player_two)
 				except UserProfile.DoesNotExist:
-					return Response("user does not exist", status=status.HTTP_400_BAD_REQUEST)
+					return Response("user does not exist", status=status.HTTP_400_BAD_REQUEST) 
 				existing_game = Game.objects.filter(player_one=user1, player_two=user2, winner=None)
 				if existing_game:
 						return Response("game already exist", status=status.HTTP_400_BAD_REQUEST)
