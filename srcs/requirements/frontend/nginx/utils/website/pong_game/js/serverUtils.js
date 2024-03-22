@@ -56,13 +56,54 @@ function waitForWebSocketConnection(username) {
     // chat general
     socket.addEventListener('message', (event) => {
         const receivedMessage = JSON.parse(event.data);
+        if(receivedMessage.messageType == "classic" || receivedMessage.messageType == "online" || receivedMessage.messageType == "offline"){
+
             chatGeneral_createContent(receivedMessage.owner, receivedMessage.message, receivedMessage.time, receivedMessage.messageType);
             // });
             const messageContainer = document.getElementById('chat-area');
             messageContainer.scrollTop = messageContainer.scrollHeight;
         // }
-        chatInit = true;
+            chatInit = true;
+        }
     });
+
+
+    socket.addEventListener('message', (event) => {
+        const receivedMessage = JSON.parse(event.data);
+        if (receivedMessage.messageType === 'messageSession') {
+            chatSession_createContent(receivedMessage.owner, receivedMessage.message, receivedMessage.time, receivedMessage.messageType);
+            // });
+            const messageContainer = document.getElementById('chat-area');
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+            // }
+            chatInit = true;
+        }
+    });
+
+     
+ 
+    // function handleKeyPress(event) {
+    //     if (event.key === 'Enter') {
+    //         sendMessageSession();
+    //     }
+    // }
+
+
+    // chat session
+    // socket.addEventListener('message', (event) => {
+    //     const messageContainer = document.getElementById('chat-messages');
+    //     const receivedMessage = JSON.parse(event.data);
+    
+    //     if (receivedMessage.type === 'messageSession') {
+    //         const messages = receivedMessage.messages || [];
+    //         const messagesToDisplay = messages.slice(-10);
+    //         messageContainer.innerHTML = '';
+    //         messagesToDisplay.forEach(msg => {
+    //             messageContainer.innerHTML += `<div><strong>${msg.username}:</strong> ${msg.text}</div>`;
+    //         });
+    //         messageContainer.scrollTop = messageContainer.scrollHeight;
+    //     }
+    // });
 
 
     // start game for creator
@@ -133,6 +174,24 @@ function waitForWebSocketConnection(username) {
     console.error('Une erreur s\'est produite lors de la connexion WebSocket:', error);
 });
 }
+
+
+
+function sendMessageSession() {
+    const messageInput = document.getElementById('message-input_session');
+    const message = messageInput.value.trim();
+
+    if (message !== '') {
+        if (socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({ messageType: 'sendMessageSession', message: message, sessionUsername: sessionUsername, 'time' : new Date().toLocaleTimeString()}));
+            messageInput.value = '';
+        } else {
+            console.warn('La connexion WebSocket n\'est pas encore établie.');
+        }
+    }
+}
+
+
 
 function updateSessionsList(sessions) {
 
@@ -216,6 +275,8 @@ function  sessions_createContent(session, index) {
 
 }
 
+
+
 function joinSession(session, index) {
 
     console.log('session creator:', session.CreatorUsername);
@@ -224,7 +285,6 @@ function joinSession(session, index) {
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
-        console.log("data = ", data);
         if (data.messageType === 'confirmJoin')
             if (data.confirme == "true") {
                 peer2 = new SimplePeer({ initiator: false });

@@ -42,43 +42,6 @@
 <body style="background-color:rgb(170, 170, 170);">
 
 
-  <!--
-
-    document.addEventListener('mousemove', (event) => {
-      const coordinates = {
-          x: event.clientX,
-          y: event.clientY
-      };
-
-      // Envoyer les coordonnées au serveur
-      socket.send(JSON.stringify(coordinates));
-    });
-
-    socket.addEventListener('message', (event) => {
-        const coordinates = JSON.parse(event.data);
-        console.log('Server Broadcast:', coordinates);
-    });
-
-    // Gérez l'événement d'ouverture de la connexion
-    socket.addEventListener('open', (event) => {
-        console.log('Connexion établie avec le serveur WebSocket');
-    });
-
-    // Gérez l'événement de réception de messages
-    socket.addEventListener('message', (event) => {
-        console.log('Message reçu:', event.data);
-    });
-
-    // Gérez l'événement de fermeture de la connexion
-    socket.addEventListener('close', (event) => {
-        console.log('Connexion WebSocket fermée');
-    });
-
-    // Gérez l'événement d'erreur
-    socket.addEventListener('error', (event) => {
-        console.error('Erreur WebSocket:', event);
-    });
-  </script> -->
   <!-- Alert Logout ------------------------------------>
   <div id="alert-bg-blur" class="hidden-element fade-in">
       <div id="confirm-logout" class="fade-in p-3 p-md-5 bg-info shadow-lg rounded-4 " style="position: fixed; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
@@ -189,14 +152,7 @@
         </div>
       </div>
 
-      <!-- chat general -->
-      <!-- <div id="chat-container">
-        <div id="chat-messages-generalsdfgh"></div>
-        <div id="input-container">
-          <input type="text" id="message-input_generalrew" placeholder="Ecris un chat..." onkeydown="handleKeyPressGeneral(event)">
-          <button id="send-button" onclick="sendMessage()">Send</button>
-        </div>
-      </div> -->
+  
 
     </section>
     <section id="gameMenu" class="fade-in hidden-element">
@@ -279,7 +235,6 @@
             <div id="chat-container_session" class="container bg-light bg-opacity-50 rounded-4 my-3 shadow-lg p-2" style="height: 150px; max-width: 300px;">
               <div id="chat-messages_session" class="" style="overflow-y: auto; height: 100px;"></div>
               <input class="form-control form-control-sm border-info" type="text" id="message-input_session" placeholder="Ecris un chat session..." onkeydown="handleKeyPress(event)">
-
 
               <!-- <h5 class="text-light fst-italic me-1" onclick="sendMessageSession()" role="button" style="text-shadow: 2px 2px 4px rgba(150, 150, 150, 0.952);">Send</h5> -->
 

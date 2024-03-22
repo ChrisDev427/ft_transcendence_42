@@ -13,6 +13,8 @@ let     ballSpeedX, ballSpeedY;
 let     spaceRight;
 
 
+
+
 // Initialisation des raquettes
 let     paddleWidth = 9, paddleHeight = 100;
 let     leftPaddleY = (canvas.height - paddleHeight) / 2;
