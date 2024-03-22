@@ -5,7 +5,8 @@ function sendMessageSession() {
 
     if (message !== '') {
         if (socket.readyState === WebSocket.OPEN) {
-            socket.send(JSON.stringify({ action: 'sendMessageSession', text: message }));
+            console.log(message);
+            socket.send(JSON.stringify({ messageType: 'sendMessageSession', text: message }));
             messageInput.value = '';
         } else {
             console.warn('La connexion WebSocket n\'est pas encore établie.');

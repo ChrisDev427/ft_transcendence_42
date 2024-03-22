@@ -23,10 +23,25 @@ class GameSerializer(serializers.ModelSerializer):
 		return user.username if user else None
 
 	def get_player_one(self, obj):
-		return self.get_player_username(obj, 'player_one')
+		player_one = obj.player_one
+		if player_one:
+			user = getattr(player_one, 'user', None)
+			if user:
+				return user.username
+		return None
 
 	def get_player_two(self, obj):
-		return self.get_player_username(obj, 'player_two')
+		player_two = obj.player_two
+		if player_two:
+			user = getattr(player_two, 'user', None)
+			if user:
+				return user.username
+		return None
 
 	def get_winner(self, obj):
-		return self.get_player_username(obj, 'winner')
+		winner = obj.winner
+		if winner:
+			user = getattr(winner, 'user', None)
+			if user:
+				return user.username
+		return None

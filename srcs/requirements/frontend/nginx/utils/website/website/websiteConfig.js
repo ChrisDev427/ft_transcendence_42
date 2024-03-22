@@ -4,7 +4,7 @@ let two_fa = false;
 let sessionUsername;
 
 //****** DOMAIN URLS *********************
-const domainPath = "https://transcendence42.ddns.net:8002";
+const domainPath = "http://10.12.2.5:8002";
 // const domainPath = 'https://transcendence42.ddns.net';
 
 if ('ontouchstart' in window || navigator.maxTouchPoints) {
