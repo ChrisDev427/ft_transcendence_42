@@ -5,6 +5,7 @@ function sendMessageSession() {
 
     if (message !== '') {
         if (socket.readyState === WebSocket.OPEN) {
+            console.log(message);
             socket.send(JSON.stringify({ action: 'sendMessageSession', text: message }));
             messageInput.value = '';
         } else {

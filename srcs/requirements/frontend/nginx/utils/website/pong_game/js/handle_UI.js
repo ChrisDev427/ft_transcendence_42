@@ -273,7 +273,7 @@ function initPlayBtn() {
         document.getElementById('gameDiv').classList.remove('hidden-element'); 
         reset_UI();
         removeInput();
-        run();
+        localRun();
   
     });
 }
@@ -306,7 +306,7 @@ function reset_UI() {
 }
 
 function removeInput() {
-    const deleteInput = document.getElementById('input-Div');
+    const deleteInput = document.getElementById('input-div');
     if(deleteInput)
         deleteInput.remove();
     const deleteTournamentBtn = document.getElementById('tournamentModeBtn');

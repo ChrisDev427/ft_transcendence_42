@@ -196,7 +196,6 @@ function itemsVisibility_logged_out() {
 function refreshAccessToken() {
     // Récupérez le refresh token de votre système de stockage (par exemple, localStorage)
     const refreshToken = localStorage.getItem('refreshToken');
-    console.error(refreshToken);
     console.error(JSON.stringify({
         refresh: refreshToken,
     }));

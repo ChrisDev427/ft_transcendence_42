@@ -29,11 +29,11 @@ function chatGeneral_createContent(username, message, time, messageType) {
             } else {
                 small.textContent = username + ': is connected';
             }
-            div.classList = 'small fst-italic text-success text-center fade-in mx-auto';
+            div.classList = ' fw-bold fst-italic text-success text-center fade-in mx-auto';
         }
         else if (messageType === 'offline'){
             small.textContent = username + ': is disconnected';
-            div.classList = 'small fst-italic text-danger text-center fade-in mx-auto';
+            div.classList = ' fw-bold fst-italic text-danger text-center fade-in mx-auto';
         }
         div.style.maxWidth = '210px';
         div.appendChild(small);
@@ -46,7 +46,7 @@ function chatGeneral_createContent(username, message, time, messageType) {
         const timeDiv = document.createElement('div');
         timeDiv.classList = 'row p-0';
         const timeText = document.createElement('p');
-        timeText.classList = 'col-12 small fw-light fst-italic text-secondary text-end m-0';
+        timeText.classList = 'col-12 small fw-bold fst-italic text-warning text-end m-0';
         const small2 = document.createElement('small');
         small2.textContent = time;
 
@@ -78,7 +78,7 @@ function chatGeneral_createContent(username, message, time, messageType) {
         usernameDiv.appendChild(usernameText);
 
         const timeText = document.createElement('p');
-        timeText.classList = 'col-4 small fw-light fst-italic text-end text-secondary m-0 p-0';
+        timeText.classList = 'col-4 small fw-bold fst-italic text-end text-warning m-0 p-0';
         const small2 = document.createElement('small');
         small2.textContent = time;
         timeText.appendChild(small2);
