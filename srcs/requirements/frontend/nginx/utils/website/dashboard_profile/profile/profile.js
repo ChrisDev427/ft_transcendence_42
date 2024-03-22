@@ -1,6 +1,6 @@
 function getProfileInfos() {
 
-  console.log('function getProfileInfos()');
+  // console.log('function getProfileInfos()');
 
   verifyToken();
   fetch(domainPath + '/api/account/profile/', {
@@ -21,8 +21,6 @@ function getProfileInfos() {
     }
   })
   .then(data => {
-
-    console.log('apiUrl ' + data.avatar);
 
     two_fa = data.two_fa;
     if (two_fa === true) {

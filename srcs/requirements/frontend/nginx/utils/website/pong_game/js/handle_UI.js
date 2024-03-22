@@ -68,7 +68,7 @@ btn.onLineBtn.addEventListener("click", function() {
     btn.onLineBtn.classList.add("btn-info");
 
     document.getElementById('onlineMenu').classList.remove('hidden-element');
-
+    document.getElementById('chat-container_session').classList.remove('hidden-element');
     playLocal = false;
     playOnline = true;
 });
@@ -274,7 +274,6 @@ function initPlayBtn() {
         reset_UI();
         removeInput();
         localRun();
-
     });
 }
 
@@ -301,10 +300,12 @@ function reset_UI() {
     document.getElementById('dificultyMenu').classList.add('hidden-element');
     document.getElementById('gameModeMenu').classList.add('hidden-element');
     document.getElementById('onlineMenu').classList.add('hidden-element');
+    document.getElementById('chat-container_session').classList.add('hidden-element');
+
 }
 
 function removeInput() {
-    const deleteInput = document.getElementById('inputDiv');
+    const deleteInput = document.getElementById('input-div');
     if(deleteInput)
         deleteInput.remove();
     const deleteTournamentBtn = document.getElementById('tournamentModeBtn');

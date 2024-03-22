@@ -135,13 +135,13 @@ input[type="text password"]::placeholder {
 .chat-container {
   z-index: 1200;
   position: fixed;
-  bottom: 55px;
+  bottom: 40px;
   right: 10px;
-  width: 300px;
-  height: 375px;
-  box-shadow: 0 -5px 15px 8px #848484;
+  width: 270px;
+  height: 330px;
+  box-shadow: 0 0 15px 5px #848484b1;
   border-radius: 15px;
-  background-color: rgba(255, 255, 255, 0.191); /* Couleur de fond avec opacité */
+  background-color: rgba(255, 255, 255, 0.448); /* Couleur de fond avec opacité */
   backdrop-filter: blur(5px); /* Effet de flou */
 }
 

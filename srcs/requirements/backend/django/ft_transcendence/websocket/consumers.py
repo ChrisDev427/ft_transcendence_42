@@ -100,7 +100,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             message = data["message"]
             time = data["time"]
             session = search_player_in_game(sessionUsername)
-            
+
             await self.channel_layer.group_send(
                 self.room_group_name, {"type": "chat.session" ,"messageType": "messageSession", "message": message, "owner": self.user_username, "time": time, "players": session.players}
             )

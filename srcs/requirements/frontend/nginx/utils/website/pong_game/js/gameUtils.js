@@ -101,6 +101,7 @@ function printInfos() {
     if (leftPlayerScore === 10 || rightPlayerScore === 10) {
         start = false;
         printWinner();
+      
     }
 
 

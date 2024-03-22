@@ -14,7 +14,7 @@ const playerObj = {
 };
 
 function resetTournament() {
-    tournamentSize =  0;
+    tournamentSize = 0;
     matchNumber = 0;
     tourNumber = 0;
     tournamentWinnerName = "";
