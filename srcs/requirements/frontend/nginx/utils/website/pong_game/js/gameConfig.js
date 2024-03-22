@@ -10,6 +10,9 @@ let     ballLaunched = false;
 let     leftPlayerScore = 0, rightPlayerScore = 0;
 let     ballSpeedX, ballSpeedY;
 
+let     spaceRight;
+
+
 // Initialisation des raquettes
 let     paddleWidth = 9, paddleHeight = 100;
 let     leftPaddleY = (canvas.height - paddleHeight) / 2;

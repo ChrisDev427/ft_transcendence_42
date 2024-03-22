@@ -19,7 +19,7 @@ let gameData = {
     ballLaunched: false,
 };
 
-function localRun(peer) {
+function localRun() {
 
     if(!start) {
         // if(tournament) {
@@ -27,7 +27,9 @@ function localRun(peer) {
         // }
         return;
     }
-    // serve();
+    serve();
+    printGame();
+    printInfos();
 
         if (p_keyPressed && rightPaddleY > 0) {
             rightPaddleY -= level + 1.8;
@@ -98,7 +100,7 @@ function localRun(peer) {
 
         }
 
-    requestAnimationFrame(() => localRun(peer));
+    requestAnimationFrame(() => localRun());
 }
 printGame();
 
@@ -107,6 +109,7 @@ printGame();
 // const updateInterval = 500; // Interval de mise à jour en millisecondes
 
 function onlineRun(peer) {
+    // printConsoleInfos();
     // const currentTime = Date.now();
 
     if (leftPlayerName == sessionUsername){
@@ -120,24 +123,46 @@ function onlineRun(peer) {
             // printConsoleInfos();
             // sendPaddlePositions(peer, leftPaddleY, "left")
         }
+        // if (leftPaddleHand){
+        // }
+        serveLeft();
+
     }
     else{
+
         if (q_keyPressed && rightPaddleY > 0) {
             rightPaddleY -= level + 1.8;
             sendGameUpdate(peer);
             // sendPaddlePositions(peer, rightPaddleY, "right")
             // printConsoleInfos();
-        } else if (a_keyPressed && rightPaddleY + paddleHeight < canvas.height) {
+        } if (a_keyPressed && rightPaddleY + paddleHeight < canvas.height) {
             rightPaddleY += level + 1.8;
             sendGameUpdate(peer);
             // printConsoleInfos();
 
             // sendPaddlePositions(peer, rightPaddleY, "right")
+        } if (spaceBarPressed && rightPaddleHand){
+            console.log(spaceBarPressed);
+            spaceRight = true;
+            sendGameUpdate(peer);
+            spaceBarPressed = false;
+            spaceRight = false;
+        }
+        if (!start){
+            printGame();
+            printInfos();
+            return;
         }
     }
 
     if (leftPlayerName == sessionUsername){
-        serve();
+
+        serveRight();
+        // if (rightPaddleHand){
+
+            // }
+        // serve();
+
         // sendPaddlePositions(leftPaddleY, "left");
         // sendPaddlePositions(rightPaddleY, "right");
 
@@ -146,6 +171,20 @@ function onlineRun(peer) {
         ballY += ballSpeedY;
         // sendBallPositions(peer, ballX, ballY);
         sendGameUpdate(peer);
+        if (!start){
+            printGame();
+            printInfos();
+            if (leftPlayerScore >= 10){
+                winner = leftPlayerName;
+            }
+            else if (rightPlayerScore >= 10){
+                winner = rightPlayerName;
+            }
+            const message = JSON.stringify({messageType : "endGame", leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : winner});
+            socket.send(message);
+            // update bdd here
+            return;
+        }
 
         // sendValue(peer, spaceBarPressed, rightPaddleHand, leftPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched);
 
@@ -216,9 +255,10 @@ function onlineRun(peer) {
     printInfos();
     // if (currentTime - lastUpdateSentTime >= updateInterval) {
         // lastUpdateSentTime = currentTime;
-    // }
-// Appeler la fonction update à la prochaine frame
+        // }
+        // Appeler la fonction update à la prochaine frame
     requestAnimationFrame(() => onlineRun(peer));
+
 }
 
 
@@ -232,9 +272,14 @@ function sendGameUpdate(peer, messageType) {
             gameData = {
                 messageType: messageType,
                 rightPaddleY : rightPaddleY,
+                // spaceBarPressed: spaceBarPressed,
+                rightPaddleHand : rightPaddleHand,
+
             }
+
         }
         else {
+
         gameData  = {
             ballX,
             ballY,
@@ -242,6 +287,11 @@ function sendGameUpdate(peer, messageType) {
             // rightPaddleY,
             leftPlayerScore,
             rightPlayerScore,
+
+            // spaceBarPressed,
+            // rightPaddleHand
+
+            start,
             // Autres données de jeu à inclure...
         };
     }
@@ -250,6 +300,8 @@ function sendGameUpdate(peer, messageType) {
     {
         gameData = {
             rightPaddleY,
+            spaceBarPressed,
+            spaceRight
         }
     }
     peer.send(JSON.stringify(gameData));
@@ -257,23 +309,34 @@ function sendGameUpdate(peer, messageType) {
 
 function processGameData(gameData) {
     // Traiter les nouvelles données de jeu
-    console.log('Nouvelles données de jeu reçues :', gameData);
+    // console.log('Nouvelles données de jeu reçues :', gameData);
     if (gameData.messageType === 'reset')
     {
         rightPaddleY = gameData.rightPaddleY;
+        // spaceBarPressed = gameData.spaceBarPressed;
+        rightPaddleHand = gameData.rightPaddleHand;
+        // ballLaunched = gameData.ballLaunched
+
     }
     // Mettre à jour le jeu en fonction des données reçues
     // Par exemple :
     ballX = gameData.ballX;
     ballY = gameData.ballY;
     leftPaddleY = gameData.leftPaddleY;
+
     // rightPaddleY = gameData.rightPaddleY;
+
     leftPlayerScore = gameData.leftPlayerScore;
     rightPlayerScore = gameData.rightPlayerScore;
-    spaceBarPressed = spaceBarPressed;
-    leftPaddleHand = leftPaddleHand;
-    rightPaddleHand = rightPaddleHand;
-    ballLaunched = ballLaunched;
+
+    spaceBarPressed = gameData.spaceBarPressed;
+
+    start = gameData.start
+
+
+    // leftPaddleHand = gameData.leftPaddleHand;
+    // rightPaddleHand = gameData.rightPaddleHand;
+    // ballLaunched = gameData.ballLaunched;
 
     // etc.
 }

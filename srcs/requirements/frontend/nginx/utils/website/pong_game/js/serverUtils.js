@@ -91,7 +91,9 @@ function waitForWebSocketConnection(username) {
                 leftPlayerName =sessionUsername;
                 rightPlayerName=data.player;
 
-
+                if(start){
+                    return
+                }
                 start = true;
 
                 setPlayerNameToPrint(leftPlayerName, rightPlayerName);
@@ -110,7 +112,13 @@ function waitForWebSocketConnection(username) {
                     // Traiter les nouvelles données de jeu
                     rightPaddleY = gameData.rightPaddleY;
                     // processGameData(gameData);
+                    spaceBarPressed = gameData.spaceBarPressed;
+                    spaceRight = gameData.spaceRight;
+
                 });
+
+                console.log("level :", level)
+                console.log("level :", paddleHeight)
                 onlineRun(peer);
                 // console.log("peer = ", peer);
 
@@ -201,6 +209,7 @@ function  sessions_createContent(session, index) {
 
     joinBtn.addEventListener('click', function() {
         // document.getElementById('joinCard' + index).remove();
+        console.log("session :", session);
         joinSession(session, index);
     })
 
@@ -233,6 +242,7 @@ function joinSession(session, index) {
                     leftPlayerName = session.CreatorUsername;
                     rightPlayerName= sessionUsername;
                     level = session.level;
+                    paddleHeight = session.paddleHeight
                     playOnline = true;
                     twoPlayers = true;
                     start = true
@@ -249,14 +259,16 @@ function joinSession(session, index) {
                         // console.log('Nouvelles données de jeu reçues :', gameData);
                         if (gameData.messageType === 'reset') {
                             rightPaddleY = gameData.rightPaddleY;
+                            rightPaddleHand = gameData.rightPaddleHand;
                         }
                         else {
                         // Traiter les nouvelles données de jeu
-                        processGameData(gameData);
+                            processGameData(gameData);
                         }
 
                     });
-
+                    console.log("level :", level)
+                    console.log("level :", paddleHeight)
 
 
                     onlineRun(peer2);

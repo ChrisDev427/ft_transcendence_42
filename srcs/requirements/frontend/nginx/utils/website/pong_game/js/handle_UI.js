@@ -273,7 +273,7 @@ function initPlayBtn() {
         document.getElementById('gameDiv').classList.remove('hidden-element');
         reset_UI();
         removeInput();
-        locaRun();
+        localRun();
 
     });
 }

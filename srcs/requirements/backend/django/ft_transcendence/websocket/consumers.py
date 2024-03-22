@@ -13,13 +13,14 @@ from django.core.serializers import serialize
 import pytz
 
 class Session:
-    def __init__(self, session_id, creator_username, peer_creator, is_private, level):
+    def __init__(self, session_id, creator_username, peer_creator, is_private, level, paddleHeight):
         self.session_id = session_id
         self.creator_username = creator_username
         self.peer_creator = peer_creator,
         self.is_private = is_private
         self.level = level
         self.players = []
+        self.paddleHeight = paddleHeight
 
     def to_json(self):
         return {
@@ -28,7 +29,8 @@ class Session:
             "CreatorPeerId": self.peer_creator,
             "isPrivate": self.is_private,
             "level": self.level,
-            "players": self.players
+            "players": self.players,
+            "paddleHeight": self.paddleHeight
         }
 
     def add_player(self, player):
@@ -81,9 +83,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         messageType = data["messageType"]
 
-
-
-        if (messageType == "classic"):
+        if (messageType == "classic" or messageType == "online"):
             message = data["message"]
             # owner = text_data_json["owner"]
             time = data["time"]
@@ -93,8 +93,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.room_group_name, {"type": "chat.message" ,"messageType": messageType, "message": message, "owner": self.user_username, "time": time}
             )
 
-
-
+        if (messageType == "sendMessageSession"):
+            message = data["message"]
+            print (message)
 
         if (messageType == "createSession"):
             if (search_player_in_game(self.user_username)):
@@ -116,7 +117,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 creatorPeer = data["peerId"]
                 sessionId = str(uuid.uuid4())
 
-                session = Session(sessionId, self.user_username, creatorPeer, "false", level)
+                session = Session(sessionId, self.user_username, creatorPeer, "false", level, data["paddleHeight"])
                 session.add_player(self.user_username)
 
                 await self.channel_layer.group_send(
@@ -261,6 +262,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }
             )
 
+        if (messageType == "endGame") :
+            session = search_player_in_game(data["sessionUsername"])
+            final_score = str(data["leftPlayerScore"]) + ":" + str(data["rightPlayerScore"]);
+            winner = await get_user_profile(data.get("winner"))
+            player_one = await get_user_profile(session.creator_username)
+            player_two = await get_user_profile(session.players[1])
+            await update_game(player_one, player_two, winner, final_score)
+            sessions.remove(session)
+
+
+
 
 
     async def value_game(self, event):
@@ -356,7 +368,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     serializer.validated_data['player_two'] = player_two
                     update_user_profile(player_one)
                     update_user_profile(player_two)
-                    await update_game(serializer)
+                    await create_game(serializer)
 
                 await self.send(text_data=json.dumps({
                     'messageType': message_type,
@@ -448,10 +460,6 @@ def convert_list_json():
 
 @sync_to_async
 def get_user_profile(username):
-    # player = UserProfile.objects.get(user__username=username)
-    # player.is_ingame = True
-    # player.save()
-    # return serialize('json', [player])
     return UserProfile.objects.get(user__username=username)
 
 @sync_to_async
@@ -461,5 +469,24 @@ def update_user_profile(player):
 
 
 @sync_to_async
-def update_game(serializer):
+def create_game(serializer):
     serializer.save()
+
+@sync_to_async
+def update_game(player_one, player_two, winner, final_score):
+    findGame = Game.objects.filter(player_one=player_one, player_two=player_two, winner=None).first()
+    findGame.winner = winner
+    findGame.final_score = final_score
+    findGame.save()
+    player_one.games_id.add(findGame.id)
+    player_two.games_id.add(findGame.id)
+    if winner == player_one:
+        player_one.win += 1
+        player_two.lose += 1
+    else :
+        player_two.win += 1
+        player_one.lose += 1
+    player_two.is_ingame = False
+    player_one.is_ingame = False
+    player_one.save()
+    player_two.save()

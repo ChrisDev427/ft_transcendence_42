@@ -20,12 +20,14 @@ function printConsoleInfos() {
     console.log("Ball Size : " + ballSize);
     console.log("Start : " + start);
     console.log("Ball Launched : " + ballLaunched);
+    console.log("spaceBarPressed : " + spaceBarPressed);
     console.log("Theme : " + theme);
     console.log("One Player : " + onePlayer);
     console.log("Two Player : " + twoPlayers);
     console.log("Tournament : " + tournament);
     console.log("Local : " + playLocal);
     console.log("Online : " + playOnline);
+
 
 
     console.log("\n");
@@ -157,6 +159,62 @@ function serve() {
             ballSpeedY = level; // Choisissez la vitesse initiale en fonction de votre préférence
             ballLaunched = true;
             paddleFX.play();
+        }
+    }
+}
+
+function serveLeft() {
+    
+    // Si la balle n'a pas été lancée et la barre d'espace est enfoncée, lancez la balle
+    
+    if (!ballLaunched) {
+        
+        
+        if(rightPaddleHand) {
+            ballX = canvas.width - 25;
+            ballY = rightPaddleY + paddleHeight / 2;
+        }
+        else if(leftPaddleHand) {
+            ballX = 25;
+            ballY = leftPaddleY + paddleHeight / 2;
+        }
+        ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2); 
+        ctx.fill();
+        if (spaceBarPressed && leftPaddleHand) {
+            
+            ballSpeedX = level + 2; // Choisissez la vitesse initiale en fonction de votre préférence
+            ballSpeedY = level; // Choisissez la vitesse initiale en fonction de votre préférence
+            ballLaunched = true;
+            paddleFX.play();
+        }
+    }
+}
+
+
+function serveRight() {
+    
+    // Si la balle n'a pas été lancée et la barre d'espace est enfoncée, lancez la balle
+    
+    if (!ballLaunched) {
+        
+        
+        if(rightPaddleHand) {
+            ballX = canvas.width - 25;
+            ballY = rightPaddleY + paddleHeight / 2;
+        }
+        else if(leftPaddleHand) {
+            ballX = 25;
+            ballY = leftPaddleY + paddleHeight / 2;
+        }
+        ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2); 
+        ctx.fill();
+        if (spaceRight && rightPaddleHand) {
+            
+            ballSpeedX = level + 2; // Choisissez la vitesse initiale en fonction de votre préférence
+            ballSpeedY = level; // Choisissez la vitesse initiale en fonction de votre préférence
+            ballLaunched = true;
+            paddleFX.play();
+            spaceRight = false;
         }
     }
 }

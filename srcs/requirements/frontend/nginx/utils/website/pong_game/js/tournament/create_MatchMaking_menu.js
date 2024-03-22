@@ -143,7 +143,7 @@ function init_PlayMatch_button() {
         setHandToStart();
         document.getElementById('matchMakingTable').classList.add('hidden-element');
         document.getElementById('gameDiv').classList.remove('hidden-element');
-        localRun(); 
+        localRun();
     });
 }
 
