@@ -343,7 +343,7 @@ function searchUser_createContent(friendObjet, index) {
   const infosDiv = document.createElement('div');
   infosDiv.classList = 'col-auto';
   const username = document.createElement('h5');
-  username.classList = 'text-info text-center text-uppercase text-sm-start fs-3 mb-2 mt-2';
+  username.classList = 'text-info text-center text-uppercase text-center fs-3 mb-2 mt-2';
   username.textContent = friendObjet.user.username;
   infosDiv.appendChild(username);
   const firstname = document.createElement('h5');

@@ -336,33 +336,6 @@ function  sessions_createContent(session, index) {
 
 }
 
-// function joinSession(session, index, peer) {
-
-//     peer = new SimplePeer();
-//     peer.on('signal', (data) => {
-//         console.log('Peer signal:', data);
-//         socket.send(JSON.stringify({ messageType: 'join', peerId: data, sessionId: session.id, username:sessionUsername }));
-//     });
-//         // socket.send(JSON.stringify({ action: 'join', sessionId: session.id, username:session }));
-
-//     leftPlayerName = session.CreatorUsername;
-//     rightPlayerName= sessionUsername;
-//     level = session.level;
-//     playOnline = true;
-//     twoPlayers = true;
-//     start = true
-//     setPlayerNameToPrint(leftPlayerName, rightPlayerName);
-//     printConsoleInfos();
-//     showSection("playPong");
-//     document.getElementById('gameDiv').classList.remove('hidden-element');
-//     run();
-
-//     document.getElementById('joinCard' + index).remove();
-//     if (document.getElementById('sessionsList').childElementCount == 0 ) {
-//         document.getElementById('sessionListeEmpty').classList.remove('hidden-element');
-//     }
-// }
-
 
 function create_room() {
     peer = new SimplePeer({initiator: true})
@@ -437,7 +410,7 @@ function create_room() {
                     document.getElementById('createRoomMenu').classList.add('hidden-element');
                     const message = JSON.stringify({ messageType: 'quitSession' });
                     socket.send(message);
-                navbarSwitch('on');
+                    navbarSwitch('on');
                 })
             }
             else{
@@ -449,5 +422,4 @@ function create_room() {
     });
 
 }
-
 

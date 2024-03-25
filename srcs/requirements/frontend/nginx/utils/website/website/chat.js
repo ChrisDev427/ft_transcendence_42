@@ -101,6 +101,15 @@ function chatGeneral_createContent(username, message, time, messageType) {
     }
 }
 
+function chatSession_createContent(username, message, time, messageType) {
+
+    const messageContainer = document.getElementById('chat-messages_session');
+
+    messageContainer.innerHTML += `<div><strong>${username}:</strong> ${message}</div>`;
+
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+}
+
 function chatProfile_createContent(username) {
 
     const input = document.getElementById('message-input_general');

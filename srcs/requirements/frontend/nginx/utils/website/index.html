@@ -89,7 +89,7 @@
   <header id="header" class="pb-5 mb-3">
     <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark bg-info py-1">
       <div class="container" style="min-height: 45px">
-        <h5 class="text-white fw-bold fs-4" role="button" onclick="showSection('main')">ft_transcendence</h5>
+        <button class=" btn border-0" onclick="showSection('main')"><h5 class="text-white fw-bold fs-4">ft_transcendence</h5></button>
         
         <button class="navbar-toggler border-0 fa-solid fa-bars" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <!-- <span class="navbar-toggler-icon"></span> -->
@@ -638,12 +638,12 @@
               <div class="card-header py-3">
                 <h5 class="m-0 font-weight-bold text-info text-center text-md-start">Win/Loose</h5>
               </div>
-              <div class="card-body">
+              <div class="card-body" style="height: 260px;">
                 <div class="chart-pie">
                   <div id="chartPieTextInfo" class="p-4 hidden-element">
                     <h5 class="font-weight-bold text-center text-secondary">You need to play at least once to see some information here</h5>
                   </div>
-                  <canvas id="myPieChart" class="mt-3"></canvas>
+                  <canvas id="myPieChart" class="mt-5"></canvas>
                 </div>
               </div>
               <div class="ms-2">
@@ -678,7 +678,7 @@
               </div>
               <div class="card-body">
                 <!-- Card Body -->
-                <div id="friendShipBody-dashboard" style="overflow-y: auto; height: 290px;">
+                <div id="friendShipBody-dashboard" style="overflow-y: auto; overflow-x: hidden; height: 290px;">
                   <div id="friendsTextInfo" class="p-5 hidden-element fade-in">
                     <h5 class="font-weight-bold text-center text-secondary">You don't have any friend yet</h5>
                   </div>
@@ -689,7 +689,7 @@
             </div>
           </div>
           <!-- Search For Friends -->
-          <div class="col-xl-4" style="max-width: 420px;">
+          <div class="col-xl-4" >
             <div class="card border-0 shadow mb-4">
               <div class="card-header py-2">
                 <div class="row d-flex justify-content-between">
@@ -704,7 +704,7 @@
                 </div>
               </div>
               <!-- Card Body -->
-              <div class="card-body py-3" style="overflow-y: auto; height: 322px;">
+              <div class="card-body py-3" style="overflow-y: auto; overflow-x: hidden; height: 313px;">
                 <div id="searchFriend-cardArea" class="row px-3 d-flex justify-content-center fade-in"></div>
               </div>
             </div>
@@ -721,7 +721,7 @@
             </div>
             <!-- Card Body -->
             <div class="card-body">
-              <div id="gameHistory-cardBody" style="overflow-y: auto; min-height: 350px; max-height: 500px;">
+              <div id="gameHistory-cardBody" style="overflow-y: auto; overflow-x: hidden; min-height: 350px; max-height: 500px;">
                 <div id="historyTextInfo" class="p-5 fade-in hidden-element">
                   <h5 class="fw-bold text-center text-secondary">There is no history to display !</h5>
                 </div>

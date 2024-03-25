@@ -1,4 +1,4 @@
- 
+
 function sendMessageSession() {
     const messageInput = document.getElementById('message-input_session');
     const message = messageInput.value.trim();

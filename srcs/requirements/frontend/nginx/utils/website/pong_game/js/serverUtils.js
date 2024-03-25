@@ -15,7 +15,7 @@ function createPeer(sessionId)
 function waitForWebSocketConnection(username) {
     return new Promise((resolve, reject) => {
         if (!socket || socket.readyState !== WebSocket.OPEN)
-                     socket = new WebSocket('ws://localhost:8000/api/ws/general/?user_username=' + username);
+                     socket = new WebSocket('wss://localhost:8002/ws/general/?user_username=' + username);
 
         socket.addEventListener('open', () => {
             console.log('Connected to WebSocket server');
@@ -56,13 +56,54 @@ function waitForWebSocketConnection(username) {
     // chat general
     socket.addEventListener('message', (event) => {
         const receivedMessage = JSON.parse(event.data);
+        if(receivedMessage.messageType == "classic" || receivedMessage.messageType == "online" || receivedMessage.messageType == "offline"){
+
             chatGeneral_createContent(receivedMessage.owner, receivedMessage.message, receivedMessage.time, receivedMessage.messageType);
             // });
             const messageContainer = document.getElementById('chat-area');
             messageContainer.scrollTop = messageContainer.scrollHeight;
         // }
-        chatInit = true;
+            chatInit = true;
+        }
     });
+
+
+    socket.addEventListener('message', (event) => {
+        const receivedMessage = JSON.parse(event.data);
+        if (receivedMessage.messageType === 'messageSession') {
+            chatSession_createContent(receivedMessage.owner, receivedMessage.message, receivedMessage.time, receivedMessage.messageType);
+            // });
+            const messageContainer = document.getElementById('chat-area');
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+            // }
+            chatInit = true;
+        }
+    });
+
+
+
+    // function handleKeyPress(event) {
+    //     if (event.key === 'Enter') {
+    //         sendMessageSession();
+    //     }
+    // }
+
+
+    // chat session
+    // socket.addEventListener('message', (event) => {
+    //     const messageContainer = document.getElementById('chat-messages');
+    //     const receivedMessage = JSON.parse(event.data);
+
+    //     if (receivedMessage.type === 'messageSession') {
+    //         const messages = receivedMessage.messages || [];
+    //         const messagesToDisplay = messages.slice(-10);
+    //         messageContainer.innerHTML = '';
+    //         messagesToDisplay.forEach(msg => {
+    //             messageContainer.innerHTML += `<div><strong>${msg.username}:</strong> ${msg.text}</div>`;
+    //         });
+    //         messageContainer.scrollTop = messageContainer.scrollHeight;
+    //     }
+    // });
 
 
     // start game for creator
@@ -91,14 +132,16 @@ function waitForWebSocketConnection(username) {
                 leftPlayerName =sessionUsername;
                 rightPlayerName=data.player;
 
-
+                if(start){
+                    return
+                }
                 start = true;
 
                 setPlayerNameToPrint(leftPlayerName, rightPlayerName);
                 // setHandToStart();
                 leftPaddleHand = true;
 
-                printConsoleInfos();
+                // printConsoleInfos();
 
                 showSection("playPong");
                 document.getElementById('gameDiv').classList.remove('hidden-element');
@@ -106,12 +149,18 @@ function waitForWebSocketConnection(username) {
                 peer.on('data', (data) => {
                     // Convertir les données en objet JavaScript si nécessaire
                     const gameData = JSON.parse(data);
-                    console.log('Nouvelles données de jeu reçues :', gameData);
+                    // console.log('Nouvelles données de jeu reçues :', gameData);
                     // Traiter les nouvelles données de jeu
                     rightPaddleY = gameData.rightPaddleY;
                     // processGameData(gameData);
+                    spaceBarPressed = gameData.spaceBarPressed;
+                    spaceRight = gameData.spaceRight;
+
                 });
-                run(peer);
+
+                console.log("level :", level)
+                console.log("level :", paddleHeight)
+                onlineRun(peer);
                 // console.log("peer = ", peer);
 
                 showSection('playPong');
@@ -125,6 +174,24 @@ function waitForWebSocketConnection(username) {
     console.error('Une erreur s\'est produite lors de la connexion WebSocket:', error);
 });
 }
+
+
+
+function sendMessageSession() {
+    const messageInput = document.getElementById('message-input_session');
+    const message = messageInput.value.trim();
+
+    if (message !== '') {
+        if (socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({ messageType: 'sendMessageSession', message: message, sessionUsername: sessionUsername, 'time' : new Date().toLocaleTimeString()}));
+            messageInput.value = '';
+        } else {
+            console.warn('La connexion WebSocket n\'est pas encore établie.');
+        }
+    }
+}
+
+
 
 function updateSessionsList(sessions) {
 
@@ -201,12 +268,14 @@ function  sessions_createContent(session, index) {
 
     joinBtn.addEventListener('click', function() {
         // document.getElementById('joinCard' + index).remove();
+        console.log("session :", session);
         joinSession(session, index);
     })
 
 
 }
 
+//start game for joiner
 function joinSession(session, index) {
 
     console.log('session creator:', session.CreatorUsername);
@@ -215,7 +284,6 @@ function joinSession(session, index) {
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
-        console.log("data = ", data);
         if (data.messageType === 'confirmJoin')
             if (data.confirme == "true") {
                 peer2 = new SimplePeer({ initiator: false });
@@ -223,7 +291,7 @@ function joinSession(session, index) {
                 peer2.signal(data.peerCreator[0]);
 
                 peer2.on('signal', (dataPeer) => {
-                    console.log('Peer2 signal:', dataPeer);
+                    // console.log('Peer2 signal:', dataPeer);
                     socket.send(JSON.stringify({ messageType: 'playerPeer', sessionId: session.sessionId, playerPeer: dataPeer }));
                 });
 
@@ -232,6 +300,7 @@ function joinSession(session, index) {
                     leftPlayerName = session.CreatorUsername;
                     rightPlayerName= sessionUsername;
                     level = session.level;
+                    paddleHeight = session.paddleHeight
                     playOnline = true;
                     twoPlayers = true;
                     start = true
@@ -245,16 +314,21 @@ function joinSession(session, index) {
                     peer2.on('data', (data) => {
                         // Convertir les données en objet JavaScript si nécessaire
                         const gameData = JSON.parse(data);
-                        console.log('Nouvelles données de jeu reçues :', gameData);
+                        // console.log('Nouvelles données de jeu reçues :', gameData);
                         if (gameData.messageType === 'reset') {
                             rightPaddleY = gameData.rightPaddleY;
+                            rightPaddleHand = gameData.rightPaddleHand;
                         }
                         else {
                         // Traiter les nouvelles données de jeu
-                        processGameData(gameData);
+                            processGameData(gameData);
                         }
 
                     });
+                    console.log("level :", level)
+                    console.log("level :", paddleHeight)
+
+                    navbarSwitch('off');
                     onlineRun(peer2);
 
                     document.getElementById('joinCard' + index).remove();

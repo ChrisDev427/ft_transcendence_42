@@ -66,15 +66,17 @@ function navbarSwitch(state) {
     if (state === 'off') {
         const headerLinksAndButtons = document.querySelectorAll('header a, header button');
         headerLinksAndButtons.forEach(element => {
-            // element.disabled = true; // Désactivez l'élément
-            element.classList.add('disabled'); // Ajoutez une classe pour indiquer visuellement qu'il est désactivé
+            if (!element.classList.contains('disabled')) {
+                element.classList.add('disabled'); // Ajoutez une classe pour indiquer visuellement qu'il est désactivé
+            }
         });
     }
     if (state === 'on') {
         const headerLinksAndButtons = document.querySelectorAll('header a, header button');
         headerLinksAndButtons.forEach(element => {
-            // element.disabled = true; // Désactivez l'élément
-            element.classList.remove('disabled'); // Ajoutez une classe pour indiquer visuellement qu'il est désactivé
+            if (element.classList.contains('disabled')) {
+                element.classList.remove('disabled'); // Ajoutez une classe pour indiquer visuellement qu'il est désactivé
+            }
         });
     }
 }

@@ -25,7 +25,7 @@ function create_MatchMaking_menu() {
     rowDiv.classList = 'row d-flex justify-content-center';
     rowDiv.id = 'rowDiv';
     containerDiv.appendChild(rowDiv);
-    
+
     let table = document.createElement('table');
     table.classList = 'table table-sm table-hover mt-4 mb-3 text-center w-75 shadow';
     table.id = 'table';
@@ -40,7 +40,7 @@ function create_MatchMaking_menu() {
 
     // Set the 4 'th' inside 'tr'
     for(let i = 0; i < 4; i++) {
-        
+
         let titles = ["#", "Player 1", "Player 2", "Score"];
         let th = document.createElement('th');
         th.classList = 'text-info';
@@ -73,7 +73,7 @@ function create_MatchMaking_menu() {
             for(let j = 0; j < 4; j++) {
 
                 let td = document.createElement('td');
-                
+
                 if(j === 0) {
                     td.classList = 'text-info table-secondary border-end';
                 }
@@ -101,9 +101,9 @@ function create_MatchMaking_menu() {
 function init_StartTournament_button() {
     const startTournamentButton = document.getElementById("startTournamentButton");
     startTournamentButton.addEventListener("click", function() {
-        
+
         startTournamentButton.remove();
-     
+
         create_PlayMatch_button();
     });
 }
@@ -131,13 +131,13 @@ function create_PlayMatch_button() {
 function init_PlayMatch_button() {
     let playMatchButton = document.getElementById("playMatchButton");
     playMatchButton.addEventListener("click", function() {
-        
+
         let scoreValue = document.getElementById('scoreLine' + matchNumber);
         scoreValue.textContent = 'playing';
         playMatchButton.remove();
-        
+
         printTournamentLogs();
-        
+
         start = true;
         matchMaking_selectPlayersToPrint();
         setHandToStart();
@@ -157,7 +157,7 @@ function create_NextTour_button() {
     nextTourButton.id = 'nextTourButton';
     nextTourButton.textContent = 'Next Tour';
     buttonDiv.appendChild(nextTourButton);
-   
+
     init_NextTour_button();
 }
 
@@ -228,7 +228,7 @@ function endOfTournament() {
 
 
     colDiv.appendChild(textDiv);
-    
+
     let getElement = document.getElementById('rowDiv');
     getElement.appendChild(colDiv);
     getElement.appendChild(quitBtnDiv);
@@ -241,7 +241,7 @@ function endOfTournament() {
 }
 
 function ManageTournament() {
-    
+
     document.getElementById('matchMakingTable').classList.remove('hidden-element');
     document.getElementById('gameDiv').classList.add('hidden-element');
     // Modif de la ligne score
