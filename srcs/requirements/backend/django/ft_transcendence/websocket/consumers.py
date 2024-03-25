@@ -5,13 +5,18 @@ import uuid
 from channels.generic.websocket import AsyncWebsocketConsumer
 from urllib.parse import parse_qs
 from datetime import datetime
+from game.models import Game
+from game import serializers
+from account.models import UserProfile
+from asgiref.sync import sync_to_async
+from django.core.serializers import serialize
 import pytz
 
 class Session:
     def __init__(self, session_id, creator_username, peer_creator, is_private, level, paddleHeight):
         self.session_id = session_id
         self.creator_username = creator_username
-        self.peer_creator = peer_creator
+        self.peer_creator = peer_creator,
         self.is_private = is_private
         self.level = level
         self.players = []
@@ -78,9 +83,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         messageType = data["messageType"]
 
-
-
-        if (messageType == "classic"):
+        if (messageType == "classic" or messageType == "online"):
             message = data["message"]
             # owner = text_data_json["owner"]
             time = data["time"]
@@ -97,7 +100,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             message = data["message"]
             time = data["time"]
             session = search_player_in_game(sessionUsername)
-            
+
             await self.channel_layer.group_send(
                 self.room_group_name, {"type": "chat.session" ,"messageType": "messageSession", "message": message, "owner": self.user_username, "time": time, "players": session.players}
             )
@@ -270,6 +273,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }
             )
 
+        if (messageType == "endGame") :
+            session = search_player_in_game(data["sessionUsername"])
+            final_score = str(data["leftPlayerScore"]) + ":" + str(data["rightPlayerScore"]);
+            winner = await get_user_profile(data.get("winner"))
+            player_one = await get_user_profile(session.creator_username)
+            player_two = await get_user_profile(session.players[1])
+            await update_game(player_one, player_two, winner, final_score)
+            sessions.remove(session)
+
+
+
 
     async def chat_session(self, event):
         players = event.get("players")
@@ -343,8 +357,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'sessionId': event.get("sessionId"),
             }))
 
-
-
     async def confirm_join(self, event):
         message_type = event.get("messageType")
         confirme = event.get("confirme")
@@ -352,9 +364,33 @@ class ChatConsumer(AsyncWebsocketConsumer):
         sessionId = event.get("sessionId")
 
         players = event.get("players")
+        session = find_session_by_id(sessionId)
 
         for player in players:
             if player == self.user_username and player != sessionCreator:
+                difficulty = ""
+                if session.level == 3:
+                    difficulty = "easy"
+                elif session.level == 5:
+                    difficulty = "medium"
+                elif session.level == 7:
+                    difficulty = "hard"
+                gameData = {
+                    "player_one" : sessionCreator,
+                    "player_two" : players[1],
+                    "game_type" : "pvp",
+                    "difficulty" : difficulty,
+                }
+                serializer = serializers.GameSerializer(data=gameData, partial=True)
+                if serializer.is_valid():
+                    player_one = await get_user_profile(gameData.get("player_one"))
+                    player_two = await get_user_profile(gameData.get("player_two"))
+                    serializer.validated_data['player_one'] = player_one
+                    serializer.validated_data['player_two'] = player_two
+                    update_user_profile(player_one)
+                    update_user_profile(player_two)
+                    await create_game(serializer)
+
                 await self.send(text_data=json.dumps({
                     'messageType': message_type,
                     'username': event.get("username"),
@@ -377,6 +413,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'playerPeer': playerPeer,
                     'player' : players[1]
                 }))
+
+
 
 
 
@@ -440,3 +478,36 @@ def convert_list_json():
         sessions_json.append(session.to_json())
     sessions_json2 = json.dumps(sessions_json)
     return(sessions_json2)
+
+@sync_to_async
+def get_user_profile(username):
+    return UserProfile.objects.get(user__username=username)
+
+@sync_to_async
+def update_user_profile(player):
+    player.is_ingame = True
+    player.save()
+
+
+@sync_to_async
+def create_game(serializer):
+    serializer.save()
+
+@sync_to_async
+def update_game(player_one, player_two, winner, final_score):
+    findGame = Game.objects.filter(player_one=player_one, player_two=player_two, winner=None).first()
+    findGame.winner = winner
+    findGame.final_score = final_score
+    findGame.save()
+    player_one.games_id.add(findGame.id)
+    player_two.games_id.add(findGame.id)
+    if winner == player_one:
+        player_one.win += 1
+        player_two.lose += 1
+    else :
+        player_two.win += 1
+        player_one.lose += 1
+    player_two.is_ingame = False
+    player_one.is_ingame = False
+    player_one.save()
+    player_two.save()

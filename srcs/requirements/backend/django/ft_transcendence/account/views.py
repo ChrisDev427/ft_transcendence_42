@@ -166,7 +166,7 @@ class ProfileView(APIView):
         user_profile = UserProfile.objects.filter(user=user).first()
         serializer = UserProfileSerializer(user_profile, data=request_copy, partial=True, context={'request': request})
         if serializer.is_valid():
-            if request_copy.get('username') and request_copy.get('first_name') and request_copy.get('last_name') and user.check_password(settings.PASSWORD_42):
+            if request_copy.get('username') and request_copy.get('first_name') and request_copy.get('last_name') and user.check_password(settings.OAUTH_PASSWORD_42):
                 return Response({"42 user can't change this infos"}, status=status.HTTP_401_UNAUTHORIZED)
             if request_copy.get('friend'):
                 friend = get_object_or_404(UserProfile, user__username=request_copy.get('friend'))
@@ -230,7 +230,7 @@ class ProfileView(APIView):
                 user_profile.save()
             if request_copy.get('username'):
                 request_copy['username'] = str.lower(request_copy['username'])
-                if user.objects.filter(username=request_copy['username']).exists():
+                if User.objects.filter(username=request_copy['username']).exists() and user.username != request_copy['username']:
                     return Response({"username already exists"}, status=status.HTTP_400_BAD_REQUEST)
             serializer.save()
             serializer = UserSerializer(user, data=request_copy, partial=True, context={'request': request})
@@ -283,6 +283,10 @@ class LoginView(TokenObtainPairView):
                     totp_secret = pyotp.TOTP(user_profile.totp_secret)
                     if not totp_secret.verify(totp):
                         return Response({"totp not match"}, status=status.HTTP_401_UNAUTHORIZED)
+                    user_profile.is_connected = True
+                    user_profile.save()
+                    profile_serializer = UserProfileSerializer(user_profile, context={'request': request})
+                    return Response({**response.data, **profile_serializer.data}, status=status.HTTP_200_OK)
                 if not user_profile.otp and not otp:
                     return Response({"otp needed"}, status=status.HTTP_401_UNAUTHORIZED)
                 if user_profile.opt_expiration < timezone.now():
