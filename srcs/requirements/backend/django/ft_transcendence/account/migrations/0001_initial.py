@@ -34,6 +34,7 @@ class Migration(migrations.Migration):
                 ('friend', models.ManyToManyField(blank=True, related_name='_account_userprofile_friend_+', to='account.UserProfile')),
                 ('games_id', models.ManyToManyField(blank=True, to='game.Game')),
                 ('user', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('last_activity', models.DateTimeField(auto_now=True)),
             ],
         ),
     ]

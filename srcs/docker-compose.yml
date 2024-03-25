@@ -47,34 +47,15 @@ services:
       - django
     env_file: .env
 
-  # redis:
-  #   image: redis:latest
-  #   container_name: redis_container
-  #   restart: always
-  #   ports:
-  #     - "6380:6380"
-  #   networks:
-  #     - pong
-  #   volumes:
-  #     - ./requirements/backend/redis:/data
-  #   env_file: .env
-
   redis:
     image: redis:latest
     container_name: redis_container
     restart: always
     ports:
-      - "6380:6380"
+      - "6380:6379"
     networks:
         - pong
-    volumes:
-      - ./requirements/backend/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
-      - ./requirements/backend/redis:/data
     env_file: .env
-    command: >
-     sh -c "chmod 777 /usr/local/etc/redis/redis.conf &&
-            chmod 777 dump.rdb &&
-            redis-server /usr/local/etc/redis/redis.conf"
 
   postgresql:
     image: postgres:15.5
@@ -125,14 +106,12 @@ services:
     env_file: .env
 
   grafana:
-    image: grafana/grafana
+    image: grafana:v1
     container_name: grafana_container
+    build: ./requirements/backend/grafana
     restart: always
     ports:
       - "3000:3000"
-    volumes:
-      - ./requirements/backend/grafana:/var/lib/grafana
-      - ./requirements/backend/grafana/conf/defaults.ini:/usr/share/grafana/conf/defaults.ini
     networks:
       - pong
     env_file: .env
