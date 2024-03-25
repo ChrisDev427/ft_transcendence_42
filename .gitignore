@@ -1,13 +1,5 @@
 .DS_Store
 srcs/.env
-<<<<<<< HEAD
 srcs/requirements/backend/postgresql/DB
-<<<<<<< HEAD
-=======
-**/migrations/
->>>>>>> origin/main
-=======
 srcs/requirements/backend/postgresql/DB/*
-**/migrations
 **/__pycache__
->>>>>>> origin/main

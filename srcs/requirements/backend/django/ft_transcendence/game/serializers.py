@@ -28,7 +28,7 @@ class GameSerializer(serializers.ModelSerializer):
 			user = getattr(player_one, 'user', None)
 			if user:
 				return user.username
-			return None
+		return None
 
 	def get_player_two(self, obj):
 		player_two = obj.player_two

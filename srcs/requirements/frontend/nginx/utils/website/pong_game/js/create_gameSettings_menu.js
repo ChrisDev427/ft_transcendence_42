@@ -368,7 +368,7 @@ function create_room() {
     peer = new SimplePeer({initiator: true})
     peer.once('signal', (dataPeer) => {
         console.log('PeerCreator signal:', dataPeer);
-        socket.send(JSON.stringify({ messageType: 'createSession', level:level , peerId: dataPeer}));
+        socket.send(JSON.stringify({ messageType: 'createSession', level:level , peerId: dataPeer, paddleHeight: paddleHeight}));
     });
 
     socket.addEventListener('message', (event) => {

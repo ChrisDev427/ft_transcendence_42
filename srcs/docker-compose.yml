@@ -6,9 +6,13 @@ services:
     restart: on-failure
     command: >
       sh -c "python manage.py makemigrations account &&
+             python manage.py migrate &&
              python manage.py makemigrations friend_management &&
+             python manage.py migrate &&
              python manage.py makemigrations chat &&
+             python manage.py migrate &&
              python manage.py makemigrations game &&
+             python manage.py migrate &&
              python manage.py makemigrations &&
              python manage.py migrate &&
              python manage.py shell < create_superuser.py &&
@@ -42,19 +46,7 @@ services:
     depends_on:
       - django
     env_file: .env
-
-  # redis:
-  #   image: redis:latest
-  #   container_name: redis_container
-  #   restart: always
-  #   ports:
-  #     - "6380:6380"
-  #   networks:
-  #     - pong
-  #   volumes:
-  #     - ./requirements/backend/redis:/data
-  #   env_file: .env
-
+    
   redis:
    image: redis:latest
    container_name: redis_container
@@ -100,9 +92,9 @@ services:
     networks:
       - pong
     volumes:
-       - ./requirements/frontend/nginx/conf/nginx.conf:/etc/nginx/conf.d/default.conf
-       - ./requirements/frontend/nginx/utils/:/usr/share/nginx/html
-       - ./ssl:/etc/nginx/ssl
+        - ./requirements/frontend/nginx/conf/nginx.conf:/etc/nginx/conf.d/default.conf
+        - ./requirements/frontend/nginx/utils/:/usr/share/nginx/html
+        - ./ssl:/etc/nginx/ssl
     depends_on:
       - django
       - prometheus

@@ -669,9 +669,8 @@
                       <div class="col-auto px-0">
                         <h5 id="seeFriendRequest" role="button" class="text-center mb-0 mt-2 mt-sm-0 hidden-element fade-in" onclick="seeFriendRequest()" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); color: rgb(0, 218, 4);"></h5>
                       </div>
-                      <div class="col-auto d-flex align-items-end" style="width: 40px;">
+                      <div class="col-auto d-flex justify-content-center" style="width: 40px;">
                         <h5 id="seeFriendRequestCloseBtn" role="button" class="fs-6 text-danger hidden-element fade-in ms-0 mt-1 mb-0" onclick="closeFriendRequest()"><i class="fa-solid fa-square-xmark fs-5"></i></h5>
-                        <i id="seeFriendRequestCloseBtn" role="button" class="text-danger hidden-element fade-in fa-solid fa-square-xmark fs-5" onclick="closeFriendRequest()"></i>
                       </div>
                     </div>
                   </div>
@@ -705,7 +704,9 @@
                 </div>
               </div>
               <!-- Card Body -->
-              <div id="searchFriend-cardArea" class="card-body py-3" style="overflow-y: auto; height: 322px;"></div>
+              <div class="card-body py-3" style="overflow-y: auto; height: 322px;">
+                <div id="searchFriend-cardArea" class="row px-3 d-flex justify-content-center fade-in"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -724,64 +725,7 @@
                 <div id="historyTextInfo" class="p-5 fade-in hidden-element">
                   <h5 class="fw-bold text-center text-secondary">There is no history to display !</h5>
                 </div>
-                <div id="historyList" class="row px-3 d-felx justify-content-center fade-in hidden-element">
-
-
-                  <!-- <div class="col-sm-auto px-4 py-3 m-2 rounded-3 bg-success bg-opacity-10 shadow" >
-                    <div class="row d-felx justify-content-center">
-                      <div class="col-auto mt-2">
-                        <img src="img/img-chris.jpg" alt="user-avatar" class="rounded-3 shadow" style="max-height: 100px;">
-                      </div>
-                      <div class="col-auto mt-2">
-                        <img src="img/img_axel.jpg" alt="user-avatar" class="rounded-3 shadow" style="max-height: 100px;">
-                      </div>
-                    </div>
-
-                    <div class="col-auto my-auto">
-                      <h5 class="text-info text-center fs-3 mb-2 mt-1">Christophe / Axel</h5>
-                      <h5 id="scoreHistory" class="text-secondary text-center fs-4">10 / 4</h5>
-                    </div>
-                    <hr class="mt-1">
-
-                    <div class="row d-felx justify-content-between">
-                      <div class="col-auto ">
-                        <i class="fa-solid fa-gauge-high text-secondary"></i>
-                      </div>
-                      <div class="col-auto">
-                        <p id="dateHistory" class="fw-bold fst-italic text-secondary fs-6 mb-0">hard</p>
-                      </div>
-                    </div>
-
-                    <div class="row d-felx justify-content-between">
-                      <div class="col-auto ">
-                        <i class="fa-solid fa-calendar-days text-secondary"></i>
-                      </div>
-                      <div class="col-auto">
-                        <p id="dateHistory" class="fw-bold fst-italic text-secondary fs-6 mb-0">2024-02-16</p>
-                      </div>
-                    </div>
-
-                    <div class="row d-felx justify-content-between">
-                      <div class="col-auto ">
-                        <i class="fa-regular fa-clock text-secondary"></i>
-                      </div>
-                      <div class="col-auto">
-                        <p id="dateHistory" class="fw-bold fst-italic text-secondary fs-6 mb-0">07:28:28</p>
-                      </div>
-                    </div>
-
-                    <div class="row d-felx justify-content-between">
-                      <div class="col-auto ">
-                        <i class="fa-solid fa-stopwatch text-secondary"></i>
-                      </div>
-                      <div class="col-auto">
-                        <p id="dateHistory" class="fw-bold fst-italic text-secondary fs-6 mb-0">00:8:12</p>
-                      </div>
-                    </div>
-                  </div> -->
-
-
-                </div>
+                <div id="historyList" class="row px-3 d-felx justify-content-center fade-in hidden-element"></div>
               </div>
             </div>
           </div>
