@@ -326,8 +326,8 @@ function joinSession(session, index) {
 
                     });
                     console.log("level :", level)
-                    console.log("level :", paddleHeight)
-
+                    console.log("paddleHeight :", paddleHeight)
+                    
                     navbarSwitch('off');
                     onlineRun(peer2);
 

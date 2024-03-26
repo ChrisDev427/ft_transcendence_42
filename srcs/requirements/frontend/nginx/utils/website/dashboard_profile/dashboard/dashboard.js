@@ -508,7 +508,7 @@ function searchUser_createContent(friendObjet, index) {
 
 function gameHistory_createContent(gameInfos, score1, score2) {
 
-  // console.log('data infos = ', gameInfos);
+  console.log('data infos = ', gameInfos);
   const timeValues = handleDateTime();
   const mainDiv = document.createElement('div');
   if (gameInfos.winner === sessionUsername) {

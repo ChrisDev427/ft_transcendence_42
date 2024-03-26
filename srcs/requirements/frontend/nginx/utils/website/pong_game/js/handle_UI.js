@@ -336,10 +336,62 @@ resetBtnUI.addEventListener('click', function() {
 const quitButton = document.getElementById("quitGameBtn");
 quitGameBtn.addEventListener("click", function() {
 
-    resetGameValues();
-    navbarSwitch('on');
-    showSection('main');
+    if (playLocal) {   
+        resetGameValues();
+        navbarSwitch('on');
+        showSection('main');
+    }
+    if (playOnline) {
 
-    const message = JSON.stringify({ messageType: 'quitSession' });
-    socket.send(message);
+        if (leftPlayerScore !== 10 && rightPlayerScore !== 10) {
+
+            document.getElementById('quitGameBtn-div').classList.add('hidden-element');
+            
+            const div = document.createElement('div');
+            div.classList = 'col-12 p-3 bg-white rounded shadow';
+            const h5 = document.createElement('h5');
+            h5.classList = 'text-center text-danger';
+            h5.textContent = 'If you leave the game, you declare forfeit !';
+            div.appendChild(h5);
+            
+            const divBtns = document.createElement('div');
+            divBtns.classList = 'col d-flex justify-content-center';
+            
+            const confirmBtn = document.createElement('button');
+            confirmBtn.classList = 'btn btn-sm btn-outline-danger fw-bold mx-auto';
+            confirmBtn.type = 'button';
+            confirmBtn.textContent = 'Confirm';
+            divBtns.appendChild(confirmBtn);
+            
+            const cancelBtn = document.createElement('button');
+            cancelBtn.classList = 'btn btn-sm btn-outline-success fw-bold mx-auto';
+            cancelBtn.type = 'button';
+            cancelBtn.textContent = 'Cancel';
+            divBtns.appendChild(cancelBtn);
+            
+            div.appendChild(divBtns);
+            
+            document.getElementById('pong-ui').appendChild(div);
+            
+            confirmBtn.addEventListener('click', function() {
+                
+                const message = JSON.stringify({ messageType: 'quitSession' });
+                socket.send(message);
+                div.remove();
+                document.getElementById('quitGameBtn-div').classList.remove('hidden-element');
+                resetGameValues();
+                navbarSwitch('on');
+                showSection('main');
+            });
+            
+            cancelBtn.addEventListener('click', function() {
+                div.remove();
+                document.getElementById('quitGameBtn-div').classList.remove('hidden-element');
+            });
+        } else {
+            resetGameValues();
+            navbarSwitch('on');
+            showSection('main');
+        }
+    }
 });

@@ -104,8 +104,6 @@ function printInfos() {
       
     }
 
-
-
     // Print Players Name
     ctx.fillStyle = themeColor[theme].playersName;
     ctx.globalAlpha = 0.2;
@@ -116,15 +114,18 @@ function printInfos() {
     // Print Commands CTRL
     if(connectedFrom_desktop) {
 
-
         ctx.globalAlpha = 0.2;
         ctx.font = '40px "Bagel Fat One", sans-serif';
         ctx.fillText('UP = Q', 20, 635);
         ctx.fillText('DN = A', 20, 680);
-        ctx.fillText('UP = P', 970, 635);
-        ctx.fillText('DN = L', 970, 680);
+        if (playLocal) {
+
+            ctx.fillText('UP = P', 970, 635);
+            ctx.fillText('DN = L', 970, 680);
+        }
         ctx.globalAlpha = 1.0;
-        if (!ballLaunched && leftPlayerScore === 0 && rightPlayerScore === 0) {
+        if ((!ballLaunched && leftPlayerScore === 0 && rightPlayerScore === 0 && playLocal === true)
+            || (!ballLaunched && leftPlayerScore === 0 && rightPlayerScore === 0 && playOnline === true && leftPlayerName == sessionUsername)) {
             // Print PRESS SPACE TO LAUNCH
             ctx.fillStyle = themeColor[theme].field;
             ctx.fillRect(540, 297, 20, 80);
@@ -133,8 +134,6 @@ function printInfos() {
             ctx.fillText('PRESS SPACE TO LAUNCH', 335, 350);
         }
     }
-
-
 }
 
 function serve() {
@@ -167,17 +166,20 @@ function serve() {
 function serveLeft() {
     
     // Si la balle n'a pas été lancée et la barre d'espace est enfoncée, lancez la balle
-    
     if (!ballLaunched) {
         
         
+        
         if(rightPaddleHand) {
+            
             ballX = canvas.width - 25;
             ballY = rightPaddleY + paddleHeight / 2;
         }
         else if(leftPaddleHand) {
+
             ballX = 25;
             ballY = leftPaddleY + paddleHeight / 2;
+            console.log('ballX = ', ballX, ' ballY = ', ballY);
         }
         ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2); 
         ctx.fill();

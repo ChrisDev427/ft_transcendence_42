@@ -40,43 +40,7 @@
 
 
 <body style="background-color:rgb(94, 94, 94);">
-  <!--
-
-    document.addEventListener('mousemove', (event) => {
-      const coordinates = {
-          x: event.clientX,
-          y: event.clientY
-      };
-
-      // Envoyer les coordonnées au serveur
-      socket.send(JSON.stringify(coordinates));
-    });
-
-    socket.addEventListener('message', (event) => {
-        const coordinates = JSON.parse(event.data);
-        console.log('Server Broadcast:', coordinates);
-    });
-
-    // Gérez l'événement d'ouverture de la connexion
-    socket.addEventListener('open', (event) => {
-        console.log('Connexion établie avec le serveur WebSocket');
-    });
-
-    // Gérez l'événement de réception de messages
-    socket.addEventListener('message', (event) => {
-        console.log('Message reçu:', event.data);
-    });
-
-    // Gérez l'événement de fermeture de la connexion
-    socket.addEventListener('close', (event) => {
-        console.log('Connexion WebSocket fermée');
-    });
-
-    // Gérez l'événement d'erreur
-    socket.addEventListener('error', (event) => {
-        console.error('Erreur WebSocket:', event);
-    });
-  </script> -->
+  
   <!-- Alert Logout ------------------------------------>
   <div id="alert-bg-blur" class="hidden-element fade-in">
       <div id="confirm-logout" class="fade-in p-3 p-md-5 bg-info shadow-lg rounded-4 " style="position: fixed; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
@@ -140,27 +104,31 @@
   <main>
 
     <section id="main" class="d-flex justify-content-center fade-in hidden-element">
-      <div class="container bg-white rounded-bottom-4 shadow" style="max-width: 1000px;">
+      <div class="container bg-white rounded-bottom-4 shadow" style="max-width: 1200px;">
         <div class="col d-flex justify-content-center mt-4 mx-4">
           <h1 class="display-2 text-info fw-bold">ft_transcendence</h1>
         </div>
         <div class="col-8 d-flex justify-content-center mx-auto">
           <img class="w-75" style="opacity: 70%;" src="img/img-cartoon.png" alt="img-cartoon">
         </div>
-        <div class="row ">
-          <div class="col-lg-9 px-5 my-auto mt-3">
+        <div class="row">
+          <div class="col-lg-9 p-3 my-auto">
             <!-- <H3 class="display-6 text-center text-md-end  fw-bold py-2">Welcome to ft_transcendence</H3> -->
-            <H4 class="text-center text-md-end text-secondary fw-bold ">The last common core project at school 42</H4>
-            <p class="lead fs-5 text-center text-black">The ft_transcendence project is a complex and ambitious endeavor aiming
-              to create an online gaming platform based on table tennis (ping-pong). It is a large-scale project implementing diverse
-              features, ranging from user management to real-time table tennis matches.
-              It is a versatile project that combines aspects of web development, real-time functionality, and tournament management
-              to craft an immersive and competitive online gaming experience centered around table tennis. It challenges students' skills
-              in software development, database design, security, and the integration of modern technologies.
-            </p>
+            <div class="ps-lg-4">
+              <h5 class="text-center text-secondary fw-bold fs-3">The last common core project at school 42</h5>
+            </div>
+            <div class="ps-lg-4">
+              <p class="lead fs-5 text-center text-black">The ft_transcendence project is a complex and ambitious endeavor aiming
+                to create an online gaming platform based on table tennis (ping-pong). It is a large-scale project implementing diverse
+                features, ranging from user management to real-time table tennis matches.
+                It is a versatile project that combines aspects of web development, real-time functionality, and tournament management
+                to craft an immersive and competitive online gaming experience centered around table tennis. It challenges students' skills
+                in software development, database design, security, and the integration of modern technologies.
+              </p>
+            </div>
           </div>
 
-          <div class="col-lg-3 mb-3 p-3">
+          <div class="col-lg-3 p-3 pt-0 pt-lg-5">
             <div class="col d-flex justify-content-center mt-3 mb-2">
               <a class="btn btn-info text-light fw-bold shadow p-4 w-75" href="#gameMenu">Play Pong</a>
             </div>
@@ -260,11 +228,11 @@
 
 
               <!-- text PONG & quit btn -->
-              <div class="col-4">
+              <div id="pong-ui" class="col-4">
                 <div class="col-12 d-flex justify-content-center">
                   <h1 class="text-light display-3">PONG</h1>
                 </div>
-                <div class="col-12 d-flex">
+                <div id="quitGameBtn-div" class="col-12 d-flex">
                   <button type="button" class="btn btn-sm btn-outline-light fw-bold mx-auto" id="quitGameBtn">Quit</button>
                 </div>
               </div>
@@ -638,12 +606,12 @@
               <div class="card-header py-3">
                 <h5 class="m-0 font-weight-bold text-info text-center text-md-start">Win/Loose</h5>
               </div>
-              <div class="card-body" style="height: 260px;">
+              <div class="card-body" >
                 <div class="chart-pie">
                   <div id="chartPieTextInfo" class="p-4 hidden-element">
                     <h5 class="font-weight-bold text-center text-secondary">You need to play at least once to see some information here</h5>
                   </div>
-                  <canvas id="myPieChart" class="mt-5"></canvas>
+                  <canvas id="myPieChart" class="mt-3"></canvas>
                 </div>
               </div>
               <div class="ms-2">
@@ -657,7 +625,7 @@
         </div>
         <div class="row">
           <!-- Friends -->
-          <div class="col-xl-8">
+          <div class="col-12">
             <div class="card border-0 shadow mb-4">
               <div class="card-header py-3">
                 <div class="row d-flex align-items-center">
@@ -678,7 +646,7 @@
               </div>
               <div class="card-body">
                 <!-- Card Body -->
-                <div id="friendShipBody-dashboard" style="overflow-y: auto; overflow-x: hidden; height: 290px;">
+                <div id="friendShipBody-dashboard" style="overflow-y: auto; overflow-x: hidden; height: 340px;">
                   <div id="friendsTextInfo" class="p-5 hidden-element fade-in">
                     <h5 class="font-weight-bold text-center text-secondary">You don't have any friend yet</h5>
                   </div>
@@ -689,14 +657,14 @@
             </div>
           </div>
           <!-- Search For Friends -->
-          <div class="col-xl-4" >
+          <div class="col-12" >
             <div class="card border-0 shadow mb-4">
               <div class="card-header py-2">
                 <div class="row d-flex justify-content-between">
                   <div class="col-sm-auto my-auto pt-2">
                     <h5 class=" text-info text-center text-sm-start">Search user</h5>
                   </div>
-                  <div class="col-auto mx-auto mx-sm-0 me-md-1 p-0 d-flex align-items-center">
+                  <div class="col-auto mx-auto mx-sm-0 me-sm-2 p-0 d-flex align-items-center">
                     <i id="searchUserRefreshBtn" class="btn border-0 fa-solid fa-rotate-right fs-4 text-info me-1 p-0" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);"></i>
                     <input id="searchUserInput" type="text" class="form-control form-control-sm border-info text-center text-info shadow" placeholder="Username">
                     <i id="searchUserBtn" class="btn border-0 fa-solid fa-magnifying-glass fs-4 text-info ms-1 p-0" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);"></i>
@@ -704,7 +672,7 @@
                 </div>
               </div>
               <!-- Card Body -->
-              <div class="card-body py-3" style="overflow-y: auto; overflow-x: hidden; height: 313px;">
+              <div class="card-body py-3" style="overflow-y: auto; overflow-x: hidden; height: 370px;">
                 <div id="searchFriend-cardArea" class="row px-3 d-flex justify-content-center fade-in"></div>
               </div>
             </div>
@@ -816,7 +784,7 @@
 
     <div id="mainChat" class="unvisible">
       <div id="chat" class="p-2 fade-in chat-container " >
-        <div id="chat-area" class=" mb-2 " style="overflow-y: auto; overflow-x: hidden; height: 280px;">
+        <div id="chat-area" class=" mb-2 " style="overflow-y: auto; overflow-x: hidden; height: 310px;">
           <div id="chatProfile" class="bg-white p-2 m-2 rounded-3 shadow unvisible"></div>
           <div id="chat-messages-general" class="px-2"></div>
         </div>
