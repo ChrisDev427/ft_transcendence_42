@@ -6,13 +6,9 @@ services:
     restart: on-failure
     command: >
       sh -c "python manage.py makemigrations account &&
-             python manage.py migrate &&
              python manage.py makemigrations friend_management &&
-             python manage.py migrate &&
              python manage.py makemigrations chat &&
-             python manage.py migrate &&
              python manage.py makemigrations game &&
-             python manage.py migrate &&
              python manage.py makemigrations &&
              python manage.py migrate &&
              python manage.py shell < create_superuser.py &&

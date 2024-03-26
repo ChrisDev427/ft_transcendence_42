@@ -2,8 +2,10 @@ FROM grafana/grafana:latest
 
 WORKDIR /data
 
-COPY ./conf/defaults.ini ./etc/grafana/grafana.ini
+COPY ./conf/defaults.ini /etc/grafana/grafana.ini
 
-COPY ./grafana.db /data/grafana.db
+COPY ./conf/datasources/prometheus.yaml /etc/grafana/provisioning/datasources/prometheus.yaml
 
-CMD ["grafana-server", "--homepath=/usr/share/grafana", "--config=/etc/grafana/grafana.ini", "--packaging=docker", "cfg:default.paths.data=/data"]
+COPY ./conf/dashboards /etc/grafana/provisioning/dashboards
+
+CMD ["grafana-server", "--homepath=/usr/share/grafana", "--packaging=docker", "cfg:default.paths.data=/data"]

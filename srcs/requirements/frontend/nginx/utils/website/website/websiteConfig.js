@@ -3,9 +3,11 @@ let connectedFrom_desktop = false;
 let two_fa = false;
 let sessionUsername;
 
+
+
 //****** DOMAIN URLS *********************
-const domainPath = "https://10.12.2.6:8002";
-// const domainPath = 'https://transcendence42.ddns.net';
+// const domainPath = "https://10.12.2.6:8002";
+const domainPath = 'https://transcendence42.ddns.net:8002';
 
 if ('ontouchstart' in window || navigator.maxTouchPoints) {
     // console.log("The user is connecting from a mobile phone.");

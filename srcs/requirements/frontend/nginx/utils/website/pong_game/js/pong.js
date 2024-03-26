@@ -4,20 +4,20 @@
 // printConsoleInfos();
 // Fonction principale de mise à jour et de rendu
 
-let i = 0;
+// let i = 0;
 
-let gameData = {
-    ballX: 0,
-    ballY: 0,
-    leftPaddleY: 0,
-    rightPaddleY: 0,
-    spaceBarPressed: false,
-    leftPaddleHand: false,
-    rightPaddleHand: false,
-    leftPlayerScore: 0,
-    rightPlayerScore: 0,
-    ballLaunched: false,
-};
+// let gameData = {
+//     ballX: 0,
+//     ballY: 0,
+//     leftPaddleY: 0,
+//     rightPaddleY: 0,
+//     spaceBarPressed: false,
+//     leftPaddleHand: false,
+//     rightPaddleHand: false,
+//     leftPlayerScore: 0,
+//     rightPlayerScore: 0,
+//     ballLaunched: false,
+// };
 
 function localRun() {
 
@@ -111,7 +111,6 @@ printGame();
 function onlineRun(peer) {
     // printConsoleInfos();
     // const currentTime = Date.now();
-
     if (leftPlayerName == sessionUsername){
         if (q_keyPressed && leftPaddleY > 0) {
             leftPaddleY -= level + 1.8;

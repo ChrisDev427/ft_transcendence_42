@@ -81,6 +81,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
 
+        print("sessions = ", sessions)
         messageType = data["messageType"]
 
         if (messageType == "classic" or messageType == "online"):
@@ -155,13 +156,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     self.room_group_name, { "type": "session.list" ,"messageType": "updateSessions", "session": sessions_json}
                 )
 
-
-        # if messageType == "createPeer" :
-        #     sessionId = data["sessionId"]
-        #     session = find_session_by_id(sessionId)
-        #     if session and session.creator_username == self.user_username:
-        #         session.creator_peer_id = data["peerId"]
-                # print("Peer created :", session.creator_peer_id)
         if(messageType == "playerPeer"):
             sessionId = data["sessionId"]
             session = find_session_by_id(sessionId)
@@ -219,6 +213,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
             sessions_json = convert_list_json()
             await self.channel_layer.group_send(
                 self.room_group_name, { "type": "session.list" ,"messageType": "updateSessions", "session": sessions_json}
+            )
+
+        if (messageType == "surrenderSession"):
+            session = search_player_in_game(self.user_username)
+            # session.players.remove(self.user_username)
+            await self.channel_layer.group_send(
+                self.room_group_name, { "type": "session.surrender" ,"messageType": messageType, "session": session.to_json(), "username" : self.user_username}
             )
 
 
@@ -283,7 +284,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
             sessions.remove(session)
 
 
-
+    async def session_surrender(self, event):
+        messageType = event.get("messageType")
+        session = event.get("session")
+        players = session["players"]
+        username = event.get("username")
+        # Send message to WebSocket
+        for player in players:
+            if player == self.user_username and username != self.user_username:
+                await self.send(text_data=json.dumps({"messageType" : messageType, "session": session}))
 
     async def chat_session(self, event):
         players = event.get("players")

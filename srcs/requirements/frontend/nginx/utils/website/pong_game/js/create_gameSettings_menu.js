@@ -225,22 +225,6 @@ function create_Tournament_inputs() {
     initPlayBtn();
 }
 
-let socketSession;
-
-function initGameSession() {
-    sessionId = "test";
-    socketSession = new WebSocket('ws://localhost:8000/api/ws/session/?game_session=' + sessionId);
-
-    socketSession.addEventListener('open', (event) => {
-        console.log('Connected to WebSocketSession game session', sessionId);
-    });
-
-    socketSession.addEventListener('close', (event) => {
-        console.log('Connection to WebSocketSession game session closed');
-    });
-
-    return socketSession;
-}
 
 function updateSessionsList(sessions, peer) {
     // const sessionsListElement = document.getElementById('sessionsList');

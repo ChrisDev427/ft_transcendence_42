@@ -22,9 +22,10 @@ class Migration(migrations.Migration):
                 ('game_type', models.CharField(default=None, max_length=25)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('player_one', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='player_one', to=settings.AUTH_USER_MODEL)),
-                ('player_two', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='player_two', to=settings.AUTH_USER_MODEL)),
-                ('winner', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='winner', to=settings.AUTH_USER_MODEL)),
+                ('player_one', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='player_one', to='account.userprofile')),
+                ('player_two', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='player_two', to='account.userprofile')),
+                ('winner', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='winner', to='account.userprofile')),
+                ('difficulty', models.CharField(default=None, max_length=25)),
             ],
         ),
     ]

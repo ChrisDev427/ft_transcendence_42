@@ -15,7 +15,7 @@ function createPeer(sessionId)
 function waitForWebSocketConnection(username) {
     return new Promise((resolve, reject) => {
         if (!socket || socket.readyState !== WebSocket.OPEN)
-                     socket = new WebSocket('wss://10.12.2.6:8002/ws/general/?user_username=' + username);
+                     socket = new WebSocket('wss://transcendence42.ddns.net:8002/ws/general/?user_username=' + username);
 
         socket.addEventListener('open', () => {
             console.log('Connected to WebSocket server');
@@ -80,7 +80,15 @@ function waitForWebSocketConnection(username) {
         }
     });
 
-
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        console.log('data received', data);
+        if (data.messageType === 'surrenderSession') {
+            const message = JSON.stringify({ messageType: 'endGame', leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : sessionUsername});
+            socket.send(message);
+            showSection('main');
+        }
+    });
 
     // function handleKeyPress(event) {
     //     if (event.key === 'Enter') {
@@ -209,10 +217,10 @@ function updateSessionsList(sessions) {
     }
 
     sessions.forEach(session => {
-        sessions_createContent(session, index);
-        index++;
-        const sessionLink = document.createElement('a');
-
+        if (session.players.length == 1) {
+            sessions_createContent(session, index);
+            index++;
+        }
     });
 
     console.log('Updated sessions list:', sessions);
