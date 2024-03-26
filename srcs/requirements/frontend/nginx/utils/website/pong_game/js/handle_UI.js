@@ -273,7 +273,9 @@ function initPlayBtn() {
         document.getElementById('gameDiv').classList.remove('hidden-element');
         reset_UI();
         removeInput();
+        navbarSwitch('off');
         localRun();
+
     });
 }
 
@@ -360,7 +362,6 @@ quitGameBtn.addEventListener("click", function() {
             confirmBtn.type = 'button';
             confirmBtn.textContent = 'Confirm';
             divBtns.appendChild(confirmBtn);
-
             const cancelBtn = document.createElement('button');
             cancelBtn.classList = 'btn btn-sm btn-outline-success fw-bold mx-auto';
             cancelBtn.type = 'button';
@@ -374,13 +375,13 @@ quitGameBtn.addEventListener("click", function() {
             confirmBtn.addEventListener('click', function() {
                 const message = JSON.stringify({ messageType: 'surrenderSession' });
                 socket.send(message);
+                start = false;
                 div.remove();
                 document.getElementById('quitGameBtn-div').classList.remove('hidden-element');
                 resetGameValues();
                 navbarSwitch('on');
                 showSection('main');
             });
-
             cancelBtn.addEventListener('click', function() {
                 div.remove();
                 document.getElementById('quitGameBtn-div').classList.remove('hidden-element');

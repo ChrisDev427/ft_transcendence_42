@@ -394,7 +394,7 @@ function create_room() {
                     document.getElementById('createRoomMenu').classList.add('hidden-element');
                     const message = JSON.stringify({ messageType: 'quitSession' });
                     socket.send(message);
-                navbarSwitch('on');
+                    navbarSwitch('on');
                 })
             }
             else{

@@ -11,6 +11,7 @@ from account.models import UserProfile
 from asgiref.sync import sync_to_async
 from django.core.serializers import serialize
 import pytz
+fuseau = pytz.timezone('Europe/Paris')
 
 class Session:
     def __init__(self, session_id, creator_username, peer_creator, is_private, level, paddleHeight):
@@ -71,7 +72,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Leave room group
         print(self.user_username, " c est deco")
-        fuseau = pytz.timezone("Europe/Paris")
+        # fuseau = pytz.timezone("Europe/Paris")
         await self.channel_layer.group_send(
             self.room_group_name, {"type": "chat.disconnect", "user_username": self.user_username, "time": datetime.now().astimezone(fuseau).strftime("%H:%M:%S")}
         )

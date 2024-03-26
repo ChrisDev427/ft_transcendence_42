@@ -84,6 +84,7 @@ function waitForWebSocketConnection(username) {
         const data = JSON.parse(event.data);
         console.log('data received', data);
         if (data.messageType === 'surrenderSession') {
+            start = false;
             const message = JSON.stringify({ messageType: 'endGame', leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : sessionUsername});
             socket.send(message);
             showSection('main');
@@ -334,9 +335,9 @@ function joinSession(session, index) {
 
                     });
                     console.log("level :", level)
-                    console.log("level :", paddleHeight)
+                    console.log("paddleHeight :", paddleHeight)
 
-
+                    navbarSwitch('off');
                     onlineRun(peer2);
 
                     document.getElementById('joinCard' + index).remove();
