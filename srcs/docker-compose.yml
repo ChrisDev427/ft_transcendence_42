@@ -34,7 +34,7 @@ services:
             python manage.py migrate &&
             python manage.py process_tasks"
     ports:
-     - "8001:8001"
+     - "8001:8000"
     volumes:
       - ./requirements/backend/django/ft_transcendence:/app
     networks:
@@ -42,7 +42,7 @@ services:
     depends_on:
       - django
     env_file: .env
-    
+
   redis:
     image: redis:latest
     container_name: redis_container
