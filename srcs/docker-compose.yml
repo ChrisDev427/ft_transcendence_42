@@ -32,7 +32,6 @@ services:
     command: >
      sh -c "python manage.py makemigrations &&
             python manage.py migrate &&
-            python manage.py startbackgroundtasks &&
             python manage.py process_tasks"
     ports:
      - "8001:8000"
