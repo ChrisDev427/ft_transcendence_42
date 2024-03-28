@@ -6,4 +6,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('Start background tasks'))
-        check_user_activity(repeat=30)
+        check_user_activity(repeat=60)

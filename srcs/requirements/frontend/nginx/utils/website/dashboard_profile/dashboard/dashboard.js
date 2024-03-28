@@ -1,5 +1,6 @@
 function getDashboardInfos() {
-  console.log('function getDashboardInfos()');
+  // console.log('function getDashboardInfos()');
+  
   verifyToken();
   fetch(domainPath + '/api/account/profile/', {
     method: 'GET',
@@ -28,12 +29,15 @@ function getDashboardInfos() {
 }
 
 function initDashboard(data) {
-  
+
+  const historyList = document.getElementById('historyList');
+  if (!historyList.classList.contains('hidden-element')) {
+    historyList.classList.add('hidden-element');
+  }
+  cleanElement('historyList');
+  cleanElement('friendShipList-dashboard');
   checkFriendRequest();
   get_users_data();
-
-  console.log('data = = ', data);
-  // getGameInfos(1);
 
   document.getElementById('firstNameDash').textContent = data.user.first_name;
   document.getElementById('lastNameDash').textContent = data.user.last_name;
@@ -51,7 +55,10 @@ function initDashboard(data) {
   document.getElementById('victoriesNumberDash').textContent = data.win;
   document.getElementById('defeatsNumberDash').textContent = data.lose;
   document.getElementById('playedNumberDash').textContent = data.games_id.length;
-  
+  if (data.games_id.length === 0) {
+    document.getElementById('historyTextInfo').classList.remove('hidden-element');
+  }
+  getGamesInfos(data.games_id);
   setPieChart(data.win, data.lose);
   getAvatar(data.user.username)
   .then(imageURL => {
@@ -64,9 +71,8 @@ function initDashboard(data) {
   
 }
 
-
 function manageFriends(data) {
-  console.log('manageFriends()');
+  // console.log('manageFriends()');
   displaySpinner_dash('friendShipBody-dashboard');
   createFriendArray(data)
   .then(friendsArray => {
@@ -88,17 +94,9 @@ function manageFriends(data) {
 
 function friends_createContent(friendsArray) {
 
-  const friendList = document.getElementById('friendShipList-dashboard');
-  while (friendList.firstChild) {
-    friendList.removeChild(friendList.firstChild);
-  }
   sortFriendsArray(friendsArray);
   
   for (let i = 0; i < friendsArray.length; i++) {
-
-    // const mainDiv = document.createElement('div');
-    // mainDiv.classList = 'px-3 mb-3 fade-in';
-    // mainDiv.id = 'friendShipList-dashboard';
     
     const rowDiv = document.createElement('div');
     rowDiv.classList = 'row py-3 px-3 mb-3 shadow-sm rounded-3 bg-info bg-opacity-10 fade-in';
@@ -215,14 +213,14 @@ function friends_createContent(friendsArray) {
 }
 
 function friendExpandInfos_createContent(userObject, index) {
-  console.log('userObject = ', userObject);
+  
   const cardTitles = ['Victories', 'Defeats', 'Played', 'Friends'];
   const cardValue = [userObject.win, userObject.lose, userObject.win + userObject.lose, userObject.friend.length];
   const cardIcons = ['fas fa-trophy text-success', 'fa-solid fa-face-sad-tear text-danger', 'fas fa-table-tennis text-info', 'fa-solid fa-people-group text-primary'];
   const cardTextColor = [' text-success', ' text-danger', ' text-info', ' text-primary'];
   const infosUser = [userObject.user.first_name, userObject.user.last_name, userObject.user.email];
 
-  console.log('userObject = ' + userObject.user.username);
+  // console.log('userObject = ' + userObject.user.username);
 
   const mainDiv = document.createElement('div');
   mainDiv.classList = 'col-12 mt-3 hidden-element';
@@ -321,14 +319,11 @@ function searchUser_createContent(friendObjet, index) {
   console.log('friendObjet = ', friendObjet);
 
   const mainDiv = document.createElement('div');
-  mainDiv.classList = 'col-sm-10 mx-auto bg-primary bg-opacity-10 rounded shadow p-3 mb-3 fade-in';
+  mainDiv.classList = 'col-auto px-4 py-3 m-2 rounded-3 bg-success bg-opacity-10 shadow';
   mainDiv.id = 'user_searchUser' + index;
 
-  const rowDiv = document.createElement('div');
-  rowDiv.classList = 'row';
-
   const imgDiv = document.createElement('div');
-  imgDiv.classList = 'col-auto mx-auto mx-sm-0 my-auto';
+  imgDiv.classList = 'col-auto d-flex justify-content-center mt-2';
 
   const img = document.createElement('img');
   img.classList = 'rounded-3 shadow';
@@ -342,26 +337,27 @@ function searchUser_createContent(friendObjet, index) {
     console.error("Error : download avatar imgage 'searchFriend_createContent()' !", error);
   });
   imgDiv.appendChild(img);
-  rowDiv.appendChild(imgDiv);
+  mainDiv.appendChild(imgDiv);
+
 
   const infosDiv = document.createElement('div');
-  infosDiv.classList = 'col-sm-5 my-auto';
+  infosDiv.classList = 'col-auto';
   const username = document.createElement('h5');
-  username.classList = 'text-info text-center text-sm-start fs-3 mb-2 mt-md-0';
+  username.classList = 'text-info text-center text-uppercase text-center fs-3 mb-2 mt-2';
   username.textContent = friendObjet.user.username;
   infosDiv.appendChild(username);
   const firstname = document.createElement('h5');
-  firstname.classList = 'text-secondary text-center text-sm-start fs-5';
+  firstname.classList = 'text-secondary text-center fs-5';
   firstname.textContent = friendObjet.user.first_name;
   infosDiv.appendChild(firstname);
   const lastname = document.createElement('h5');
-  lastname.classList = 'text-secondary text-center text-sm-start fs-5';
+  lastname.classList = 'text-secondary text-center fs-5';
   lastname.textContent = friendObjet.user.last_name;
   infosDiv.appendChild(lastname);
-  rowDiv.appendChild(infosDiv);
+  mainDiv.appendChild(infosDiv);
 
   const div = document.createElement('div');
-  div.classList = 'col-sm-3 d-flex justify-content-center align-items-center';
+  div.classList = 'col-auto d-flex justify-content-center align-items-center';
 
   
   checkPendingRequest(friendObjet.user.username)
@@ -381,15 +377,13 @@ function searchUser_createContent(friendObjet, index) {
       div.appendChild(icon);
     } else {
       const btn = document.createElement('button');
-      btn.classList = 'btn btn-info text-white mx-auto shadow';
+      btn.classList = 'btn btn-info text-white fw-bold mx-auto shadow';
       btn.textContent = 'Ask as friend';
       btn.id = 'askFriendBtn' + index;
       div.appendChild(btn);
       
     }
-    rowDiv.appendChild(div);
-    
-    mainDiv.appendChild(rowDiv);
+    mainDiv.appendChild(div);
     setTimeout(function() {
       document.getElementById('searchFriend-cardArea').appendChild(mainDiv);
       
@@ -403,7 +397,6 @@ function searchUser_createContent(friendObjet, index) {
               askFriendBtn.classList.add('disabled', 'btn-warning', 'text-secondary');
               askFriendBtn.textContent = 'Check your friend requests';
             } else {
-              console.log('then after askAsFriend', data);
               document.getElementById('user_searchUser' + index).remove();
               searchUser_createContent(friendObjet, index);
             }
@@ -412,4 +405,252 @@ function searchUser_createContent(friendObjet, index) {
       }
     }, 300)
   });
+}
+
+// function searchUser_createContent(friendObjet, index) {
+
+//   console.log('index = ' + index);
+//   console.log('friendObjet = ', friendObjet);
+
+//   const mainDiv = document.createElement('div');
+//   mainDiv.classList = 'col-sm-10 mx-auto bg-primary bg-opacity-10 rounded shadow p-3 mb-3 fade-in';
+//   mainDiv.id = 'user_searchUser' + index;
+
+//   const rowDiv = document.createElement('div');
+//   rowDiv.classList = 'row';
+
+//   const imgDiv = document.createElement('div');
+//   imgDiv.classList = 'col-auto mx-auto mx-sm-0 my-auto';
+
+//   const img = document.createElement('img');
+//   img.classList = 'rounded-3 shadow';
+//   img.alt = 'avatarUser';
+//   img.style.maxWidth = '80px';
+//   getAvatar(friendObjet.user.username)
+//   .then(imageURL => {
+//     img.src = imageURL;
+//   })
+//   .catch(error => {
+//     console.error("Error : download avatar imgage 'searchFriend_createContent()' !", error);
+//   });
+//   imgDiv.appendChild(img);
+//   rowDiv.appendChild(imgDiv);
+
+//   const infosDiv = document.createElement('div');
+//   infosDiv.classList = 'col-sm-5 my-auto';
+//   const username = document.createElement('h5');
+//   username.classList = 'text-info text-center text-uppercase text-sm-start fs-3 mb-2 mt-md-0';
+//   username.textContent = friendObjet.user.username;
+//   infosDiv.appendChild(username);
+//   const firstname = document.createElement('h5');
+//   firstname.classList = 'text-secondary text-center text-sm-start fs-5';
+//   firstname.textContent = friendObjet.user.first_name;
+//   infosDiv.appendChild(firstname);
+//   const lastname = document.createElement('h5');
+//   lastname.classList = 'text-secondary text-center text-sm-start fs-5';
+//   lastname.textContent = friendObjet.user.last_name;
+//   infosDiv.appendChild(lastname);
+//   rowDiv.appendChild(infosDiv);
+
+//   const div = document.createElement('div');
+//   div.classList = 'col-sm-3 d-flex justify-content-center align-items-center';
+
+  
+//   checkPendingRequest(friendObjet.user.username)
+//   .then((result) => {
+//     console.log('Valeur résolue de la promesse :', result);
+    
+//     if (result === true) {
+      
+//       const pendingRequest = document.createElement('h5');
+//       pendingRequest.classList = 'text-warning text-center';
+//       pendingRequest.textContent = 'Pending Request';
+//       div.appendChild(pendingRequest);
+//     } else if (isFriend(friendObjet.user.username) === true) {
+//       const icon = document.createElement('i');
+//       icon.classList = 'fa-solid fa-user-group fa-3x text-info';
+//       icon.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.3)';
+//       div.appendChild(icon);
+//     } else {
+//       const btn = document.createElement('button');
+//       btn.classList = 'btn btn-info text-white mx-auto shadow';
+//       btn.textContent = 'Ask as friend';
+//       btn.id = 'askFriendBtn' + index;
+//       div.appendChild(btn);
+      
+//     }
+//     rowDiv.appendChild(div);
+    
+//     mainDiv.appendChild(rowDiv);
+//     setTimeout(function() {
+//       document.getElementById('searchFriend-cardArea').appendChild(mainDiv);
+      
+//       const askFriendBtn = document.getElementById('askFriendBtn' + index);
+//       if (askFriendBtn) {
+//         askFriendBtn.addEventListener('click', function() {
+//           askFriend(friendObjet.user.username)
+//           .then((data) => {
+//             if (data[0] === 'friendship already exist') {
+//               askFriendBtn.classList.remove('btn-info', 'text-white');
+//               askFriendBtn.classList.add('disabled', 'btn-warning', 'text-secondary');
+//               askFriendBtn.textContent = 'Check your friend requests';
+//             } else {
+//               console.log('then after askAsFriend', data);
+//               document.getElementById('user_searchUser' + index).remove();
+//               searchUser_createContent(friendObjet, index);
+//             }
+//           })
+//         })
+//       }
+//     }, 300)
+//   });
+// }
+
+function gameHistory_createContent(gameInfos, score1, score2) {
+
+  console.log('data infos = ', gameInfos);
+  const timeValues = handleDateTime();
+  const mainDiv = document.createElement('div');
+  if (gameInfos.winner === sessionUsername) {
+    mainDiv.classList = 'col-sm-auto px-4 py-3 m-2 rounded-3 bg-success bg-opacity-50 shadow fade-in';
+  } else {
+    mainDiv.classList = 'col-sm-auto px-4 py-3 m-2 rounded-3 bg-danger bg-opacity-50 shadow';
+  }
+
+  // Avatar images ------------------------------------------------------------------------------------------
+  const imgDiv_row = document.createElement('div');
+  imgDiv_row.classList = 'row d-felx justify-content-center';
+
+  const imgDiv_left = document.createElement('div');
+  imgDiv_left.classList = 'col-auto mt-2';
+  const img_left = document.createElement('img');
+  img_left.classList = 'rounded-3 shadow';
+  img_left.style.maxHeight = '100px';
+  img_left.alt = 'user-avatar';
+  if (gameInfos.player_one !== null) {
+    getAvatar(gameInfos.player_one)
+    .then(imageURL => {
+      img_left.src = imageURL;
+    })
+    .catch(error => {
+      console.error("Error : download avatar imgage 'gameHistory_createContent(gameInfos)' !", error);
+    });
+  } else {
+    img_left.src = 'img/img_ia.webp';
+  }
+  imgDiv_left.appendChild(img_left);
+  imgDiv_row.appendChild(imgDiv_left);
+
+  const imgDiv_right = document.createElement('div');
+  imgDiv_right.classList = 'col-auto mt-2';
+  const img_right = document.createElement('img');
+  img_right.classList = 'rounded-3 shadow';
+  img_right.style.maxHeight = '100px';
+  img_right.alt = 'user-avatar';
+  if (gameInfos.player_two !== null) {
+
+    getAvatar(gameInfos.player_two)
+    .then(imageURL => {
+      img_right.src = imageURL;
+    })
+    .catch(error => {
+      console.error("Error : download avatar imgage 'gameHistory_createContent(gameInfos)' !", error);
+    });
+  } else {
+    img_right.src = 'img/img_ia.webp';
+  }
+  imgDiv_right.appendChild(img_right);
+  imgDiv_row.appendChild(imgDiv_right);
+
+  mainDiv.appendChild(imgDiv_row);
+
+  // Usernames & score
+  const namesScoreDiv = document.createElement('div');
+  namesScoreDiv.classList = 'col-auto my-auto';
+
+  const names = document.createElement('h5');
+  names.classList = 'text-secondary text-center fs-3 mb-2 mt-1';
+
+  let playerOne = gameInfos.player_one;
+  let playerTwo = gameInfos.player_two;
+  if (playerOne === null) {
+    playerOne = 'AI';
+  }
+  if (playerTwo === null) {
+    playerTwo = 'AI';
+  }
+  names.textContent = playerOne + ' / ' + playerTwo;
+  namesScoreDiv.appendChild(names);
+
+  const score = document.createElement('h5');
+  score.classList = 'text-secondary text-center fs-4';
+  score.textContent = score1 + ' / ' + score2;
+  namesScoreDiv.appendChild(score);
+
+  mainDiv.appendChild(namesScoreDiv);
+
+  // line HR
+  const hr = document.createElement('hr');
+  hr.classList = 'mt-1';
+  mainDiv.appendChild(hr);
+
+  // infos
+  const values = [
+    ['fa-solid fa-gauge-high text-secondary', gameInfos.difficulty],
+    ['fa-solid fa-calendar-days text-secondary', timeValues.date],
+    ['fa-regular fa-clock text-secondary', timeValues.time],
+    ['fa-solid fa-stopwatch text-secondary', timeValues.duration]
+  ];
+
+  for (let i = 0; i < 4; i++) {
+
+    const levelDiv_row = document.createElement('div');
+    levelDiv_row.classList = 'row d-felx justify-content-between';
+    
+    const levelDiv_icon = document.createElement('div');
+    levelDiv_icon.classList = 'col-auto';
+    const icon = document.createElement('i');
+    icon.classList = values[i][0];
+    levelDiv_icon.appendChild(icon);
+    levelDiv_row.appendChild(levelDiv_icon);
+
+    const levelDiv_text = document.createElement('div');
+    levelDiv_text.classList = 'col-auto';
+    const text = document.createElement('p');
+    text.classList = 'fw-bold fst-italic text-secondary fs-6 mb-0';
+    text.textContent = values[i][1];
+    levelDiv_text.appendChild(text);
+    levelDiv_row.appendChild(levelDiv_text);
+
+    mainDiv.appendChild(levelDiv_row);
+  }
+  document.getElementById('historyList').appendChild(mainDiv);
+  
+  function handleDateTime() {
+    
+    const dateTime = gameInfos.created_at.split('T');
+    dateTime[1] = dateTime[1].slice(0, 8);
+    
+    const endTime = gameInfos.updated_at.split('T');
+    endTime[1] = endTime[1].slice(0, 8);
+    
+    const startDate = new Date(gameInfos.created_at);
+    const endDate = new Date(gameInfos.updated_at);
+    // Soustraire la date de départ de la date de fin
+    const differenceInMilliseconds = endDate - startDate;
+    // Convertir la différence en heures, minutes et secondes
+    const differenceInSeconds = differenceInMilliseconds / 1000;
+    const hours = Math.floor(differenceInSeconds / 3600);
+    const minutes = Math.floor((differenceInSeconds % 3600) / 60);
+    const seconds = Math.floor(differenceInSeconds % 60);
+    
+    const elapsedTime = hours + ':' + minutes + ':' + seconds;
+    
+    const time = {
+      date: dateTime[0],
+      time: dateTime[1],
+      duration: elapsedTime
+    };
+    return time;
+  }
 }

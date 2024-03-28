@@ -196,7 +196,6 @@ function itemsVisibility_logged_out() {
 function refreshAccessToken() {
     // Récupérez le refresh token de votre système de stockage (par exemple, localStorage)
     const refreshToken = localStorage.getItem('refreshToken');
-    console.error(refreshToken);
     console.error(JSON.stringify({
         refresh: refreshToken,
     }));
@@ -242,11 +241,11 @@ function verifyToken() {
     })
     .then(response => {
         if (response.ok) {
-            console.log('acces token verified');
+            // console.log('acces token verified');
 
         } else {
             refreshAccessToken()
-            console.log('refreshAccessToken() called');
+            // console.log('refreshAccessToken() called');
         }
     })
 }

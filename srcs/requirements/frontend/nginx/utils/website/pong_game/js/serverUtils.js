@@ -15,7 +15,7 @@ function createPeer(sessionId)
 function waitForWebSocketConnection(username) {
     return new Promise((resolve, reject) => {
         if (!socket || socket.readyState !== WebSocket.OPEN)
-                     socket = new WebSocket('wss://localhost:8002/ws/general/?user_username=' + username);
+                     socket = new WebSocket('wss://transcendence42.ddns.net:8002/ws/general/?user_username=' + username);
 
         socket.addEventListener('open', () => {
             console.log('Connected to WebSocket server');
@@ -80,8 +80,17 @@ function waitForWebSocketConnection(username) {
         }
     });
 
-     
- 
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        console.log('data received', data);
+        if (data.messageType === 'surrenderSession') {
+            start = false;
+            const message = JSON.stringify({ messageType: 'endGame', leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : sessionUsername});
+            socket.send(message);
+            showSection('main');
+        }
+    });
+
     // function handleKeyPress(event) {
     //     if (event.key === 'Enter') {
     //         sendMessageSession();
@@ -93,7 +102,7 @@ function waitForWebSocketConnection(username) {
     // socket.addEventListener('message', (event) => {
     //     const messageContainer = document.getElementById('chat-messages');
     //     const receivedMessage = JSON.parse(event.data);
-    
+
     //     if (receivedMessage.type === 'messageSession') {
     //         const messages = receivedMessage.messages || [];
     //         const messagesToDisplay = messages.slice(-10);
@@ -141,7 +150,7 @@ function waitForWebSocketConnection(username) {
                 // setHandToStart();
                 leftPaddleHand = true;
 
-                printConsoleInfos();
+                // printConsoleInfos();
 
                 showSection("playPong");
                 document.getElementById('gameDiv').classList.remove('hidden-element');
@@ -155,7 +164,7 @@ function waitForWebSocketConnection(username) {
                     // processGameData(gameData);
                     spaceBarPressed = gameData.spaceBarPressed;
                     spaceRight = gameData.spaceRight;
-                
+
                 });
 
                 console.log("level :", level)
@@ -209,10 +218,10 @@ function updateSessionsList(sessions) {
     }
 
     sessions.forEach(session => {
-        sessions_createContent(session, index);
-        index++;
-        const sessionLink = document.createElement('a');
-
+        if (session.players.length == 1) {
+            sessions_createContent(session, index);
+            index++;
+        }
     });
 
     console.log('Updated sessions list:', sessions);
@@ -275,8 +284,7 @@ function  sessions_createContent(session, index) {
 
 }
 
-
-
+//start game for joiner
 function joinSession(session, index) {
 
     console.log('session creator:', session.CreatorUsername);
@@ -289,12 +297,10 @@ function joinSession(session, index) {
             if (data.confirme == "true") {
                 peer2 = new SimplePeer({ initiator: false });
                 console.log('Peer2 created:', peer2);
-
-                console.log(data)
-                peer2.signal(data.peerCreator);
+                peer2.signal(data.peerCreator[0]);
 
                 peer2.on('signal', (dataPeer) => {
-                    console.log('Peer2 signal:', dataPeer);
+                    // console.log('Peer2 signal:', dataPeer);
                     socket.send(JSON.stringify({ messageType: 'playerPeer', sessionId: session.sessionId, playerPeer: dataPeer }));
                 });
 
@@ -329,9 +335,9 @@ function joinSession(session, index) {
 
                     });
                     console.log("level :", level)
-                    console.log("level :", paddleHeight)
-                    
+                    console.log("paddleHeight :", paddleHeight)
 
+                    navbarSwitch('off');
                     onlineRun(peer2);
 
                     document.getElementById('joinCard' + index).remove();

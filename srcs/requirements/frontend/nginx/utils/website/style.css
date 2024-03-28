@@ -112,14 +112,14 @@ input[type="text password"]::placeholder {
   transition: color 0.4s ease; /* Transition de couleur sur 0.3 secondes avec une fonction d'accélération */
 }
 .custom-icon:hover {
-    color: #004ac0;
+    color: #4d4d4d;
 }
 .custom-icon-footer {
   color: #ffffff; /* Couleur par défaut */
   transition: color 0.4s ease; /* Transition de couleur sur 0.3 secondes avec une fonction d'accélération */
 }
 .custom-icon-footer:hover {
-    color: #004ac0;
+    color: #4d4d4d;
 }
 
 .hover-logo {
@@ -137,11 +137,11 @@ input[type="text password"]::placeholder {
   position: fixed;
   bottom: 55px;
   right: 10px;
-  width: 300px;
-  height: 375px;
-  box-shadow: 0 -5px 15px 8px #848484;
-  border-radius: 15px;
-  background-color: rgba(255, 255, 255, 0.191); /* Couleur de fond avec opacité */
+  width: 270px;
+  height: 380px;
+  box-shadow: 0 0 15px 5px #848484b1;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.448); /* Couleur de fond avec opacité */
   backdrop-filter: blur(5px); /* Effet de flou */
 }
 

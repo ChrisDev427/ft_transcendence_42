@@ -8,7 +8,7 @@ let     playLocal = false;
 let     playOnline = false;
 let     ballLaunched = false;
 let     leftPlayerScore = 0, rightPlayerScore = 0;
-let     ballSpeedX, ballSpeedY;
+let     ballSpeedX = 0, ballSpeedY = 0;
 
 let     spaceRight;
 

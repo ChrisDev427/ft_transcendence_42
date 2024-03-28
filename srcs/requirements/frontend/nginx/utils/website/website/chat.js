@@ -9,34 +9,31 @@ function showMainChat() {
     } else {
         mainChat.classList.add('unvisible');
         document.getElementById('mainChatBtn').classList.remove('text-secondary');
-
     }
 }
 
 function chatGeneral_createContent(username, message, time, messageType) {
+
+    if (mutedFriends.includes(username)) {return;}
 
     const mainDiv = document.createElement('div');
     const small = document.createElement('small');
     small.textContent = message;
 
     if (messageType !== 'classic') {
-        const timeDiv = document.createElement('div');
-        timeDiv.classList = 'row p-0';
-        const timeText = document.createElement('p');
-        timeText.classList = 'col-12 fw-light fst-italic text-warning text-end m-0';
-        const small2 = document.createElement('small');
-        small2.textContent = time;
-        timeText.appendChild(small2);
-        timeDiv.appendChild(timeText);
-        mainDiv.appendChild(timeDiv);
+    
         const div = document.createElement('div');
         if (messageType === 'online') {
-            small.textContent = username + ' is connected';
-            div.classList = 'lh-1 fw-semibold p-2 text-white bg-success rounded-bottom-4 rounded-start-4 ms-auto mb-2 text-break fade-in';
+            if (username === sessionUsername) {
+                small.textContent = 'You are connected';
+            } else {
+                small.textContent = username + ': is connected';
+            }
+            div.classList = ' fw-bold fst-italic text-success text-center fade-in mx-auto';
         }
         else if (messageType === 'offline'){
-            small.textContent = username + ' is disconnected';
-            div.classList = 'lh-1 fw-semibold p-2 text-white bg-danger rounded-bottom-4 rounded-start-4 ms-auto mb-2 text-break fade-in';
+            small.textContent = username + ': is disconnected';
+            div.classList = ' fw-bold fst-italic text-danger text-center fade-in mx-auto';
         }
         div.style.maxWidth = '210px';
         div.appendChild(small);
@@ -49,7 +46,7 @@ function chatGeneral_createContent(username, message, time, messageType) {
         const timeDiv = document.createElement('div');
         timeDiv.classList = 'row p-0';
         const timeText = document.createElement('p');
-        timeText.classList = 'col-12 fw-light fst-italic text-secondary text-end m-0';
+        timeText.classList = 'col-12 small fw-bold fst-italic text-warning text-end m-0';
         const small2 = document.createElement('small');
         small2.textContent = time;
 
@@ -81,7 +78,7 @@ function chatGeneral_createContent(username, message, time, messageType) {
         usernameDiv.appendChild(usernameText);
 
         const timeText = document.createElement('p');
-        timeText.classList = 'col-4 fw-light fst-italic text-end text-secondary m-0 p-0';
+        timeText.classList = 'col-4 small fw-bold fst-italic text-end text-warning m-0 p-0';
         const small2 = document.createElement('small');
         small2.textContent = time;
         timeText.appendChild(small2);
@@ -115,8 +112,8 @@ function chatSession_createContent(username, message, time, messageType) {
 
 function chatProfile_createContent(username) {
 
-    console.log(username);
-
+    const input = document.getElementById('message-input_general');
+    input.disabled = true;
     fetchUserProfile(username)
     .then((data) => {
 
@@ -250,8 +247,6 @@ function chatProfile_createContent(username) {
                 unMute_icon.classList.remove('text-success');
 
                 mutedFriends.push(username);
-                console.log(mutedFriends);
-
             }
         })
 
@@ -267,8 +262,6 @@ function chatProfile_createContent(username) {
                 mute_icon.classList.remove('text-success');
 
                 mutedFriends.pop(username);
-                console.log(mutedFriends);
-
             }
         })
 
@@ -280,6 +273,8 @@ function chatProfile_createContent(username) {
             document.getElementById('mainChat-form').classList.add('unvisible');
 
             inviteFriendToPlayFromChat_createContent(username);
+            input.disabled = false;
+
         })
 
         closeBtn.addEventListener('click', function() {
@@ -289,6 +284,7 @@ function chatProfile_createContent(username) {
             mainDiv.remove();
             const messageContainer = document.getElementById('chat-area');
             messageContainer.scrollTop = messageContainer.scrollHeight;
+            input.disabled = false;
         })
     })
 }
@@ -383,10 +379,7 @@ function inviteFriendToPlayFromChat_createContent(username) {
         mainDiv.remove();
        inviteFriendCreateSession_createContent(username, 6);
     })
-
 }
-
-
 
 function inviteFriendCreateSession_createContent(username, level) {
 
@@ -444,11 +437,8 @@ function inviteFriendCreateSession_createContent(username, level) {
         document.getElementById('mainChat-form').classList.remove('unvisible');
         const messageContainer = document.getElementById('chat-area');
         messageContainer.scrollTop = messageContainer.scrollHeight;
-
-
     })
 
     console.log('Create game : ' + sessionUsername + ' VS ' + username + ' level : ' + level);
     // socket.send(JSON.stringify({ action: 'createSession' }));
-
 }

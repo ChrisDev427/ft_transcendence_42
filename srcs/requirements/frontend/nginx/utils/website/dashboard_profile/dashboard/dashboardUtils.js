@@ -283,7 +283,7 @@ function handleMatchedUsernames(matchedUsernames) {
 
   
   if (matchedUsernames.length === 0) {
-    console.log("Usernames correspondants :", matchedUsernames);
+    // console.log("Usernames correspondants :", matchedUsernames);
 
     const div = document.createElement('div');
     div.id = 'searchUserNotFound';
@@ -310,7 +310,7 @@ function handleMatchedUsernames(matchedUsernames) {
         
         if (matchedUsernames[i] === user_profiles[j].user.username) {
           
-          console.log(user_profiles[j]);
+          // console.log(user_profiles[j]);
           searchUser_createContent(user_profiles[j], i)
         }
       }
@@ -346,7 +346,7 @@ function isFriend(usernameFounded) {
 
 function getUserObject(userName) {
 
-  console.log('userName getUserObject = ' + userName);
+  // console.log('userName getUserObject = ' + userName);
   for (let i = 0; i < user_profiles.length; i++) {
     if (user_profiles[i].user.username === userName) {
       return user_profiles[i];
@@ -355,32 +355,60 @@ function getUserObject(userName) {
   return null;
 }
 
-function getGameInfos(id) {
+function cleanElement(id) {
+  const elementToClean = document.getElementById(id);
+  while (elementToClean.firstChild) {
+    elementToClean.removeChild(elementToClean.firstChild);
+  }
+}
 
-  console.log('function getGameInfos(id)');
+async function getGamesInfos(games) {
+  
+  let pointGained = 0;
+  let pointLost = 0;
   verifyToken();
-  fetch(domainPath + '/api/game/' + id + '/', {
-    method: 'GET',
-    headers: {
-      'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-    }
-  })
-  .then(response => {
-    if (response.ok) {
-       
-      return response.json();
-    } 
-    else {
-      console.error('Error : getGameInfos', response.status);
-      throw new Error('Échec de la récupération du dashboard');
-    }
-  })
-  .then(data => {
 
-    console.log('check game = ', data);
-    console.log('data.player_one = ', data.player_one.user.username);
-  })
-  .catch(error => {
+  try {
+    for (let i = 0; i < games.length; i++) {
+      const response = await fetch(domainPath + '/api/game/' + games[i].id + '/', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      });
+
+      if (!response.ok) {
+        console.error('Error : getGameInfos', response.status);
+        throw new Error();
+      }
+
+      const data = await response.json();
+      // console.log(data);
+      const score = data.final_score.split(':');
+      const scorePlayer_1 = parseInt(score[0]);
+      const scorePlayer_2 = parseInt(score[1]);
+      gameHistory_createContent(data, scorePlayer_1, scorePlayer_2); 
+
+      if (data.winner === sessionUsername) {
+        pointGained += 10;
+        if (scorePlayer_1 !== 10) {
+          pointLost += scorePlayer_1;
+        } else {
+          pointLost += scorePlayer_2;
+        }
+      } else {
+        pointLost += 10;
+        if (scorePlayer_1 !== 10) {
+          pointGained += scorePlayer_1;
+        } else {
+          pointGained += scorePlayer_2;
+        }
+      }
+    }
+    document.getElementById('pointGainedNumberDash').textContent = pointGained;
+    document.getElementById('pointLostNumberDash').textContent = pointLost;
+    document.getElementById('historyList').classList.remove('hidden-element');
+  } catch (error) {
     console.error('Erreur lors de la récupération des games', error);
-  });
+  }
 }

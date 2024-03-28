@@ -1,36 +1,6 @@
 let friendRequestNb;
 let friendRequestId = [];
 
-// async function checkFriendRequest() {
-//   friendRequestNb = 0;
-//   try {
-//     const data = await fetchFriendRequest();
-
-//     if (data.length !== 0) {
-//       console.log("Check Request Data = ", data);
-
-//       for (let i = 0; i < data.length; i++) {
-//         if (data[i].is_accepted === false) {
-//           const requested_name = await fetchUsername(data[i].friend2);
-
-//           if (requested_name === sessionUsername) {
-//             const requester_name = await fetchUsername(data[i].friend1);
-//             friendRequestNb++;
-//             // friendRequestId.push(data[i].id);
-//             manageFriendRequest(requester_name, data[i].id);
-//           }
-//         } else {
-//           friendRequestNb = 0;
-//           const requestBtn = document.getElementById("seeFriendRequest");
-//           requestBtn.classList.add("hidden-element");
-//           // requestBtn.textContent = 'Friend Request ' + friendRequestNb;
-//         }
-//       }
-//     }
-//   } catch (error) {
-//     console.error("Error in checkFriendRequest:", error);
-//   }
-// }
 async function checkFriendRequest() {
   friendRequestNb = 0;
 
@@ -38,7 +8,7 @@ async function checkFriendRequest() {
     const data = await fetchFriendRequest();
 
     if (data.length !== 0) {
-      console.log("Check Request Data = ", data);
+      // console.log("Check Request Data = ", data);
 
       for (let i = 0; i < data.length; i++) {
         if (data[i].is_accepted === false) {
@@ -70,7 +40,7 @@ async function checkFriendRequest() {
 }
 
 async function fetchFriendRequest() {
-  console.log("Fetch friend request function");
+  // console.log("Fetch friend request function");
   verifyToken();
 
   try {
@@ -87,7 +57,7 @@ async function fetchFriendRequest() {
       console.log("Error : Check Request", errorData);
       throw new Error("Error : Check Request");
     }
-    console.log("Check Request Ok !");
+    // console.log("Check Request Ok !");
     return await response.json();
   } catch (error) {
     console.error("Error : ", error);
@@ -104,15 +74,15 @@ async function checkPendingRequest(username) {
           for (let i = 0; i < data.length; i++) {
             if (data[i].is_accepted === false) {
               const requester_name = await fetchUsername(data[i].friend1);
-              console.log('requester name = ' + requester_name);
-              console.log('session name = ' + sessionUsername);
+              // console.log('requester name = ' + requester_name);
+              // console.log('session name = ' + sessionUsername);
     
               if (requester_name === sessionUsername) {
                 const requested_name = await fetchUsername(data[i].friend2);
                 
                 if (requested_name === username) {
-                    console.log('requester name = ' + requester_name);
-                    console.log('username = ' + username);
+                    // console.log('requester name = ' + requester_name);
+                    // console.log('username = ' + username);
                     return true;
                 }
               }
@@ -128,8 +98,8 @@ async function checkPendingRequest(username) {
 }
 
 function manageFriendRequest(requesterName, requestId) {
-  console.log("Friend request from: " + requesterName);
-  console.log("Request id : " + requestId);
+  // console.log("Friend request from: " + requesterName);
+  // console.log("Request id : " + requestId);
 
   if (friendRequestId.includes(requestId)) {
     return;

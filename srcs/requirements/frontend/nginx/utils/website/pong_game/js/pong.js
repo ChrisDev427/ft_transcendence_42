@@ -3,28 +3,12 @@
 
 // printConsoleInfos();
 // Fonction principale de mise à jour et de rendu
-
-let i = 0;
-
-let gameData = {
-    ballX: 0,
-    ballY: 0,
-    leftPaddleY: 0,
-    rightPaddleY: 0,
-    spaceBarPressed: false,
-    leftPaddleHand: false,
-    rightPaddleHand: false,
-    leftPlayerScore: 0,
-    rightPlayerScore: 0,
-    ballLaunched: false,
-};
+printGame();
 
 function localRun() {
 
     if(!start) {
-        // if(tournament) {
-        //     nextMatch();
-        // }
+
         return;
     }
     serve();
@@ -102,7 +86,7 @@ function localRun() {
 
     requestAnimationFrame(() => localRun());
 }
-printGame();
+
 
 
 // let lastUpdateSentTime = 0;
@@ -111,7 +95,6 @@ printGame();
 function onlineRun(peer) {
     // printConsoleInfos();
     // const currentTime = Date.now();
-
     if (leftPlayerName == sessionUsername){
         if (q_keyPressed && leftPaddleY > 0) {
             leftPaddleY -= level + 1.8;
@@ -126,9 +109,9 @@ function onlineRun(peer) {
         // if (leftPaddleHand){
         // }
         serveLeft();
-        
+
     }
-    else{
+    else {
 
         if (q_keyPressed && rightPaddleY > 0) {
             rightPaddleY -= level + 1.8;
@@ -153,6 +136,8 @@ function onlineRun(peer) {
             printInfos();
             return;
         }
+
+
     }
 
     if (leftPlayerName == sessionUsername){
@@ -167,13 +152,26 @@ function onlineRun(peer) {
         // sendPaddlePositions(rightPaddleY, "right");
 
         // Ball Update Position
-        ballX += ballSpeedX;
-        ballY += ballSpeedY;
+        if (ballLaunched) {
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+        }
         // sendBallPositions(peer, ballX, ballY);
         sendGameUpdate(peer);
         if (!start){
             printGame();
             printInfos();
+            if (leftPlayerScore >= 10){
+                winner = leftPlayerName;
+                const message = JSON.stringify({messageType : "endGame", leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : winner});
+                socket.send(message);
+            }
+            else if (rightPlayerScore >= 10){
+                winner = rightPlayerName;
+                const message = JSON.stringify({messageType : "endGame", leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : winner});
+                socket.send(message);
+            }
+            // update bdd here
             return;
         }
 
@@ -267,7 +265,7 @@ function sendGameUpdate(peer, messageType) {
                 rightPaddleHand : rightPaddleHand,
 
             }
-            
+
         }
         else {
 
@@ -316,12 +314,12 @@ function processGameData(gameData) {
     leftPaddleY = gameData.leftPaddleY;
 
     // rightPaddleY = gameData.rightPaddleY;
-    
+
     leftPlayerScore = gameData.leftPlayerScore;
     rightPlayerScore = gameData.rightPlayerScore;
 
     spaceBarPressed = gameData.spaceBarPressed;
-    
+
     start = gameData.start
 
 

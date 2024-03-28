@@ -6,13 +6,9 @@ services:
     restart: on-failure
     command: >
       sh -c "python manage.py makemigrations account &&
-             python manage.py migrate &&
              python manage.py makemigrations friend_management &&
-             python manage.py migrate &&
              python manage.py makemigrations chat &&
-             python manage.py migrate &&
              python manage.py makemigrations game &&
-             python manage.py migrate &&
              python manage.py makemigrations &&
              python manage.py migrate &&
              python manage.py shell < create_superuser.py &&
@@ -36,9 +32,10 @@ services:
     command: >
      sh -c "python manage.py makemigrations &&
             python manage.py migrate &&
+            python manage.py startbackgroundtasks &&
             python manage.py process_tasks"
     ports:
-     - "8001:8001"
+     - "8001:8000"
     volumes:
       - ./requirements/backend/django/ft_transcendence:/app
     networks:
@@ -64,17 +61,10 @@ services:
     container_name: redis_container
     restart: always
     ports:
-      - "6380:6380"
+      - "6380:6379"
     networks:
         - pong
-    volumes:
-      - ./requirements/backend/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
-      - ./requirements/backend/redis:/data
     env_file: .env
-    command: >
-     sh -c "chmod 777 /usr/local/etc/redis/redis.conf &&
-            chmod 777 dump.rdb &&
-            redis-server /usr/local/etc/redis/redis.conf"
 
   postgresql:
     image: postgres:15.5
@@ -125,15 +115,12 @@ services:
     env_file: .env
 
   grafana:
-    image: grafana/grafana
+    image: grafana:v1
     container_name: grafana_container
+    build: ./requirements/backend/grafana
     restart: always
     ports:
       - "3000:3000"
-    volumes:
-      - ./requirements/backend/grafana:/var/lib/grafana
-      - ./requirements/backend/grafana/conf/defaults.ini:/usr/share/grafana/conf/defaults.ini
-    
     networks:
       - pong
     env_file: .env

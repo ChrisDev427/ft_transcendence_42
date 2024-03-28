@@ -11,6 +11,7 @@ from account.models import UserProfile
 from asgiref.sync import sync_to_async
 from django.core.serializers import serialize
 import pytz
+fuseau = pytz.timezone('Europe/Paris')
 
 class Session:
     def __init__(self, session_id, creator_username, peer_creator, is_private, level, paddleHeight):
@@ -71,7 +72,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Leave room group
         print(self.user_username, " c est deco")
-        fuseau = pytz.timezone("Europe/Paris")
+        # fuseau = pytz.timezone("Europe/Paris")
         await self.channel_layer.group_send(
             self.room_group_name, {"type": "chat.disconnect", "user_username": self.user_username, "time": datetime.now().astimezone(fuseau).strftime("%H:%M:%S")}
         )
@@ -81,6 +82,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
 
+        print("sessions = ", sessions)
         messageType = data["messageType"]
 
         if (messageType == "classic" or messageType == "online"):
@@ -155,13 +157,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     self.room_group_name, { "type": "session.list" ,"messageType": "updateSessions", "session": sessions_json}
                 )
 
-
-        # if messageType == "createPeer" :
-        #     sessionId = data["sessionId"]
-        #     session = find_session_by_id(sessionId)
-        #     if session and session.creator_username == self.user_username:
-        #         session.creator_peer_id = data["peerId"]
-                # print("Peer created :", session.creator_peer_id)
         if(messageType == "playerPeer"):
             sessionId = data["sessionId"]
             session = find_session_by_id(sessionId)
@@ -221,57 +216,64 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.room_group_name, { "type": "session.list" ,"messageType": "updateSessions", "session": sessions_json}
             )
 
-
-        if (messageType == "values"):
+        if (messageType == "surrenderSession"):
             session = search_player_in_game(self.user_username)
-
+            # session.players.remove(self.user_username)
             await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    "type": "value.game",
-                    "messageType": "values",
-                    "players": session.players,
-                    "spaceBarPressed":data["spaceBarPressed"],
-                    "leftPaddleHand": data["leftPaddleHand"],
-                    "rightPaddleHand": data["rightPaddleHand"],
-                    "leftPlayerScore": data["leftPlayerScore"],
-                    "rightPlayerScore": data["rightPlayerScore"],
-                    "ballLaunched": data["ballLaunched"],
-                    "username": self.user_username
-                }
+                self.room_group_name, { "type": "session.surrender" ,"messageType": messageType, "session": session.to_json(), "username" : self.user_username}
             )
 
 
-        if(messageType == "updateBallPositions"):
-            session = search_player_in_game(self.user_username)
+        # if (messageType == "values"):
+        #     session = search_player_in_game(self.user_username)
 
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    "type": "position.Ball",
-                    "messageType": "positionBall",
-                    "players": session.players,
-                    "ballX": data["ballX"],
-                    "ballY": data["ballY"],
-                    "username": self.user_username
-                }
-            )
+        #     await self.channel_layer.group_send(
+        #         self.room_group_name,
+        #         {
+        #             "type": "value.game",
+        #             "messageType": "values",
+        #             "players": session.players,
+        #             "spaceBarPressed":data["spaceBarPressed"],
+        #             "leftPaddleHand": data["leftPaddleHand"],
+        #             "rightPaddleHand": data["rightPaddleHand"],
+        #             "leftPlayerScore": data["leftPlayerScore"],
+        #             "rightPlayerScore": data["rightPlayerScore"],
+        #             "ballLaunched": data["ballLaunched"],
+        #             "username": self.user_username
+        #         }
+        #     )
 
-        if (messageType == "updatePaddlePositions"):
-            session = search_player_in_game(self.user_username)
 
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    "type": "position.Paddle",
-                    "messageType": "position",
-                    "players": session.players,
-                    "pos": data["pos"],
-                    "cote": data["cote"],
-                    "username": self.user_username,
-                    "time": data["time"]
-                }
-            )
+        # if(messageType == "updateBallPositions"):
+        #     session = search_player_in_game(self.user_username)
+
+        #     await self.channel_layer.group_send(
+        #         self.room_group_name,
+        #         {
+        #             "type": "position.Ball",
+        #             "messageType": "positionBall",
+        #             "players": session.players,
+        #             "ballX": data["ballX"],
+        #             "ballY": data["ballY"],
+        #             "username": self.user_username
+        #         }
+        #     )
+
+        # if (messageType == "updatePaddlePositions"):
+        #     session = search_player_in_game(self.user_username)
+
+        #     await self.channel_layer.group_send(
+        #         self.room_group_name,
+        #         {
+        #             "type": "position.Paddle",
+        #             "messageType": "position",
+        #             "players": session.players,
+        #             "pos": data["pos"],
+        #             "cote": data["cote"],
+        #             "username": self.user_username,
+        #             "time": data["time"]
+        #         }
+        #     )
 
         if (messageType == "endGame") :
             session = search_player_in_game(data["sessionUsername"])
@@ -283,7 +285,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
             sessions.remove(session)
 
 
-
+    async def session_surrender(self, event):
+        messageType = event.get("messageType")
+        session = event.get("session")
+        players = session["players"]
+        username = event.get("username")
+        # Send message to WebSocket
+        for player in players:
+            if player == self.user_username and username != self.user_username:
+                await self.send(text_data=json.dumps({"messageType" : messageType, "session": session}))
 
     async def chat_session(self, event):
         players = event.get("players")
@@ -296,52 +306,52 @@ class ChatConsumer(AsyncWebsocketConsumer):
             if player == self.user_username:
                 await self.send(text_data=json.dumps({"message": message, "owner": owner, "messageType" : messageType, "time": time}))
 
-    async def value_game(self, event):
-        message_type = event.get("messageType")
+    # async def value_game(self, event):
+    #     message_type = event.get("messageType")
 
-        username = event.get("username")
-        players = event.get("players")
-        for player in players:
-            if player == self.user_username and username != self.user_username:
-                await self.send(text_data=json.dumps({
-                    'messageType': message_type,
-                    'spaceBarPressed': event.get("spaceBarPressed"),
-                    'leftPaddleHand': event.get("leftPaddleHand"),
-                    'rightPaddleHand': event.get("rightPaddleHand"),
-                    'leftPlayerScore': event.get("leftPlayerScore"),
-                    'rightPlayerScore': event.get("rightPlayerScore"),
-                    'ballLaunched': event.get("ballLaunched"),
-                    'pos': event.get("pos"),
-                    'cote': event.get("cote")
-                }))
-
-
-    async def position_Paddle(self, event):
-        message_type = event.get("messageType")
-        username = event.get("username")
-        print("user =",username,  event.get("time"), datetime.now().astimezone(pytz.timezone("Europe/Paris")))
-        players = event.get("players")
-        for player in players:
-            if player == self.user_username and username != self.user_username:
-                await self.send(text_data=json.dumps({
-                    'messageType': message_type,
-                    'pos': event.get("pos"),
-                    'cote': event.get("cote")
-                }))
+    #     username = event.get("username")
+    #     players = event.get("players")
+    #     for player in players:
+    #         if player == self.user_username and username != self.user_username:
+    #             await self.send(text_data=json.dumps({
+    #                 'messageType': message_type,
+    #                 'spaceBarPressed': event.get("spaceBarPressed"),
+    #                 'leftPaddleHand': event.get("leftPaddleHand"),
+    #                 'rightPaddleHand': event.get("rightPaddleHand"),
+    #                 'leftPlayerScore': event.get("leftPlayerScore"),
+    #                 'rightPlayerScore': event.get("rightPlayerScore"),
+    #                 'ballLaunched': event.get("ballLaunched"),
+    #                 'pos': event.get("pos"),
+    #                 'cote': event.get("cote")
+    #             }))
 
 
-    async def position_Ball(self, event):
-        message_type = event.get("messageType")
+    # async def position_Paddle(self, event):
+    #     message_type = event.get("messageType")
+    #     username = event.get("username")
+    #     print("user =",username,  event.get("time"), datetime.now().astimezone(pytz.timezone("Europe/Paris")))
+    #     players = event.get("players")
+    #     for player in players:
+    #         if player == self.user_username and username != self.user_username:
+    #             await self.send(text_data=json.dumps({
+    #                 'messageType': message_type,
+    #                 'pos': event.get("pos"),
+    #                 'cote': event.get("cote")
+    #             }))
 
-        username = event.get("username")
-        players = event.get("players")
-        for player in players:
-            if player == self.user_username and username != self.user_username:
-                await self.send(text_data=json.dumps({
-                    'messageType': message_type,
-                    'ballX': event.get("ballX"),
-                    'ballY': event.get("ballY")
-                }))
+
+    # async def position_Ball(self, event):
+    #     message_type = event.get("messageType")
+
+    #     username = event.get("username")
+    #     players = event.get("players")
+    #     for player in players:
+    #         if player == self.user_username and username != self.user_username:
+    #             await self.send(text_data=json.dumps({
+    #                 'messageType': message_type,
+    #                 'ballX': event.get("ballX"),
+    #                 'ballY': event.get("ballY")
+    #             }))
 
 
     async def confirm_creat(self, event):
@@ -387,8 +397,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     player_two = await get_user_profile(gameData.get("player_two"))
                     serializer.validated_data['player_one'] = player_one
                     serializer.validated_data['player_two'] = player_two
-                    update_user_profile(player_one)
-                    update_user_profile(player_two)
+                    await update_user_profile(player_one)
+                    await update_user_profile(player_two)
                     await create_game(serializer)
 
                 await self.send(text_data=json.dumps({

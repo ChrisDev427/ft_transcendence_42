@@ -3,7 +3,7 @@ function create_OnePlayer_input() {
 
     // Input part --------------------------------------------------------------
     const mainDiv = document.createElement('div');
-    mainDiv.id = 'inputDiv';
+    mainDiv.id = 'input-div';
 
     let hr = document.createElement('hr');
     hr.classList = 'text-info mt-4';
@@ -48,7 +48,7 @@ function create_TwoPlayers_input() {
 
     // Input part --------------------------------------------------------------
     const mainDiv = document.createElement('div');
-    mainDiv.id = 'inputDiv';
+    mainDiv.id = 'input-div';
 
     let hr = document.createElement('hr');
     hr.classList = 'text-info mt-4';
@@ -185,7 +185,7 @@ function init_Tournament_mode_buttons() {
 function create_Tournament_inputs() {
 
     const div = document.createElement('div');
-    div.id = 'inputDiv';
+    div.id = 'input-div';
     const hr = document.createElement('hr');
     hr.classList = 'text-info my-4';
     div.appendChild(hr);
@@ -225,22 +225,6 @@ function create_Tournament_inputs() {
     initPlayBtn();
 }
 
-let socketSession;
-
-function initGameSession() {
-    sessionId = "test";
-    socketSession = new WebSocket('ws://localhost:8000/api/ws/session/?game_session=' + sessionId);
-
-    socketSession.addEventListener('open', (event) => {
-        console.log('Connected to WebSocketSession game session', sessionId);
-    });
-
-    socketSession.addEventListener('close', (event) => {
-        console.log('Connection to WebSocketSession game session closed');
-    });
-
-    return socketSession;
-}
 
 function updateSessionsList(sessions, peer) {
     // const sessionsListElement = document.getElementById('sessionsList');
@@ -336,33 +320,6 @@ function  sessions_createContent(session, index) {
 
 }
 
-// function joinSession(session, index, peer) {
-
-//     peer = new SimplePeer();
-//     peer.on('signal', (data) => {
-//         console.log('Peer signal:', data);
-//         socket.send(JSON.stringify({ messageType: 'join', peerId: data, sessionId: session.id, username:sessionUsername }));
-//     });
-//         // socket.send(JSON.stringify({ action: 'join', sessionId: session.id, username:session }));
-
-//     leftPlayerName = session.CreatorUsername;
-//     rightPlayerName= sessionUsername;
-//     level = session.level;
-//     playOnline = true;
-//     twoPlayers = true;
-//     start = true
-//     setPlayerNameToPrint(leftPlayerName, rightPlayerName);
-//     printConsoleInfos();
-//     showSection("playPong");
-//     document.getElementById('gameDiv').classList.remove('hidden-element');
-//     run();
-
-//     document.getElementById('joinCard' + index).remove();
-//     if (document.getElementById('sessionsList').childElementCount == 0 ) {
-//         document.getElementById('sessionListeEmpty').classList.remove('hidden-element');
-//     }
-// }
-
 
 function create_room() {
     peer = new SimplePeer({initiator: true})
@@ -437,7 +394,7 @@ function create_room() {
                     document.getElementById('createRoomMenu').classList.add('hidden-element');
                     const message = JSON.stringify({ messageType: 'quitSession' });
                     socket.send(message);
-                navbarSwitch('on');
+                    navbarSwitch('on');
                 })
             }
             else{
