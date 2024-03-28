@@ -404,6 +404,7 @@ function create_room() {
                 console.log("Tu es deja dans une room");
             }
         }
+
     });
 
 }

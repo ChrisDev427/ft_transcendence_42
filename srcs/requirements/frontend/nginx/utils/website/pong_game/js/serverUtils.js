@@ -227,6 +227,7 @@ function sendMessageSession() {
 
 
 
+
 function updateSessionsList(sessions) {
 
     let index = 1;
@@ -243,7 +244,8 @@ function updateSessionsList(sessions) {
     }
 
     sessions.forEach(session => {
-        if (session.players.length == 1) {
+        // console.log("session.is_private", session.is_private);
+        if (session.players.length == 1 && session.isPrivate == "false") {
             sessions_createContent(session, index);
             index++;
         }
@@ -308,6 +310,14 @@ function  sessions_createContent(session, index) {
 
 
 }
+
+socket.addEventListener('message', (event) => {
+    const data = JSON.parse(event.data);
+    if (data.messageType === 'inviteSession')
+        console.log(data.session);
+    
+});
+
 
 //start game for joiner
 function joinSession(session, index) {

@@ -116,6 +116,52 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
 
 
+        if (messageType == "inviteSession"):
+            if (search_player_in_game(self.user_username)):
+                print(self.user_username, "deja dans une room")
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "confirm.invite",
+                        "messageType": "confirmInvite",
+                        "confirme": "false",
+                        "username": self.user_username,
+                        "players": self.user_username,
+                        "CreatorPeerId" : data["peerId"]
+                    }
+                )
+
+            else:
+                level = data["level"]
+                creatorPeer = data["peerId"]
+                sessionId = str(uuid.uuid4())
+
+                session = Session(sessionId, self.user_username, creatorPeer, "true", level, data["paddleHeight"])
+                session.add_player(self.user_username)
+
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "confirm.invite",
+                        "messageType": "confirmInvite",
+                        "confirme": "true",
+                        "username": self.user_username,
+                        "creatorPeer": creatorPeer,
+                        "players": self.user_username,
+                        "sessionId": sessionId,
+                    }
+                )
+
+                print("Session created :", sessionId, self.user_username, level,)
+
+                sessions.append(session)
+
+
+                usernameInvited = data["usernameInvited"]
+
+                await self.channel_layer.group_send(
+                    self.room_group_name, { "type": "invite.Session" ,"messageType": "inviteSession", "session": session.to_json(), "usernameInvited": usernameInvited}
+                )
 
 
         if (messageType == "createSession"):
@@ -375,6 +421,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'sessionId': event.get("sessionId"),
             }))
 
+    async def confirm_invite(self, event):
+        message_type = event.get("messageType")
+        confirme = event.get("confirme")
+
+        player = event.get("players")
+        if player == self.user_username:
+            await self.send(text_data=json.dumps({
+                'messageType': message_type,
+                'username': event.get("username"),
+                'confirme': confirme,
+                'sessionId': event.get("sessionId"),
+            }))
+
     async def confirm_join(self, event):
         message_type = event.get("messageType")
         confirme = event.get("confirme")
@@ -433,6 +492,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }))
 
 
+
+    async def invite_Session(self, event):
+        messageType = event["messageType"]
+        usernameInvited = event["usernameInvited"]
+        # Send message to WebSocket
+        if usernameInvited == self.user_username:
+            await self.send(text_data=json.dumps({"messageType" : messageType, "session": event["session"]}))
 
 
 
