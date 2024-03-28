@@ -44,18 +44,6 @@ services:
       - django
     env_file: .env
 
-  # redis:
-  #   image: redis:latest
-  #   container_name: redis_container
-  #   restart: always
-  #   ports:
-  #     - "6380:6380"
-  #   networks:
-  #     - pong
-  #   volumes:
-  #     - ./requirements/backend/redis:/data
-  #   env_file: .env
-
   redis:
     image: redis:latest
     container_name: redis_container
