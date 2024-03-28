@@ -490,28 +490,23 @@ function checkInput_modifyInfos() {
 }
 
 function sendHeartbeat_API() {
-    // Effectuer une requête au serveur pour indiquer que l'utilisateur est connecté
-    fetch('url_du_serveur', {
-        method: 'POST', // ou 'GET' selon vos besoins
+    fetch(domainPath + '/api/account/update_activity/', {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            // Autres en-têtes nécessaires
+            'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
         },
-        // Le corps de la requête peut contenir des informations supplémentaires si nécessaire
-        // body: JSON.stringify({ key: 'value' }),
     })
     .then(response => {
         if (!response.ok) {
             throw new Error('Erreur lors de la requête au serveur');
         }
-        // Traiter la réponse du serveur si nécessaire
         return response.json();
     })
     .catch(error => {
         console.error('Erreur :', error);
-        // Gérer l'erreur comme vous le souhaitez
     });
 }
 
-// Appeler la fonction toutes les 5 secondes (5000 millisecondes)
-// setInterval(sendHeartbeat_API, 5000);
+// Appeler la fonction toutes les 20 secondes
+setInterval(sendHeartbeat_API, 20000);

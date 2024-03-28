@@ -220,8 +220,8 @@ function initPlayBtn() {
                 alert_message('Player name missing !');
                 return;
             }
-            leftPlayerName = "cpu";
-            rightPlayerName = playerName.value;
+            leftPlayerName = playerName.value;
+            rightPlayerName = "cpu";
         }
 
         else if(twoPlayers) {
@@ -274,7 +274,11 @@ function initPlayBtn() {
         reset_UI();
         removeInput();
         navbarSwitch('off');
-        localRun();
+        if (onePlayer) {
+            iaRun();
+        }
+        else
+            localRun();
 
     });
 }

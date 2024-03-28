@@ -84,11 +84,13 @@ MIDDLEWARE = [
  # CORS settings (Cross-Origin Resource Sharing)
 
 # CORS_ALLOW_ANY_ORIGIN = True
+CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOW_PRIVATE_NETWORK : True
 
-CORS_ALLOWED_ORIGINS = [
-	SITE_URL,
-]
+# CORS_ALLOWED_ORIGINS = [
+# 	SITE_URL,
+# ]
 
 CORS_ALLOW_HEADERS = [
     'Authorization',
