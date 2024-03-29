@@ -322,6 +322,7 @@ function  sessions_createContent(session, index) {
 
 
 function create_room() {
+    
     peer = new SimplePeer({initiator: true})
     peer.once('signal', (dataPeer) => {
         console.log('PeerCreator signal:', dataPeer);
@@ -336,8 +337,6 @@ function create_room() {
                 document.getElementById('containerGameMenu').classList.add('hidden-element');
 
                 navbarSwitch('off');
-
-
                 reset_UI();
 
                 const mainDiv = document.createElement('div');
@@ -387,17 +386,20 @@ function create_room() {
                 mainDiv.appendChild(secDiv);
 
                 document.getElementById('gameMenu').appendChild(mainDiv);
+                
+                cancelBtn.addEventListener('click', function() {
 
-                document.getElementById('cancelCreatedRoomBtn').addEventListener('click', function() {
                     document.getElementById('roomCreatedDiv').remove();
                     document.getElementById('containerGameMenu').classList.remove('hidden-element');
                     document.getElementById('createRoomMenu').classList.add('hidden-element');
                     const message = JSON.stringify({ messageType: 'quitSession' });
                     socket.send(message);
-                    navbarSwitch('on');
+                    location.reload();
                 })
+                
+
             }
-            else{
+            else {
                 //close le peer
                 peer.close();
                 console.log("Tu es deja dans une room");
@@ -406,4 +408,3 @@ function create_room() {
     });
 
 }
-

@@ -2,6 +2,7 @@ let connectedFrom_mobile = false;
 let connectedFrom_desktop = false;
 let two_fa = false;
 let sessionUsername;
+let connected = false;
 
 
 

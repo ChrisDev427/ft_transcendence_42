@@ -87,7 +87,32 @@ function waitForWebSocketConnection(username) {
             start = false;
             const message = JSON.stringify({ messageType: 'endGame', leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : sessionUsername});
             socket.send(message);
-            showSection('main');
+
+            if (leftPlayerName !== sessionUsername) {
+                surrenderMessage_createContent(leftPlayerName)
+            } else {
+                surrenderMessage_createContent(rightPlayerName)
+            }
+
+            function surrenderMessage_createContent(surrenderPlayerName) {
+
+                document.getElementById('gameDiv').classList.add('hidden-element');
+                const div = document.createElement('div');
+                div.classList = 'container p-3 mt-5';
+                const line_1 = document.createElement('h5');
+                line_1.classList = 'display-3 fw-bold cl-green text-center';
+                line_1.textContent = surrenderPlayerName + ' left the game';
+                const line_2 = document.createElement('h5');
+                line_2.classList = 'display-5 fw-bold cl-green text-center';
+                line_2.textContent = 'You won by forfeit !';
+                div.appendChild(line_1);
+                div.appendChild(line_2);
+                document.getElementById('playPong').appendChild(div);
+            }
+
+            setTimeout(function() {
+                window.location.href = domainPath;
+            }, 3000);
         }
     });
 

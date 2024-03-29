@@ -50,10 +50,10 @@
   </div>
 
 
-  <header id="header" class="pb-5 mb-3">
+  <header id="header" class="pb-5 mb-1">
     <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark bg-info py-1">
       <div class="container" style="min-height: 45px">
-        <button class=" btn border-0" onclick="showSection('main')"><h5 class="text-white fw-bold fs-4">ft_transcendence</h5></button>
+        <button class="btn p-0 border-0 mt-1" onclick="showSection('main')"><h5 class="custom-icon-headerFooter fw-bold fs-4">ft_transcendence</h5></button>
 
         <button class="navbar-toggler border-0 fa-solid fa-bars" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <!-- <span class="navbar-toggler-icon"></span> -->
@@ -64,10 +64,10 @@
           <ul class="navbar-nav">
             <!-- DropDown Profile -->
             <li id="dropDownProfile" class="nav-item dropdown unvisible">
-              <a class="nav-link bi-person-circle text-white fs-3" href="#" role="toggle" data-bs-toggle="dropdown" aria-expanded="false"></a>
+              <a class="nav-link bi-person-circle custom-icon-headerFooter fs-3 me-2 p-0" href="#" role="toggle" data-bs-toggle="dropdown" aria-expanded="false"></a>
               <div id="dropdown-menu" class="dropdown-menu bg-info py-0 border-0 fade-in">
-                <div class="card mx-auto pb-3 shadow-lg border-0" style="width: 18rem;">
-                  <img id="avatar-img_profilDropdown" src="" class="card-img-top mx-auto mt-3 rounded" alt="avatar-img" style="width: 100px;">
+                <div class="card mx-auto pb-3 shadow-lg border-0" style="width: 16rem;">
+                  <img id="avatar-img_profilDropdown" src="" class="card-img-top mx-auto mt-3 shadow rounded" alt="avatar-img" style="width: 100px;">
                   <div class="card-body">
                     <h4 id="username-profileDropdown" style="font-family: 'Bagel Fat One', sans-serif;" class="card-title text-info text-center text-uppercase mb-3"></h4>
                     <div style="overflow-y: auto; max-height: 100px;">
@@ -83,17 +83,17 @@
                 </div>
               </div>
             </li>
-            <li class="nav-item  mt-2">
-              <a class="nav-link fw-bold  text-white" href="#gameMenu">Play Pong</a>
+            <li class="nav-item ">
+              <a class="nav-link fw-bold custom-icon-headerFooter" href="#gameMenu" style="font-family: 'Bagel Fat One', sans-serif;">Play Pong</a>
             </li>
-            <li id="nav-signIn" class="nav-item mt-2">
-              <a class="nav-link fw-bold  text-white" href="#signIn">Sign In</a>
+            <li id="nav-signIn" class="nav-item">
+              <a class="nav-link fw-bold custom-icon-headerFooter" href="#signIn" style="font-family: 'Bagel Fat One', sans-serif;">Sign In</a>
             </li>
-            <li id="nav-signUp" class="nav-item mt-2">
-              <a class="nav-link fw-bold  text-white" href="#signUp">Sign Up</a>
+            <li id="nav-signUp" class="nav-item">
+              <a class="nav-link fw-bold custom-icon-headerFooter" href="#signUp" style="font-family: 'Bagel Fat One', sans-serif;">Sign Up</a>
             </li>
-            <li class="nav-item mt-2">
-              <a class="nav-link fw-bold  text-white" href="#aboutTheTeam">About the team</a>
+            <li class="nav-item">
+              <a class="nav-link fw-bold custom-icon-headerFooter" href="#aboutTheTeam" style="font-family: 'Bagel Fat One', sans-serif;">About the team</a>
             </li>
           </ul>
         </div>
@@ -104,57 +104,57 @@
   <main>
 
     <section id="main" class="d-flex justify-content-center fade-in hidden-element">
-      <div class="container bg-white rounded-bottom-4 shadow" style="max-width: 1200px;">
-        <div class="col d-flex justify-content-center mt-4 mx-4">
+      <div class="container p-3 pt-0 bg-white rounded-bottom-4 shadow" style="max-width: 1200px;">
+        <div class="col d-flex justify-content-center mx-4" >
           <h1 class="display-2 text-info fw-bold">ft_transcendence</h1>
         </div>
-        <div class="col-8 d-flex justify-content-center mx-auto">
-          <img class="w-75" style="opacity: 70%;" src="img/img-cartoon.png" alt="img-cartoon">
+        <div class="col-12 d-flex justify-content-center">
+          <img class="" style="opacity: 70%; width: 50%;" src="img/img-cartoon.png" alt="img-cartoon">
         </div>
-        <div class="row">
-          <div class="col-lg-9 p-3 my-auto">
+        <div class="row border">
+          <div class="col-lg-9 p-lg-3 pt-lg-0 my-auto">
             <!-- <H3 class="display-6 text-center text-md-end  fw-bold py-2">Welcome to ft_transcendence</H3> -->
-            <div class="ps-lg-4">
+            <!-- <div class=""> -->
               <h5 class="text-center text-secondary fw-bold fs-3">The last common core project at school 42</h5>
-            </div>
-            <div class="ps-lg-4">
-              <p class="lead fs-5 text-center text-black">The ft_transcendence project is a complex and ambitious endeavor aiming
+            <!-- </div> -->
+            <!-- <div class="ps-lg-4"> -->
+              <p class="fs-5 text-center text-black">The ft_transcendence project is a complex and ambitious endeavor aiming
                 to create an online gaming platform based on table tennis (ping-pong). It is a large-scale project implementing diverse
                 features, ranging from user management to real-time table tennis matches.
                 It is a versatile project that combines aspects of web development, real-time functionality, and tournament management
                 to craft an immersive and competitive online gaming experience centered around table tennis. It challenges students' skills
                 in software development, database design, security, and the integration of modern technologies.
               </p>
-            </div>
+            <!-- </div> -->
           </div>
 
-          <div class="col-lg-3 p-3 pt-0 pt-lg-5">
-            <div class="col d-flex justify-content-center mt-3 mb-2">
-              <a class="btn btn-info text-light fw-bold shadow p-4 w-75" href="#gameMenu">Play Pong</a>
+          <div class="col-lg-3 p-3 pt-0 pt-lg-2">
+            <div class="col d-flex justify-content-center pt-lg-2 mb-3">
+              <a class="btn btn-info fw-bold shadow fs-4 custom-icon-headerFooter p-4 w-75" href="#gameMenu" style="font-family: 'Bagel Fat One', sans-serif;">Play Pong</a>
             </div>
 
             <!-- TO HIDE WHEN USER IS CONNECTED -->
             <div id="signIn-signUp-btn">
               <div class="col d-flex justify-content-center mb-2">
-                <a class="btn btn-outline-info  fw-bold shadow p-2 w-75" href="#signIn">Sign In</a>
+                <a class="btn btn-outline-info custom-icon fw-bold shadow p-2 w-75" href="#signIn" style="font-family: 'Bagel Fat One', sans-serif;">Sign In</a>
               </div>
               <div class="col d-flex justify-content-center mb-2">
-                <a class="btn btn-outline-info  fw-bold shadow p-2 w-75" href="#signUp">Sign Up</a>
+                <a class="btn btn-outline-info custom-icon fw-bold shadow p-2 w-75" href="#signUp" style="font-family: 'Bagel Fat One', sans-serif;">Sign Up</a>
               </div>
             </div>
 
             <!-- TO SHOW WHEN USER IS CONNECTED -->
             <div id="friends-gameHistory-btn" class="unvisible">
               <div class="col d-flex justify-content-center mb-2">
-                <a class="btn btn-outline-info  fw-bold shadow p-2 w-75" href="#dashboard" onclick="getDashboardInfos()">Dashboard</a>
+                <a class="btn btn-outline-info custom-icon fw-bold shadow p-2 w-75" href="#dashboard" onclick="getDashboardInfos()" style="font-family: 'Bagel Fat One', sans-serif;">Dashboard</a>
               </div>
-              <!-- <div class="col d-flex justify-content-center mb-2">
-                <a class="btn btn-outline-info  fw-bold shadow p-2 w-75" href="#gameHistory">Game History</a>
-              </div> -->
+              <div class="col d-flex justify-content-center mb-2">
+                <a class="btn btn-outline-info custom-icon fw-bold shadow p-2 w-75" href="#profile" style="font-family: 'Bagel Fat One', sans-serif;">Profile</a>
+              </div>
             </div>
 
             <div class="col d-flex justify-content-center ">
-              <a class="btn btn-outline-info fw-bold shadow p-2 w-75 mb-4" href="#aboutTheTeam">About the team</a>
+              <a class="btn btn-outline-info custom-icon fw-bold shadow p-2 w-75 mb-4" href="#aboutTheTeam" style="font-family: 'Bagel Fat One', sans-serif;">About the team</a>
             </div>
           </div>
         </div>
@@ -260,7 +260,12 @@
               <!-- <button id="send-button_session" class="btn" onclick="sendMessageSession()">Send</button> -->
             </div>
           </div>
-
+          <!-- <div id="surrenderMessage" class="container p-3 mt-5  unvisible" >
+            <h5  class="display-3 fw-bold cl-green text-center ">CCC left the game</h5>
+            <h5  class="display-5 fw-bold cl-green text-center ">You won by forfeit !</h5>
+           
+          </div>
+ -->
 
     </section>
 
@@ -691,10 +696,8 @@
             <!-- Card Body -->
             <div class="card-body">
               <div id="gameHistory-cardBody" style="overflow-y: auto; overflow-x: hidden; min-height: 350px; max-height: 500px;">
-                <div id="historyTextInfo" class="p-5 fade-in hidden-element">
-                  <h5 class="fw-bold text-center text-secondary">There is no history to display !</h5>
-                </div>
-                <div id="historyList" class="row px-3 d-felx justify-content-center fade-in hidden-element"></div>
+                  <h5 id="messageGameHistory" class="p-5 fade-in fw-bold text-center text-secondary hidden-element">There is no history to display !</h5>
+                <div id="historyList" class="row px-3 d-felx justify-content-center fade-in "></div>
               </div>
             </div>
           </div>
@@ -797,7 +800,7 @@
       </div>
     </div>
 
-    <section id="sessions" class="fade-in">
+    <section id="sessions" class="fade-in hidden-element">
       <div class="container bg-white rounded-bottom-4 shadow " >
         <h1 class="display-1 fw-bold text-info text-center">Rooms</h1>
         <h5 id="sessionListeEmpty" class="fs-3 fw-bold text-secondary text-center mt-4">No rooms available</h5>
@@ -816,31 +819,31 @@
           <div class="col-auto p-1 image-container my-auto">
             <a href="https://42nice.fr/" target="_blank" rel="nofollow">
               <img src="img/42Nice-logo-white.png" alt="logo_42" class="custom-logo normal-logo" style="width: 110px;">
-              <img src="img/42Nice-logo-blue.png" alt="logo_42" class="custom-logo hover-logo" style="width: 110px;">
+              <img src="img/42Nice-logo-gray.png" alt="logo_42" class="custom-logo hover-logo" style="width: 110px;">
             </a>
           </div>
           <div class="col-auto ms-5 my-auto">
             <ul class="list-inline fs-3 my-auto">
               <li class="list-inline-item">
                 <a class="text-white" href="https://www.linkedin.com/company/42nice/" target="_blank" rel="nofollow">
-                  <i class="bi-linkedin custom-icon-footer "></i>
+                  <i class="bi-linkedin custom-icon-headerFooter "></i>
                 </a>
               </li>
               <li class="list-inline-item">
                 <a class="text-white" href="https://www.instagram.com/42Nice/?hl=fr" target="_blank" rel="nofollow">
-                  <i class="bi-instagram  custom-icon-footer "></i>
+                  <i class="bi-instagram  custom-icon-headerFooter "></i>
                 </a>
               </li>
               <li class="list-inline-item">
                 <a class="text-white" href="https://twitter.com/42NiceSud" target="_blank" rel="nofollow">
-                  <i class="bi-twitter custom-icon-footer "></i>
+                  <i class="bi-twitter custom-icon-headerFooter "></i>
                 </a>
               </li>
             </ul>
           </div>
         </div>
-        <div id="displayChatBtn" class="col-auto fs-1 p-0  unvisible">
-          <i id="mainChatBtn" class="bi bi-chat-text-fill custom-icon-footer me-2" role="button" onclick="showMainChat()"></i>
+        <div id="displayChatBtn" class="col-auto fs-1 unvisible">
+          <i id="mainChatBtn" class="bi bi-chat-text-fill custom-icon-headerFooter me-2" role="button" onclick="showMainChat()"></i>
         </div>
       </div>
     </div>

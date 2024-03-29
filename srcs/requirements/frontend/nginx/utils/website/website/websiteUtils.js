@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         getDashboardInfos()
         profileAccess(localStorage.getItem('connectType'));
         itemsVisibility_logged_in();
+        connected = true;
         // console.log('AccessToken:', storedAccessToken);
         // console.log('RefreshToken:', storedRefreshToken);
     }

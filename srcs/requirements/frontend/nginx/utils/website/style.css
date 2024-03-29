@@ -112,21 +112,21 @@ input[type="text password"]::placeholder {
   transition: color 0.4s ease; /* Transition de couleur sur 0.3 secondes avec une fonction d'accélération */
 }
 .custom-icon:hover {
-    color: #4d4d4d;
+    color: #7a7a7a;
 }
-.custom-icon-footer {
+.custom-icon-headerFooter {
   color: #ffffff; /* Couleur par défaut */
   transition: color 0.4s ease; /* Transition de couleur sur 0.3 secondes avec une fonction d'accélération */
 }
-.custom-icon-footer:hover {
-    color: #4d4d4d;
+.custom-icon-headerFooter:hover {
+    color: #7a7a7a;
 }
 
 .hover-logo {
   display: none;
 }
 .image-container:hover .normal-logo {
-  display: none;
+  display: none; 
 }
 .image-container:hover .hover-logo {
   display: inline-block; /* ou display: block; selon le besoin */

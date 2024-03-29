@@ -72,6 +72,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Leave room group
         print(self.user_username, " c est deco")
+        session=search_player_in_game(self.user_username)
+        if session:
+            remove_player_sessions(self.user_username)
+            await self.channel_layer.group_send(
+                self.room_group_name, { "type": "session.surrender" ,"messageType": "surrenderSession", "session": session.to_json(), "username" : self.user_username}
+            )
+            
+
         # fuseau = pytz.timezone("Europe/Paris")
         await self.channel_layer.group_send(
             self.room_group_name, {"type": "chat.disconnect", "user_username": self.user_username, "time": datetime.now().astimezone(fuseau).strftime("%H:%M:%S")}
