@@ -82,8 +82,8 @@ function waitForWebSocketConnection(username) {
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
-        console.log('data received', data);
         if (data.messageType === 'surrenderSession') {
+            console.log('data received', data);
             start = false;
             const message = JSON.stringify({ messageType: 'endGame', leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : sessionUsername});
             socket.send(message);
@@ -115,7 +115,15 @@ function waitForWebSocketConnection(username) {
             }, 3000);
         }
     });
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'inviteSession') {
 
+            console.log('data.session = ', data.session);
+            invitedToPlay_createContent(data.session.CreatorUsername);
+        }
+        
+    });
     // function handleKeyPress(event) {
     //     if (event.key === 'Enter') {
     //         sendMessageSession();
@@ -227,6 +235,7 @@ function sendMessageSession() {
 
 
 
+
 function updateSessionsList(sessions) {
 
     let index = 1;
@@ -243,7 +252,8 @@ function updateSessionsList(sessions) {
     }
 
     sessions.forEach(session => {
-        if (session.players.length == 1) {
+        // console.log("session.is_private", session.is_private);
+        if (session.players.length == 1 && session.isPrivate == "false") {
             sessions_createContent(session, index);
             index++;
         }
@@ -308,6 +318,14 @@ function  sessions_createContent(session, index) {
 
 
 }
+
+// socket.addEventListener('message', (event) => {
+//     const data = JSON.parse(event.data);
+//     if (data.messageType === 'inviteSession')
+//         console.log(data.session);
+    
+// });
+
 
 //start game for joiner
 function joinSession(session, index) {

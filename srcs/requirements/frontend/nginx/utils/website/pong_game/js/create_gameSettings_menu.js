@@ -25,7 +25,7 @@ function create_OnePlayer_input() {
     // Creation du bouton
     let playBtn = document.createElement('button');
     playBtn.type = 'button';
-    playBtn.className = 'btn btn-outline-success w-25 mb-3 mt-3 p-2';
+    playBtn.className = 'btn btn-outline-success w-25 mb-3 mt-3 p-2 bagelFatOne';
     playBtn.id = 'playBtn';
     playBtn.textContent = 'Play';
 
@@ -82,7 +82,7 @@ function create_TwoPlayers_input() {
     div.id = 'divBtn';
     let playBtn = document.createElement('button');
     playBtn.type = 'button';
-    playBtn.className = 'btn btn-outline-success w-25 mb-3 mt-3 p-2';
+    playBtn.className = 'btn btn-outline-success w-25 mb-3 mt-3 p-2 bagelFatOne';
     playBtn.id = 'playBtn';
     playBtn.textContent = 'Play';
 
@@ -106,19 +106,19 @@ function create_Tournament_mode() {
     // Création des boutons
     let fourPlayersBtn = document.createElement('button');
     fourPlayersBtn.type = 'button';
-    fourPlayersBtn.className = 'btn btn-outline-info mx-1';
+    fourPlayersBtn.className = 'btn btn-outline-info mx-1 bagelFatOne';
     fourPlayersBtn.id = 'fourPlayersBtn';
     fourPlayersBtn.textContent = '4 Players';
 
     let heightPlayersBtn = document.createElement('button');
     heightPlayersBtn.type = 'button';
-    heightPlayersBtn.className = 'btn btn-outline-info mx-1';
+    heightPlayersBtn.className = 'btn btn-outline-info mx-1 bagelFatOne';
     heightPlayersBtn.id = 'heightPlayersBtn';
     heightPlayersBtn.textContent = '8 Players';
 
     let sixteenPlayersBtn = document.createElement('button');
     sixteenPlayersBtn.type = 'button';
-    sixteenPlayersBtn.className = 'btn btn-outline-info mx-1';
+    sixteenPlayersBtn.className = 'btn btn-outline-info mx-1 bagelFatOne';
     sixteenPlayersBtn.id = 'sixteenPlayersBtn';
     sixteenPlayersBtn.textContent = '16 Players';
 
@@ -213,7 +213,7 @@ function create_Tournament_inputs() {
     divBtn.id = 'divBtn';
     let playBtn = document.createElement('button');
     playBtn.type = 'button';
-    playBtn.className = 'btn btn-outline-success w-25 mb-3 mt-3 p-2';
+    playBtn.className = 'btn btn-outline-success w-25 mb-3 mt-3 p-2 bagelFatOne';
     playBtn.id = 'playBtn';
     playBtn.textContent = 'Play';
 
@@ -226,48 +226,48 @@ function create_Tournament_inputs() {
 }
 
 
-function updateSessionsList(sessions, peer) {
-    // const sessionsListElement = document.getElementById('sessionsList');
-    // sessionsListElement.innerHTML = '';
+// function updateSessionsList(sessions, peer) {
+//     // const sessionsListElement = document.getElementById('sessionsList');
+//     // sessionsListElement.innerHTML = '';
 
-    let index = 1;
-    sessions.forEach(session => {
-        sessions_createContent(session, index, peer);
-        index++;
-        // const sessionLink = document.createElement('a');
-        // // sessionLink.href = `https://transcendence42.ddns.net/#playPong`;
-        // sessionLink.href = '#playPong';
-        // sessionLink.textContent = `Session ID: ${session.id}, Created At: ${session.createdAt}, By : ${session.CreatorUsername}`;
-        // sessionLink.addEventListener('click', () => {
+//     let index = 1;
+//     sessions.forEach(session => {
+//         sessions_createContent(session, index, peer);
+//         index++;
+//         // const sessionLink = document.createElement('a');
+//         // // sessionLink.href = `https://transcendence42.ddns.net/#playPong`;
+//         // sessionLink.href = '#playPong';
+//         // sessionLink.textContent = `Session ID: ${session.id}, Created At: ${session.createdAt}, By : ${session.CreatorUsername}`;
+//         // sessionLink.addEventListener('click', () => {
 
-        //     socket.send(JSON.stringify({ action: 'join', sessionId: session.id, username:session }));
+//         //     socket.send(JSON.stringify({ action: 'join', sessionId: session.id, username:session }));
 
-        //     leftPlayerName ="test";
-        //     rightPlayerName="test1";
+//         //     leftPlayerName ="test";
+//         //     rightPlayerName="test1";
 
-        //     level = 5;
-        //     playOnline = true;
-        //     twoPlayers = true;
-        //     start = true;
+//         //     level = 5;
+//         //     playOnline = true;
+//         //     twoPlayers = true;
+//         //     start = true;
 
-        //     setPlayerNameToPrint(leftPlayerName, rightPlayerName);
-        //     setHandToStart();
-        //     printConsoleInfos();
+//         //     setPlayerNameToPrint(leftPlayerName, rightPlayerName);
+//         //     setHandToStart();
+//         //     printConsoleInfos();
 
-        //     showSection("playPong");
-        //     document.getElementById('gameDiv').classList.remove('hidden-element');
-        //     run();
+//         //     showSection("playPong");
+//         //     document.getElementById('gameDiv').classList.remove('hidden-element');
+//         //     run();
 
-        // });
+//         // });
 
-        // const sessionElement = document.createElement('p');
-        // sessionElement.appendChild(sessionLink);
+//         // const sessionElement = document.createElement('p');
+//         // sessionElement.appendChild(sessionLink);
 
-        // sessionsListElement.appendChild(sessionElement);
-    });
+//         // sessionsListElement.appendChild(sessionElement);
+//     });
 
-    console.log('Updated sessions list:', sessions);
-}
+//     console.log('Updated sessions list:', sessions);
+// }
 
 document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('hashchange', () => {
@@ -322,7 +322,7 @@ function  sessions_createContent(session, index) {
 
 
 function create_room() {
-    
+
     peer = new SimplePeer({initiator: true})
     peer.once('signal', (dataPeer) => {
         console.log('PeerCreator signal:', dataPeer);
@@ -405,6 +405,7 @@ function create_room() {
                 console.log("Tu es deja dans une room");
             }
         }
+
     });
 
 }

@@ -293,15 +293,15 @@ function inviteFriendToPlayFromChat_createContent(username) {
 
     const mainDiv = document.createElement('div');
     mainDiv.id = 'inviteToPlayDiv';
-    mainDiv.classList = 'col-auto p-3 bg-white  rounded-4 fade-in';
-    mainDiv.style.height = '300px';
+    mainDiv.classList = 'col-auto p-3 m-2 bg-white shadow-lg rounded-3 fade-in';
+    // mainDiv.style.height = '300px';
 
     const secDiv = document.createElement('div');
     secDiv.id = 'waitingDiv';
 
     const title = document.createElement('h5');
-    title.classList = 'fs-3 pt-3 fw-bold text-info text-capitalize text-center';
-    title.textContent = 'Invite ' + username + ' to play !';
+    title.classList = 'fs-3 pt-1 fw-bold text-info text-capitalize text-center';
+    title.textContent = 'Invite ' + username + ' to play';
     secDiv.appendChild(title);
 
     const text = document.createElement('h5');
@@ -310,7 +310,7 @@ function inviteFriendToPlayFromChat_createContent(username) {
     secDiv.appendChild(text);
 
     const dificultyRow = document.createElement('div');
-    dificultyRow.classList = 'row d-flex justify-content-center g-3 mt-4';
+    dificultyRow.classList = 'row d-flex justify-content-center g-2 mt-4';
 
     const easyDiv = document.createElement('div');
     easyDiv.classList = 'col-auto';
@@ -367,78 +367,183 @@ function inviteFriendToPlayFromChat_createContent(username) {
 
     easyBtn.addEventListener('click', function() {
         mainDiv.remove();
-       inviteFriendCreateSession_createContent(username, 2);
+        level = 3;
+        paddleHeight = 110;
+        inviteFriendCreateSession_createContent(username);
     })
 
     mediumBtn.addEventListener('click', function() {
         mainDiv.remove();
-       inviteFriendCreateSession_createContent(username, 4);
+        level = 5;
+        paddleHeight = 80;
+        inviteFriendCreateSession_createContent(username);
     })
 
     hardBtn.addEventListener('click', function() {
         mainDiv.remove();
-       inviteFriendCreateSession_createContent(username, 6);
+        level = 7;
+        paddleHeight = 60;
+        inviteFriendCreateSession_createContent(username);
     })
 }
 
-function inviteFriendCreateSession_createContent(username, level) {
+function inviteFriendCreateSession_createContent(username) {
+
+    
+    peer = new SimplePeer({initiator: true})
+    peer.once('signal', (dataPeer) => {
+        console.log('PeerCreator signal:', dataPeer);
+        socket.send(JSON.stringify({ messageType: 'inviteSession', level:level , peerId: dataPeer, paddleHeight: paddleHeight, usernameInvited: username}));
+    });
+
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'confirmInvite') {
+            console.log("confirmInvite")
+            if (data.confirme == "true"){
+                const mainDiv = document.createElement('div');
+                mainDiv.id = 'inviteToPlayDiv';
+                mainDiv.classList = 'col-auto p-3 m-2 bg-white shadow-lg rounded-3 fade-in';
+                // mainDiv.style.height = '300px';
+
+                const secDiv = document.createElement('div');
+                secDiv.id = 'waitingDiv';
+
+                const title = document.createElement('h5');
+                title.classList = 'fs-3 pt-5 fw-bold text-info text-center';
+                title.textContent = 'Invitation sent !';
+                secDiv.appendChild(title);
+
+                const text = document.createElement('h5');
+                text.classList = 'fs-5 fw-bold text-secondary text-center';
+                text.textContent = 'Please wait for response';
+                secDiv.appendChild(text);
+
+                const spinnersDiv = document.createElement('div');
+                spinnersDiv.classList = 'col mt-3 d-flex justify-content-center';
+                for (let i = 0; i < 3; i++) {
+                    const div = document.createElement('div');
+                    div.role = 'status';
+                    if (i === 1) {
+                        div.classList = 'spinner-grow spinner-grow-sm text-info mx-2';
+                    } else {
+                        div.classList = 'spinner-grow spinner-grow-sm text-info';
+                    }
+                    spinnersDiv.appendChild(div);
+                }
+                secDiv.appendChild(spinnersDiv);
+
+                const row = document.createElement('div');
+                row.classList = 'row';
+                const col = document.createElement('div');
+                col.classList = 'col-auto mx-auto mt-3';
+                const cancelBtn = document.createElement('h5');
+                cancelBtn.id = 'cancelInviteToPlayBtn';
+                cancelBtn.classList = 'rounded shadow p-2 text-warning text-center fs-5';
+                cancelBtn.role = 'button';
+                cancelBtn.textContent = 'Cancel';
+                col.appendChild(cancelBtn);
+                row.appendChild(col);
+                secDiv.appendChild(row);
+                mainDiv.appendChild(secDiv);
+
+                document.getElementById('chat-area').appendChild(mainDiv);
+
+                cancelInviteToPlayBtn.addEventListener('click', function() {
+                    mainDiv.remove();
+                    document.getElementById('chat-messages-general').classList.remove('unvisible');
+                    document.getElementById('mainChat-form').classList.remove('unvisible');
+                    const messageContainer = document.getElementById('chat-area');
+                    messageContainer.scrollTop = messageContainer.scrollHeight;
+
+                    const message = JSON.stringify({ messageType: 'quitSession' });
+                    socket.send(message);
+                    peer.close;
+                    location.reload();
+                })
+            } else {
+
+                document.getElementById('chat-messages-general').classList.remove('unvisible');
+                document.getElementById('mainChat-form').classList.remove('unvisible');
+                console.log("Tu es deja dans une room");
+                peer.close;
+                
+            }
+        }
+    });
+
+    // console.log('Create game : ' + sessionUsername + ' VS ' + username + ' level : ' + level);
+
+
+    // const message = JSON.stringify({
+    //     messageType: 'inviteSession',
+    //     sessionUsername: sessionUsername,
+    //     username: username,
+    //     level: level
+    // });
+
+    // socket.send(message);
+
+}
+
+function invitedToPlay_createContent(creatorUsername) {
+
+    document.getElementById('chat-messages-general').classList.add('unvisible');
+    // document.getElementById('chatProfile').classList.add('unvisible');
+    document.getElementById('mainChat-form').classList.add('unvisible');
 
     const mainDiv = document.createElement('div');
-    mainDiv.id = 'inviteToPlayDiv';
-    mainDiv.classList = 'col-auto p-3 bg-white  rounded-4 fade-in';
-    mainDiv.style.height = '300px';
+    mainDiv.id = 'invitedToPlayDiv';
+    mainDiv.classList = 'col-auto p-3 m-2 bg-white shadow-lg rounded-3 fade-in';
 
     const secDiv = document.createElement('div');
-    secDiv.id = 'waitingDiv';
+    secDiv.id = 'invitedWaitingDiv';
 
-    const title = document.createElement('h5');
-    title.classList = 'fs-3 pt-5 fw-bold text-info text-center';
-    title.textContent = 'Invitation sent !';
-    secDiv.appendChild(title);
+    const name = document.createElement('h5');
+    name.classList = 'fs-3 pt-1 fw-bold text-info text-uppercase text-center';
+    name.textContent = creatorUsername;
+    secDiv.appendChild(name);
 
     const text = document.createElement('h5');
-    text.classList = 'fs-5 fw-bold text-secondary text-center';
-    text.textContent = 'Please wait for response';
+    text.classList = 'fs-5 fw-bold text-secondary text-center mt-3';
+    text.textContent = 'Invited You To Play !';
     secDiv.appendChild(text);
 
-    const spinnersDiv = document.createElement('div');
-    spinnersDiv.classList = 'col mt-3 d-flex justify-content-center';
-    for (let i = 0; i < 3; i++) {
-        const div = document.createElement('div');
-        div.role = 'status';
-        if (i === 1) {
-            div.classList = 'spinner-grow spinner-grow-sm text-info mx-2';
-        } else {
-            div.classList = 'spinner-grow spinner-grow-sm text-info';
-        }
-        spinnersDiv.appendChild(div);
-    }
-    secDiv.appendChild(spinnersDiv);
+    const btnDiv = document.createElement('div');
+    btnDiv.classList = 'row d-flex justify-content-center g-2 mt-4';
 
-    const row = document.createElement('div');
-    row.classList = 'row';
-    const col = document.createElement('div');
-    col.classList = 'col-auto mx-auto mt-3';
-    const cancelBtn = document.createElement('h5');
-    cancelBtn.id = 'cancelInviteToPlayBtn';
-    cancelBtn.classList = 'rounded shadow p-2 text-warning text-center fs-5';
-    cancelBtn.role = 'button';
-    cancelBtn.textContent = 'Cancel';
-    col.appendChild(cancelBtn);
-    row.appendChild(col);
-    secDiv.appendChild(row);
+    const denyDiv = document.createElement('div');
+    denyDiv.classList = 'col-auto';
+    const denyBtn = document.createElement('h5');
+    denyBtn.classList = 'text-warning p-2 shadow rounded-2';
+    denyBtn.textContent = 'Deny';
+    denyBtn.role = 'button';
+    denyDiv.appendChild(denyBtn);
+    btnDiv.appendChild(denyDiv);
+
+    const acceptDiv = document.createElement('div');
+    acceptDiv.classList = 'col-auto';
+    const acceptBtn = document.createElement('h5');
+    acceptBtn.classList = 'text-success p-2 shadow rounded-2';
+    acceptBtn.textContent = 'Accept';
+    acceptBtn.role = 'button';
+    acceptDiv.appendChild(acceptBtn);
+    btnDiv.appendChild(acceptDiv);
+
+    secDiv.appendChild(btnDiv);
+
     mainDiv.appendChild(secDiv);
 
     document.getElementById('chat-area').appendChild(mainDiv);
 
-    cancelInviteToPlayBtn.addEventListener('click', function() {
+    denyBtn.addEventListener('click', function() {
         mainDiv.remove();
         document.getElementById('chat-messages-general').classList.remove('unvisible');
         document.getElementById('mainChat-form').classList.remove('unvisible');
-        const messageContainer = document.getElementById('chat-area');
-        messageContainer.scrollTop = messageContainer.scrollHeight;
-    })
+        // CLOSE LA ROOM ?
+    });
 
-    console.log('Create game : ' + sessionUsername + ' VS ' + username + ' level : ' + level);
-    // socket.send(JSON.stringify({ action: 'createSession' }));
+    acceptBtn.addEventListener('click', function() {
+        // LANCER LA PARTIE ...
+    });
 }

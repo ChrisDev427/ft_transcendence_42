@@ -35,7 +35,7 @@ function initDashboard(data) {
     historyList.classList.add('hidden-element');
   }
   cleanElement('historyList');
-  cleanElement('friendShipList-dashboard');
+  cleanElement('friendShipList-dashboard');             // A Remettre sur ON !!!!!!!
   checkFriendRequest();
   get_users_data();
 
@@ -266,7 +266,7 @@ function friendExpandInfos_createContent(userObject, index) {
   }
   
   const infosDiv = document.createElement('div');
-  infosDiv.classList = 'col-12 mt-3';
+  infosDiv.classList = 'col-lg-5 pt-4 mt-3 py-1';
   for (let i = 0; i < 4; i++) {
     const h5 = document.createElement('h5');
     if (i < 3) {
@@ -297,21 +297,51 @@ function friendExpandInfos_createContent(userObject, index) {
   small2.textContent = 'last login : ' + handleDates(userObject.user.last_login);
   p2.appendChild(small2);
   infosDiv.appendChild(p2);
-  
-  const hr = document.createElement('hr');
-  hr.classList = 'border-secondary';
-  infosDiv.appendChild(hr);
   mainRow.appendChild(infosDiv);
 
+  //******* Game History *******************************************************************/
+  const historyDiv = document.createElement('div');
+  // infosDiv.classList = 'col-12 mt-3';
+  historyDiv.classList = 'col-lg-7 mt-3';
+  historyDiv.id = 'gameHistoryExpandFriendMenu' + index;
+  historyDiv.style.overflowY = 'auto';
+  historyDiv.style.overflowX = 'hidden';
+  historyDiv.style.maxHeight = '240px';
+
+
+  for (let i = 0; i < userObject.games_id.length; i++) {
+    
+    const game = document.createElement('div');
+    if (userObject.user.username === userObject.games_id[i].winner) {
+      game.classList = 'row p-1 my-2 bg-success bg-opacity-25 rounded d-flex';
+    } else {
+      game.classList = 'row p-1 my-2 bg-danger bg-opacity-25 rounded d-flex';
+    }
+    const names = document.createElement('h5');
+    names.classList = 'col-auto mx-auto text-secondary text-uppercase text-center fs-5 mb-0';
+    names.textContent = userObject.games_id[i].player_one + "  -VS-  " + userObject.games_id[i].player_two;
+    game.appendChild(names);
+    const score = document.createElement('h5');
+    score.classList = 'col-auto mx-auto text-secondary text-center fs-5 mb-0';
+    score.textContent = userObject.games_id[i].final_score;
+    game.appendChild(score);
+    const date = document.createElement('p');
+    date.classList = 'col-auto mx-auto small fst-italic text-center fw-light text-light mb-0';
+    date.textContent = handleDates(userObject.games_id[i].updated_at);
+    game.appendChild(date);
+    historyDiv.appendChild(game);
+  }
+  mainRow.appendChild(historyDiv);
+
   const btnDiv = document.createElement('div');
-  btnDiv.classList = 'd-flex justify-content-center';
+  btnDiv.classList = 'mt-4 d-flex justify-content-center';
   const btn = document.createElement('button');
   btn.classList = 'btn btn-sm btn-outline-danger';
   btn.id = 'removeFriendBtn' + index;
   btn.textContent = 'Remove friendship';
   btnDiv.appendChild(btn);
-  infosDiv.appendChild(btnDiv);
   
+  mainRow.appendChild(btnDiv);
   mainDiv.appendChild(mainRow);
 
   return mainDiv;  
@@ -529,7 +559,7 @@ function gameHistory_createContent(gameInfos, score1, score2) {
   imgDiv_left.classList = 'col-auto mt-2';
   const img_left = document.createElement('img');
   img_left.classList = 'rounded-3 shadow';
-  img_left.style.maxHeight = '100px';
+  img_left.style.maxHeight = '80px';
   img_left.alt = 'user-avatar';
   if (gameInfos.player_one !== null) {
     getAvatar(gameInfos.player_one)
@@ -549,7 +579,7 @@ function gameHistory_createContent(gameInfos, score1, score2) {
   imgDiv_right.classList = 'col-auto mt-2';
   const img_right = document.createElement('img');
   img_right.classList = 'rounded-3 shadow';
-  img_right.style.maxHeight = '100px';
+  img_right.style.maxHeight = '80px';
   img_right.alt = 'user-avatar';
   if (gameInfos.player_two !== null) {
 
@@ -573,7 +603,7 @@ function gameHistory_createContent(gameInfos, score1, score2) {
   namesScoreDiv.classList = 'col-auto my-auto';
 
   const names = document.createElement('h5');
-  names.classList = 'text-secondary text-center fs-3 mb-2 mt-1';
+  names.classList = 'text-secondary text-uppercase text-center fs-4 mb-2 mt-1';
 
   let playerOne = gameInfos.player_one;
   let playerTwo = gameInfos.player_two;
@@ -621,7 +651,7 @@ function gameHistory_createContent(gameInfos, score1, score2) {
     const levelDiv_text = document.createElement('div');
     levelDiv_text.classList = 'col-auto';
     const text = document.createElement('p');
-    text.classList = 'fw-bold fst-italic text-secondary fs-6 mb-0';
+    text.classList = 'fw-bold text-secondary mb-0 bagelFatOne';
     text.textContent = values[i][1];
     levelDiv_text.appendChild(text);
     levelDiv_row.appendChild(levelDiv_text);
