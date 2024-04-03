@@ -94,8 +94,8 @@ function create_MatchMaking_menu() {
     // Ajout de l'élément div principal à la section spécifiée
     mySection.appendChild(containerDiv);
     document.getElementById('gameDiv').classList.add('hidden-element');
-
-    init_StartTournament_button();
+    if (playLocal)
+        init_StartTournament_button();
 }
 
 function init_StartTournament_button() {

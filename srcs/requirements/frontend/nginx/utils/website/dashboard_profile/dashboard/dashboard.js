@@ -1,6 +1,6 @@
 function getDashboardInfos() {
   // console.log('function getDashboardInfos()');
-  
+
   verifyToken();
   fetch(domainPath + '/api/account/profile/', {
     method: 'GET',
@@ -10,7 +10,7 @@ function getDashboardInfos() {
   })
   .then(response => {
     if (response.status === 200) {
-       
+
       return response.json();
     } else if (response.status === 401) {
       console.error('Error : expired access token', response.status);
@@ -68,7 +68,7 @@ function initDashboard(data) {
   .catch(error => {
     console.error("Error : download avatar imgage 'initDashboard()' !", error);
   });
-  
+
 }
 
 function manageFriends(data) {
@@ -95,18 +95,18 @@ function manageFriends(data) {
 function friends_createContent(friendsArray) {
 
   sortFriendsArray(friendsArray);
-  
+
   for (let i = 0; i < friendsArray.length; i++) {
-    
+
     const rowDiv = document.createElement('div');
     rowDiv.classList = 'row py-3 px-3 mb-3 shadow-sm rounded-3 bg-info bg-opacity-10 fade-in';
     rowDiv.id = 'friendList' + i;
-    
+
     //*********************************************************************************
-    
+
     const imgDiv = document.createElement('div');
     imgDiv.classList = 'col-auto mx-auto mx-sm-0 my-auto';
-    
+
     const img = document.createElement('img');
     img.id = 'friendship-img';
     img.classList = 'rounded-3';
@@ -123,15 +123,15 @@ function friends_createContent(friendsArray) {
     rowDiv.appendChild(imgDiv);
 
     //*********************************************************************************
-    
+
     const infosDiv = document.createElement('div');
     infosDiv.classList = 'col-auto mx-auto mx-sm-0';
-    
+
     const userName = document.createElement('h5');
     userName.classList = 'text-info text-center text-uppercase text-sm-start fs-3 mb-2 mt-1';
     userName.textContent = friendsArray[i][0];
     infosDiv.appendChild(userName);
-    
+
     const isOnline = document.createElement('p');
     if (friendsArray[i][3] === true) {
       isOnline.classList = 'lead text-success fw-bold text-center text-sm-start fst-italic fs-6 mb-0';
@@ -141,7 +141,7 @@ function friends_createContent(friendsArray) {
       isOnline.textContent = 'Offline';
     }
     infosDiv.appendChild(isOnline);
-    
+
     const isPlaying = document.createElement('p');
     if (friendsArray[i][4] === true) {
       isPlaying.classList = 'lead text-success fw-bold text-center text-sm-start fst-italic fs-6 mb-2';
@@ -152,7 +152,7 @@ function friends_createContent(friendsArray) {
     }
     infosDiv.appendChild(isPlaying);
     rowDiv.appendChild(infosDiv);
-    
+
     //*********************************************************************************
 
     const bioDiv = document.createElement('div');
@@ -184,7 +184,7 @@ function friends_createContent(friendsArray) {
     const expandInfos = friendExpandInfos_createContent(friendObject, i);
     rowDiv.appendChild(expandInfos);
     //************************************************************************
-    
+
     // mainDiv.appendChild(rowDiv);
 
     setTimeout(function() {
@@ -213,7 +213,7 @@ function friends_createContent(friendsArray) {
 }
 
 function friendExpandInfos_createContent(userObject, index) {
-  
+
   const cardTitles = ['Victories', 'Defeats', 'Played', 'Friends'];
   const cardValue = [userObject.win, userObject.lose, userObject.win + userObject.lose, userObject.friend.length];
   const cardIcons = ['fas fa-trophy text-success', 'fa-solid fa-face-sad-tear text-danger', 'fas fa-table-tennis text-info', 'fa-solid fa-people-group text-primary'];
@@ -249,18 +249,18 @@ function friendExpandInfos_createContent(userObject, index) {
     value.textContent = cardValue[i];
     col1.appendChild(value);
     row.appendChild(col1);
-    
+
     const col2 = document.createElement('div');
     col2.classList = 'col-auto';
     const icon = document.createElement('i');
     icon.classList = cardIcons[i];
     col2.appendChild(icon);
     row.appendChild(col2);
-    
+
     mainCol.appendChild(row);
     mainRow.appendChild(mainCol);
   }
-  
+
   const infosDiv = document.createElement('div');
   infosDiv.classList = 'col-12 mt-3';
   for (let i = 0; i < 4; i++) {
@@ -293,7 +293,7 @@ function friendExpandInfos_createContent(userObject, index) {
   small2.textContent = 'last login : ' + handleDates(userObject.user.last_login);
   p2.appendChild(small2);
   infosDiv.appendChild(p2);
-  
+
   const hr = document.createElement('hr');
   hr.classList = 'border-secondary';
   infosDiv.appendChild(hr);
@@ -307,10 +307,10 @@ function friendExpandInfos_createContent(userObject, index) {
   btn.textContent = 'Remove friendship';
   btnDiv.appendChild(btn);
   infosDiv.appendChild(btnDiv);
-  
+
   mainDiv.appendChild(mainRow);
 
-  return mainDiv;  
+  return mainDiv;
 }
 
 function searchUser_createContent(friendObjet, index) {
@@ -359,13 +359,13 @@ function searchUser_createContent(friendObjet, index) {
   const div = document.createElement('div');
   div.classList = 'col-auto d-flex justify-content-center align-items-center';
 
-  
+
   checkPendingRequest(friendObjet.user.username)
   .then((result) => {
     console.log('Valeur résolue de la promesse :', result);
-    
+
     if (result === true) {
-      
+
       const pendingRequest = document.createElement('h5');
       pendingRequest.classList = 'text-warning text-center';
       pendingRequest.textContent = 'Pending Request';
@@ -381,12 +381,12 @@ function searchUser_createContent(friendObjet, index) {
       btn.textContent = 'Ask as friend';
       btn.id = 'askFriendBtn' + index;
       div.appendChild(btn);
-      
+
     }
     mainDiv.appendChild(div);
     setTimeout(function() {
       document.getElementById('searchFriend-cardArea').appendChild(mainDiv);
-      
+
       const askFriendBtn = document.getElementById('askFriendBtn' + index);
       if (askFriendBtn) {
         askFriendBtn.addEventListener('click', function() {
@@ -455,13 +455,13 @@ function searchUser_createContent(friendObjet, index) {
 //   const div = document.createElement('div');
 //   div.classList = 'col-sm-3 d-flex justify-content-center align-items-center';
 
-  
+
 //   checkPendingRequest(friendObjet.user.username)
 //   .then((result) => {
 //     console.log('Valeur résolue de la promesse :', result);
-    
+
 //     if (result === true) {
-      
+
 //       const pendingRequest = document.createElement('h5');
 //       pendingRequest.classList = 'text-warning text-center';
 //       pendingRequest.textContent = 'Pending Request';
@@ -477,14 +477,14 @@ function searchUser_createContent(friendObjet, index) {
 //       btn.textContent = 'Ask as friend';
 //       btn.id = 'askFriendBtn' + index;
 //       div.appendChild(btn);
-      
+
 //     }
 //     rowDiv.appendChild(div);
-    
+
 //     mainDiv.appendChild(rowDiv);
 //     setTimeout(function() {
 //       document.getElementById('searchFriend-cardArea').appendChild(mainDiv);
-      
+
 //       const askFriendBtn = document.getElementById('askFriendBtn' + index);
 //       if (askFriendBtn) {
 //         askFriendBtn.addEventListener('click', function() {
@@ -508,7 +508,7 @@ function searchUser_createContent(friendObjet, index) {
 
 function gameHistory_createContent(gameInfos, score1, score2) {
 
-  console.log('data infos = ', gameInfos);
+  // console.log('data infos = ', gameInfos);
   const timeValues = handleDateTime();
   const mainDiv = document.createElement('div');
   if (gameInfos.winner === sessionUsername) {
@@ -606,7 +606,7 @@ function gameHistory_createContent(gameInfos, score1, score2) {
 
     const levelDiv_row = document.createElement('div');
     levelDiv_row.classList = 'row d-felx justify-content-between';
-    
+
     const levelDiv_icon = document.createElement('div');
     levelDiv_icon.classList = 'col-auto';
     const icon = document.createElement('i');
@@ -625,15 +625,15 @@ function gameHistory_createContent(gameInfos, score1, score2) {
     mainDiv.appendChild(levelDiv_row);
   }
   document.getElementById('historyList').appendChild(mainDiv);
-  
+
   function handleDateTime() {
-    
+
     const dateTime = gameInfos.created_at.split('T');
     dateTime[1] = dateTime[1].slice(0, 8);
-    
+
     const endTime = gameInfos.updated_at.split('T');
     endTime[1] = endTime[1].slice(0, 8);
-    
+
     const startDate = new Date(gameInfos.created_at);
     const endDate = new Date(gameInfos.updated_at);
     // Soustraire la date de départ de la date de fin
@@ -643,9 +643,9 @@ function gameHistory_createContent(gameInfos, score1, score2) {
     const hours = Math.floor(differenceInSeconds / 3600);
     const minutes = Math.floor((differenceInSeconds % 3600) / 60);
     const seconds = Math.floor(differenceInSeconds % 60);
-    
+
     const elapsedTime = hours + ':' + minutes + ':' + seconds;
-    
+
     const time = {
       date: dateTime[0],
       time: dateTime[1],

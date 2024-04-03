@@ -6,6 +6,7 @@ let     onePlayer = false, twoPlayers = false, tournament = false;
 let     level;
 let     playLocal = false;
 let     playOnline = false;
+let     playTournament = false;
 let     ballLaunched = false;
 let     leftPlayerScore = 0, rightPlayerScore = 0;
 let     ballSpeedX = 0, ballSpeedY = 0;
@@ -63,7 +64,7 @@ window.addEventListener("keydown", (event) => {
             l_keyPressed = true;
             break;
     }
-   
+
 });
 
 window.addEventListener("keyup", (event) => {
@@ -88,7 +89,7 @@ window.addEventListener("keyup", (event) => {
 // Space bar
 window.addEventListener("keydown", (event) => {
     if (event.key === " ") {
-        
+
         spaceBarPressed = true;
     }
 });

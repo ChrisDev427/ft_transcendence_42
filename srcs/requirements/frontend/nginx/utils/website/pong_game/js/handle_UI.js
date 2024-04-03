@@ -1,3 +1,5 @@
+join = false;
+
 const btn = {
     easyBtn: document.getElementById("easyBtn"),
     mediumBtn: document.getElementById("mediumBtn"),
@@ -32,15 +34,23 @@ btn.createBtn.addEventListener("click", function() {
 
 btn.joinBtn.addEventListener("click", function() {
 
+    join = true;
+
     btn.joinBtn.classList.add("disabled");
     btn.joinBtn.classList.remove("btn-outline-info");
     btn.joinBtn.classList.add("btn-info");
     btn.createBtn.classList.add("disabled");
+    document.getElementById('gameModeMenu').classList.remove('hidden-element');
+    btn.onePlayerBtn.classList.add("hidden-element");
+    btn.twoPlayersBtn.classList.remove("disabled");
+    btn.tournamentBtn.classList.remove("disabled");
 
     console.log("session user join ", sessionUsername);
 
     // document.getElementById('sessions').classList.remove('hidden-element')
-    showSection('sessions');
+    // showSection('sessions');
+    // document.getElementById('tournament').classList.remove('hidden-element');
+    // showSection('tournament')
 });
 
 
@@ -58,6 +68,7 @@ btn.localBtn.addEventListener("click", function() {
 
     playLocal = true;
     playOnline = false;
+    playTournament = false;
 });
 btn.onLineBtn.addEventListener("click", function() {
 
@@ -68,9 +79,13 @@ btn.onLineBtn.addEventListener("click", function() {
     btn.onLineBtn.classList.add("btn-info");
 
     document.getElementById('onlineMenu').classList.remove('hidden-element');
+    // document.getElementById('gameModeMenu').classList.remove('hidden-element');
+    // document.getElementById('onePlayerBtn').classList.add('disabled');
     document.getElementById('chat-container_session').classList.remove('hidden-element');
+    join = false;
     playLocal = false;
     playOnline = true;
+    playTournament = false;
 });
 
 //************************************************************************************
@@ -88,7 +103,11 @@ btn.easyBtn.addEventListener("click", function() {
         btn.tournamentBtn.classList.remove("disabled");
     }
     if (playOnline) {
-        btn.createRoomBtn.classList.remove('disabled')
+        document.getElementById('gameModeMenu').classList.remove('hidden-element');
+        btn.onePlayerBtn.classList.add("hidden-element");
+        btn.twoPlayersBtn.classList.remove("disabled");
+        btn.tournamentBtn.classList.remove("disabled");
+        // btn.createRoomBtn.classList.remove('disabled');
     }
     // btn.onLineBtn.classList.remove("disabled");
     // btn.localBtn.classList.remove("disabled");
@@ -111,7 +130,11 @@ btn.mediumBtn.addEventListener("click", function() {
         btn.tournamentBtn.classList.remove("disabled");
     }
     if (playOnline) {
-        btn.createRoomBtn.classList.remove('disabled')
+        document.getElementById('gameModeMenu').classList.remove('hidden-element');
+        btn.onePlayerBtn.classList.add("hidden-element");
+        btn.twoPlayersBtn.classList.remove("disabled");
+        btn.tournamentBtn.classList.remove("disabled");
+        // btn.createRoomBtn.classList.remove('disabled');
     }
     // btn.onLineBtn.classList.remove("disabled");
     // btn.localBtn.classList.remove("disabled");
@@ -134,7 +157,11 @@ btn.hardBtn.addEventListener("click", function() {
         btn.tournamentBtn.classList.remove("disabled");
     }
     if (playOnline) {
-        btn.createRoomBtn.classList.remove('disabled')
+        document.getElementById('gameModeMenu').classList.remove('hidden-element');
+        btn.onePlayerBtn.classList.add("hidden-element");
+        btn.twoPlayersBtn.classList.remove("disabled");
+        btn.tournamentBtn.classList.remove("disabled");
+        // btn.createRoomBtn.classList.remove('disabled');
     }
     // btn.onLineBtn.classList.remove("disabled");
     // btn.localBtn.classList.remove("disabled");
@@ -172,31 +199,47 @@ btn.twoPlayersBtn.addEventListener("click", function() {
     if (playLocal) {
         create_TwoPlayers_input();
     }
-    if(playOnline) {
+    if (playOnline) {
+        btn.createRoomBtn.classList.remove('disabled');
+        if (join === true)
+            showSection('sessions');
+    }
+    // if(playOnline) {
 
-        const message = JSON.stringify({
-            messageType: 'createSession',
-            level: level,
-            // paddleHeight: paddleHeight,
+    //     const message = JSON.stringify({
+    //         messageType: 'createSession',
+    //         level: level,
+    //         // paddleHeight: paddleHeight,
 
-            // id: 123,
-            // username: sessionUsername,
-        });
-        console.log("session user create ", sessionUsername);
+    //         // id: 123,
+    //         // username: sessionUsername,
+    //     });
+    //     console.log("session user create ", sessionUsername);
         // socket.send(message);
 
-    }
+    // }
 });
 
 btn.tournamentBtn.addEventListener("click", function() {
 
+    if (join === true)
+    {
+        showSection('tournament');
+        return;
+    }
+    // if (playOnline) {
+    //     // btn.createRoomBtn.classList.remove('disabled');
+    //     tournament = true;
+    //     create_Tournament_mode();
+    //     return;
+    // }
     btn.onePlayerBtn.classList.add("disabled");
     btn.twoPlayersBtn.classList.add("disabled");
     btn.tournamentBtn.classList.add("disabled");
     btn.tournamentBtn.classList.remove("btn-outline-info");
     btn.tournamentBtn.classList.add("btn-info");
 
-    tournament = true;
+    playTournament = true;
     create_Tournament_mode();
 });
 
@@ -377,9 +420,23 @@ quitGameBtn.addEventListener("click", function() {
             document.getElementById('pong-ui').appendChild(div);
 
             confirmBtn.addEventListener('click', function() {
-                const message = JSON.stringify({ messageType: 'surrenderSession' });
-                socket.send(message);
+                if (playTournament)
+                {
+                    const message = JSON.stringify({ messageType: 'surrenderTournamentSession' });
+                    socket.send(message);
+                }
+                else
+                {
+                    const message = JSON.stringify({ messageType: 'surrenderSession' });
+                    socket.send(message);
+                }
                 start = false;
+                // if (peer){
+                //     peer.destroy();
+                // }
+                // if (peer2){
+                //     peer2.destroy();
+                // }
                 div.remove();
                 document.getElementById('quitGameBtn-div').classList.remove('hidden-element');
                 resetGameValues();

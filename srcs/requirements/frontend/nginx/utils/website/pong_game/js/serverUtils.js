@@ -1,6 +1,7 @@
 let socket;
 let chatInit = false;
 let peer, peer2;
+// let username;
 
 function createPeer(sessionId)
 {
@@ -17,6 +18,7 @@ function waitForWebSocketConnection(username) {
         if (!socket || socket.readyState !== WebSocket.OPEN)
                      socket = new WebSocket('wss://transcendence42.ddns.net:8002/ws/general/?user_username=' + username);
 
+        // username = username;
         socket.addEventListener('open', () => {
             console.log('Connected to WebSocket server');
             resolve(socket);
@@ -53,6 +55,15 @@ function waitForWebSocketConnection(username) {
         }
     });
 
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'updateTournamentSessions') {
+            console.log('Updating tournament sessions list...');
+            console.log(data.tournamentSessions);
+            updateTournamentSessionsList(data.tournamentSessions);
+        }
+    });
+
     // chat general
     socket.addEventListener('message', (event) => {
         const receivedMessage = JSON.parse(event.data);
@@ -64,7 +75,7 @@ function waitForWebSocketConnection(username) {
             messageContainer.scrollTop = messageContainer.scrollHeight;
         // }
             chatInit = true;
-        }
+        } 
     });
 
 
@@ -82,14 +93,20 @@ function waitForWebSocketConnection(username) {
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
-        console.log('data received', data);
+        // console.log('data received', data);
         if (data.messageType === 'surrenderSession') {
             start = false;
             const message = JSON.stringify({ messageType: 'endGame', leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : sessionUsername});
             socket.send(message);
+            document.getElementById('roomCreatedDiv').remove();
+            document.getElementById('containerGameMenu').classList.remove('hidden-element');
+            document.getElementById('createRoomMenu').classList.add('hidden-element');
+            navbarSwitch('on');
             showSection('main');
         }
     });
+
+
 
     // function handleKeyPress(event) {
     //     if (event.key === 'Enter') {
@@ -177,14 +194,36 @@ function waitForWebSocketConnection(username) {
 
         }
     });
+    socket.addEventListener('message', (event) => {
+        let data = JSON.parse(event.data);
+        if (data.messageType === 'newPeerTurn') {
+            // data.tournamentData.players = data.tournamentData.players;
+            showSection('playPong');
+            console.log('newPeerTurn', data);
+            ManageOnlineTournament(data.tournamentData);
+        // 	for (let i = currentMatch - nbMatchinTurn; i < currentMatch - nbMatchinTurn + nbMatchinTurn ; i++) {
+        // 		console.log('Match number :', i);
+        // 		console.log('Player 1 :', matchs[i].player1);
+        // 		console.log('Player 2 :', matchs[i].player2);
+        // 		console.log('username :', sessionUsername);
+        // 		if (matchs[i].player1 === sessionUsername)
+        // 			create_tournament_duel(data.tournamentData, matchs[i]);
+        // 		else if (matchs[i].player2 === sessionUsername)
+        // 			join_tournament_duel(data.tournamentData, matchs[i]);
+        // 	}
+        // 	console.log('Countdown completed!');
+        // });
+
+    }
+});
+
+
 
 })
 .catch((error) => {
     console.error('Une erreur s\'est produite lors de la connexion WebSocket:', error);
 });
 }
-
-
 
 function sendMessageSession() {
     const messageInput = document.getElementById('message-input_session');
@@ -199,8 +238,6 @@ function sendMessageSession() {
         }
     }
 }
-
-
 
 function updateSessionsList(sessions) {
 
@@ -280,9 +317,9 @@ function  sessions_createContent(session, index) {
         console.log("session :", session);
         joinSession(session, index);
     })
-
-
 }
+
+
 
 //start game for joiner
 function joinSession(session, index) {
@@ -301,6 +338,7 @@ function joinSession(session, index) {
 
                 peer2.on('signal', (dataPeer) => {
                     // console.log('Peer2 signal:', dataPeer);
+                    console.log('sessionID:', session.sessionId);
                     socket.send(JSON.stringify({ messageType: 'playerPeer', sessionId: session.sessionId, playerPeer: dataPeer }));
                 });
 
