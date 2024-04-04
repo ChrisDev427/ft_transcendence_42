@@ -327,6 +327,7 @@ function tournamentRun(peer, tournamentData, match) {
                 winner = leftPlayerName;
                 const message = JSON.stringify({messageType : "endMatchGame", leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , match : match, winner : winner, tournamentData : tournamentData});
                 socket.send(message);
+
             }
             else if (rightPlayerScore >= 10){
                 const quitButton = document.getElementById("quitGameBtn");
@@ -336,6 +337,9 @@ function tournamentRun(peer, tournamentData, match) {
                 socket.send(message);
             }
             peer.destroy();
+            startCountdown(500).then(() => {
+                window.location.href = domainPath;
+            });
             // startCountdown(500).then(() => {
             //     window.location.href = domainPath;
             // });
@@ -413,7 +417,7 @@ function tournamentRun(peer, tournamentData, match) {
         // lastUpdateSentTime = currentTime;
         // }
         // Appeler la fonction update à la prochaine frame
-    requestAnimationFrame(() => tournamentRun(peer));
+    requestAnimationFrame(() => tournamentRun(peer, tournamentData, match));
 
 }
 

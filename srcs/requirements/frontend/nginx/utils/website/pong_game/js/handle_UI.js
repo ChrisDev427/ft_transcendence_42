@@ -239,7 +239,6 @@ btn.tournamentBtn.addEventListener("click", function() {
     btn.tournamentBtn.classList.remove("btn-outline-info");
     btn.tournamentBtn.classList.add("btn-info");
 
-    playTournament = true;
     create_Tournament_mode();
 });
 
@@ -431,26 +430,22 @@ quitGameBtn.addEventListener("click", function() {
                     socket.send(message);
                 }
                 start = false;
-                // if (peer){
-                //     peer.destroy();
-                // }
-                // if (peer2){
-                //     peer2.destroy();
-                // }
-                div.remove();
-                document.getElementById('quitGameBtn-div').classList.remove('hidden-element');
-                resetGameValues();
-                navbarSwitch('on');
-                showSection('main');
+                // div.remove();
+                // document.getElementById('quitGameBtn-div').classList.remove('hidden-element');
+                // resetGameValues();
+                // navbarSwitch('on');
+                // showSection('main');
+                window.location.href = domainPath;
             });
             cancelBtn.addEventListener('click', function() {
                 div.remove();
                 document.getElementById('quitGameBtn-div').classList.remove('hidden-element');
             });
         } else {
-            resetGameValues();
-            navbarSwitch('on');
-            showSection('main');
+            window.location.href = domainPath;
+            // resetGameValues();
+            // navbarSwitch('on');
+            // showSection('main');
         }
     }
 });

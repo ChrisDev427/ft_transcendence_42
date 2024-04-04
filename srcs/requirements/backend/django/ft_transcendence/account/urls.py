@@ -21,5 +21,5 @@ urlpatterns = [
 	path('mobile/verify/', views.VerifyMobileView.as_view() , name='mobile_verify'),
 	path('o/token/', views.oauth_login.as_view() , name='oauth_callback'),
 	path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-	path('update_activity/', views.ActivityCheckView.as_view(), name='activity'),
+	# path('update_activity/', views.ActivityCheckView.as_view(), name='activity'),
 ]

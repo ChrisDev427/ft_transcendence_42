@@ -73,15 +73,24 @@ function tournament_dashboard(tournamentData)
 						td.textContent = data.tournamentData.matchs[i].matchNumber;
 					}
 					else if( j === 1 ) {
-						td.classList = 'text-secondary fw-bold border-end';
+						if (data.tournamentData.matchs[i].player1 === sessionUsername)
+							td.classList = 'text-info fw-bold border-end';
+						else
+							td.classList = 'text-secondary fw-bold border-end';
 						td.textContent = data.tournamentData.matchs[i].player1;
 					}
 					else if(j === 2) {
-						td.classList = 'text-secondary fw-bold border-end';
+						if (data.tournamentData.matchs[i].player2 === sessionUsername)
+							td.classList = 'text-info fw-bold border-end';
+						else
+							td.classList = 'text-secondary fw-bold border-end';
 						td.textContent = data.tournamentData.matchs[i].player2;
 					}
 					else if(j === 3) {
-						td.classList = 'text-secondary fw-lighter fst-italic border-end';
+						if (data.tournamentData.matchs[i].score === "not played yet")
+							td.classList = 'text-secondary fw-lighter fst-italic border-end';
+						else
+							td.classList = 'text-info fw-lighter fst-italic border-end';
 						td.textContent = data.tournamentData.matchs[i].score;
 					}
 					tr.appendChild(td);
@@ -98,6 +107,7 @@ function tournament_dashboard(tournamentData)
 			let match = data.match;
 			let tr = document.getElementById('match ' + data.match.matchNumber);
 			let td = tr.getElementsByTagName('td')[3];
+			td.classList = 'text-info fw-lighter fst-italic border-end';
 			td.textContent = match.score;
 		}
 	});
@@ -105,13 +115,17 @@ function tournament_dashboard(tournamentData)
 	socket.addEventListener('message', (event) => {
 		let data = JSON.parse(event.data);
 		if (data.messageType === 'updateMatchsInTurn') {
-			console.log('updateMatchsInTurn' , data.match);
+			// console.log('updateMatchsInTurn' , data.match);
 			for (let i = 0; i < data.tournamentData.matchs.length; i++) {
 				let match = data.tournamentData.matchs[i];
 				let tr = document.getElementById('match ' + match.matchNumber);
 				let td = tr.getElementsByTagName('td')[1];
+				if (match.player1 === sessionUsername)
+					td.classList = 'text-info fw-bold border-end';
 				td.textContent = match.player1;
 				td = tr.getElementsByTagName('td')[2];
+				if (match.player2 === sessionUsername)
+					td.classList = 'text-info fw-bold border-end';
 				td.textContent = match.player2;
 			}
 		}
@@ -168,9 +182,9 @@ function ManageOnlineTournament(tournamentData) {
 
 			let currentMatch = 0;
 			let matchPassed = 0;
-			for (let i = 0; i < tournamentData.matchs.length; i++) {
-				if (tournamentData.matchs[i].score === "not played yet")
-					break;
+			for (let i = 0; i < data.tournamentData.matchs.length; i++) {
+				if (data.tournamentData.matchs[i].score === "not played yet")
+				break;
 				currentMatch++;
 				matchPassed++;
 			}
@@ -292,6 +306,8 @@ function create_tournament_duel(tournamentData, match) {
     		    if(start){
     		        return
     		    }
+				playTournament = true;
+				playOnline = true;
     		    start = true;
     		    setPlayerNameToPrint(leftPlayerName, rightPlayerName);
     		    // setHandToStart();
@@ -338,6 +354,7 @@ function create_tournament_duel(tournamentData, match) {
 
 				// socket.send(JSON.stringify({ messageType: 'newPeerTurn', tournamentData: tournamentData}));
 				// showSection('gameMenu');
+				alert("Opponent has surrendered! You won the match!");
 				window.location.href = domainPath;
 			}
 	}
@@ -380,7 +397,6 @@ function join_tournament_duel(tournamentData, match) {
     	    paddleHeight = data.tournamentData.paddleHeight
     	    playOnline = true;
 			playTournament = true;
-    	    twoPlayers = true;
     	    start = true
     	    setPlayerNameToPrint(leftPlayerName, rightPlayerName);
     	    // printConsoleInfos();
@@ -429,6 +445,7 @@ function join_tournament_duel(tournamentData, match) {
 				// document.getElementById('gameDiv').classList.add('hidden-element');
 				// socket.send(JSON.stringify({ messag	eType: 'newPeerTurn', tournamentData: tournamentData}));
 				// showSection('gameMenu');
+				alert("Opponent has surrendered! You won the match!");
 				window.location.href = domainPath;
 			}
 	}

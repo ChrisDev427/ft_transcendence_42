@@ -21,7 +21,7 @@ function chatGeneral_createContent(username, message, time, messageType) {
     small.textContent = message;
 
     if (messageType !== 'classic') {
-    
+
         const div = document.createElement('div');
         if (messageType === 'online') {
             if (username === sessionUsername) {
@@ -34,6 +34,10 @@ function chatGeneral_createContent(username, message, time, messageType) {
         else if (messageType === 'offline'){
             small.textContent = username + ': is disconnected';
             div.classList = ' fw-bold fst-italic text-danger text-center fade-in mx-auto';
+        }
+        else if (messageType === 'tournament'){
+            small.textContent = username + ': a tournament match is starting';
+            div.classList = ' fw-bold fst-italic text-dark text-center fade-in mx-auto';
         }
         div.style.maxWidth = '210px';
         div.appendChild(small);

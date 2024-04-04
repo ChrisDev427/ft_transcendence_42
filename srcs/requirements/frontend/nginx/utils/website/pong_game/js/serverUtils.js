@@ -67,7 +67,7 @@ function waitForWebSocketConnection(username) {
     // chat general
     socket.addEventListener('message', (event) => {
         const receivedMessage = JSON.parse(event.data);
-        if(receivedMessage.messageType == "classic" || receivedMessage.messageType == "online" || receivedMessage.messageType == "offline"){
+        if(receivedMessage.messageType == "classic" || receivedMessage.messageType == "online" || receivedMessage.messageType == "offline" || receivedMessage.messageType == "tournament"){
 
             chatGeneral_createContent(receivedMessage.owner, receivedMessage.message, receivedMessage.time, receivedMessage.messageType);
             // });
@@ -75,7 +75,7 @@ function waitForWebSocketConnection(username) {
             messageContainer.scrollTop = messageContainer.scrollHeight;
         // }
             chatInit = true;
-        } 
+        }
     });
 
 

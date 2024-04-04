@@ -10,6 +10,9 @@ from game import serializers
 from account.models import UserProfile
 from asgiref.sync import sync_to_async
 from django.core.serializers import serialize
+import asyncio
+import time
+
 import pytz
 fuseau = pytz.timezone('Europe/Paris')
 
@@ -71,7 +74,6 @@ class Session:
             "level": self.level,
             "players": self.players,
             "paddleHeight": self.paddleHeight,
-            "turn": self.turn
         }
 
     def add_player(self, player):
@@ -113,10 +115,47 @@ TournamentSessions = []
 
 waitingPlayers = []
 
-userSockets = {}
+# Définir un délai de 5 secondes
+DISCONNECTION_DELAY = 5
+
+# Dictionnaire pour suivre les déconnexions des joueurs
+disconnected_players = {}
+
+# Fonction pour gérer la déconnexion d'un joueur
+async def handle_player_disconnect(username):
+    disconnected_players[username] = asyncio.get_event_loop().time()
+
+# Fonction pour vérifier périodiquement les joueurs déconnectés
+async def check_disconnected_players(username, channel_layer, room_group_name):
+    print("check_disconnected_players")
+    await asyncio.sleep(DISCONNECTION_DELAY)
+    if username in disconnected_players:
+        # Le joueur est resté déconnecté pendant le délai, retirer du tournoi
+        del disconnected_players[username]
+        # Envoyer un signal à l'autre joueur pour indiquer qu'il a abandonné
+        await send_surrender_signal(room_group_name, channel_layer, username)
+        user_profile = await get_user_profile(username)
+        await update_status(user_profile, "offline")
+
+async def send_surrender_signal(room_group_name, channel_layer, username):
+    # Envoyer un signal à l'autre joueur pour indiquer qu'il a abandonné
+    print("send_surrender_signal")
+    tournament = search_player_in_tournament(username)
+    messageType = "surrenderTournamentSession"
+    if tournament:
+        # print("tournament players", tournament.players)
+        tournament.playersInGame.remove(username)
+        tournament.players.remove(username)
+        #print("tournament players after", tournament.players)
+        players = tournament.players
+        await channel_layer.group_send(
+            room_group_name, { "type": "tournament.surrender" ,"messageType": messageType, "tournament": tournament.to_json(), "username" : username, "players": players}
+    )
+
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
+
     async def connect(self):
 
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
@@ -128,7 +167,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Join room group
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
+        # Appeler la fonction de vérification des joueurs déconnectés en tant que tâche asynchrone
+        # asyncio.create_task(check_disconnected_players())
+        user_profile = await get_user_profile(self.user_username)
+        await update_status(user_profile, "online")
 
+        if self.user_username in disconnected_players:
+           del disconnected_players[self.user_username]
 
         remove_player_sessions(self.user_username)
 
@@ -138,6 +183,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_send(
                 self.room_group_name, { "type": "send.newPeerTurn" ,"messageType": "newPeerTurn", "tournament": tournament.to_json(), "playerToSend" : self.user_username}
             )
+
+
 
         # remove_player_tournament(self.user_username)
 
@@ -153,8 +200,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
 
         # Leave room group
-        if (self.user_username in waitingPlayers):
-            waitingPlayers.remove(self.user_username)
+        # if (self.user_username in waitingPlayers):
+        #     waitingPlayers.remove(self.user_username)
+
+        await handle_player_disconnect(self.user_username)
+        asyncio.create_task(check_disconnected_players(self.user_username, self.channel_layer ,self.room_group_name))
+
+        # await check_disconnected_players(self.user_username, self.room_group_name)
 
         print(self.user_username, " c est deco")
         # fuseau = pytz.timezone("Europe/Paris")
@@ -162,6 +214,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name, {"type": "chat.disconnect", "user_username": self.user_username, "time": datetime.now().astimezone(fuseau).strftime("%H:%M:%S")}
         )
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
 
     # Receive message from WebSocket
     async def receive(self, text_data):
@@ -191,7 +244,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         if (messageType == 'createTournamentSession'):
             if (search_player_in_game(self.user_username)):
-                print(self.user_username, "deja dans une room")
+                # print(self.user_username, "deja dans une room")
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {
@@ -235,7 +288,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             tournament = find_tournament_by_id(data["tournamentId"])
             players = tournament.players
             if (search_player_in_game(self.user_username) or search_player_in_tournament(self.user_username)):
-                print(self.user_username, "deja dans une room ou tournoi")
+                # print(self.user_username, "deja dans une room ou tournoi")
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {
@@ -307,18 +360,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
             players = tournamentData['players']
 
             waitingPlayers.append(self.user_username)
-            print("Players", players)
-            print("waitingPlayers", waitingPlayers)
+            # print("Players", players)
+            # print("waitingPlayers", waitingPlayers)
             all_players_found = all(player in waitingPlayers for player in players)
             tournament = find_tournament_by_id(tournamentData["tournamentId"])
             # print("all_players_found", all_players_found)
             if all_players_found:
-                print("all players found")
+                # print("all players found")
                 tournament.turn += 1
                 for player in players:
                     waitingPlayers.remove(player)
 
                 # message pour avertir dans le chat
+                # await self.channel_layer.group_send(
+                # self.room_group_name, {"type": "chat.message" ,"messageType": "tournament", "message": "", "owner": self.user_username, "time": datetime.now().astimezone(fuseau).strftime("%H:%M:%S")}
+                # )
+
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {
@@ -347,11 +404,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
             if (data["leftPlayerScore"] == 10):
-                tournament.playersInGame.remove(data["player2"])
-                tournament.players.remove(data["player2"])
+                tournament.playersInGame.remove(match["player2"])
+                tournament.players.remove(match["player2"])
             elif (data["rightPlayerScore"] == 10):
-                tournament.playersInGame.remove(data["player1"])
-                tournament.players.remove(data["player1"])
+                tournament.playersInGame.remove(match["player1"])
+                tournament.players.remove(match["player1"])
             tournament.playersInGame.remove(data["winner"])
 
             # if (len(tournament.players) == 1):
@@ -404,7 +461,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
-                    "type": "send.matchInTurn",
+                    "type": "send.matchsInTurn",
                     "messageType": "updateMatchsInTurn",
                     "tournamentData": tournament.to_json(),
                 }
@@ -595,7 +652,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def send_getMatchmaking(self, event):
         message_type = event.get("messageType")
         # print("tournamentData", tournamentData)
-        user_socket = get_user_socket(self, self.user_username)
 
         tournament = search_player_in_tournament(self.user_username)
 
@@ -621,19 +677,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }))
 
 
-    async def send_matchInTurn(self, event):
+    async def send_matchsInTurn(self, event):
         message_type = event.get("messageType")
         tournamentData = event.get("tournamentData")
         players = tournamentData["players"]
-
-        tournament = find_tournament_by_id(tournamentData["tournamentId"])
 
         for player in players:
             if player == self.user_username:
                 # print("send_newTurn")
                 await self.send(text_data=json.dumps({
                     'messageType': message_type,
-                    'tournamentData': tournament.to_json(),
+                    'tournamentData': tournamentData,
             }))
 
 
@@ -662,6 +716,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'messageType': message_type,
                     'tournamentData': tournament.to_json()
                 }))
+                await self.send(text_data=json.dumps({"type": "chat.message" ,"messageType": "tournament", "message": "", "owner": self.user_username, "time": datetime.now().astimezone(fuseau).strftime("%H:%M:%S")}))
 
     async def session_surrender(self, event):
         messageType = event.get("messageType")
@@ -914,8 +969,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
         )
 
-def get_user_socket(self, username):
-    return userSockets.get(username)
+
+
+
 
 def search_player_in_tournament(username):
     for tournament in TournamentSessions:
@@ -923,6 +979,13 @@ def search_player_in_tournament(username):
             if player == username:
                 return tournament
     return False
+
+def search_player_in_tournament_match(username, tournament):
+    for match in tournament.matchs:
+        if match["player1"] == username or match["player2"] == username:
+            return match
+    return False
+
 
 def find_tournament_by_id(tournament_id):
     for tournament in TournamentSessions:
@@ -976,6 +1039,14 @@ def convert_tournament_json():
         tournament_json.append(tournament.to_json())
     tournament_json2 = json.dumps(tournament_json)
     return(tournament_json2)
+
+@sync_to_async
+def update_status(user_profile, status):
+    if status == "offline":
+        user_profile.is_connected = False
+    elif status == "online":
+        user_profile.is_connected = True
+    user_profile.save()
 
 @sync_to_async
 def get_user_profile(username):

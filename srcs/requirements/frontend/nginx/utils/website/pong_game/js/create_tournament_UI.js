@@ -157,7 +157,6 @@ function waiting_tournament(tournamentData) {
 					matchMakingLogs();
 					hideCurrentSection();
 					showSection('playPong');
-					console.log("je passe ici");
 					ManageOnlineTournament(tournamentData);
 					reset_UI();
 					// removeInput();

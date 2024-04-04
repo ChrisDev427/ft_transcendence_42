@@ -489,24 +489,24 @@ function checkInput_modifyInfos() {
     return true;
 }
 
-function sendHeartbeat_API() {
-    fetch(domainPath + '/api/account/update_activity/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-        },
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erreur lors de la requête au serveur');
-        }
-        return response.json();
-    })
-    .catch(error => {
-        console.error('Erreur :', error);
-    });
-}
+// function sendHeartbeat_API() {
+//     fetch(domainPath + '/api/account/update_activity/', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+//         },
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('Erreur lors de la requête au serveur');
+//         }
+//         return response.json();
+//     })
+//     .catch(error => {
+//         console.error('Erreur :', error);
+//     });
+// }
 
-// Appeler la fonction toutes les 20 secondes
-setInterval(sendHeartbeat_API, 20000);
+// // Appeler la fonction toutes les 20 secondes
+// setInterval(sendHeartbeat_API, 20000);
