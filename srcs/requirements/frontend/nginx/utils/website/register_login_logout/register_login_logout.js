@@ -51,6 +51,7 @@ function requestLogin(formData) {
     if (response.status === 200) {
       // Authentification réussie
       console.log('login success');
+      connected = true;
       alert_login_success();
       return response.json();
     } else {

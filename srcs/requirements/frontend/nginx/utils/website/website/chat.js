@@ -387,62 +387,99 @@ function inviteFriendToPlayFromChat_createContent(username) {
 
 function inviteFriendCreateSession_createContent(username, level) {
 
-    const mainDiv = document.createElement('div');
-    mainDiv.id = 'inviteToPlayDiv';
-    mainDiv.classList = 'col-auto p-3 bg-white  rounded-4 fade-in';
-    mainDiv.style.height = '300px';
+    
+    peer = new SimplePeer({initiator: true})
+    peer.once('signal', (dataPeer) => {
+        console.log('PeerCreator signal:', dataPeer);
+        socket.send(JSON.stringify({ messageType: 'inviteSession', level:level , peerId: dataPeer, paddleHeight: paddleHeight, usernameInvited: username}));
+    });
 
-    const secDiv = document.createElement('div');
-    secDiv.id = 'waitingDiv';
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'confirmInvite') {
+            console.log("confirmInvite")
+            if (data.confirme == "true"){
+                const mainDiv = document.createElement('div');
+                mainDiv.id = 'inviteToPlayDiv';
+                mainDiv.classList = 'col-auto p-3 bg-white  rounded-4 fade-in';
+                mainDiv.style.height = '300px';
 
-    const title = document.createElement('h5');
-    title.classList = 'fs-3 pt-5 fw-bold text-info text-center';
-    title.textContent = 'Invitation sent !';
-    secDiv.appendChild(title);
+                const secDiv = document.createElement('div');
+                secDiv.id = 'waitingDiv';
 
-    const text = document.createElement('h5');
-    text.classList = 'fs-5 fw-bold text-secondary text-center';
-    text.textContent = 'Please wait for response';
-    secDiv.appendChild(text);
+                const title = document.createElement('h5');
+                title.classList = 'fs-3 pt-5 fw-bold text-info text-center';
+                title.textContent = 'Invitation sent !';
+                secDiv.appendChild(title);
 
-    const spinnersDiv = document.createElement('div');
-    spinnersDiv.classList = 'col mt-3 d-flex justify-content-center';
-    for (let i = 0; i < 3; i++) {
-        const div = document.createElement('div');
-        div.role = 'status';
-        if (i === 1) {
-            div.classList = 'spinner-grow spinner-grow-sm text-info mx-2';
-        } else {
-            div.classList = 'spinner-grow spinner-grow-sm text-info';
+                const text = document.createElement('h5');
+                text.classList = 'fs-5 fw-bold text-secondary text-center';
+                text.textContent = 'Please wait for response';
+                secDiv.appendChild(text);
+
+                const spinnersDiv = document.createElement('div');
+                spinnersDiv.classList = 'col mt-3 d-flex justify-content-center';
+                for (let i = 0; i < 3; i++) {
+                    const div = document.createElement('div');
+                    div.role = 'status';
+                    if (i === 1) {
+                        div.classList = 'spinner-grow spinner-grow-sm text-info mx-2';
+                    } else {
+                        div.classList = 'spinner-grow spinner-grow-sm text-info';
+                    }
+                    spinnersDiv.appendChild(div);
+                }
+                secDiv.appendChild(spinnersDiv);
+
+                const row = document.createElement('div');
+                row.classList = 'row';
+                const col = document.createElement('div');
+                col.classList = 'col-auto mx-auto mt-3';
+                const cancelBtn = document.createElement('h5');
+                cancelBtn.id = 'cancelInviteToPlayBtn';
+                cancelBtn.classList = 'rounded shadow p-2 text-warning text-center fs-5';
+                cancelBtn.role = 'button';
+                cancelBtn.textContent = 'Cancel';
+                col.appendChild(cancelBtn);
+                row.appendChild(col);
+                secDiv.appendChild(row);
+                mainDiv.appendChild(secDiv);
+
+                document.getElementById('chat-area').appendChild(mainDiv);
+
+                cancelInviteToPlayBtn.addEventListener('click', function() {
+                    mainDiv.remove();
+                    document.getElementById('chat-messages-general').classList.remove('unvisible');
+                    document.getElementById('mainChat-form').classList.remove('unvisible');
+                    const messageContainer = document.getElementById('chat-area');
+                    messageContainer.scrollTop = messageContainer.scrollHeight;
+
+                    const message = JSON.stringify({ messageType: 'quitSession' });
+                    socket.send(message);
+                    peer.close;
+                    location.reload();
+                })
+            }
+            else{
+                document.getElementById('chat-messages-general').classList.remove('unvisible');
+                document.getElementById('mainChat-form').classList.remove('unvisible');
+                console.log("Tu es deja dans une room");
+                peer.close;
+                
+            }
         }
-        spinnersDiv.appendChild(div);
-    }
-    secDiv.appendChild(spinnersDiv);
+    });
 
-    const row = document.createElement('div');
-    row.classList = 'row';
-    const col = document.createElement('div');
-    col.classList = 'col-auto mx-auto mt-3';
-    const cancelBtn = document.createElement('h5');
-    cancelBtn.id = 'cancelInviteToPlayBtn';
-    cancelBtn.classList = 'rounded shadow p-2 text-warning text-center fs-5';
-    cancelBtn.role = 'button';
-    cancelBtn.textContent = 'Cancel';
-    col.appendChild(cancelBtn);
-    row.appendChild(col);
-    secDiv.appendChild(row);
-    mainDiv.appendChild(secDiv);
+    // console.log('Create game : ' + sessionUsername + ' VS ' + username + ' level : ' + level);
 
-    document.getElementById('chat-area').appendChild(mainDiv);
 
-    cancelInviteToPlayBtn.addEventListener('click', function() {
-        mainDiv.remove();
-        document.getElementById('chat-messages-general').classList.remove('unvisible');
-        document.getElementById('mainChat-form').classList.remove('unvisible');
-        const messageContainer = document.getElementById('chat-area');
-        messageContainer.scrollTop = messageContainer.scrollHeight;
-    })
+    // const message = JSON.stringify({
+    //     messageType: 'inviteSession',
+    //     sessionUsername: sessionUsername,
+    //     username: username,
+    //     level: level
+    // });
 
-    console.log('Create game : ' + sessionUsername + ' VS ' + username + ' level : ' + level);
-    // socket.send(JSON.stringify({ action: 'createSession' }));
+    // socket.send(message);
+
 }

@@ -56,9 +56,13 @@ function initDashboard(data) {
   document.getElementById('defeatsNumberDash').textContent = data.lose;
   document.getElementById('playedNumberDash').textContent = data.games_id.length;
   if (data.games_id.length === 0) {
-    document.getElementById('historyTextInfo').classList.remove('hidden-element');
+    document.getElementById('messageGameHistory').classList.remove('hidden-element');
+  } else {
+    document.getElementById('messageGameHistory').classList.add('hidden-element');
+    displaySpinner_dash('gameHistory-cardBody');
+    getGamesInfos(data.games_id);
   }
-  getGamesInfos(data.games_id);
+  
   setPieChart(data.win, data.lose);
   getAvatar(data.user.username)
   .then(imageURL => {

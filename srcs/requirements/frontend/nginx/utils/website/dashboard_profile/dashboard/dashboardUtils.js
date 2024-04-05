@@ -367,6 +367,7 @@ async function getGamesInfos(games) {
   let pointGained = 0;
   let pointLost = 0;
   verifyToken();
+  // displaySpinner_dash('historyList');
 
   try {
     for (let i = 0; i < games.length; i++) {
@@ -407,6 +408,8 @@ async function getGamesInfos(games) {
     }
     document.getElementById('pointGainedNumberDash').textContent = pointGained;
     document.getElementById('pointLostNumberDash').textContent = pointLost;
+  document.getElementById('spinner' + 'gameHistory-cardBody').remove();
+
     document.getElementById('historyList').classList.remove('hidden-element');
   } catch (error) {
     console.error('Erreur lors de la récupération des games', error);

@@ -30,6 +30,16 @@ btn.createBtn.addEventListener("click", function() {
     document.getElementById('createRoomMenu').classList.remove('hidden-element');
     document.getElementById('dificultyMenu').classList.remove('hidden-element');
 
+    // // btn.createRoomBtn.addEventListener("click", createRoomButtonClickHandler);
+    // const createRoomBtn = document.getElementById("createRoomBtn");
+    // createRoomBtn.addEventListener('click', () => {
+
+    //     create_room();
+    // });
+
+    // createRoomBtn.removeEventListener("click", () => {});
+
+
 });
 
 btn.joinBtn.addEventListener("click", function() {
@@ -45,12 +55,8 @@ btn.joinBtn.addEventListener("click", function() {
     btn.twoPlayersBtn.classList.remove("disabled");
     btn.tournamentBtn.classList.remove("disabled");
 
-    console.log("session user join ", sessionUsername);
-
-    // document.getElementById('sessions').classList.remove('hidden-element')
-    // showSection('sessions');
-    // document.getElementById('tournament').classList.remove('hidden-element');
-    // showSection('tournament')
+    showSection('sessions');
+    reset_UI();
 });
 
 
@@ -72,20 +78,52 @@ btn.localBtn.addEventListener("click", function() {
 });
 btn.onLineBtn.addEventListener("click", function() {
 
-    btn.localBtn.classList.add("disabled");
+    if (connected) {
 
-    btn.onLineBtn.classList.add("disabled");
-    btn.onLineBtn.classList.remove("btn-outline-info");
-    btn.onLineBtn.classList.add("btn-info");
+        btn.localBtn.classList.add("disabled");
+        btn.onLineBtn.classList.add("disabled");
+        btn.onLineBtn.classList.remove("btn-outline-info");
+        btn.onLineBtn.classList.add("btn-info");
 
-    document.getElementById('onlineMenu').classList.remove('hidden-element');
-    // document.getElementById('gameModeMenu').classList.remove('hidden-element');
-    // document.getElementById('onePlayerBtn').classList.add('disabled');
-    document.getElementById('chat-container_session').classList.remove('hidden-element');
-    join = false;
-    playLocal = false;
-    playOnline = true;
-    playTournament = false;
+        document.getElementById('onlineMenu').classList.remove('hidden-element');
+        document.getElementById('chat-container_session').classList.remove('hidden-element');
+        playLocal = false;
+        playOnline = true;
+
+
+        join = false;
+        playTournament = false;
+        } else {
+
+        navbarSwitch('off');
+        document.getElementById('containerGameMenu').querySelectorAll('button').forEach((element) => {
+            element.disabled = true;
+        });
+
+        const div = document.createElement('div');
+        div.classList = 'w-75 mx-auto alert alert-danger alert-dismissible fade show text-center text-danger shadow ';
+        div.style.maxWidth= '350px';
+        div.role = 'alert';
+        div.id = 'alert';
+        div.textContent = 'You must be logged to play online !';
+
+        const button = document.createElement('button');
+        button.classList = 'btn-close';
+        button.id = 'alertBtn';
+        button.setAttribute('data-bs-dismiss', 'alert');
+        button.setAttribute('aria-label', 'Close');
+        div.appendChild(button);
+
+        document.getElementById('containerGameMenu').appendChild(div);
+
+        button.addEventListener("click", function() {
+            div.remove();
+            navbarSwitch('on');
+            document.getElementById('containerGameMenu').querySelectorAll('button').forEach((element) => {
+                element.disabled = false;
+            });
+        });
+    }
 });
 
 //************************************************************************************
@@ -250,6 +288,7 @@ btn.createRoomBtn.addEventListener("click", function() {
 
 
 
+
 function initPlayBtn() {
     const playBtn = document.getElementById("playBtn");
     playBtn.addEventListener("click", function() {
@@ -262,8 +301,8 @@ function initPlayBtn() {
                 alert_message('Player name missing !');
                 return;
             }
-            leftPlayerName = playerName.value;
-            rightPlayerName = "cpu";
+            leftPlayerName = "cpu";
+            rightPlayerName = playerName.value;
         }
 
         else if(twoPlayers) {
@@ -316,11 +355,7 @@ function initPlayBtn() {
         reset_UI();
         removeInput();
         navbarSwitch('off');
-        if (onePlayer) {
-            iaRun();
-        }
-        else
-            localRun();
+        localRun();
 
     });
 }
@@ -430,11 +465,12 @@ quitGameBtn.addEventListener("click", function() {
                     socket.send(message);
                 }
                 start = false;
-                // div.remove();
-                // document.getElementById('quitGameBtn-div').classList.remove('hidden-element');
+                div.remove();
+                document.getElementById('quitGameBtn-div').classList.remove('hidden-element');
                 // resetGameValues();
                 // navbarSwitch('on');
                 // showSection('main');
+                // location.reload();
                 window.location.href = domainPath;
             });
             cancelBtn.addEventListener('click', function() {
@@ -442,10 +478,11 @@ quitGameBtn.addEventListener("click", function() {
                 document.getElementById('quitGameBtn-div').classList.remove('hidden-element');
             });
         } else {
-            window.location.href = domainPath;
             // resetGameValues();
             // navbarSwitch('on');
             // showSection('main');
+            // location.reload();
+            window.location.href = domainPath;
         }
     }
 });

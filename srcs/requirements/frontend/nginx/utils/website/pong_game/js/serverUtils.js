@@ -98,12 +98,40 @@ function waitForWebSocketConnection(username) {
             start = false;
             const message = JSON.stringify({ messageType: 'endGame', leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : sessionUsername});
             socket.send(message);
-            document.getElementById('roomCreatedDiv').remove();
-            document.getElementById('containerGameMenu').classList.remove('hidden-element');
-            document.getElementById('createRoomMenu').classList.add('hidden-element');
-            navbarSwitch('on');
-            showSection('main');
+
+            if (leftPlayerName !== sessionUsername) {
+                surrenderMessage_createContent(leftPlayerName)
+            } else {
+                surrenderMessage_createContent(rightPlayerName)
+            }
+
+            function surrenderMessage_createContent(surrenderPlayerName) {
+
+                document.getElementById('gameDiv').classList.add('hidden-element');
+                const div = document.createElement('div');
+                div.classList = 'container p-3 mt-5';
+                const line_1 = document.createElement('h5');
+                line_1.classList = 'display-3 fw-bold cl-green text-center';
+                line_1.textContent = surrenderPlayerName + ' left the game';
+                const line_2 = document.createElement('h5');
+                line_2.classList = 'display-5 fw-bold cl-green text-center';
+                line_2.textContent = 'You won by forfeit !';
+                div.appendChild(line_1);
+                div.appendChild(line_2);
+                document.getElementById('playPong').appendChild(div);
+            }
+
+            setTimeout(function() {
+                window.location.href = domainPath;
+            }, 3000);
         }
+    });
+
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'inviteSession')
+            console.log(data.session);
+
     });
 
 
@@ -251,6 +279,9 @@ function sendMessageSession() {
     }
 }
 
+
+
+
 function updateSessionsList(sessions) {
 
     let index = 1;
@@ -267,7 +298,8 @@ function updateSessionsList(sessions) {
     }
 
     sessions.forEach(session => {
-        if (session.players.length == 1) {
+        // console.log("session.is_private", session.is_private);
+        if (session.players.length == 1 && session.isPrivate == "false") {
             sessions_createContent(session, index);
             index++;
         }
@@ -330,6 +362,7 @@ function  sessions_createContent(session, index) {
         joinSession(session, index);
     })
 }
+
 
 
 

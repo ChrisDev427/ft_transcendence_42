@@ -8,9 +8,6 @@ from rest_framework.permissions import IsAdminUser
 from django.shortcuts import get_object_or_404
 from account.models import UserProfile
 from .models import Game
-import os
-from django.http import JsonResponse, HttpResponse, FileResponse, Http404
-from django.views.decorators.csrf import csrf_exempt
 
 class GameView(APIView):
 
@@ -41,7 +38,7 @@ class GameView(APIView):
 				try:
 					user2 = UserProfile.objects.get(user__username=player_two)
 				except UserProfile.DoesNotExist:
-					return Response("user does not exist", status=status.HTTP_400_BAD_REQUEST)
+					return Response("user does not exist", status=status.HTTP_400_BAD_REQUEST) 
 				existing_game = Game.objects.filter(player_one=user1, player_two=user2, winner=None)
 				if existing_game:
 						return Response("game already exist", status=status.HTTP_400_BAD_REQUEST)
@@ -147,43 +144,3 @@ class GameDetailView(APIView):
 			user1.save()
 			return Response(serializer.data)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@csrf_exempt
-def modele_acces(request):
-
-    level = str(request).split('/')[-2]
-    if request.method == 'POST':
-        # Parcourez tous les fichiers reçus et sauvegardez-les
-        for filename, file in request.FILES.items():
-            # Construisez un chemin pour sauvegarder le fichier
-            # Assurez-vous que le répertoire de destination existe
-            chemin_destination = f'{"game/ia/models/" + level + "/" + filename}'
-
-            # Sauvegarder le fichier
-            with open(chemin_destination, 'wb+') as destination:
-                for chunk in file.chunks():
-                    destination.write(chunk)
-        print('Modèle sauvegardé avec succès')
-        return JsonResponse({'message': 'Modèle sauvegardé avec succès'}, status=200)
-
-    if request.method == 'GET':
-        # Ouvrir le fichier modèle en mode binaire et le retourner avec FileResponse
-        # print ("response get = ", response)
-        response = FileResponse(open('game/ia/models/' + level + '/model.json', 'rb'))
-        return response
-
-def get_weights(request):
-    # Définir le chemin vers le dossier où vos fichiers de modèle sont stockés
-    level = str(request).split('/')[-2]
-    file_path = "game/ia/models/" + level + "/model.weights.bin"
-
-    # Vérifier si le fichier existe
-    if not os.path.exists(file_path):
-        raise Http404("Le fichier demandé n'existe pas")
-
-#Lire le contenu du fichier et le servir
-    with open(file_path, 'rb') as file:
-        response = HttpResponse(file.read(), content_type="application/octet-stream")
-        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-        # print("response = ", response)
-        return response

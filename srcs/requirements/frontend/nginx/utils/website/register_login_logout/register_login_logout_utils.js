@@ -57,7 +57,7 @@ function alert_login_fail(errorMessage) {
     const signInSection = document.getElementById('signIn');
     // Parcourez tous les éléments descendants de la section
     signInSection.querySelectorAll('input, button').forEach((element) => {
-    element.disabled = true;  // Rendre l'élément inactif
+        element.disabled = true;  // Rendre l'élément inactif
     });
 
 
