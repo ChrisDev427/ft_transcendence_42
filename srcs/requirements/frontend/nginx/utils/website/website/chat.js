@@ -36,7 +36,7 @@ function chatGeneral_createContent(username, message, time, messageType) {
             div.classList = ' fw-bold fst-italic text-danger text-center fade-in mx-auto';
         }
         else if (messageType === 'tournament'){
-            small.textContent = username + ': a tournament match is starting';
+            small.textContent = 'a tournament match is starting';
             div.classList = ' fw-bold fst-italic text-dark text-center fade-in mx-auto';
         }
         div.style.maxWidth = '210px';

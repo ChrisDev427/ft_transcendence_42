@@ -173,7 +173,7 @@ function findTournamentById(tournamentSessions, tournamentId) {
             return tournamentSessions[key];
         }
     }
-    return null; // Renvoie null si aucun tournoi correspondant n'est trouvé
+    return null;
 }
 
 function create_tournament_room()

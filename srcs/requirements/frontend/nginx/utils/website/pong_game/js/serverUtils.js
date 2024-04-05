@@ -108,6 +108,8 @@ function waitForWebSocketConnection(username) {
 
 
 
+
+
     // function handleKeyPress(event) {
     //     if (event.key === 'Enter') {
     //         sendMessageSession();
@@ -194,6 +196,7 @@ function waitForWebSocketConnection(username) {
 
         }
     });
+
     socket.addEventListener('message', (event) => {
         let data = JSON.parse(event.data);
         if (data.messageType === 'newPeerTurn') {
@@ -213,10 +216,19 @@ function waitForWebSocketConnection(username) {
         // 	}
         // 	console.log('Countdown completed!');
         // });
+        }
+    });
 
-    }
-});
+    socket.addEventListener('message', (event) => {
+        let data = JSON.parse(event.data);
+        if (data.messageType === 'waitingTournament') {
+            document.getElementById('containerGameMenu').classList.add('hidden-element');
 
+            navbarSwitch('off');
+            reset_UI();
+            waiting_tournament(data.tournamentData);
+        }
+    });
 
 
 })

@@ -180,9 +180,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         tournament = search_player_in_tournament(self.user_username)
         # tournament_json = convert_tournament_json()
         if tournament:
-            await self.channel_layer.group_send(
-                self.room_group_name, { "type": "send.newPeerTurn" ,"messageType": "newPeerTurn", "tournament": tournament.to_json(), "playerToSend" : self.user_username}
-            )
+            if tournament.available == True:
+                await self.channel_layer.group_send(
+                    self.room_group_name, { "type": "waiting.tournament" ,"messageType": "waitingTournament", "tournamentData" : tournament.to_json(), "user": self.user_username}
+                )
+            else:
+                await self.channel_layer.group_send(
+                    self.room_group_name, { "type": "send.newPeerTurn" ,"messageType": "newPeerTurn", "tournament": tournament.to_json(), "playerToSend" : self.user_username}
+                )
 
 
 
@@ -936,7 +941,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }))
 
 
+    async def waiting_tournament(self, event):
+        message_type = event.get("messageType")
+        tournamentData = event.get("tournamentData")
+        user = event.get("user")
 
+        if user == self.user_username:
+            await self.send(text_data=json.dumps({
+                'messageType': message_type,
+                'tournamentData': tournamentData
+            }))
 
     async def session_list(self, event):
         messageType = event["messageType"]
