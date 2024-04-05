@@ -297,15 +297,15 @@ function inviteFriendToPlayFromChat_createContent(username) {
 
     const mainDiv = document.createElement('div');
     mainDiv.id = 'inviteToPlayDiv';
-    mainDiv.classList = 'col-auto p-3 bg-white  rounded-4 fade-in';
-    mainDiv.style.height = '300px';
+    mainDiv.classList = 'col-auto p-3 m-2 bg-white shadow-lg rounded-3 fade-in';
+    // mainDiv.style.height = '300px';
 
     const secDiv = document.createElement('div');
     secDiv.id = 'waitingDiv';
 
     const title = document.createElement('h5');
-    title.classList = 'fs-3 pt-3 fw-bold text-info text-capitalize text-center';
-    title.textContent = 'Invite ' + username + ' to play !';
+    title.classList = 'fs-3 pt-1 fw-bold text-info text-capitalize text-center';
+    title.textContent = 'Invite ' + username + ' to play';
     secDiv.appendChild(title);
 
     const text = document.createElement('h5');
@@ -314,7 +314,7 @@ function inviteFriendToPlayFromChat_createContent(username) {
     secDiv.appendChild(text);
 
     const dificultyRow = document.createElement('div');
-    dificultyRow.classList = 'row d-flex justify-content-center g-3 mt-4';
+    dificultyRow.classList = 'row d-flex justify-content-center g-2 mt-4';
 
     const easyDiv = document.createElement('div');
     easyDiv.classList = 'col-auto';
@@ -361,7 +361,7 @@ function inviteFriendToPlayFromChat_createContent(username) {
 
     document.getElementById('chat-area').appendChild(mainDiv);
 
-    cancelInviteToPlayBtn.addEventListener('click', function() {
+    cancelBtn.addEventListener('click', function() {
         mainDiv.remove();
         document.getElementById('chat-messages-general').classList.remove('unvisible');
         document.getElementById('mainChat-form').classList.remove('unvisible');
@@ -371,23 +371,29 @@ function inviteFriendToPlayFromChat_createContent(username) {
 
     easyBtn.addEventListener('click', function() {
         mainDiv.remove();
-       inviteFriendCreateSession_createContent(username, 2);
+        level = 3;
+        paddleHeight = 110;
+        inviteFriendCreateSession_createContent(username);
     })
 
     mediumBtn.addEventListener('click', function() {
         mainDiv.remove();
-       inviteFriendCreateSession_createContent(username, 4);
+        level = 5;
+        paddleHeight = 80;
+        inviteFriendCreateSession_createContent(username);
     })
 
     hardBtn.addEventListener('click', function() {
         mainDiv.remove();
-       inviteFriendCreateSession_createContent(username, 6);
+        level = 7;
+        paddleHeight = 60;
+        inviteFriendCreateSession_createContent(username);
     })
 }
 
-function inviteFriendCreateSession_createContent(username, level) {
+function inviteFriendCreateSession_createContent(username) {
 
-    
+
     peer = new SimplePeer({initiator: true})
     peer.once('signal', (dataPeer) => {
         console.log('PeerCreator signal:', dataPeer);
@@ -399,10 +405,12 @@ function inviteFriendCreateSession_createContent(username, level) {
         if (data.messageType === 'confirmInvite') {
             console.log("confirmInvite")
             if (data.confirme == "true"){
+                if (document.getElementById('inviteToPlayDiv') == null)
+                    return;
                 const mainDiv = document.createElement('div');
                 mainDiv.id = 'inviteToPlayDiv';
-                mainDiv.classList = 'col-auto p-3 bg-white  rounded-4 fade-in';
-                mainDiv.style.height = '300px';
+                mainDiv.classList = 'col-auto p-3 m-2 bg-white shadow-lg rounded-3 fade-in';
+                // mainDiv.style.height = '300px';
 
                 const secDiv = document.createElement('div');
                 secDiv.id = 'waitingDiv';
@@ -447,29 +455,49 @@ function inviteFriendCreateSession_createContent(username, level) {
 
                 document.getElementById('chat-area').appendChild(mainDiv);
 
-                cancelInviteToPlayBtn.addEventListener('click', function() {
+                cancelBtn.addEventListener('click', function() {
                     mainDiv.remove();
                     document.getElementById('chat-messages-general').classList.remove('unvisible');
                     document.getElementById('mainChat-form').classList.remove('unvisible');
                     const messageContainer = document.getElementById('chat-area');
                     messageContainer.scrollTop = messageContainer.scrollHeight;
 
-                    const message = JSON.stringify({ messageType: 'quitSession' });
+                    let message = JSON.stringify({ messageType: 'quitSession' });
                     socket.send(message);
-                    peer.close;
-                    location.reload();
+
+                    message = JSON.stringify({ messageType: 'cancelInvit' , usernameInvited: username});
+                    socket.send(message);
+                    peer.destroy();
+                    // location.reload();
                 })
-            }
-            else{
+            } else {
+
                 document.getElementById('chat-messages-general').classList.remove('unvisible');
                 document.getElementById('mainChat-form').classList.remove('unvisible');
                 console.log("Tu es deja dans une room");
                 peer.close;
-                
+
             }
         }
     });
 
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'denyInvit') {
+            peer.destroy();
+            document.getElementById('inviteToPlayDiv').remove();
+            document.getElementById('chat-messages-general').classList.remove('unvisible');
+            document.getElementById('mainChat-form').classList.remove('unvisible');
+            const messageContainer = document.getElementById('chat-area');
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+            // const parentDiv = inviteToPlayDiv.parentNode; // Récupère le parent de mainDiv
+
+            // Vérifie que le parent existe et que mainDiv est un enfant de ce parent
+            // if (parentDiv.contains(inviteToPlayDiv)) {
+                // parentDiv.removeChild(inviteToPlayDiv); // Supprime mainDiv du DOM
+            // }
+        }
+    });
     // console.log('Create game : ' + sessionUsername + ' VS ' + username + ' level : ' + level);
 
 
@@ -482,4 +510,140 @@ function inviteFriendCreateSession_createContent(username, level) {
 
     // socket.send(message);
 
+}
+
+function invitedToPlay_createContent(session) {
+
+    document.getElementById('chat-messages-general').classList.add('unvisible');
+    // document.getElementById('chatProfile').classList.add('unvisible');
+    document.getElementById('mainChat-form').classList.add('unvisible');
+
+    const mainDiv = document.createElement('div');
+    mainDiv.id = 'invitedToPlayDiv';
+    mainDiv.classList = 'col-auto p-3 m-2 bg-white shadow-lg rounded-3 fade-in';
+
+    const secDiv = document.createElement('div');
+    secDiv.id = 'invitedWaitingDiv';
+
+    const name = document.createElement('h5');
+    name.classList = 'fs-3 pt-1 fw-bold text-info text-uppercase text-center';
+    name.textContent = session.CreatorUsername;
+    secDiv.appendChild(name);
+
+    const text = document.createElement('h5');
+    text.classList = 'fs-5 fw-bold text-secondary text-center mt-3';
+    text.textContent = 'Invited You To Play !';
+    secDiv.appendChild(text);
+
+    const btnDiv = document.createElement('div');
+    btnDiv.classList = 'row d-flex justify-content-center g-2 mt-4';
+
+    const denyDiv = document.createElement('div');
+    denyDiv.classList = 'col-auto';
+    const denyBtn = document.createElement('h5');
+    denyBtn.classList = 'text-warning p-2 shadow rounded-2';
+    denyBtn.textContent = 'Deny';
+    denyBtn.role = 'button';
+    denyDiv.appendChild(denyBtn);
+    btnDiv.appendChild(denyDiv);
+
+    const acceptDiv = document.createElement('div');
+    acceptDiv.classList = 'col-auto';
+    const acceptBtn = document.createElement('h5');
+    acceptBtn.classList = 'text-success p-2 shadow rounded-2';
+    acceptBtn.textContent = 'Accept';
+    acceptBtn.role = 'button';
+    acceptDiv.appendChild(acceptBtn);
+    btnDiv.appendChild(acceptDiv);
+
+    secDiv.appendChild(btnDiv);
+
+    mainDiv.appendChild(secDiv);
+
+    document.getElementById('chat-area').appendChild(mainDiv);
+
+    denyBtn.addEventListener('click', function() {
+        mainDiv.remove();
+        document.getElementById('chat-messages-general').classList.remove('unvisible');
+        document.getElementById('mainChat-form').classList.remove('unvisible');
+        // CLOSE LA ROOM ?
+        socket.send(JSON.stringify({ messageType: 'denyInvit', session: session}));
+    });
+
+    acceptBtn.addEventListener('click', function() {
+        // LANCER LA PARTIE ...
+        console.log('Accept invite to play');
+        console.log('sessionId :', session.sessionId);
+        socket.send(JSON.stringify({ messageType: 'join', sessionId: session.sessionId}));
+        socket.addEventListener('message', (event) => {
+            const data = JSON.parse(event.data);
+            if (data.messageType === 'confirmJoin')
+                if (data.confirme == "true") {
+                    peer2 = new SimplePeer({ initiator: false });
+                    console.log('Peer2 created:', peer2);
+                    peer2.signal(data.peerCreator[0]);
+
+                    peer2.on('signal', (dataPeer) => {
+                        // console.log('Peer2 signal:', dataPeer);
+                        console.log('sessionID:', session.sessionId);
+                        socket.send(JSON.stringify({ messageType: 'playerPeer', sessionId: session.sessionId, playerPeer: dataPeer }));
+                    });
+
+                    peer2.on('connect', () => {
+                        console.log('Connected to peer2');
+                        leftPlayerName = session.CreatorUsername;
+                        rightPlayerName= sessionUsername;
+                        level = session.level;
+                        paddleHeight = session.paddleHeight
+                        playOnline = true;
+                        twoPlayers = true;
+                        start = true
+                        setPlayerNameToPrint(leftPlayerName, rightPlayerName);
+                        // printConsoleInfos();
+                        showSection("playPong");
+                        document.getElementById('gameDiv').classList.remove('hidden-element');
+                        peer2.on('connect', () => {
+                            console.log("connecté au peerID : ", data.peerId);
+                        });
+                        peer2.on('data', (data) => {
+                            // Convertir les données en objet JavaScript si nécessaire
+                            const gameData = JSON.parse(data);
+                            // console.log('Nouvelles données de jeu reçues :', gameData);
+                            if (gameData.messageType === 'reset') {
+                                rightPaddleY = gameData.rightPaddleY;
+                                rightPaddleHand = gameData.rightPaddleHand;
+                            }
+                            else {
+                            // Traiter les nouvelles données de jeu
+                                processGameData(gameData);
+                            }
+
+                        });
+                        console.log("level :", level)
+                        console.log("paddleHeight :", paddleHeight)
+
+                        navbarSwitch('off');
+                        onlineRun(peer2);
+
+                        mainDiv.remove();
+                        document.getElementById('chat-messages-general').classList.remove('unvisible');
+                        document.getElementById('mainChat-form').classList.remove('unvisible');
+                        const mainChat = document.getElementById('mainChat');
+                        mainChat.classList.add('unvisible');
+                    }
+                    );
+                }
+        });
+    });
+
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'cancelInvit') {
+                mainDiv.remove();
+                document.getElementById('chat-messages-general').classList.remove('unvisible');
+                document.getElementById('mainChat-form').classList.remove('unvisible');
+                const messageContainer = document.getElementById('chat-area');
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+    });
 }

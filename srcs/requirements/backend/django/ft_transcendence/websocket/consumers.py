@@ -532,7 +532,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         "CreatorPeerId" : data["peerId"]
                     }
                 )
-
             else:
                 level = data["level"]
                 creatorPeer = data["peerId"]
@@ -564,6 +563,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 await self.channel_layer.group_send(
                     self.room_group_name, { "type": "invite.Session" ,"messageType": "inviteSession", "session": session.to_json(), "usernameInvited": usernameInvited}
                 )
+
+
+        if (messageType == "denyInvit"):
+            session = data["session"]
+
+            session = find_session_by_id(session["sessionId"])
+
+            remove_player_sessions(session.creator_username)
+
+            await self.channel_layer.group_send(
+                self.room_group_name, { "type": "deny.invit" ,"messageType": "denyInvit", "session": session.to_json()}
+            )
 
 
         if (messageType == "createSession"):
@@ -616,7 +627,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             sessionId = data["sessionId"]
             session = find_session_by_id(sessionId)
             # print("session", session)
-            session_json = convert_list_json()
+            # session_json = convert_list_json()
             await self.channel_layer.group_send(
                     self.room_group_name,
                     {
@@ -625,7 +636,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         "players": session.players,
                         "playerPeer": data["playerPeer"],
                         "sessionCreator": session.creator_username,
-                        "session" : session_json
+                        "session" : session.to_json()
                     }
                 )
 
@@ -662,6 +673,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     }
                 )
 
+        if (messageType == "cancelInvit"):
+            usernameInvited = data["usernameInvited"]
+
+            await self.channel_layer.group_send(
+                self.room_group_name, { "type": "cancel.invit" ,"messageType": "cancelInvit", "usernameInvited": usernameInvited}
+            )
 
         if (messageType == "quitSession"):
             remove_player_sessions(self.user_username)
@@ -683,7 +700,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_send(
                 self.room_group_name, { "type": "session.surrender" ,"messageType": messageType, "session": session.to_json(), "username" : self.user_username}
             )
-
 
         if (messageType == "endGame") :
             session = search_player_in_game(data["sessionUsername"])
@@ -707,6 +723,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
 
 
+
+    async def deny_invit(self, event):
+        session = event.get("session")
+
+        if session :
+            # Send message to WebSocket
+            if session["CreatorUsername"] == self.user_username:
+                await self.send(text_data=json.dumps({"messageType" : "denyInvit"}))
+
+    async def cancel_invit(self, event):
+        usernameInvited = event.get("usernameInvited")
+        # Send message to WebSocket
+        if usernameInvited == self.user_username:
+            await self.send(text_data=json.dumps({"messageType" : "cancelInvit"}))
 
     async def send_getMatchmaking(self, event):
         message_type = event.get("messageType")
@@ -998,13 +1028,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         players = event.get("players")
         playerPeer = event.get("playerPeer")
         sessionCreator = event.get("sessionCreator")
+        session = event.get("session")
 
         for player in players:
             if player == self.user_username and player == sessionCreator:
                 await self.send(text_data=json.dumps({
                     'messageType': message_type,
                     'playerPeer': playerPeer,
-                    'player' : players[1]
+                    'player' : players[1],
+                    'session' : session
                 }))
 
     async def invite_Session(self, event):

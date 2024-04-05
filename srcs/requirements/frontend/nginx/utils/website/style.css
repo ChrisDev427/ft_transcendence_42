@@ -8,11 +8,8 @@ h5 {
   font-family: 'Bagel Fat One', sans-serif;
 
 }
-h3 {
-  font-family: Cambria;
-}
-h4 {
-  font-family: Cambria;
+.bagelFatOne {
+  font-family: 'Bagel Fat One', sans-serif;
 }
 section {
   margin-bottom: 100px;
@@ -25,16 +22,7 @@ input[type="text password"]::placeholder {
   display: inline-block;
   transform: rotate(180deg) !important;
 }
-/* #friendShipList-dashboard, #main, #gameMenu, #playPong, #aboutTheTeam, #signIn, #signUp, #dashboard, #gameHistory, #profile, #alert-bg-blur, #alert-bg-blur {
-  opacity: 0;
-  animation: fadeIn 0.3s ease-in-out forwards;
-  animation-delay: 0s;
-}
-@keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
 
-} */
 
 .fade-in {
   opacity: 0;
@@ -137,8 +125,8 @@ input[type="text password"]::placeholder {
   position: fixed;
   bottom: 55px;
   right: 10px;
-  width: 270px;
-  height: 380px;
+  width: 290px;
+  height: 390px;
   box-shadow: 0 0 15px 5px #848484b1;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.448); /* Couleur de fond avec opacité */

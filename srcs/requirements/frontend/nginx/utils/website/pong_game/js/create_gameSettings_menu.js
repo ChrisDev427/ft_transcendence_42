@@ -25,7 +25,7 @@ function create_OnePlayer_input() {
     // Creation du bouton
     let playBtn = document.createElement('button');
     playBtn.type = 'button';
-    playBtn.className = 'btn btn-outline-success w-25 mb-3 mt-3 p-2';
+    playBtn.className = 'btn btn-outline-success w-25 mb-3 mt-3 p-2 bagelFatOne';
     playBtn.id = 'playBtn';
     playBtn.textContent = 'Play';
 
@@ -82,7 +82,7 @@ function create_TwoPlayers_input() {
     div.id = 'divBtn';
     let playBtn = document.createElement('button');
     playBtn.type = 'button';
-    playBtn.className = 'btn btn-outline-success w-25 mb-3 mt-3 p-2';
+    playBtn.className = 'btn btn-outline-success w-25 mb-3 mt-3 p-2 bagelFatOne';
     playBtn.id = 'playBtn';
     playBtn.textContent = 'Play';
 
@@ -106,19 +106,19 @@ function create_Tournament_mode() {
     // Création des boutons
     let fourPlayersBtn = document.createElement('button');
     fourPlayersBtn.type = 'button';
-    fourPlayersBtn.className = 'btn btn-outline-info mx-1';
+    fourPlayersBtn.className = 'btn btn-outline-info mx-1 bagelFatOne';
     fourPlayersBtn.id = 'fourPlayersBtn';
     fourPlayersBtn.textContent = '4 Players';
 
     let heightPlayersBtn = document.createElement('button');
     heightPlayersBtn.type = 'button';
-    heightPlayersBtn.className = 'btn btn-outline-info mx-1';
+    heightPlayersBtn.className = 'btn btn-outline-info mx-1 bagelFatOne';
     heightPlayersBtn.id = 'heightPlayersBtn';
     heightPlayersBtn.textContent = '8 Players';
 
     let sixteenPlayersBtn = document.createElement('button');
     sixteenPlayersBtn.type = 'button';
-    sixteenPlayersBtn.className = 'btn btn-outline-info mx-1';
+    sixteenPlayersBtn.className = 'btn btn-outline-info mx-1 bagelFatOne';
     sixteenPlayersBtn.id = 'sixteenPlayersBtn';
     sixteenPlayersBtn.textContent = '16 Players';
 
@@ -219,7 +219,7 @@ function create_Tournament_inputs() {
     divBtn.id = 'divBtn';
     let playBtn = document.createElement('button');
     playBtn.type = 'button';
-    playBtn.className = 'btn btn-outline-success w-25 mb-3 mt-3 p-2';
+    playBtn.className = 'btn btn-outline-success w-25 mb-3 mt-3 p-2 bagelFatOne';
     playBtn.id = 'playBtn';
     playBtn.textContent = 'Play';
 
@@ -328,6 +328,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 function create_room() {
+
     peer = new SimplePeer({initiator: true})
     peer.once('signal', (dataPeer) => {
         console.log('PeerCreator signal:', dataPeer);
