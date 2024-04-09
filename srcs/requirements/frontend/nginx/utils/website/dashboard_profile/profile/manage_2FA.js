@@ -243,7 +243,7 @@ function verifyMobile_createForm(formData) {
 }
 
 function verifyMobile_API() {
-    console.log('VERIFY MOBILE FUNCTION');
+    // console.log('VERIFY MOBILE FUNCTION');
     verifyToken();
 
     document.getElementById('mobile-form').addEventListener('submit', function (e) {
@@ -260,7 +260,7 @@ function verifyMobile_API() {
         })
         .then(response => {
             if (response.ok) {
-                console.log('Mobile Verified Success :', response.status);
+                // console.log('Mobile Verified Success :', response.status);
                 alert_modify_success('mobileInfosDiv', 'Mobile verified !');
                 getProfileInfos(localStorage.getItem('accessToken'));
             }
@@ -285,17 +285,17 @@ function sendCode(formData, method) {
         body: formData
     })
     .then(response => {
-      console.log('response = ' + response);
+    //   console.log('response = ' + response);
 
       if (response.ok) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
-        console.log('Send ' + method + ' success ! ' + response.status);
+        // console.log('Send ' + method + ' success ! ' + response.status);
         if (method !== 'application') {
             inputCode_form('Enter the code sent by ' + method, formData, method);
         }
         else {
             response.json()
             .then(data => {
-                console.log('Response data:', data);
+                // console.log('Response data:', data);
                 inputCode_form('Enter the code sent by ' + method, formData, method, data);
             })
             .catch(error => {

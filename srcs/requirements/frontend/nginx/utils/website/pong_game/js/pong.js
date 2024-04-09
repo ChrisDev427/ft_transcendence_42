@@ -1,6 +1,4 @@
 
-
-
 // printConsoleInfos();
 // Fonction principale de mise à jour et de rendu
 printGame();
@@ -125,7 +123,7 @@ function onlineRun(peer) {
 
             // sendPaddlePositions(peer, rightPaddleY, "right")
         } if (spaceBarPressed && rightPaddleHand){
-            console.log(spaceBarPressed);
+            // console.log(spaceBarPressed);
             spaceRight = true;
             sendGameUpdate(peer);
             spaceBarPressed = false;
@@ -283,7 +281,7 @@ function tournamentRun(peer, tournamentData, match) {
 
             // sendPaddlePositions(peer, rightPaddleY, "right")
         } if (spaceBarPressed && rightPaddleHand){
-            console.log(spaceBarPressed);
+            // console.log(spaceBarPressed);
             spaceRight = true;
             sendGameUpdate(peer);
             spaceBarPressed = false;

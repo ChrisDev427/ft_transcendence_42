@@ -166,7 +166,7 @@ async function train(X, y, model){
 
     //train
     const response = await model.fit(Xs, ys, config);
-    console.log(response.history.loss);
+    // console.log(response.history.loss);
 }
 
 
@@ -223,7 +223,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     // Utilisez la fonction split pour diviser le texte à chaque nouvelle ligne
     pureData = e.target.result.split('\n');
     var dataTrain = getDataTrain(pureData);
-    console.log(dataTrain);
+    // console.log(dataTrain);
     var Xs = getFeatures(dataTrain);
     var ys = getTarget(dataTrain);
 
@@ -254,8 +254,8 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     //performance on datatest
     var perf = await calculPerf(ypred , Data.ytest);
 
-    console.log(perf);
-    console.log(Data.ytest.length);
+    // console.log(perf);
+    // console.log(Data.ytest.length);
 
     };
 

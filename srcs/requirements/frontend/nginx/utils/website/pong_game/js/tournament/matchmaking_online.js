@@ -58,7 +58,7 @@ function tournament_dashboard(tournamentData)
 		let data = JSON.parse(event.data);
 		if (data.messageType === 'getMatchmaking') {
 			// draw the table
-			console.log('getMatchmaking', data.tournamentData.matchs);
+			// console.log('getMatchmaking', data.tournamentData.matchs);
 			for(let i = 0; i < data.tournamentData.matchs.length; i++) {
 				tr = document.createElement('tr');
 				tr.id = 'match ' + (i + 1);
@@ -103,7 +103,7 @@ function tournament_dashboard(tournamentData)
 	socket.addEventListener('message', (event) => {
 		let data = JSON.parse(event.data);
 		if (data.messageType === 'updateScore') {
-			console.log('updateScore' , data.match);
+			// console.log('updateScore' , data.match);
 			let match = data.match;
 			let tr = document.getElementById('match ' + data.match.matchNumber);
 			let td = tr.getElementsByTagName('td')[3];
@@ -144,7 +144,7 @@ function ManageOnlineTournament(tournamentData) {
 	// 	tourMax = 3;
 	// else if (tournamentData.players.length == 16)
 	// 	tourMax = 4;
-	console.log("tournamentData", tournamentData);
+	// console.log("tournamentData", tournamentData);
 
 	//define the number of matchs
 	if (tournamentData.turn == 0 && tournamentData.players[0] === sessionUsername)
@@ -190,16 +190,16 @@ function ManageOnlineTournament(tournamentData) {
 			}
 
 			turn = data.tournamentData.turn;
-			console.log('New turn', turn);
+			// console.log('New turn', turn);
 			noPlayer = 0;
 			let nbMatchinTurn = 0;
 			for (let i = currentMatch; i < matchPassed + data.tournamentData.players.length / 2; i++) {
-				console.log('currentMatch', currentMatch);
+				// console.log('currentMatch', currentMatch);
 				// console.log('Match number :', data.tournamentData.matchs[currentMatch]);
 				// console.log('Players tournament DATA :', data.tournamentData.players);
 				data.tournamentData.matchs[currentMatch].player1 = data.tournamentData.players[noPlayer];
 				data.tournamentData.matchs[currentMatch].player2 = data.tournamentData.players[noPlayer + 1];
-				console.log('Match number :', currentMatch, " ", data.tournamentData.matchs[currentMatch]);
+				// console.log('Match number :', currentMatch, " ", data.tournamentData.matchs[currentMatch]);
 				noPlayer += 2;
 				currentMatch++;
 				nbMatchinTurn++;
@@ -285,20 +285,20 @@ function startCountdown(time) {
 function create_tournament_duel(tournamentData, match) {
     peer = new SimplePeer({initiator: true})
     peer.once('signal', (dataPeer) => {
-        console.log('PeerCreator signal:', dataPeer);
+        // console.log('PeerCreator signal:', dataPeer);
         socket.send(JSON.stringify({ messageType: 'creatorPeerTournament',tournamentData: tournamentData , match:match , peerCreator: dataPeer}));
     });
 	peer.on('close', () => {
-		console.log('Peer connection closed');
+		// console.log('Peer connection closed');
 		// Vous pouvez mettre ici le code pour gérer la fermeture de la connexion
 	});
 	socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.messageType === 'PlayerPeerTournament') {
-			console.log('PlayerPeerTournament', data.playerPeer);
+			// console.log('PlayerPeerTournament', data.playerPeer);
 			peer.signal(data.playerPeer);
 			peer.on('connect', () => {
-				console.log('PeerCreator connected');
+				// console.log('PeerCreator connected');
 				leftPlayerName = data.match.player1;
     	   		rightPlayerName= data.match.player2;
     	   		level = data.tournamentData.level;
@@ -328,8 +328,8 @@ function create_tournament_duel(tournamentData, match) {
     		        spaceBarPressed = gameData.spaceBarPressed;
     		        spaceRight = gameData.spaceRight;
     		    });
-    		    console.log("level :", level)
-    		    console.log("level :", paddleHeight)
+    		    // console.log("level :", level)
+    		    // console.log("level :", paddleHeight)
     		    tournamentRun(peer, data.tournamentData, match);
     		    // console.log("peer = ", peer);
     		    showSection('playPong');
@@ -341,9 +341,9 @@ function create_tournament_duel(tournamentData, match) {
 		if (data.messageType === 'surrenderTournamentSession') {
 			if (data.surrendedPlayer === match.player2) {
 				// peer.destroy();
-				console.log("data tournamentData: ", data.tournamentData)
+				// console.log("data tournamentData: ", data.tournamentData)
 				tournamentData = data.tournamentData;
-				console.log("tournamentData after: ", tournamentData)
+				// console.log("tournamentData after: ", tournamentData)
 				// tournamentData.players = tournamentData.players.filter(player => player !== match.player1);
 				start = false;
 				// if (peer)
@@ -365,32 +365,32 @@ function create_tournament_duel(tournamentData, match) {
 
 
 function join_tournament_duel(tournamentData, match) {
-	console.log('join_tournament_duel');
+	// console.log('join_tournament_duel');
 	socket.addEventListener('message', (event) => {
 		let data = JSON.parse(event.data);
 		if (data.messageType === 'creatorPeerTournament') {
 			// let signalsent = false;
-			console.log('creatorPeerTournament');
+			// console.log('creatorPeerTournament');
 			peer2 = new SimplePeer({ initiator: false })
-			console.log('PeerCreator signal:', data.peerCreator);
+			// console.log('PeerCreator signal:', data.peerCreator);
 			peer2.signal(data.peerCreator);
 
 			peer2.on('close', () => {
-                console.log('Peer connection closed');
+                // console.log('Peer connection closed');
                 // Vous pouvez mettre ici le code pour gérer la fermeture de la connexion
             });
 
 			peer2.on('signal', (dataPeer) => {
-				console.log('PeerJoiner signal:', dataPeer);
+				// console.log('PeerJoiner signal:', dataPeer);
 				// if(!signalsent) {
-					console.log('signal sent');
+					// console.log('signal sent');
 					socket.send(JSON.stringify({ messageType: 'playerPeerTournament', tournamentData:tournamentData, match:match, playerPeer: dataPeer }));
 					// signalsent = true;
 				// }
 			});
 
 		peer2.on('connect', () => {
-			console.log('PeerJoiner connected');
+			// console.log('PeerJoiner connected');
 			leftPlayerName = data.match.player1;
     	    rightPlayerName= data.match.player2;
     	    level = data.tournamentData.level;
@@ -418,8 +418,8 @@ function join_tournament_duel(tournamentData, match) {
     	        }
 
     	    });
-    	    console.log("level :", level)
-    	    console.log("paddleHeight :", paddleHeight)
+    	    // console.log("level :", level)
+    	    // console.log("paddleHeight :", paddleHeight)
 
     	    navbarSwitch('off');
     	    tournamentRun(peer2, data.tournamentData, match);
@@ -432,9 +432,9 @@ function join_tournament_duel(tournamentData, match) {
 		let data = JSON.parse(event.data);
 		if (data.messageType === 'surrenderTournamentSession') {
 			if (data.surrendedPlayer === match.player1) {
-				console.log("data tournamentData: ", data.tournamentData)
+				// console.log("data tournamentData: ", data.tournamentData)
 				tournamentData = data.tournamentData;
-				console.log("tournamentData after: ", tournamentData)
+				// console.log("tournamentData after: ", tournamentData)
 				// peer2.destroy();array = array.filter(item => item !== valueToRemove);
 				// tournamentData.players = tournamentData.players.filter(player => player !== match.player2);
 				start = false;

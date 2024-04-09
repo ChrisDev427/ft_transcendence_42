@@ -7,7 +7,7 @@ function createPeer(sessionId)
 {
     peer = new SimplePeer({initiator: true, trickle: false});
     peer.once('signal', (dataPeer) => {
-        console.log('Peer signal:', dataPeer);
+        // console.log('Peer signal:', dataPeer);
         socket.send(JSON.stringify({ messageType: 'creatorPeer', sessionId: sessionId, peerCreator: dataPeer }));
     });
 
@@ -20,7 +20,7 @@ function waitForWebSocketConnection(username) {
 
         // username = username;
         socket.addEventListener('open', () => {
-            console.log('Connected to WebSocket server');
+            // console.log('Connected to WebSocket server');
             resolve(socket);
             socket.send(JSON.stringify({
                 'messageType': 'online',
@@ -37,20 +37,20 @@ function waitForWebSocketConnection(username) {
         });
 
         socket.addEventListener('close', (event) => {
-            console.log('WebSocket connection closed');
+            // console.log('WebSocket connection closed');
             reject(new Error('WebSocket connection closed'));
         });
     })
 .then((socket) => {
 
-    console.log('WebSocket connection is ready');
+    // console.log('WebSocket connection is ready');
 
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.messageType === 'updateSessions') {
-            console.log('Updating sessions list...');
-            console.log(data.sessions);
+            // console.log('Updating sessions list...');
+            // console.log(data.sessions);
             updateSessionsList(data.sessions);
         }
     });
@@ -58,8 +58,8 @@ function waitForWebSocketConnection(username) {
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.messageType === 'updateTournamentSessions') {
-            console.log('Updating tournament sessions list...');
-            console.log(data.tournamentSessions);
+            // console.log('Updating tournament sessions list...');
+            // console.log(data.tournamentSessions);
             updateTournamentSessionsList(data.tournamentSessions);
         }
     });
@@ -94,7 +94,7 @@ function waitForWebSocketConnection(username) {
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.messageType === 'surrenderSession') {
-            console.log('data received', data);
+            // console.log('data received', data);
             start = false;
             const message = JSON.stringify({ messageType: 'endGame', leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : sessionUsername});
             socket.send(message);
@@ -130,7 +130,7 @@ function waitForWebSocketConnection(username) {
         const data = JSON.parse(event.data);
         if (data.messageType === 'inviteSession') {
 
-            console.log('data.session = ', data.session);
+            // console.log('data.session = ', data.session);
             invitedToPlay_createContent(data.session);
         }
 
@@ -163,10 +163,10 @@ function waitForWebSocketConnection(username) {
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.messageType === 'receivePlayerPeer') {
-            console.log('data received', data.playerPeer);
+            // console.log('data received', data.playerPeer);
             peer.signal(data.playerPeer);
             peer.on('signal', (data) => {
-                console.log('Signal sent:', data);
+                // console.log('Signal sent:', data);
                 // Vous pouvez mettre ici le code pour gérer le signal envoyé avec succès
             });
 
@@ -176,11 +176,11 @@ function waitForWebSocketConnection(username) {
             });
 
             peer.on('close', () => {
-                console.log('Peer connection closed');
+                // console.log('Peer connection closed');
                 // Vous pouvez mettre ici le code pour gérer la fermeture de la connexion
             });
             peer.on('connect', () => {
-                console.log("connecté au peerID : ", data.playerPeer);
+                // console.log("connecté au peerID : ", data.playerPeer);
                 // console.log(data.player, "a rejoind la session", data.level);
                 leftPlayerName =sessionUsername;
                 rightPlayerName=data.player;
@@ -211,10 +211,10 @@ function waitForWebSocketConnection(username) {
 
                 });
 
-                console.log("level :", level)
-                console.log("level :", paddleHeight)
-                console.log('data session', data.session);
-                console.log('data is private', data.session.isPrivate);
+                // console.log("level :", level)
+                // console.log("level :", paddleHeight)
+                // console.log('data session', data.session);
+                // console.log('data is private', data.session.isPrivate);
                 onlineRun(peer);
                 // console.log("peer = ", peer);
 
@@ -237,7 +237,7 @@ function waitForWebSocketConnection(username) {
         if (data.messageType === 'newPeerTurn') {
             // data.tournamentData.players = data.tournamentData.players;
             showSection('playPong');
-            console.log('newPeerTurn', data);
+            // console.log('newPeerTurn', data);
             ManageOnlineTournament(data.tournamentData);
         // 	for (let i = currentMatch - nbMatchinTurn; i < currentMatch - nbMatchinTurn + nbMatchinTurn ; i++) {
         // 		console.log('Match number :', i);
@@ -312,7 +312,7 @@ function updateSessionsList(sessions) {
         }
     });
 
-    console.log('Updated sessions list:', sessions);
+    // console.log('Updated sessions list:', sessions);
 }
 
 
@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (match) {
             const sessionId = match[1];
-            console.log('Joining session with ID:', sessionId);
+            // console.log('Joining session with ID:', sessionId);
         }
     });
 });
@@ -365,7 +365,7 @@ function  sessions_createContent(session, index) {
 
     joinBtn.addEventListener('click', function() {
         // document.getElementById('joinCard' + index).remove();
-        console.log("session :", session);
+        // console.log("session :", session);
         joinSession(session, index);
     })
 }
@@ -375,8 +375,8 @@ function  sessions_createContent(session, index) {
 //start game for joiner
 function joinSession(session, index) {
 
-    console.log('session creator:', session.CreatorUsername);
-    console.log('session username:', sessionUsername);
+    // console.log('session creator:', session.CreatorUsername);
+    // console.log('session username:', sessionUsername);
     socket.send(JSON.stringify({ messageType: 'join', sessionId: session.sessionId}));
 
     socket.addEventListener('message', (event) => {
@@ -384,17 +384,17 @@ function joinSession(session, index) {
         if (data.messageType === 'confirmJoin')
             if (data.confirme == "true") {
                 peer2 = new SimplePeer({ initiator: false });
-                console.log('Peer2 created:', peer2);
+                // console.log('Peer2 created:', peer2);
                 peer2.signal(data.peerCreator[0]);
 
                 peer2.on('signal', (dataPeer) => {
                     // console.log('Peer2 signal:', dataPeer);
-                    console.log('sessionID:', session.sessionId);
+                    // console.log('sessionID:', session.sessionId);
                     socket.send(JSON.stringify({ messageType: 'playerPeer', sessionId: session.sessionId, playerPeer: dataPeer }));
                 });
 
                 peer2.on('connect', () => {
-                    console.log('Connected to peer2');
+                    // console.log('Connected to peer2');
                     leftPlayerName = session.CreatorUsername;
                     rightPlayerName= sessionUsername;
                     level = session.level;
@@ -407,7 +407,7 @@ function joinSession(session, index) {
                     showSection("playPong");
                     document.getElementById('gameDiv').classList.remove('hidden-element');
                     peer2.on('connect', () => {
-                        console.log("connecté au peerID : ", data.peerId);
+                        // console.log("connecté au peerID : ", data.peerId);
                     });
                     peer2.on('data', (data) => {
                         // Convertir les données en objet JavaScript si nécessaire
@@ -423,8 +423,8 @@ function joinSession(session, index) {
                         }
 
                     });
-                    console.log("level :", level)
-                    console.log("paddleHeight :", paddleHeight)
+                    // console.log("level :", level)
+                    // console.log("paddleHeight :", paddleHeight)
 
                     navbarSwitch('off');
                     onlineRun(peer2);

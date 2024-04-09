@@ -218,14 +218,14 @@ function refreshAccessToken() {
         if (response.ok) {
             return response.json();
         } else {
-            console.log('access token expired, auto logout redirect to signIn');
+            // console.log('access token expired, auto logout redirect to signIn');
             userLogout();
             showSection('signIn');
         }
     })
     .then(data => {
         localStorage.setItem('accessToken', data.access);
-        console.log('Token refreshed successfully');
+        // console.log('Token refreshed successfully');
     })
 }
 

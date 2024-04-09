@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (match) {
             const sessionId = match[1];
-            console.log('Joining session with ID:', sessionId);
+            // console.log('Joining session with ID:', sessionId);
         }
     });
 });
@@ -331,7 +331,7 @@ function create_room() {
 
     peer = new SimplePeer({initiator: true})
     peer.once('signal', (dataPeer) => {
-        console.log('PeerCreator signal:', dataPeer);
+        // console.log('PeerCreator signal:', dataPeer);
         socket.send(JSON.stringify({ messageType: 'createSession', level:level , peerId: dataPeer, paddleHeight: paddleHeight}));
     });
 
@@ -392,7 +392,7 @@ function create_room() {
                 mainDiv.appendChild(secDiv);
 
                 document.getElementById('gameMenu').appendChild(mainDiv);
-                
+
                 cancelBtn.addEventListener('click', function() {
 
                     document.getElementById('roomCreatedDiv').remove();
@@ -402,13 +402,13 @@ function create_room() {
                     socket.send(message);
                     location.reload();
                 })
-                
+
 
             }
             else {
                 //close le peer
                 peer.close();
-                console.log("Tu es deja dans une room");
+                // console.log("Tu es deja dans une room");
             }
         }
 

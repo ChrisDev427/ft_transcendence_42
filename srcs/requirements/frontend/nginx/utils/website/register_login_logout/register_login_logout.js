@@ -13,10 +13,10 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
 
     })
     .then(response => {
-      console.log('response = ' + response);
+      // console.log('response = ' + response);
 
       if (response.status === 201) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
-        console.log('Register Success !' + response.status);
+        // console.log('Register Success !' + response.status);
       alert_register_success();
       e.target.reset();
     } else {
@@ -40,7 +40,7 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
 
 function requestLogin(formData) {
 
-  verifyToken();
+  // verifyToken();
 
   // fetch('http://localhost:8000/api/account/login/', {
     fetch(domainPath + '/api/account/login/', {
@@ -50,7 +50,7 @@ function requestLogin(formData) {
   .then(response => {
     if (response.status === 200) {
       // Authentification réussie
-      console.log('login success');
+      // console.log('login success');
       connected = true;
       alert_login_success();
       return response.json();
@@ -59,7 +59,7 @@ function requestLogin(formData) {
       console.error('Authentication failed : ' + response.status);
       response.json()
       .then(data => {
-        console.log('Response data:', data);
+        // console.log('Response data:', data);
         alert_login_fail(data.detail);
       })
       throw new Error('Authentication failed');
@@ -67,7 +67,7 @@ function requestLogin(formData) {
   })
   .then(data => {
     // Récupère les informations de l'utilisateur et le jeton d'accès
-    console.log(data);
+    // console.log(data);
     // const userInformation = data.user;
     localStorage.setItem('accessToken', data.access);
     localStorage.setItem('refreshToken', data.refresh);
@@ -94,7 +94,7 @@ function formSubmitHandler_login(e) {
     .then(response => {
       const formData = new FormData(e.target);
       if (response) {
-        console.log('new form data for 2FA');
+        // console.log('new form data for 2FA');
         getOTP_createForm(formData);
       } else {
         requestLogin(formData);
@@ -137,14 +137,14 @@ document.getElementById('validLogout').addEventListener('click', function() {
 
 // LOGIN WITH 42 ******************************************************************************************
 function loginWith42() {
-  console.log('connect with 42 function');
+  // console.log('connect with 42 function');
   const oauthUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-44e47265c9b8312f83a47d720211e265bef85a1c8fc632f8786fe9dcdade34d1&redirect_uri=https%3A%2F%2Ftranscendence42.ddns.net%3A8002&response_type=code';
   window.location.href = oauthUrl;
 }
 
 const code = getAuthorizationCode();
 if (code) {
-  console.log('code = ' + code);
+  // console.log('code = ' + code);
     exchangeCodeForToken(code);
 }
 
@@ -161,16 +161,16 @@ async function exchangeCodeForToken(code) {
       throw new Error('Error : fetch : exchange token');
     }
     const data = await response.json();
-    console.log('data.access = ' + data.access);
-    console.log('data.refresh = ' + data.refresh);
-    console.log('data = :', data);
+    // console.log('data.access = ' + data.access);
+    // console.log('data.refresh = ' + data.refresh);
+    // console.log('data = :', data);
 
     localStorage.setItem('accessToken', data.access);
     localStorage.setItem('refreshToken', data.refresh);
     localStorage.setItem('connectType', '42');
     itemsVisibility_logged_in();
 
-    console.log('exchange token');
+    // console.log('exchange token');
     getProfileInfos();
     profileAccess(localStorage.getItem('connectType'));
 
@@ -205,12 +205,12 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 function verifyEmail() {
-  console.log('Fonction verifyEmail !');
+  // console.log('Fonction verifyEmail !');
 
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get('token');
 
-  console.log(token);
+  // console.log(token);
 
   if (token) {
     fetch(domainPath + '/api/account/email/verify/?token=' + token)
@@ -218,7 +218,7 @@ function verifyEmail() {
       if (response.status === 200) {
         // Authentification réussie
         // return response.json();
-        console.log('email verified !');
+        // console.log('email verified !');
         alert_email_success();
       } else {
         // Gestion des erreurs lors de la récupération du profil
@@ -238,7 +238,7 @@ function verifyEmail() {
 
 function alert_email_success() {
 
-  console.log('Fonction alertEmailSuccess !');
+  // console.log('Fonction alertEmailSuccess !');
   document.getElementById('verify-email').classList.remove('unvisible');
   const div = document.createElement('div');
   div.classList = 'w-75 p-4 mx-auto alert alert-success text-center text-success shadow';

@@ -83,7 +83,7 @@ function manageFriends(data) {
     if (friendsArray.length === 0) {
       document.getElementById('spinner' + 'friendShipBody-dashboard').remove();
       document.getElementById('friendsTextInfo').classList.remove('hidden-element');
-      console.log('No friendship to display in dashboard');
+      // console.log('No friendship to display in dashboard');
     } else {
       if (!document.getElementById('friendsTextInfo').classList.contains('hidden-element')) {
         document.getElementById('friendsTextInfo').classList.add('hidden-element');
@@ -206,7 +206,7 @@ function friends_createContent(friendsArray) {
       document.getElementById('removeFriendBtn' + i).addEventListener('click', function() {
         fetchRemoveFriendship(friendsArray[i][0])
         .then((data) => {
-          console.log('then remove', data);
+          // console.log('then remove', data);
           document.getElementById('friendList' + i).remove();
           getDashboardInfos();
         })
@@ -349,8 +349,8 @@ function friendExpandInfos_createContent(userObject, index) {
 
 function searchUser_createContent(friendObjet, index) {
 
-  console.log('index = ' + index);
-  console.log('friendObjet = ', friendObjet);
+  // console.log('index = ' + index);
+  // console.log('friendObjet = ', friendObjet);
 
   const mainDiv = document.createElement('div');
   mainDiv.classList = 'col-auto px-4 py-3 m-2 rounded-3 bg-success bg-opacity-10 shadow';
@@ -396,7 +396,7 @@ function searchUser_createContent(friendObjet, index) {
 
   checkPendingRequest(friendObjet.user.username)
   .then((result) => {
-    console.log('Valeur résolue de la promesse :', result);
+    // console.log('Valeur résolue de la promesse :', result);
 
     if (result === true) {
 
