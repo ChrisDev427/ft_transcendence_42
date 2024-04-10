@@ -400,6 +400,7 @@ function create_room() {
                     document.getElementById('createRoomMenu').classList.add('hidden-element');
                     const message = JSON.stringify({ messageType: 'quitSession' });
                     socket.send(message);
+                    console.log('Quit session');
                     location.reload();
                 })
 

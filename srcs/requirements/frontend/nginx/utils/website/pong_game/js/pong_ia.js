@@ -158,8 +158,8 @@ async function iaRun() {
         } else {
             applauseFX.play();
         }
-        leftPaddleY = (canvas.height - paddleHeight) / 2;
-        rightPaddleY = (canvas.height - paddleHeight) / 2;
+        // leftPaddleY = (canvas.height - paddleHeight) / 2;
+        // rightPaddleY = (canvas.height - paddleHeight) / 2;
         tableau = [[]];
         best_pos =  (canvas.height - paddleHeight) / 2 + 40;
 
@@ -184,8 +184,8 @@ async function iaRun() {
             applauseFX.play();
         }
 
-        leftPaddleY = (canvas.height - paddleHeight) / 2;
-        rightPaddleY = (canvas.height - paddleHeight) / 2;
+        // leftPaddleY = (canvas.height - paddleHeight) / 2;
+        // rightPaddleY = (canvas.height - paddleHeight) / 2;
         tableau = [[]];
         best_pos =  (canvas.height - paddleHeight) / 2 + paddleHeight/2;
 

@@ -1,27 +1,34 @@
-level = 3;
-let nbEpochs = 200;
+let nbEpochs;
 let startPoint;
 let endPoint;
 let modelName;
 
-if(level == 1 ){
-    startPoint = 15;
-    endPoint = 1085;
-    modelName = "https://transcendence42.ddns.net:8002/api/game/easy/model.json";
-}
 
-if(level == 2 ){
-    startPoint = 11;
-    endPoint = 1089;
-    modelName = "https://transcendence42.ddns.net:8002/api/game/medium/model.json";
-}
+function set_parms()
+{
+    level = document.getElementById('niveau').value;
+    if(level == '1' ){
+        startPoint = 15;
+        endPoint = 1085;
+        modelName = "https://10.12.3.1:8002/api/game/easy/model.json";
+    }
 
-if(level == 3 ){
-    startPoint = 13;
-    endPoint = 1084;
-    modelName = "https://transcendence42.ddns.net:8002/api/game/hard/model.json";
-}
+    if(level == '2' ){
+        startPoint = 11;
+        endPoint = 1089;
+        modelName = "https://10.12.3.1:8002/api/game/medium/model.json";
+    }
 
+    if(level == '3' ){
+        startPoint = 13;
+        endPoint = 1084;
+        modelName = "https://10.12.3.1:8002/api/game/hard/model.json";
+    }
+
+
+    nbEpochs = document.getElementById('nbEpochs').value;
+    nbEpochs = parseInt(nbEpochs, 10)
+}
 
 let dataTrainpureData = [];
 
@@ -166,7 +173,7 @@ async function train(X, y, model){
 
     //train
     const response = await model.fit(Xs, ys, config);
-    // console.log(response.history.loss);
+    console.log(response.history.loss);
 }
 
 
@@ -216,6 +223,7 @@ function normalizeTab(tab)
 
 
 document.getElementById('fileInput').addEventListener('change', function(event) {
+    set_parms();
     const file = event.target.files[0];
     const reader = new FileReader();
 
@@ -223,7 +231,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     // Utilisez la fonction split pour diviser le texte à chaque nouvelle ligne
     pureData = e.target.result.split('\n');
     var dataTrain = getDataTrain(pureData);
-    // console.log(dataTrain);
+    console.log(dataTrain);
     var Xs = getFeatures(dataTrain);
     var ys = getTarget(dataTrain);
 
@@ -243,7 +251,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 
     //save the model
     await model.save(modelName);
-	// console.log('Model saved');
+
     //reload the model
     const modelCharge = await tf.loadLayersModel(modelName);
 
@@ -254,8 +262,8 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     //performance on datatest
     var perf = await calculPerf(ypred , Data.ytest);
 
-    // console.log(perf);
-    // console.log(Data.ytest.length);
+    console.log(perf);
+    console.log(Data.ytest.length);
 
     };
 

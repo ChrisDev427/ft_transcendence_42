@@ -403,10 +403,10 @@ function inviteFriendCreateSession_createContent(username) {
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.messageType === 'confirmInvite') {
-            // console.log("confirmInvite")
             if (data.confirme == "true"){
-                if (document.getElementById('inviteToPlayDiv') == null)
-                    return;
+                // if (document.getElementById('inviteToPlayDiv') == null)
+                // return;
+                // console.log("confirmInvite")
                 const mainDiv = document.createElement('div');
                 mainDiv.id = 'inviteToPlayDiv';
                 mainDiv.classList = 'col-auto p-3 m-2 bg-white shadow-lg rounded-3 fade-in';
@@ -452,7 +452,7 @@ function inviteFriendCreateSession_createContent(username) {
                 row.appendChild(col);
                 secDiv.appendChild(row);
                 mainDiv.appendChild(secDiv);
-
+                // console.log('coucou');
                 document.getElementById('chat-area').appendChild(mainDiv);
 
                 cancelBtn.addEventListener('click', function() {

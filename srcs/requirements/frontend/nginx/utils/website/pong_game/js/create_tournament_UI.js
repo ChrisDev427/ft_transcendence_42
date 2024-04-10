@@ -137,7 +137,7 @@ function waiting_tournament(tournamentData) {
     document.getElementById('createRoomMenu').classList.add('hidden-element');
     const message = JSON.stringify({ messageType: 'quitTournamentSession' });
     socket.send(message);
-    navbarSwitch('on');
+    location.reload();
     })
 
 	socket.addEventListener('message', (event) => {

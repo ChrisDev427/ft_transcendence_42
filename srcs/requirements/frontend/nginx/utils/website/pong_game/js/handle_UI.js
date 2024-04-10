@@ -55,8 +55,8 @@ btn.joinBtn.addEventListener("click", function() {
     btn.twoPlayersBtn.classList.remove("disabled");
     btn.tournamentBtn.classList.remove("disabled");
 
-    showSection('sessions');
-    reset_UI();
+    // showSection('sessions');
+    // reset_UI();
 });
 
 
@@ -84,6 +84,7 @@ btn.onLineBtn.addEventListener("click", function() {
         btn.onLineBtn.classList.add("disabled");
         btn.onLineBtn.classList.remove("btn-outline-info");
         btn.onLineBtn.classList.add("btn-info");
+        btn.createRoomBtn.classList.add("hidden-element");
 
         document.getElementById('onlineMenu').classList.remove('hidden-element');
         document.getElementById('chat-container_session').classList.remove('hidden-element');
@@ -238,6 +239,7 @@ btn.twoPlayersBtn.addEventListener("click", function() {
         create_TwoPlayers_input();
     }
     if (playOnline) {
+        btn.createRoomBtn.classList.remove("hidden-element");
         btn.createRoomBtn.classList.remove('disabled');
         if (join === true)
             showSection('sessions');
