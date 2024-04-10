@@ -43,13 +43,17 @@ class oauth_login(APIView):
     permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
         code = request.GET.get('code')
-        data = {
+        print('code', code)
+        data = {  
             'grant_type': 'authorization_code',
             'code': code,
             'redirect_uri': settings.OAUTH_REDIRECT_URI,
             'client_id': settings.OAUTH_CLIENT_ID,
             'client_secret': settings.OAUTH_CLIENT_SECRET,
         }
+        print('1', settings.OAUTH_REDIRECT_URI)
+        print('2', settings.OAUTH_CLIENT_ID)
+        print('3', settings.OAUTH_CLIENT_SECRET )
         response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
         if response.status_code != 200:
             print(response.json())
