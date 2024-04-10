@@ -24,24 +24,25 @@ services:
      - pong
     env_file: .env
 
-  worker:
-    image: django:v1
-    container_name: django_background_worker
-    build: ./requirements/backend/django
-    restart: on-failure
-    command: >
-     sh -c "python manage.py makemigrations &&
-            python manage.py migrate &&
-            python manage.py process_tasks"
-    ports:
-     - "8001:8000"
-    volumes:
-      - ./requirements/backend/django/ft_transcendence:/app
-    networks:
-      - pong
-    depends_on:
-      - django
-    env_file: .env
+  # worker:
+  #   image: django:v1
+  #   container_name: django_background_worker
+  #   build: ./requirements/backend/django
+  #   restart: on-failure
+  #   command: >
+  #    sh -c "python manage.py makemigrations &&
+  #           python manage.py migrate &&
+  #           python manage.py startbackgroundtasks &&
+  #           python manage.py process_tasks"
+  #   ports:
+  #    - "8001:8000"
+  #   volumes:
+  #     - ./requirements/backend/django/ft_transcendence:/app
+  #   networks:
+  #     - pong
+  #   depends_on:
+  #     - django
+  #   env_file: .env
 
   redis:
     image: redis:latest

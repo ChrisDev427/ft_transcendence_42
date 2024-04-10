@@ -144,7 +144,7 @@ function displaySpinner_dash(idDiv) {
 //       // push in 'user_profiles[]' all profiles except current user and id=1(superUser)
 //       if (data[i].username !== sessionUsername && data[i].id !== 1 && data[i].is_active === true) {
 //         totalUsers++;
-       
+
 //         // console.log('fetch accounts = ', data[i].username);
 //         fetchUserProfile(data[i].username)
 //         .then((user) => {
@@ -157,12 +157,12 @@ function displaySpinner_dash(idDiv) {
 //         })
 //         .catch((error) => {
 //           console.error('Error : fetchUserProfile() called from get_users_data()', error);
-          
+
 //         });
 //       }
 //     }
 //     // console.log(user_profiles);
-    
+
 
 
 
@@ -230,7 +230,7 @@ function fetchUserProfile(username) {
 }
 
 function fetchAccounts() {
-  
+
   return fetch(domainPath + '/api/account/')
     .then((response) => {
       if (!response.ok) {
@@ -258,7 +258,7 @@ document.getElementById('searchUserBtn').addEventListener('click', function() {
     // const matchingUsernames = [];
     const matchedUsernames = compare_input_usernames(input.value)
     handleMatchedUsernames(matchedUsernames);
-    
+
   }
 })
 
@@ -281,7 +281,7 @@ function compare_input_usernames(value) {
 
 function handleMatchedUsernames(matchedUsernames) {
 
-  
+
   if (matchedUsernames.length === 0) {
     // console.log("Usernames correspondants :", matchedUsernames);
 
@@ -293,7 +293,7 @@ function handleMatchedUsernames(matchedUsernames) {
     text.textContent = "No match found !";
     div.appendChild(text);
     document.getElementById('searchFriend-cardArea').appendChild(div);
-    
+
 
     document.getElementById('searchUserInput').value = ''
     setTimeout( function() {
@@ -303,13 +303,13 @@ function handleMatchedUsernames(matchedUsernames) {
 
     displaySpinner_dash('searchFriend-cardArea');
     for (let i = 0; i < matchedUsernames.length; i ++) {
-      
+
       // console.log("Usernames :", matchedUsernames[i]);
-      
+
       for (let j = 0; j < user_profiles.length; j ++) {
-        
+
         if (matchedUsernames[i] === user_profiles[j].user.username) {
-          
+
           // console.log(user_profiles[j]);
           searchUser_createContent(user_profiles[j], i)
         }
@@ -336,11 +336,11 @@ function isFriend(usernameFounded) {
 
   for (let i = 0; i < friendsArray.length; i ++) {
     if (usernameFounded === friendsArray[i][0]) {
-      console.log(usernameFounded + ' is a friend');
+      // console.log(usernameFounded + ' is a friend');
       return true;
     }
   }
-  console.log(usernameFounded + ' is not a friend !');
+  // console.log(usernameFounded + ' is not a friend !');
   return false;
 }
 
@@ -363,7 +363,7 @@ function cleanElement(id) {
 }
 
 async function getGamesInfos(games) {
-  
+
   let pointGained = 0;
   let pointLost = 0;
   verifyToken();
@@ -388,7 +388,7 @@ async function getGamesInfos(games) {
       const score = data.final_score.split(':');
       const scorePlayer_1 = parseInt(score[0]);
       const scorePlayer_2 = parseInt(score[1]);
-      gameHistory_createContent(data, scorePlayer_1, scorePlayer_2); 
+      gameHistory_createContent(data, scorePlayer_1, scorePlayer_2);
 
       if (data.winner === sessionUsername) {
         pointGained += 10;

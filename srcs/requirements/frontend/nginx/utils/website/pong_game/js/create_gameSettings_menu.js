@@ -151,8 +151,10 @@ function init_Tournament_mode_buttons() {
         sixteenPlayersBtn.classList.add('disabled');
 
         tournamentSize = 4;
-
-        create_Tournament_inputs();
+        if (playLocal)
+            create_Tournament_inputs();
+        if (playOnline)
+            create_tournament_room();
     });
 
     heightPlayersBtn.addEventListener('click', function() {
@@ -164,8 +166,10 @@ function init_Tournament_mode_buttons() {
         sixteenPlayersBtn.classList.add('disabled');
 
         tournamentSize = 8;
-
-        create_Tournament_inputs();
+        if (playLocal)
+            create_Tournament_inputs();
+        if (playOnline)
+            create_tournament_room();
     });
 
     sixteenPlayersBtn.addEventListener('click', function() {
@@ -177,8 +181,10 @@ function init_Tournament_mode_buttons() {
         sixteenPlayersBtn.classList.add('btn-info');
 
         tournamentSize = 16;
-
-        create_Tournament_inputs();
+        if (playLocal)
+            create_Tournament_inputs();
+        if (playOnline)
+            create_tournament_room();
     });
 }
 
@@ -276,56 +282,56 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (match) {
             const sessionId = match[1];
-            console.log('Joining session with ID:', sessionId);
+            // console.log('Joining session with ID:', sessionId);
         }
     });
 });
 
-function  sessions_createContent(session, index) {
+// function  sessions_createContent(session, index) {
 
-    document.getElementById('sessionListeEmpty').classList.add('hidden-element');
+//     document.getElementById('sessionListeEmpty').classList.add('hidden-element');
 
-    const div = document.createElement('div');
-    div.id = 'joinCard' + index;
-    div.classList = 'col-auto m-2 p-3 rounded-4 shadow';
+//     const div = document.createElement('div');
+//     div.id = 'joinCard' + index;
+//     div.classList = 'col-auto m-2 p-3 rounded-4 shadow';
 
-    const title = document.createElement('h5');
-    title.classList = 'fs-3 fw-bold text-info text-center';
-    title.textContent = 'Room ' + index;
-    div.appendChild(title);
+//     const title = document.createElement('h5');
+//     title.classList = 'fs-3 fw-bold text-info text-center';
+//     title.textContent = 'Room ' + index;
+//     div.appendChild(title);
 
-    const creator = document.createElement('h5');
-    creator.classList = 'fs-5 fw-bold text-secondary text-center';
-    creator.textContent = 'Creator : ' + session.CreatorUsername;
-    div.appendChild(creator);
+//     const creator = document.createElement('h5');
+//     creator.classList = 'fs-5 fw-bold text-secondary text-center';
+//     creator.textContent = 'Creator : ' + session.CreatorUsername;
+//     div.appendChild(creator);
 
-    const level = document.createElement('h5');
-    level.classList = 'fs-5 fw-bold text-secondary text-center';
-    level.textContent = 'Level : ' + session.level;
-    div.appendChild(level);
+//     const level = document.createElement('h5');
+//     level.classList = 'fs-5 fw-bold text-secondary text-center';
+//     level.textContent = 'Level : ' + session.level;
+//     div.appendChild(level);
 
-    const joinBtn = document.createElement('h5');
-    joinBtn.id = 'joinRoomBtn';
-    joinBtn.classList = 'fs-3 fw-bold text-success text-center';
-    joinBtn.textContent = 'Play !';
-    joinBtn.role = 'button';
-    div.appendChild(joinBtn);
+//     const joinBtn = document.createElement('h5');
+//     joinBtn.id = 'joinRoomBtn';
+//     joinBtn.classList = 'fs-3 fw-bold text-success text-center';
+//     joinBtn.textContent = 'Play !';
+//     joinBtn.role = 'button';
+//     div.appendChild(joinBtn);
 
-    document.getElementById('sessionsList').appendChild(div);
+//     document.getElementById('sessionsList').appendChild(div);
 
-    joinBtn.addEventListener('click', function() {
-        joinSession(session, index, peer);
-    })
+//     joinBtn.addEventListener('click', function() {
+//         joinSession(session, index, peer);
+//     })
 
 
-}
+// }
 
 
 function create_room() {
 
     peer = new SimplePeer({initiator: true})
     peer.once('signal', (dataPeer) => {
-        console.log('PeerCreator signal:', dataPeer);
+        // console.log('PeerCreator signal:', dataPeer);
         socket.send(JSON.stringify({ messageType: 'createSession', level:level , peerId: dataPeer, paddleHeight: paddleHeight}));
     });
 
@@ -386,7 +392,7 @@ function create_room() {
                 mainDiv.appendChild(secDiv);
 
                 document.getElementById('gameMenu').appendChild(mainDiv);
-                
+
                 cancelBtn.addEventListener('click', function() {
 
                     document.getElementById('roomCreatedDiv').remove();
@@ -396,13 +402,13 @@ function create_room() {
                     socket.send(message);
                     location.reload();
                 })
-                
+
 
             }
             else {
                 //close le peer
                 peer.close();
-                console.log("Tu es deja dans une room");
+                // console.log("Tu es deja dans une room");
             }
         }
 

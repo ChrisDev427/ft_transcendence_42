@@ -16,14 +16,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='userprofile',
-            name='games_id',
-            field=models.ManyToManyField(blank=True, to='game.Game'),
-        ),
-        migrations.AddField(
-            model_name='userprofile',
-            name='user',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
-        ),
+        # migrations.AddField(
+        #     model_name='userprofile',
+        #     name='games_id',
+        #     field=models.ManyToManyField(blank=True, to='game.Game'),
+        # ),
+        # migrations.AddField(
+        #     model_name='userprofile',
+        #     name='user',
+        #     field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+        # ),
     ]

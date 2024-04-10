@@ -175,6 +175,14 @@
         <h1 class="display-1 fw-bold text-info text-center">Pong</h1>
         <hr class="text-info">
 
+        <div id='countdown' class="container mt-5 hidden-element">
+          <div class="row justify-content-center">
+              <div class="col-md-6 text-center">
+                  <h2 id="countdown-text" class="text-info">waiting players...</h2>
+              </div>
+          </div>
+      </div>
+
         <div class="col d-flex justify-content-end p-2">
           <button type="button" class="btn btn-sm btn-outline-info me-1 bagelFatOne" id="resetBtnUI">reset</button>
           <button type="button" class="btn btn-sm btn-outline-danger bagelFatOne" id="clBtnUI">quit</button>
@@ -263,7 +271,7 @@
           <!-- <div id="surrenderMessage" class="container p-3 mt-5  unvisible" >
             <h5  class="display-3 fw-bold cl-green text-center ">CCC left the game</h5>
             <h5  class="display-5 fw-bold cl-green text-center ">You won by forfeit !</h5>
-           
+
           </div>
  -->
 
@@ -810,6 +818,15 @@
       </div>
     </section>
 
+    <section id="tournament" class="fade-in">
+      <div class="container bg-white rounded-bottom-4 shadow " >
+        <h1 class="display-1 fw-bold text-info text-center">Tournaments</h1>
+        <h5 id="tournamentListeEmpty" class="fs-3 fw-bold text-secondary text-center mt-4">No tournament available</h5>
+        <div style="overflow-y: auto;  max-height: 450px;">
+          <div id="tournamentList" class="row p-3 d-flex justify-content-center"></div>
+        </div>
+      </div>
+
   </main>
 
   <footer id="footer" class="bg-info fixed-bottom" >
@@ -890,6 +907,10 @@
     <script src="pong_game/js/sessionsChat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-peer@9.11.1/simplepeer.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
+    <script src="pong_game/js/pong_ia.js"></script>
+    <script src="pong_game/js/create_tournament_UI.js"></script>
+    <script src="pong_game/js/tournament/matchmaking_online.js"></script>
 </body>
 
 </html>

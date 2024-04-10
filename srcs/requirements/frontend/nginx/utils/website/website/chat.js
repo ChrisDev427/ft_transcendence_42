@@ -21,7 +21,7 @@ function chatGeneral_createContent(username, message, time, messageType) {
     small.textContent = message;
 
     if (messageType !== 'classic') {
-    
+
         const div = document.createElement('div');
         if (messageType === 'online') {
             if (username === sessionUsername) {
@@ -34,6 +34,10 @@ function chatGeneral_createContent(username, message, time, messageType) {
         else if (messageType === 'offline'){
             small.textContent = username + ': is disconnected';
             div.classList = ' fw-bold fst-italic text-danger text-center fade-in mx-auto';
+        }
+        else if (messageType === 'tournament'){
+            small.textContent = 'a tournament match is starting';
+            div.classList = ' fw-bold fst-italic text-dark text-center fade-in mx-auto';
         }
         div.style.maxWidth = '210px';
         div.appendChild(small);
@@ -357,7 +361,7 @@ function inviteFriendToPlayFromChat_createContent(username) {
 
     document.getElementById('chat-area').appendChild(mainDiv);
 
-    cancelInviteToPlayBtn.addEventListener('click', function() {
+    cancelBtn.addEventListener('click', function() {
         mainDiv.remove();
         document.getElementById('chat-messages-general').classList.remove('unvisible');
         document.getElementById('mainChat-form').classList.remove('unvisible');
@@ -389,18 +393,20 @@ function inviteFriendToPlayFromChat_createContent(username) {
 
 function inviteFriendCreateSession_createContent(username) {
 
-    
+
     peer = new SimplePeer({initiator: true})
     peer.once('signal', (dataPeer) => {
-        console.log('PeerCreator signal:', dataPeer);
+        // console.log('PeerCreator signal:', dataPeer);
         socket.send(JSON.stringify({ messageType: 'inviteSession', level:level , peerId: dataPeer, paddleHeight: paddleHeight, usernameInvited: username}));
     });
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.messageType === 'confirmInvite') {
-            console.log("confirmInvite")
+            // console.log("confirmInvite")
             if (data.confirme == "true"){
+                if (document.getElementById('inviteToPlayDiv') == null)
+                    return;
                 const mainDiv = document.createElement('div');
                 mainDiv.id = 'inviteToPlayDiv';
                 mainDiv.classList = 'col-auto p-3 m-2 bg-white shadow-lg rounded-3 fade-in';
@@ -449,29 +455,49 @@ function inviteFriendCreateSession_createContent(username) {
 
                 document.getElementById('chat-area').appendChild(mainDiv);
 
-                cancelInviteToPlayBtn.addEventListener('click', function() {
+                cancelBtn.addEventListener('click', function() {
                     mainDiv.remove();
                     document.getElementById('chat-messages-general').classList.remove('unvisible');
                     document.getElementById('mainChat-form').classList.remove('unvisible');
                     const messageContainer = document.getElementById('chat-area');
                     messageContainer.scrollTop = messageContainer.scrollHeight;
 
-                    const message = JSON.stringify({ messageType: 'quitSession' });
+                    let message = JSON.stringify({ messageType: 'quitSession' });
                     socket.send(message);
-                    peer.close;
-                    location.reload();
+
+                    message = JSON.stringify({ messageType: 'cancelInvit' , usernameInvited: username});
+                    socket.send(message);
+                    peer.destroy();
+                    // location.reload();
                 })
             } else {
 
                 document.getElementById('chat-messages-general').classList.remove('unvisible');
                 document.getElementById('mainChat-form').classList.remove('unvisible');
-                console.log("Tu es deja dans une room");
+                // console.log("Tu es deja dans une room");
                 peer.close;
-                
+
             }
         }
     });
 
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'denyInvit') {
+            peer.destroy();
+            document.getElementById('inviteToPlayDiv').remove();
+            document.getElementById('chat-messages-general').classList.remove('unvisible');
+            document.getElementById('mainChat-form').classList.remove('unvisible');
+            const messageContainer = document.getElementById('chat-area');
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+            // const parentDiv = inviteToPlayDiv.parentNode; // Récupère le parent de mainDiv
+
+            // Vérifie que le parent existe et que mainDiv est un enfant de ce parent
+            // if (parentDiv.contains(inviteToPlayDiv)) {
+                // parentDiv.removeChild(inviteToPlayDiv); // Supprime mainDiv du DOM
+            // }
+        }
+    });
     // console.log('Create game : ' + sessionUsername + ' VS ' + username + ' level : ' + level);
 
 
@@ -486,7 +512,7 @@ function inviteFriendCreateSession_createContent(username) {
 
 }
 
-function invitedToPlay_createContent(creatorUsername) {
+function invitedToPlay_createContent(session) {
 
     document.getElementById('chat-messages-general').classList.add('unvisible');
     // document.getElementById('chatProfile').classList.add('unvisible');
@@ -501,7 +527,7 @@ function invitedToPlay_createContent(creatorUsername) {
 
     const name = document.createElement('h5');
     name.classList = 'fs-3 pt-1 fw-bold text-info text-uppercase text-center';
-    name.textContent = creatorUsername;
+    name.textContent = session.CreatorUsername;
     secDiv.appendChild(name);
 
     const text = document.createElement('h5');
@@ -541,9 +567,83 @@ function invitedToPlay_createContent(creatorUsername) {
         document.getElementById('chat-messages-general').classList.remove('unvisible');
         document.getElementById('mainChat-form').classList.remove('unvisible');
         // CLOSE LA ROOM ?
+        socket.send(JSON.stringify({ messageType: 'denyInvit', session: session}));
     });
 
     acceptBtn.addEventListener('click', function() {
         // LANCER LA PARTIE ...
+        // console.log('Accept invite to play');
+        // console.log('sessionId :', session.sessionId);
+        socket.send(JSON.stringify({ messageType: 'join', sessionId: session.sessionId}));
+        socket.addEventListener('message', (event) => {
+            const data = JSON.parse(event.data);
+            if (data.messageType === 'confirmJoin')
+                if (data.confirme == "true") {
+                    peer2 = new SimplePeer({ initiator: false });
+                    // console.log('Peer2 created:', peer2);
+                    peer2.signal(data.peerCreator[0]);
+
+                    peer2.on('signal', (dataPeer) => {
+                        // console.log('Peer2 signal:', dataPeer);
+                        // console.log('sessionID:', session.sessionId);
+                        socket.send(JSON.stringify({ messageType: 'playerPeer', sessionId: session.sessionId, playerPeer: dataPeer }));
+                    });
+
+                    peer2.on('connect', () => {
+                        // console.log('Connected to peer2');
+                        leftPlayerName = session.CreatorUsername;
+                        rightPlayerName= sessionUsername;
+                        level = session.level;
+                        paddleHeight = session.paddleHeight
+                        playOnline = true;
+                        twoPlayers = true;
+                        start = true
+                        setPlayerNameToPrint(leftPlayerName, rightPlayerName);
+                        // printConsoleInfos();
+                        showSection("playPong");
+                        document.getElementById('gameDiv').classList.remove('hidden-element');
+                        peer2.on('connect', () => {
+                            // console.log("connecté au peerID : ", data.peerId);
+                        });
+                        peer2.on('data', (data) => {
+                            // Convertir les données en objet JavaScript si nécessaire
+                            const gameData = JSON.parse(data);
+                            // console.log('Nouvelles données de jeu reçues :', gameData);
+                            if (gameData.messageType === 'reset') {
+                                rightPaddleY = gameData.rightPaddleY;
+                                rightPaddleHand = gameData.rightPaddleHand;
+                            }
+                            else {
+                            // Traiter les nouvelles données de jeu
+                                processGameData(gameData);
+                            }
+
+                        });
+                        // console.log("level :", level)
+                        // console.log("paddleHeight :", paddleHeight)
+
+                        navbarSwitch('off');
+                        onlineRun(peer2);
+
+                        mainDiv.remove();
+                        document.getElementById('chat-messages-general').classList.remove('unvisible');
+                        document.getElementById('mainChat-form').classList.remove('unvisible');
+                        const mainChat = document.getElementById('mainChat');
+                        mainChat.classList.add('unvisible');
+                    }
+                    );
+                }
+        });
+    });
+
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.messageType === 'cancelInvit') {
+                mainDiv.remove();
+                document.getElementById('chat-messages-general').classList.remove('unvisible');
+                document.getElementById('mainChat-form').classList.remove('unvisible');
+                const messageContainer = document.getElementById('chat-area');
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
     });
 }

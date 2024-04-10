@@ -54,7 +54,7 @@ async function fetchFriendRequest() {
     if (!response.ok) {
       console.error("Error : Check Request " + response.status);
       const errorData = await response.json();
-      console.log("Error : Check Request", errorData);
+      // console.log("Error : Check Request", errorData);
       throw new Error("Error : Check Request");
     }
     // console.log("Check Request Ok !");
@@ -67,19 +67,19 @@ async function fetchFriendRequest() {
 async function checkPendingRequest(username) {
     try {
         const data = await fetchFriendRequest();
-    
+
         if (data.length !== 0) {
-          console.log("checkPendingRequest() Data = ", data);
-    
+          // console.log("checkPendingRequest() Data = ", data);
+
           for (let i = 0; i < data.length; i++) {
             if (data[i].is_accepted === false) {
               const requester_name = await fetchUsername(data[i].friend1);
               // console.log('requester name = ' + requester_name);
               // console.log('session name = ' + sessionUsername);
-    
+
               if (requester_name === sessionUsername) {
                 const requested_name = await fetchUsername(data[i].friend2);
-                
+
                 if (requested_name === username) {
                     // console.log('requester name = ' + requester_name);
                     // console.log('username = ' + username);
@@ -179,16 +179,16 @@ function friendRequest_createContent(requesterName, requestId) {
   document.getElementById("requestDiv").appendChild(mainDiv);
 
   document.getElementById("denyBtn" + requestId).addEventListener("click", function () {
-    console.log('deny pushed !');
+    // console.log('deny pushed !');
       responseFriendRequest(requesterName, requestId, false)
       // getDashboardInfos();
-       
+
     });
   document.getElementById("acceptBtn" + requestId).addEventListener("click", function () {
-    console.log('accept pushed !');
+    // console.log('accept pushed !');
       responseFriendRequest(requesterName, requestId, true)
       // getDashboardInfos();
-       
+
     });
 }
 
@@ -214,7 +214,7 @@ function seeFriendRequest() {
 }
 
 function closeFriendRequest() {
-  
+
   const childCount_friendListDiv = document.getElementById('friendShipList-dashboard').childElementCount;
   if (childCount_friendListDiv > 0) {
     document.getElementById('friendShipList-dashboard').classList.remove('hidden-element');
@@ -225,12 +225,12 @@ function closeFriendRequest() {
   document.getElementById("seeFriendRequest").classList.remove("icon-disabled");
   document.getElementById("seeFriendRequestCloseBtn").classList.add("hidden-element");
   document.getElementById("requestDiv").classList.add("hidden-element");
- 
+
   getDashboardInfos();
 }
 
 async function responseFriendRequest(requesterName, requestId, response) {
-  console.log("responseFriendRequest()" + requestId);
+  // console.log("responseFriendRequest()" + requestId);
   await fetchResponseRequest(requesterName, response);
   document.getElementById("requestDiv" + requestId).remove();
 
@@ -271,10 +271,10 @@ async function fetchResponseRequest(requesterName, boolResponse) {
     if (!response.ok) {
       console.error("Error : Response Request " + response.status);
       const errorData = await response.json();
-      console.log("Error : Accept Request", errorData);
+      // console.log("Error : Accept Request", errorData);
       throw new Error("Error : Response Request");
     }
-    console.log("Response Request Ok !");
+    // console.log("Response Request Ok !");
     return await response.json();
   } catch (error) {
     console.error("Error : ", error);
@@ -298,11 +298,11 @@ async function fetchRemoveFriendship(friendToRemove) {
     if (!response.ok) {
       console.error("Error : Remove Friend " + response.status);
       const errorData = await response.json();
-      console.log("Error : move Friend", errorData);
+      // console.log("Error : move Friend", errorData);
       throw new Error("Error : Remove Friend");
     }
-    console.log("Remove Friend Ok !");
-    
+    // console.log("Remove Friend Ok !");
+
     return await response.json();
   } catch (error) {
     console.error("Error : ", error);
@@ -310,7 +310,7 @@ async function fetchRemoveFriendship(friendToRemove) {
 }
 
 function askFriend(toAskAsFriend) {
-  console.log("to ask as friend = " + toAskAsFriend);
+  // console.log("to ask as friend = " + toAskAsFriend);
   verifyToken();
 
   return fetch(domainPath + "/api/friend_management/", {
@@ -326,7 +326,7 @@ function askFriend(toAskAsFriend) {
   .then((response) => {
     if (response.ok) {
       // Demande d'ami réussie
-      console.log("asking " + toAskAsFriend + " as friend ok !", response);
+      // console.log("asking " + toAskAsFriend + " as friend ok !", response);
       return response.json();
     } else {
       // Gestion des erreurs

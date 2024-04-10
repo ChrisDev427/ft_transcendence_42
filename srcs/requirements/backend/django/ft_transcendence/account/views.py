@@ -79,7 +79,7 @@ class oauth_login(APIView):
                 user_profile.avatar.save(user.username + '.jpg', ContentFile(new_avatar.content))
                 user_profile.avatar.name = '/api/account/avatar/' + user.username + '.jpg'
             user_profile.save()
-        user_profile.is_connected = True
+        # user_profile.is_connected = True
         user_profile.save()
         refresh = RefreshToken.for_user(user)
         return Response({'refresh':str(refresh), 'access': str(refresh.access_token)}, status=status.HTTP_200_OK)
@@ -186,7 +186,7 @@ class ProfileView(APIView):
                     return Response({"Email verification not sent, email update aborted"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
                 user.email = email
                 user.is_active = False
-                user_profile.is_connected = False
+                # user_profile.is_connected = False
                 user_profile.save()
                 user.save()
             if request_copy.get('new_password') and user.check_password(request_copy.get('password')):
@@ -283,7 +283,7 @@ class LoginView(TokenObtainPairView):
                     totp_secret = pyotp.TOTP(user_profile.totp_secret)
                     if not totp_secret.verify(totp):
                         return Response({"totp not match"}, status=status.HTTP_401_UNAUTHORIZED)
-                    user_profile.is_connected = True
+                    # user_profile.is_connected = True
                     user_profile.save()
                     profile_serializer = UserProfileSerializer(user_profile, context={'request': request})
                     return Response({**response.data, **profile_serializer.data}, status=status.HTTP_200_OK)
@@ -295,7 +295,7 @@ class LoginView(TokenObtainPairView):
                     user_profile.otp = None
                 else:
                     return Response({"otp not match"}, status=status.HTTP_401_UNAUTHORIZED)
-            user_profile.is_connected = True
+            # user_profile.is_connected = True
             user_profile.save()
             profile_serializer = UserProfileSerializer(user_profile, context={'request': request})
         return Response({**response.data, **profile_serializer.data}, status=status.HTTP_200_OK)
@@ -307,7 +307,7 @@ class LogoutView(APIView):
             user_profile = UserProfile.objects.filter(user=user).first()
         except UserProfile.DoesNotExist:
             return Response("no user connected", status=status.HTTP_404_NOT_FOUND)
-        user_profile.is_connected = False
+        # user_profile.is_connected = False
         user_profile.save()
         return Response("user logout", status=status.HTTP_204_NO_CONTENT)
 
@@ -389,14 +389,14 @@ class SendOTPView(APIView):
         user_profile.save()
         return Response({'Verification code sent successfully.'}, status=status.HTTP_204_NO_CONTENT)
 
-class ActivityCheckView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+# class ActivityCheckView(APIView):
+#     permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request):
-        user = request.user
-        try:
-            user_profile = UserProfile.objects.get(user=user)
-            user_profile.update_last_activity()  # Met à jour la dernière activité
-            return Response({'status': 'Activity updated'})
-        except UserProfile.DoesNotExist:
-            return Response({'error': 'UserProfile not found'}, status=404)
+#     def post(self, request):
+#         user = request.user
+#         try:
+#             user_profile = UserProfile.objects.get(user=user)
+#             user_profile.update_last_activity()  # Met à jour la dernière activité
+#             return Response({'status': 'Activity updated'})
+#         except UserProfile.DoesNotExist:
+#             return Response({'error': 'UserProfile not found'}, status=404)

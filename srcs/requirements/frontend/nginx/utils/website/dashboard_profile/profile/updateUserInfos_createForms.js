@@ -11,25 +11,25 @@ function handleAvatar_createForm() {
     formDiv.id = 'modifyAvatar-form';
     formDiv.method = 'post';
     mainDiv.appendChild(formDiv);
-    
-    
+
+
     const input = document.createElement('input');
     input.accept = 'image/*';
     input.name = 'avatar';
     input.id = 'avatarInput';
-    
+
     input.type = 'file';
     input.classList = 'form-control form-control-sm my-4 border-info text-secondary text-center';
-    
+
     formDiv.appendChild(input);
-    
+
 
     const rowDiv = document.createElement('div');
     rowDiv.classList = 'row mt-2';
-    
+
     const col1Div = document.createElement('div');
     col1Div.classList = 'col-6';
-    
+
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'cancelBtn';
     cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow bagelFatOne';
@@ -40,7 +40,7 @@ function handleAvatar_createForm() {
 
     const col2Div = document.createElement('div');
     col2Div.classList = 'col-6';
-    
+
     const applyBtn = document.createElement('button');
     applyBtn.id = 'applyBtn';
     applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow bagelFatOne';
@@ -59,7 +59,7 @@ function handleAvatar_createForm() {
     });
 
     document.getElementById('applyBtn').addEventListener('click', function () {
-        console.log('apply btn pushed');
+        // console.log('apply btn pushed');
         modifyAvatar_API();
     });
 
@@ -126,7 +126,7 @@ function handleBio_createForm() {
     formDiv.appendChild(rowDiv);
     document.getElementById('bioDiv').appendChild(mainDiv);
 
-    
+
     document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyForm').remove();
         document.getElementById('bioProfileDiv').classList.remove('hidden-element');
@@ -162,7 +162,7 @@ function handleInfos_createForm() {
         input.placeholder = inputsName[i];
         input.type = 'text';
         input.classList = 'form-control mb-2 border-info text-secondary text-center';
-       
+
         formDiv.appendChild(input);
     }
 
@@ -201,7 +201,7 @@ function handleInfos_createForm() {
     });
 
     document.getElementById('applyBtn').addEventListener('click', function () {
-        console.log('apply btn pushed');
+        // console.log('apply btn pushed');
 
         modifyInfos_API();
     });
@@ -289,7 +289,7 @@ function handlePassword_createForm() {
     const formDiv = document.createElement('form');
     formDiv.id = 'modifyPassword-form';
     formDiv.method = 'patch';
-    
+
 
     let input = document.createElement('input');
     input.id = 'currentPassword';
@@ -351,7 +351,7 @@ function handlePassword_createForm() {
 }
 
 function handle2FA_createForm() {
-    
+
     document.getElementById('authProfile').classList.add('hidden-element');
     disableProfileBtn();
     const mainDiv = document.createElement('div');
@@ -413,7 +413,7 @@ function handle2FA_createForm() {
 
     const rowDiv = document.createElement('div');
     rowDiv.classList = 'row mt-2';
-  
+
 
     const col1Div = document.createElement('div');
     col1Div.classList = 'col-6';
@@ -438,13 +438,13 @@ function handle2FA_createForm() {
     formDiv.appendChild(rowDiv);
     document.getElementById('authDiv').appendChild(mainDiv);
 
-    
+
     document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyForm').remove();
         document.getElementById('authProfile').classList.remove('hidden-element');
         enableProfileBtn();
     });
-    
+
     document.getElementById('applyBtn').addEventListener('click', function () {
         // if(document.getElementById('2FA-btn-on').checked = true) {
         //     document.getElementById('mobileDiv').classList.remove('hidden-element');
@@ -452,19 +452,19 @@ function handle2FA_createForm() {
         //     document.getElementById('mobileDiv').classList.add('hidden-element');
         // }
         modify2FA_API();
-       
+
     });
 
-    
+
     document.getElementById('two_fa_on').addEventListener('click', function (element) {
-        
+
         element.checked = true;
         document.getElementById('two_fa_off').checked = false;
         document.getElementById('authTitle').classList.add('text-success');
     });
 
     document.getElementById('two_fa_off').addEventListener('click', function (element) {
-       
+
         element.checked = true;
         document.getElementById('two_fa_on').checked = false;
         document.getElementById('authTitle').classList.remove('text-success');
@@ -483,7 +483,7 @@ function handle2FA_createForm() {
 //     textBtn.textContent = 'authenticate with mobile';
 
 //     mainDiv.appendChild(textBtn);
-    
+
 //     if (two_fa === true) {
 //         document.getElementById('authTitleDiv').appendChild(mainDiv);
 //         document.getElementById('authTitle').classList.add('text-success');
