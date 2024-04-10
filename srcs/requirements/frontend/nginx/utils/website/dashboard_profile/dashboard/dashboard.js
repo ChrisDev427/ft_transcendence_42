@@ -630,13 +630,14 @@ function gameHistory_createContent(gameInfos, score1, score2) {
 
   // infos
   const values = [
+    ['fa-solid fa-table-tennis text-secondary', gameInfos.game_type],
     ['fa-solid fa-gauge-high text-secondary', gameInfos.difficulty],
     ['fa-solid fa-calendar-days text-secondary', timeValues.date],
     ['fa-regular fa-clock text-secondary', timeValues.time],
     ['fa-solid fa-stopwatch text-secondary', timeValues.duration]
   ];
 
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 5; i++) {
 
     const levelDiv_row = document.createElement('div');
     levelDiv_row.classList = 'row d-felx justify-content-between';
@@ -652,7 +653,11 @@ function gameHistory_createContent(gameInfos, score1, score2) {
     levelDiv_text.classList = 'col-auto';
     const text = document.createElement('p');
     text.classList = 'fw-bold text-secondary mb-0 bagelFatOne';
-    text.textContent = values[i][1];
+    if (i == 0 && gameInfos.game_type === 'pvp') {
+        text.textContent = 'duel';
+    } else {
+      text.textContent = values[i][1];
+    }
     levelDiv_text.appendChild(text);
     levelDiv_row.appendChild(levelDiv_text);
 

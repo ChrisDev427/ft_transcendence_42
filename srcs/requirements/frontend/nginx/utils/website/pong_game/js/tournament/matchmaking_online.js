@@ -245,11 +245,10 @@ function ManageOnlineTournament(tournamentData) {
 function winnerAnnoucement(time) {
     return new Promise((resolve, reject) => {
         let count = 10; // Compte à rebours initial
-        const countdownElement = document.getElementById('countdown');
+        const countdownElement = document.getElementById('countdown-text');
 
         // Mise à jour du texte du compte à rebours toutes les secondes
         const countdownInterval = setInterval(function() {
-			countdownElement.classList.add('text-info');
             countdownElement.textContent = "Congratulations! You won the tournament!";
             count--;
 
@@ -266,7 +265,7 @@ function winnerAnnoucement(time) {
 function startCountdown(time) {
     return new Promise((resolve, reject) => {
         let count = 10; // Compte à rebours initial
-        const countdownElement = document.getElementById('countdown');
+        const countdownElement = document.getElementById('countdown-text');
 
         // Mise à jour du texte du compte à rebours toutes les secondes
         const countdownInterval = setInterval(function() {

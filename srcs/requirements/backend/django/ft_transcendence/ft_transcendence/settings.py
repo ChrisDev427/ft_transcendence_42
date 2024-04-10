@@ -140,7 +140,7 @@ DATABASES = {
         'HOST': 'postgresql_container',
         'PORT': '5432',
     }
-}
+} 
 
 
 # Password validation
@@ -211,7 +211,7 @@ EMAIL_USE_TLS = True
 EMAIL_AUTHENTICATION = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_APPLICATION_PASSWORD')
-EMAIL_FROM = "Pong_Verfication"
+EMAIL_FROM = "Pong_Verfication" 
 
 HTTPSMS_KEY = os.environ.get('HTTPSMS_KEY')
 HTTPSMS_URL = os.environ.get('HTTPSMS_URL')
@@ -221,7 +221,7 @@ HTTPSMS_PHONE = os.environ.get('HTTPSMS_PHONE')
 
 OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
 OAUTH_CLIENT_SECRET = os.environ.get('OAUTH_CLIENT_SECRET')
-OAUTH_REDIRECT_URI = SITE_URL
+OAUTH_REDIRECT_URI = os.environ.get('OAUTH_REDIRECT_URI')
 OAUTH_PASSWORD_42 = os.environ.get('OAUTH_PASSWORD_42')
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
