@@ -87,14 +87,15 @@ btn.onLineBtn.addEventListener("click", function() {
         btn.createRoomBtn.classList.add("hidden-element");
 
         document.getElementById('onlineMenu').classList.remove('hidden-element');
-        document.getElementById('chat-container_session').classList.remove('hidden-element');
+        // document.getElementById('chat-container_session').classList.remove('hidden-element');
         playLocal = false;
         playOnline = true;
 
 
         join = false;
         playTournament = false;
-        } else {
+
+    } else {
 
         navbarSwitch('off');
         document.getElementById('containerGameMenu').querySelectorAll('button').forEach((element) => {
@@ -389,7 +390,7 @@ function reset_UI() {
     document.getElementById('dificultyMenu').classList.add('hidden-element');
     document.getElementById('gameModeMenu').classList.add('hidden-element');
     document.getElementById('onlineMenu').classList.add('hidden-element');
-    document.getElementById('chat-container_session').classList.add('hidden-element');
+    // document.getElementById('chat-container_session').classList.add('hidden-element');
 
 }
 
