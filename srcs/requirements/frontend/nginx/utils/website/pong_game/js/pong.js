@@ -126,6 +126,8 @@ function onlineRun(peer) {
             // console.log(spaceBarPressed);
             spaceRight = true;
             sendGameUpdate(peer);
+            sendGameUpdate(peer);
+            sendGameUpdate(peer);
             spaceBarPressed = false;
             spaceRight = false;
         }
@@ -157,8 +159,6 @@ function onlineRun(peer) {
         // sendBallPositions(peer, ballX, ballY);
         sendGameUpdate(peer);
         if (!start){
-            printGame();
-            printInfos();
             if (leftPlayerScore >= 10){
                 winner = leftPlayerName;
                 const message = JSON.stringify({messageType : "endGame", leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : winner});
@@ -169,6 +169,8 @@ function onlineRun(peer) {
                 const message = JSON.stringify({messageType : "endGame", leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : winner});
                 socket.send(message);
             }
+            printGame();
+            printInfos();
             peer.destroy();
             return;
         }
@@ -284,14 +286,17 @@ function tournamentRun(peer, tournamentData, match) {
             // console.log(spaceBarPressed);
             spaceRight = true;
             sendGameUpdate(peer);
+            sendGameUpdate(peer);
+            sendGameUpdate(peer);
             spaceBarPressed = false;
             spaceRight = false;
         }
         if (!start){
+            console.log('first if');
             printGame();
             printInfos();
             peer.destroy();
-            // window.location.href = domainPath + "/#playPong";
+            window.location.href = domainPath;
             return;
         }
 
@@ -317,8 +322,10 @@ function tournamentRun(peer, tournamentData, match) {
         // sendBallPositions(peer, ballX, ballY);
         sendGameUpdate(peer);
         if (!start){
+            console.log('second if');
             printGame();
             printInfos();
+
             if (leftPlayerScore >= 10){
                 const quitButton = document.getElementById("quitGameBtn");
                 quitButton.classList.add("disabled");
@@ -335,13 +342,14 @@ function tournamentRun(peer, tournamentData, match) {
                 socket.send(message);
             }
             peer.destroy();
-            startCountdown(500).then(() => {
+            setTimeout(function() {
+            
                 window.location.href = domainPath;
-            });
+                location.reload();
+            }, 1000);
             // startCountdown(500).then(() => {
-            //     window.location.href = domainPath;
             // });
-            // return;
+            return;
         }
 
         // sendValue(peer, spaceBarPressed, rightPaddleHand, leftPaddleHand, leftPlayerScore, rightPlayerScore, ballLaunched);

@@ -225,6 +225,7 @@ function refreshAccessToken() {
     })
     .then(data => {
         localStorage.setItem('accessToken', data.access);
+        location.reload();
         // console.log('Token refreshed successfully');
     })
 }
@@ -244,7 +245,8 @@ function verifyToken() {
             // console.log('acces token verified');
 
         } else {
-            refreshAccessToken()
+            refreshAccessToken();
+
             // console.log('refreshAccessToken() called');
         }
     })

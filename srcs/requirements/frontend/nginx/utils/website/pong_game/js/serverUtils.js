@@ -16,7 +16,7 @@ function createPeer(sessionId)
 function waitForWebSocketConnection(username) {
     return new Promise((resolve, reject) => {
         if (!socket || socket.readyState !== WebSocket.OPEN)
-                     socket = new WebSocket('wss://10.12.9.1:8002/ws/general/?user_username=' + username);
+                     socket = new WebSocket('wss://10.12.2.6:8002/ws/general/?user_username=' + username);
 
         // username = username;
         socket.addEventListener('open', () => {
@@ -91,10 +91,12 @@ function waitForWebSocketConnection(username) {
         }
     });
 
+    let surrender_variable = 0
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
-        if (data.messageType === 'surrenderSession') {
+        if (data.messageType === 'surrenderSession' && surrender_variable == 0) {
             // console.log('data received', data);
+            surrender_variable = 1
             start = false;
             const message = JSON.stringify({ messageType: 'endGame', leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , sessionUsername : sessionUsername, winner : sessionUsername});
             socket.send(message);
@@ -104,9 +106,10 @@ function waitForWebSocketConnection(username) {
             } else {
                 surrenderMessage_createContent(rightPlayerName)
             }
+            console.log(leftPlayerName, rightPlayerName);
 
             function surrenderMessage_createContent(surrenderPlayerName) {
-
+        
                 document.getElementById('gameDiv').classList.add('hidden-element');
                 const div = document.createElement('div');
                 div.classList = 'container p-3 mt-5';
@@ -119,13 +122,16 @@ function waitForWebSocketConnection(username) {
                 div.appendChild(line_1);
                 div.appendChild(line_2);
                 document.getElementById('playPong').appendChild(div);
+                
             }
-
             setTimeout(function() {
+                div.remove();
                 window.location.href = domainPath;
+               
             }, 3000);
         }
     });
+
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.messageType === 'inviteSession') {
@@ -182,8 +188,8 @@ function waitForWebSocketConnection(username) {
             peer.on('connect', () => {
                 // console.log("connecté au peerID : ", data.playerPeer);
                 // console.log(data.player, "a rejoind la session", data.level);
-                leftPlayerName =sessionUsername;
-                rightPlayerName=data.player;
+                leftPlayerName = sessionUsername;
+                rightPlayerName = data.player;
 
                 if(start){
                     return
