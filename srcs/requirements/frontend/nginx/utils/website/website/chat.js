@@ -468,7 +468,7 @@ function inviteFriendCreateSession_createContent(username) {
                     message = JSON.stringify({ messageType: 'cancelInvit' , usernameInvited: username});
                     socket.send(message);
                     peer.destroy();
-                    // location.reload();
+                    location.reload();
                 })
             } else {
 
@@ -490,6 +490,7 @@ function inviteFriendCreateSession_createContent(username) {
             document.getElementById('mainChat-form').classList.remove('unvisible');
             const messageContainer = document.getElementById('chat-area');
             messageContainer.scrollTop = messageContainer.scrollHeight;
+            location.reload();
             // const parentDiv = inviteToPlayDiv.parentNode; // Récupère le parent de mainDiv
 
             // Vérifie que le parent existe et que mainDiv est un enfant de ce parent

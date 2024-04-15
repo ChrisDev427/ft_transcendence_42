@@ -16,7 +16,7 @@ function createPeer(sessionId)
 function waitForWebSocketConnection(username) {
     return new Promise((resolve, reject) => {
         if (!socket || socket.readyState !== WebSocket.OPEN)
-                     socket = new WebSocket('wss://10.12.2.6:8002/ws/general/?user_username=' + username);
+                     socket = new WebSocket('wss://10.12.5.4:8002/ws/general/?user_username=' + username);
 
         // username = username;
         socket.addEventListener('open', () => {
@@ -106,10 +106,10 @@ function waitForWebSocketConnection(username) {
             } else {
                 surrenderMessage_createContent(rightPlayerName)
             }
-            console.log(leftPlayerName, rightPlayerName);
+            // console.log(leftPlayerName, rightPlayerName);
 
             function surrenderMessage_createContent(surrenderPlayerName) {
-        
+
                 document.getElementById('gameDiv').classList.add('hidden-element');
                 const div = document.createElement('div');
                 div.classList = 'container p-3 mt-5';
@@ -122,12 +122,12 @@ function waitForWebSocketConnection(username) {
                 div.appendChild(line_1);
                 div.appendChild(line_2);
                 document.getElementById('playPong').appendChild(div);
-                
+
             }
             setTimeout(function() {
-                div.remove();
+                // div.remove();
                 window.location.href = domainPath;
-               
+
             }, 3000);
         }
     });
@@ -141,28 +141,6 @@ function waitForWebSocketConnection(username) {
         }
 
     });
-    // function handleKeyPress(event) {
-    //     if (event.key === 'Enter') {
-    //         sendMessageSession();
-    //     }
-    // }
-
-
-    // chat session
-    // socket.addEventListener('message', (event) => {
-    //     const messageContainer = document.getElementById('chat-messages');
-    //     const receivedMessage = JSON.parse(event.data);
-
-    //     if (receivedMessage.type === 'messageSession') {
-    //         const messages = receivedMessage.messages || [];
-    //         const messagesToDisplay = messages.slice(-10);
-    //         messageContainer.innerHTML = '';
-    //         messagesToDisplay.forEach(msg => {
-    //             messageContainer.innerHTML += `<div><strong>${msg.username}:</strong> ${msg.text}</div>`;
-    //         });
-    //         messageContainer.scrollTop = messageContainer.scrollHeight;
-    //     }
-    // });
 
 
     // start game for creator
@@ -216,11 +194,6 @@ function waitForWebSocketConnection(username) {
                     spaceRight = gameData.spaceRight;
 
                 });
-
-                // console.log("level :", level)
-                // console.log("level :", paddleHeight)
-                // console.log('data session', data.session);
-                // console.log('data is private', data.session.isPrivate);
                 onlineRun(peer);
                 // console.log("peer = ", peer);
 
@@ -245,18 +218,6 @@ function waitForWebSocketConnection(username) {
             showSection('playPong');
             // console.log('newPeerTurn', data);
             ManageOnlineTournament(data.tournamentData);
-        // 	for (let i = currentMatch - nbMatchinTurn; i < currentMatch - nbMatchinTurn + nbMatchinTurn ; i++) {
-        // 		console.log('Match number :', i);
-        // 		console.log('Player 1 :', matchs[i].player1);
-        // 		console.log('Player 2 :', matchs[i].player2);
-        // 		console.log('username :', sessionUsername);
-        // 		if (matchs[i].player1 === sessionUsername)
-        // 			create_tournament_duel(data.tournamentData, matchs[i]);
-        // 		else if (matchs[i].player2 === sessionUsername)
-        // 			join_tournament_duel(data.tournamentData, matchs[i]);
-        // 	}
-        // 	console.log('Countdown completed!');
-        // });
         }
     });
 

@@ -68,6 +68,7 @@ btn.localBtn.addEventListener("click", function() {
     btn.localBtn.classList.remove("btn-outline-info");
     btn.localBtn.classList.add("btn-info");
     btn.onLineBtn.classList.add("disabled");
+    btn.onePlayerBtn.classList.remove("hidden-element");
 
     document.getElementById('dificultyMenu').classList.remove('hidden-element');
     document.getElementById('gameModeMenu').classList.remove('hidden-element');
@@ -139,6 +140,7 @@ btn.easyBtn.addEventListener("click", function() {
 
     if (playLocal) {
         btn.onePlayerBtn.classList.remove("disabled");
+        btn.onePlayerBtn.classList.remove("hidden-element");
         btn.twoPlayersBtn.classList.remove("disabled");
         btn.tournamentBtn.classList.remove("disabled");
     }
@@ -268,19 +270,19 @@ btn.tournamentBtn.addEventListener("click", function() {
         showSection('tournament');
         return;
     }
-    // if (playOnline) {
-    //     // btn.createRoomBtn.classList.remove('disabled');
-    //     tournament = true;
-    //     create_Tournament_mode();
-    //     return;
-    // }
     btn.onePlayerBtn.classList.add("disabled");
     btn.twoPlayersBtn.classList.add("disabled");
     btn.tournamentBtn.classList.add("disabled");
     btn.tournamentBtn.classList.remove("btn-outline-info");
     btn.tournamentBtn.classList.add("btn-info");
-
-    create_Tournament_mode();
+    tournament = true;
+    if (playOnline) {
+        tournamentSize = 4;
+        create_tournament_room();
+    }
+    else {
+        create_Tournament_mode();
+    }
 });
 
 btn.createRoomBtn.addEventListener("click", function() {

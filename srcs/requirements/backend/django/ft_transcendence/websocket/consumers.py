@@ -127,7 +127,7 @@ async def handle_player_disconnect(username):
 
 # Fonction pour vérifier périodiquement les joueurs déconnectés
 async def check_disconnected_players(username, channel_layer, room_group_name):
-    print("check_disconnected_players")
+    # print("check_disconnected_players")
     await asyncio.sleep(DISCONNECTION_DELAY)
     if username in disconnected_players:
         # Le joueur est resté déconnecté pendant le délai, retirer du tournoi
@@ -139,7 +139,7 @@ async def check_disconnected_players(username, channel_layer, room_group_name):
 
 async def send_surrender_signal(room_group_name, channel_layer, username):
     # Envoyer un signal à l'autre joueur pour indiquer qu'il a abandonné
-    print("send_surrender_signal")
+    # print("send_surrender_signal")
     tournament = search_player_in_tournament(username)
     messageType = "surrenderTournamentSession"
     if tournament:
@@ -213,7 +213,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # await check_disconnected_players(self.user_username, self.room_group_name)
 
-        print(self.user_username, " c est deco")
+        # print(self.user_username, " c est deco")
         session=search_player_in_game(self.user_username)
         if session:
             remove_player_sessions(self.user_username)
@@ -427,7 +427,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             # if (len(tournament.players) == 1):
             #     tournament.players = []
 
-            print("playersInGame", tournament.playersInGame)
+            # print("playersInGame", tournament.playersInGame)
 
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -520,7 +520,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         if (messageType == "inviteSession"):
             if (search_player_in_game(self.user_username)):
-                print(self.user_username, "deja dans une room")
+                # print(self.user_username, "deja dans une room")
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {
@@ -553,7 +553,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     }
                 )
 
-                print("Session created :", sessionId, self.user_username, level,)
+                # print("Session created :", sessionId, self.user_username, level,)
 
                 sessions.append(session)
 
@@ -612,7 +612,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     }
                 )
 
-                print("Session created :", sessionId, self.user_username, level,)
+                # print("Session created :", sessionId, self.user_username, level,)
 
                 sessions.append(session)
 
@@ -1210,293 +1210,3 @@ def update_game(player_one, player_two, winner, final_score):
     player_one.save()
     player_two.save()
 
-
-
-        # if (messageType == "values"):
-        #     session = search_player_in_game(self.user_username)
-
-        #     await self.channel_layer.group_send(
-        #         self.room_group_name,
-        #         {
-        #             "type": "value.game",
-        #             "messageType": "values",
-        #             "players": session.players,
-        #             "spaceBarPressed":data["spaceBarPressed"],
-        #             "leftPaddleHand": data["leftPaddleHand"],
-        #             "rightPaddleHand": data["rightPaddleHand"],
-        #             "leftPlayerScore": data["leftPlayerScore"],
-        #             "rightPlayerScore": data["rightPlayerScore"],
-        #             "ballLaunched": data["ballLaunched"],
-        #             "username": self.user_username
-        #         }
-        #     )
-
-
-        # if(messageType == "updateBallPositions"):
-        #     session = search_player_in_game(self.user_username)
-
-        #     await self.channel_layer.group_send(
-        #         self.room_group_name,
-        #         {
-        #             "type": "position.Ball",
-        #             "messageType": "positionBall",
-        #             "players": session.players,
-        #             "ballX": data["ballX"],
-        #             "ballY": data["ballY"],
-        #             "username": self.user_username
-        #         }
-        #     )
-
-        # if (messageType == "updatePaddlePositions"):
-        #     session = search_player_in_game(self.user_username)
-
-        #     await self.channel_layer.group_send(
-        #         self.room_group_name,
-        #         {
-        #             "type": "position.Paddle",
-        #             "messageType": "position",
-        #             "players": session.players,
-        #             "pos": data["pos"],
-        #             "cote": data["cote"],
-        #             "username": self.user_username,
-        #             "time": data["time"]
-        #         }
-        #     )
-
-
-
-    # async def value_game(self, event):
-    #     message_type = event.get("messageType")
-
-    #     username = event.get("username")
-    #     players = event.get("players")
-    #     for player in players:
-    #         if player == self.user_username and username != self.user_username:
-    #             await self.send(text_data=json.dumps({
-    #                 'messageType': message_type,
-    #                 'spaceBarPressed': event.get("spaceBarPressed"),
-    #                 'leftPaddleHand': event.get("leftPaddleHand"),
-    #                 'rightPaddleHand': event.get("rightPaddleHand"),
-    #                 'leftPlayerScore': event.get("leftPlayerScore"),
-    #                 'rightPlayerScore': event.get("rightPlayerScore"),
-    #                 'ballLaunched': event.get("ballLaunched"),
-    #                 'pos': event.get("pos"),
-    #                 'cote': event.get("cote")
-    #             }))
-
-
-    # async def position_Paddle(self, event):
-    #     message_type = event.get("messageType")
-    #     username = event.get("username")
-    #     print("user =",username,  event.get("time"), datetime.now().astimezone(pytz.timezone("Europe/Paris")))
-    #     players = event.get("players")
-    #     for player in players:
-    #         if player == self.user_username and username != self.user_username:
-    #             await self.send(text_data=json.dumps({
-    #                 'messageType': message_type,
-    #                 'pos': event.get("pos"),
-    #                 'cote': event.get("cote")
-    #             }))
-
-
-    # async def position_Ball(self, event):
-    #     message_type = event.get("messageType")
-
-    #     username = event.get("username")
-    #     players = event.get("players")
-    #     for player in players:
-    #         if player == self.user_username and username != self.user_username:
-    #             await self.send(text_data=json.dumps({
-    #                 'messageType': message_type,
-    #                 'ballX': event.get("ballX"),
-    #                 'ballY': event.get("ballY")
-    #             }))
-
-
-    # async def confirm_creat(self, event):
-    #     message_type = event.get("messageType")
-    #     confirme = event.get("confirme")
-
-    #     player = event.get("players")
-    #     if player == self.user_username:
-    #         await self.send(text_data=json.dumps({
-    #             'messageType': message_type,
-    #             'username': event.get("username"),
-    #             'confirme': confirme,
-    #             'sessionId': event.get("sessionId"),
-    #         }))
-
-    # async def confirm_invite(self, event):
-    #     message_type = event.get("messageType")
-    #     confirme = event.get("confirme")
-
-    #     player = event.get("players")
-    #     if player == self.user_username:
-    #         await self.send(text_data=json.dumps({
-    #             'messageType': message_type,
-    #             'username': event.get("username"),
-    #             'confirme': confirme,
-    #             'sessionId': event.get("sessionId"),
-    #         }))
-
-    # async def confirm_join(self, event):
-    #     message_type = event.get("messageType")
-    #     confirme = event.get("confirme")
-    #     sessionCreator = event.get("sessionUsername")
-    #     sessionId = event.get("sessionId")
-
-    #     players = event.get("players")
-    #     session = find_session_by_id(sessionId)
-
-    #     for player in players:
-    #         if player == self.user_username and player != sessionCreator:
-    #             difficulty = ""
-    #             if session.level == 3:
-    #                 difficulty = "easy"
-    #             elif session.level == 5:
-    #                 difficulty = "medium"
-    #             elif session.level == 7:
-    #                 difficulty = "hard"
-    #             gameData = {
-    #                 "player_one" : sessionCreator,
-    #                 "player_two" : players[1],
-    #                 "game_type" : "pvp",
-    #                 "difficulty" : difficulty,
-    #             }
-    #             serializer = serializers.GameSerializer(data=gameData, partial=True)
-    #             if serializer.is_valid():
-    #                 player_one = await get_user_profile(gameData.get("player_one"))
-    #                 player_two = await get_user_profile(gameData.get("player_two"))
-    #                 serializer.validated_data['player_one'] = player_one
-    #                 serializer.validated_data['player_two'] = player_two
-    #                 await update_user_profile(player_one)
-    #                 await update_user_profile(player_two)
-    #                 await create_game(serializer)
-
-    #             await self.send(text_data=json.dumps({
-    #                 'messageType': message_type,
-    #                 'username': event.get("username"),
-    #                 'confirme': confirme,
-    #                 'peerCreator': event.get("peerCreator"),
-    #                 'sessionId': sessionId,
-    #             }))
-
-
-    # async def send_playerPeer(self, event):
-    #     message_type = event.get("messageType")
-    #     players = event.get("players")
-    #     playerPeer = event.get("playerPeer")
-    #     sessionCreator = event.get("sessionCreator")
-
-    #     for player in players:
-    #         if player == self.user_username and player == sessionCreator:
-    #             await self.send(text_data=json.dumps({
-    #                 'messageType': message_type,
-    #                 'playerPeer': playerPeer,
-    #                 'player' : players[1]
-    #             }))
-
-
-
-    # async def invite_Session(self, event):
-    #     messageType = event["messageType"]
-    #     usernameInvited = event["usernameInvited"]
-    #     # Send message to WebSocket
-    #     if usernameInvited == self.user_username:
-    #         await self.send(text_data=json.dumps({"messageType" : messageType, "session": event["session"]}))
-
-
-
-    # async def session_list(self, event):
-    #     messageType = event["messageType"]
-
-    #     # Send message to WebSocket
-    #     await self.send(text_data=json.dumps({"messageType" : messageType, "sessions": event["session"]}))
-
-
-
-    # # Receive message from room group
-    # async def chat_message(self, event):
-    #     messageType = event["messageType"]
-    #     message = event["message"]
-    #     owner = event["owner"]
-    #     time = event["time"]
-    #     # Send message to WebSocket
-    #     await self.send(text_data=json.dumps({"message": message, "owner": owner, "messageType" : messageType, "time": time}))
-
-    # async def chat_disconnect(self, event):
-    #     # Envoyer un message pour informer que l'utilisateur s'est déconnecté
-    #     owner = event["user_username"]
-    #     time = event["time"]
-    #     await self.send(
-    #         text_data=json.dumps(
-    #             {"message": "", "owner": owner, "messageType": "offline", "time": time}
-    #         )
-    #     )
-
-
-
-
-# def search_player_in_game(username):
-#     for session in sessions:
-#         for player in session.players:
-#             if player == username:
-#                 return session
-#     return False
-
-# def remove_player_sessions(username):
-#     for session in sessions:
-#         for player in session.players:
-#             if player == username:
-#                 session.remove_player(username)
-#                 if not session.players:
-#                     sessions.remove(session)
-#     return False
-
-
-# def find_session_by_id(session_id):
-#     for session in sessions:
-#         if session.session_id == session_id:
-#             return session
-#     return None
-
-
-# def convert_list_json():
-#     sessions_json = []
-#     for session in sessions:
-#         sessions_json.append(session.to_json())
-#     sessions_json2 = json.dumps(sessions_json)
-#     return(sessions_json2)
-
-# @sync_to_async
-# def get_user_profile(username):
-#     return UserProfile.objects.get(user__username=username)
-
-# @sync_to_async
-# def update_user_profile(player):
-#     player.is_ingame = True
-#     player.save()
-
-
-# @sync_to_async
-# def create_game(serializer):
-#     serializer.save()
-
-# @sync_to_async
-# def update_game(player_one, player_two, winner, final_score):
-#     findGame = Game.objects.filter(player_one=player_one, player_two=player_two, winner=None).first()
-#     findGame.winner = winner
-#     findGame.final_score = final_score
-#     findGame.save()
-#     player_one.games_id.add(findGame.id)
-#     player_two.games_id.add(findGame.id)
-#     if winner == player_one:
-#         player_one.win += 1
-#         player_two.lose += 1
-#     else :
-#         player_two.win += 1
-#         player_one.lose += 1
-#     player_two.is_ingame = False
-#     player_one.is_ingame = False
-#     player_one.save()
-#     player_two.save()

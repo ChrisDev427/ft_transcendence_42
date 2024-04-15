@@ -94,6 +94,7 @@ function create_MatchMaking_menu() {
     // Ajout de l'élément div principal à la section spécifiée
     mySection.appendChild(containerDiv);
     document.getElementById('gameDiv').classList.add('hidden-element');
+    // console.log(playLocal);
     if (playLocal)
         init_StartTournament_button();
 }
@@ -101,7 +102,6 @@ function create_MatchMaking_menu() {
 function init_StartTournament_button() {
     const startTournamentButton = document.getElementById("startTournamentButton");
     startTournamentButton.addEventListener("click", function() {
-
         startTournamentButton.remove();
 
         create_PlayMatch_button();

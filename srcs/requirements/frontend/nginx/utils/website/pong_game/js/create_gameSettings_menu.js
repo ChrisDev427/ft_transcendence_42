@@ -151,10 +151,7 @@ function init_Tournament_mode_buttons() {
         sixteenPlayersBtn.classList.add('disabled');
 
         tournamentSize = 4;
-        if (playLocal)
-            create_Tournament_inputs();
-        if (playOnline)
-            create_tournament_room();
+        create_Tournament_inputs();
     });
 
     heightPlayersBtn.addEventListener('click', function() {
@@ -400,7 +397,7 @@ function create_room() {
                     document.getElementById('createRoomMenu').classList.add('hidden-element');
                     const message = JSON.stringify({ messageType: 'quitSession' });
                     socket.send(message);
-                    console.log('Quit session');
+                    // console.log('Quit session');
                     location.reload();
                 })
 

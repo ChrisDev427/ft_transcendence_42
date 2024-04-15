@@ -222,13 +222,13 @@ function ManageOnlineTournament(tournamentData) {
 			for (let i = currentMatch - nbMatchinTurn; i < currentMatch - nbMatchinTurn + nbMatchinTurn ; i++) {
 			if (data.tournamentData.matchs[i].player2 === sessionUsername)
 			{
-				startCountdown(900).then(() => {
+				startCountdown(400).then(() => {
 					join_tournament_duel(data.tournamentData, data.tournamentData.matchs[i]);
 				});
 			}
 			else if (data.tournamentData.matchs[i].player1 === sessionUsername)
 			{
-				startCountdown(1000).then(() => {
+				startCountdown(500).then(() => {
 					create_tournament_duel(data.tournamentData, data.tournamentData.matchs[i]);
 				});
 			}

@@ -97,13 +97,6 @@ async function iaRun() {
     } else if (a_keyPressed && leftPaddleY + paddleHeight < canvas.height) {
         leftPaddleY += level + 1.8;
     }
-    if(twoPlayers || tournament) {
-        if (q_keyPressed && leftPaddleY > 0) {
-            leftPaddleY -= level + 1.8;
-        } else if (a_keyPressed && leftPaddleY + paddleHeight < canvas.height) {
-            leftPaddleY += level + 1.8;
-        }
-    }
 
     // Ball Update Position
     ballX += ballSpeedX;

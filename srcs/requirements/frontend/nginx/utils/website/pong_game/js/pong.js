@@ -18,13 +18,13 @@ function localRun() {
         } else if (l_keyPressed && rightPaddleY + paddleHeight < canvas.height) {
             rightPaddleY += level + 1.8;
         }
-        if(twoPlayers || tournament) {
+        // if(twoPlayers || tournament) {
             if (q_keyPressed && leftPaddleY > 0) {
                 leftPaddleY -= level + 1.8;
             } else if (a_keyPressed && leftPaddleY + paddleHeight < canvas.height) {
                 leftPaddleY += level + 1.8;
             }
-        }
+        // }
 
         ballX += ballSpeedX;
         ballY += ballSpeedY;
@@ -53,8 +53,8 @@ function localRun() {
             } else {
                 applauseFX.play();
             }
-            leftPaddleY = (canvas.height - paddleHeight) / 2;
-            rightPaddleY = (canvas.height - paddleHeight) / 2;
+            // leftPaddleY = (canvas.height - paddleHeight) / 2;
+            // rightPaddleY = (canvas.height - paddleHeight) / 2;
 
         }
         // Left Paddle Bounce
@@ -77,8 +77,8 @@ function localRun() {
                 applauseFX.play();
             }
 
-            leftPaddleY = (canvas.height - paddleHeight) / 2;
-            rightPaddleY = (canvas.height - paddleHeight) / 2;
+            // leftPaddleY = (canvas.height - paddleHeight) / 2;
+            // rightPaddleY = (canvas.height - paddleHeight) / 2;
 
         }
 
@@ -94,6 +94,7 @@ function onlineRun(peer) {
     // printConsoleInfos();
     // const currentTime = Date.now();
     if (leftPlayerName == sessionUsername){
+        // console.log("spaceBarPressed" , spaceBarPressed)
         if (q_keyPressed && leftPaddleY > 0) {
             leftPaddleY -= level + 1.8;
             // printConsoleInfos();
@@ -111,6 +112,7 @@ function onlineRun(peer) {
     }
     else {
 
+        // console.log("rightPaddleHand", rightPaddleHand);
         if (q_keyPressed && rightPaddleY > 0) {
             rightPaddleY -= level + 1.8;
             sendGameUpdate(peer);
@@ -123,11 +125,10 @@ function onlineRun(peer) {
 
             // sendPaddlePositions(peer, rightPaddleY, "right")
         } if (spaceBarPressed && rightPaddleHand){
-            // console.log(spaceBarPressed);
             spaceRight = true;
             sendGameUpdate(peer);
-            sendGameUpdate(peer);
-            sendGameUpdate(peer);
+            // sendGameUpdate(peer);
+            // sendGameUpdate(peer);
             spaceBarPressed = false;
             spaceRight = false;
         }
@@ -142,7 +143,7 @@ function onlineRun(peer) {
 
     if (leftPlayerName == sessionUsername){
 
-        serveRight();
+        // serveRight();
         // if (rightPaddleHand){
 
             // }
@@ -202,8 +203,8 @@ function onlineRun(peer) {
             } else {
                 applauseFX.play();
             }
-            leftPaddleY = (canvas.height - paddleHeight) / 2;
-            rightPaddleY = (canvas.height - paddleHeight) / 2;
+            // leftPaddleY = (canvas.height - paddleHeight) / 2;
+            // rightPaddleY = (canvas.height - paddleHeight) / 2;
             sendGameUpdate(peer, 'reset');
             // sendPaddlePositions(peer, leftPaddleY, "left");
             // sendPaddlePositions(peer, rightPaddleY, "right");
@@ -230,8 +231,8 @@ function onlineRun(peer) {
                 applauseFX.play();
             }
 
-            leftPaddleY = (canvas.height - paddleHeight) / 2;
-            rightPaddleY = (canvas.height - paddleHeight) / 2;
+            // leftPaddleY = (canvas.height - paddleHeight) / 2;
+            // rightPaddleY = (canvas.height - paddleHeight) / 2;
             sendGameUpdate(peer, 'reset');
             // sendPaddlePositions(leftPaddleY, "left");
             // sendPaddlePositions(rightPaddleY, "right");
@@ -270,7 +271,6 @@ function tournamentRun(peer, tournamentData, match) {
 
     }
     else {
-
         if (q_keyPressed && rightPaddleY > 0) {
             rightPaddleY -= level + 1.8;
             sendGameUpdate(peer);
@@ -286,16 +286,17 @@ function tournamentRun(peer, tournamentData, match) {
             // console.log(spaceBarPressed);
             spaceRight = true;
             sendGameUpdate(peer);
-            sendGameUpdate(peer);
-            sendGameUpdate(peer);
+            // sendGameUpdate(peer);
+            // sendGameUpdate(peer);
             spaceBarPressed = false;
             spaceRight = false;
         }
         if (!start){
-            console.log('first if');
+            // console.log('first if');
             printGame();
             printInfos();
-            peer.destroy();
+            // peer.destroy();
+            // getElementById("playPong").classList.add("hidden-element");
             window.location.href = domainPath;
             return;
         }
@@ -305,7 +306,7 @@ function tournamentRun(peer, tournamentData, match) {
 
     if (leftPlayerName == sessionUsername){
 
-        serveRight();
+        // serveRight();
         // if (rightPaddleHand){
 
             // }
@@ -322,7 +323,7 @@ function tournamentRun(peer, tournamentData, match) {
         // sendBallPositions(peer, ballX, ballY);
         sendGameUpdate(peer);
         if (!start){
-            console.log('second if');
+            // console.log('second if');
             printGame();
             printInfos();
 
@@ -341,11 +342,11 @@ function tournamentRun(peer, tournamentData, match) {
                 const message = JSON.stringify({messageType : "endMatchGame", leftPlayerScore : leftPlayerScore, rightPlayerScore : rightPlayerScore , match : match, winner : winner, tournamentData : tournamentData});
                 socket.send(message);
             }
-            peer.destroy();
+            // peer.destroy();
             setTimeout(function() {
-            
+                // getElementById("playPong").classList.add("hidden-element");
                 window.location.href = domainPath;
-                location.reload();
+                // location.reload();
             }, 1000);
             // startCountdown(500).then(() => {
             // });
@@ -379,8 +380,8 @@ function tournamentRun(peer, tournamentData, match) {
             } else {
                 applauseFX.play();
             }
-            leftPaddleY = (canvas.height - paddleHeight) / 2;
-            rightPaddleY = (canvas.height - paddleHeight) / 2;
+            // leftPaddleY = (canvas.height - paddleHeight) / 2;
+            // rightPaddleY = (canvas.height - paddleHeight) / 2;
             sendGameUpdate(peer, 'reset');
             // sendPaddlePositions(peer, leftPaddleY, "left");
             // sendPaddlePositions(peer, rightPaddleY, "right");
@@ -407,8 +408,8 @@ function tournamentRun(peer, tournamentData, match) {
                 applauseFX.play();
             }
 
-            leftPaddleY = (canvas.height - paddleHeight) / 2;
-            rightPaddleY = (canvas.height - paddleHeight) / 2;
+            // leftPaddleY = (canvas.height - paddleHeight) / 2;
+            // rightPaddleY = (canvas.height - paddleHeight) / 2;
             sendGameUpdate(peer, 'reset');
             // sendPaddlePositions(leftPaddleY, "left");
             // sendPaddlePositions(rightPaddleY, "right");
@@ -431,7 +432,7 @@ function tournamentRun(peer, tournamentData, match) {
 function sendGameUpdate(peer, messageType) {
 
     let gameData;
-    if (leftPlayerName == sessionUsername)
+    if (leftPlayerName == sessionUsername) // joueur gauche vers droite
     {
         if (messageType === 'reset')
         {
@@ -462,8 +463,9 @@ function sendGameUpdate(peer, messageType) {
         };
     }
     }
-    else
+    else // joueur droite vers gauche
     {
+        // console.log("spacebar pressed : ", spaceBarPressed);
         gameData = {
             rightPaddleY,
             spaceBarPressed,
@@ -473,7 +475,7 @@ function sendGameUpdate(peer, messageType) {
     peer.send(JSON.stringify(gameData));
 }
 
-function processGameData(gameData) {
+function processGameData(gameData) { // recpetion des données de jeu a droite
     // Traiter les nouvelles données de jeu
     // console.log('Nouvelles données de jeu reçues :', gameData);
     if (gameData.messageType === 'reset')
@@ -495,7 +497,7 @@ function processGameData(gameData) {
     leftPlayerScore = gameData.leftPlayerScore;
     rightPlayerScore = gameData.rightPlayerScore;
 
-    spaceBarPressed = gameData.spaceBarPressed;
+    // spaceBarPressed = gameData.spaceBarPressed;
 
     start = gameData.start
 

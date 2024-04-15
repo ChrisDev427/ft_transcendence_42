@@ -163,7 +163,7 @@ def modele_acces(request):
             with open(chemin_destination, 'wb+') as destination:
                 for chunk in file.chunks():
                     destination.write(chunk)
-        print('Modèle sauvegardé avec succès')
+        # print('Modèle sauvegardé avec succès')
         return JsonResponse({'message': 'Modèle sauvegardé avec succès'}, status=200)
 
     if request.method == 'GET':

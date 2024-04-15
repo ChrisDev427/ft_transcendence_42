@@ -52,7 +52,7 @@ function alert_register_success() {
     }, 3000);
 }
 
-function alert_login_fail(errorMessage) {
+function alert_login_fail() {
     // Disable form
     const signInSection = document.getElementById('signIn');
     // Parcourez tous les éléments descendants de la section
@@ -66,7 +66,7 @@ function alert_login_fail(errorMessage) {
     div.style.maxWidth= '350px';
     div.role = 'alert';
     div.id = 'alert';
-    div.textContent = errorMessage;
+    div.textContent = 'Error';
 
     let button = document.createElement('button');
     button.classList = 'btn-close';

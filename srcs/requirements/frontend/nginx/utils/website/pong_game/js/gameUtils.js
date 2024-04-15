@@ -190,6 +190,15 @@ function serveLeft() {
             ballLaunched = true;
             paddleFX.play();
         }
+        else if (spaceRight && rightPaddleHand)
+        {
+            ballSpeedX = level + 2; // Choisissez la vitesse initiale en fonction de votre préférence
+            ballSpeedY = level; // Choisissez la vitesse initiale en fonction de votre préférence
+            ballLaunched = true;
+            paddleFX.play();
+            spaceRight = false;
+        }
+
     }
 }
 
@@ -200,7 +209,7 @@ function serveRight() {
 
     if (!ballLaunched) {
 
-
+        // console.log('serveRight')
         if(rightPaddleHand) {
             ballX = canvas.width - 25;
             ballY = rightPaddleY + paddleHeight / 2;
