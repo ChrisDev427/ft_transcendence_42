@@ -32,8 +32,8 @@ DEBUG = False
 
 SITE_URL = os.environ.get('SITE_PROTOCOL') + os.environ.get('SITE_URL') + ":" + os.environ.get('SITE_PORT')
 
-ALLOWED_HOSTS = [os.environ.get('SITE_URL'), 'localhost']
-# ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = [os.environ.get('SITE_URL') + ":" + os.environ.get('SITE_PORT') , 'localhost']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 

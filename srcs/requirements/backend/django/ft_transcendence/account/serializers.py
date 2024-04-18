@@ -7,7 +7,7 @@ from game.serializers import GameSerializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'password', 'email', 'is_staff', 'is_active', 'date_joined', 'last_login']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'date_joined', 'last_login']
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -19,7 +19,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ['user', 'avatar', 'bio', 'games_id', 'win', 'lose', 'mobile_number', 'mobile_number_verified', 'is_connected', 'last_activity',  'is_ingame', 'friend', 'two_fa', ]
 
-    
+
 
 class PublicUserProfileSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
