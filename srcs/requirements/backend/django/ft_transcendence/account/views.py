@@ -20,9 +20,11 @@ from .utils import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from friend_management.models import Friend_management
 from django.core.files.base import ContentFile
-
-
 import pyotp, uuid, os, requests
+from django.db.models import Q
+from game.models import Game
+
+
 
 class AllUserView(APIView):
     #permission_classes = [permissions.IsAdminUser]
@@ -41,18 +43,24 @@ class oauth_login(APIView):
     permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
         code = request.GET.get('code')
+        # print('code', code)
         data = {
             'grant_type': 'authorization_code',
             'code': code,
-            'redirect_uri': settings.SITE_URL,
-            'client_id': os.environ.get('OAUTH_CLIENT_ID'),
-            'client_secret': os.environ.get('OAUTH_SECRET'),
+            'redirect_uri': settings.OAUTH_REDIRECT_URI,
+            'client_id': settings.OAUTH_CLIENT_ID,
+            'client_secret': settings.OAUTH_CLIENT_SECRET,
         }
+        # print('1', settings.OAUTH_REDIRECT_URI)
+        # print('2', settings.OAUTH_CLIENT_ID)
+        # print('3', settings.OAUTH_CLIENT_SECRET )
         response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
         if response.status_code != 200:
+            # print(response.json())
             return Response(response.json(), status=response.status_code)
         profile = requests.get('https://api.intra.42.fr/v2/me', headers={'Authorization': 'Bearer ' + response.json()['access_token']})
         if profile.status_code != 200:
+            # print(profile.json())
             return Response(profile.json(), status=profile.status_code)
         profile = profile.json()
         try:
@@ -61,7 +69,7 @@ class oauth_login(APIView):
         except User.DoesNotExist:
             user = User.objects.create_user(
                 username = profile['login'],
-                password = settings.PASSWORD_42,
+                password = settings.OAUTH_PASSWORD_42,
                 first_name = profile['first_name'],
                 last_name = profile['last_name'],
                 email=profile['email'],
@@ -75,7 +83,7 @@ class oauth_login(APIView):
                 user_profile.avatar.save(user.username + '.jpg', ContentFile(new_avatar.content))
                 user_profile.avatar.name = '/api/account/avatar/' + user.username + '.jpg'
             user_profile.save()
-        user_profile.is_connected = True
+        # user_profile.is_connected = True
         user_profile.save()
         refresh = RefreshToken.for_user(user)
         return Response({'refresh':str(refresh), 'access': str(refresh.access_token)}, status=status.HTTP_200_OK)
@@ -107,9 +115,11 @@ class UserRegisterView(APIView):
             try :
                 send_email(user_profile, email)
             except Exception as e:
-                user_profile.delete()
-                user.delete()
-                return Response({"Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+                # user_profile.delete()
+                # user.delete()
+                # print(e)
+                pass
+                # return Response({"Email not sent"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
             return Response("User created", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -161,7 +171,7 @@ class ProfileView(APIView):
         user_profile = UserProfile.objects.filter(user=user).first()
         serializer = UserProfileSerializer(user_profile, data=request_copy, partial=True, context={'request': request})
         if serializer.is_valid():
-            if request_copy.get('username') and request_copy.get('first_name') and request_copy.get('last_name') and user.check_password(settings.PASSWORD_42):
+            if request_copy.get('username') and request_copy.get('first_name') and request_copy.get('last_name') and user.check_password(settings.OAUTH_PASSWORD_42):
                 return Response({"42 user can't change this infos"}, status=status.HTTP_401_UNAUTHORIZED)
             if request_copy.get('friend'):
                 friend = get_object_or_404(UserProfile, user__username=request_copy.get('friend'))
@@ -170,7 +180,7 @@ class ProfileView(APIView):
                 friend.save()
                 return Response("friend requested", status=status.HTTP_200_OK)
             if request_copy.get('email'):
-                if user.check_password(settings.PASSWORD_42):
+                if user.check_password(settings.OAUTH_PASSWORD_42):
                     return Response({"42 user can't change email"}, status=status.HTTP_401_UNAUTHORIZED)
                 email = str.lower(request_copy.get('email'))
                 if User.objects.filter(email=email).exists():
@@ -181,12 +191,12 @@ class ProfileView(APIView):
                     return Response({"Email verification not sent, email update aborted"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
                 user.email = email
                 user.is_active = False
-                user_profile.is_connected = False
+                # user_profile.is_connected = False
                 user_profile.save()
                 user.save()
             if request_copy.get('new_password') and user.check_password(request_copy.get('password')):
                 new_password = request_copy.get('new_password')
-                if user.check_password(settings.PASSWORD_42):
+                if user.check_password(settings.OAUTH_PASSWORD_42):
                     return Response({"42 user can't change password"}, status=status.HTTP_401_UNAUTHORIZED)
                 elif user.check_password(request_copy.get('password')) == False:
                     return Response({"wrong password"}, status=status.HTTP_400_BAD_REQUEST)
@@ -198,7 +208,7 @@ class ProfileView(APIView):
                 user.save()
                 return Response("password updated", status=status.HTTP_200_OK)
             if request_copy.get('two_fa_on'):
-                if user.check_password(settings.PASSWORD_42):
+                if user.check_password(settings.OAUTH_PASSWORD_42):
                     return Response({"42 user can't enable 2fa"}, status=status.HTTP_401_UNAUTHORIZED)
                 user_profile.totp_secret = enable_2fa_authenticator(user_profile)
                 user_profile.two_fa = True
@@ -225,6 +235,8 @@ class ProfileView(APIView):
                 user_profile.save()
             if request_copy.get('username'):
                 request_copy['username'] = str.lower(request_copy['username'])
+                if User.objects.filter(username=request_copy['username']).exists() and user.username != request_copy['username']:
+                    return Response({"username already exists"}, status=status.HTTP_400_BAD_REQUEST)
             serializer.save()
             serializer = UserSerializer(user, data=request_copy, partial=True, context={'request': request})
             if serializer.is_valid():
@@ -244,7 +256,7 @@ class ProfileView(APIView):
 
 class getProfileView(APIView):
     def get(self, request, username):
-        user_profile = get_object_or_404(UserProfile, user__username=username)
+        user_profile = get_object_or_404(UserProfile, user__username=str.lower(username))
         serializer = UserProfileSerializer(user_profile)
         return Response(serializer.data)
 
@@ -263,6 +275,8 @@ class LoginView(TokenObtainPairView):
             user = authenticate(username=username, password=password)
             if user is None:
                 return Response(status=status.HTTP_404_NOT_FOUND)
+            elif user.is_staff:
+                return Response({**response.data}, status=status.HTTP_200_OK)
             elif not user.is_active:
                 return Response({"email not verified"}, status=status.HTTP_401_UNAUTHORIZED)
             try:
@@ -274,6 +288,10 @@ class LoginView(TokenObtainPairView):
                     totp_secret = pyotp.TOTP(user_profile.totp_secret)
                     if not totp_secret.verify(totp):
                         return Response({"totp not match"}, status=status.HTTP_401_UNAUTHORIZED)
+                    # user_profile.is_connected = True
+                    user_profile.save()
+                    profile_serializer = UserProfileSerializer(user_profile, context={'request': request})
+                    return Response({**response.data, **profile_serializer.data}, status=status.HTTP_200_OK)
                 if not user_profile.otp and not otp:
                     return Response({"otp needed"}, status=status.HTTP_401_UNAUTHORIZED)
                 if user_profile.opt_expiration < timezone.now():
@@ -282,7 +300,7 @@ class LoginView(TokenObtainPairView):
                     user_profile.otp = None
                 else:
                     return Response({"otp not match"}, status=status.HTTP_401_UNAUTHORIZED)
-            user_profile.is_connected = True
+            # user_profile.is_connected = True
             user_profile.save()
             profile_serializer = UserProfileSerializer(user_profile, context={'request': request})
         return Response({**response.data, **profile_serializer.data}, status=status.HTTP_200_OK)
@@ -294,7 +312,7 @@ class LogoutView(APIView):
             user_profile = UserProfile.objects.filter(user=user).first()
         except UserProfile.DoesNotExist:
             return Response("no user connected", status=status.HTTP_404_NOT_FOUND)
-        user_profile.is_connected = False
+        # user_profile.is_connected = False
         user_profile.save()
         return Response("user logout", status=status.HTTP_204_NO_CONTENT)
 
@@ -366,7 +384,6 @@ class SendOTPView(APIView):
                 return Response({"mobile number is missing"}, status=status.HTTP_400_BAD_REQUEST)
             elif user_profile.mobile_number_verified == False:
                 return Response({"mobile number not verified"}, status=status.HTTP_401_UNAUTHORIZED)
-        print(user_profile)
         user_profile.otp = str()
         user_profile.otp = send_otp(send_method, user_profile)
         if user_profile.otp == None:
@@ -377,14 +394,14 @@ class SendOTPView(APIView):
         user_profile.save()
         return Response({'Verification code sent successfully.'}, status=status.HTTP_204_NO_CONTENT)
 
-class ActivityCheckView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+# class ActivityCheckView(APIView):
+#     permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request):
-        user = request.user
-        try:
-            user_profile = UserProfile.objects.get(user=user)
-            user_profile.update_last_activity()  # Met à jour la dernière activité
-            return Response({'status': 'Activity updated'})
-        except UserProfile.DoesNotExist:
-            return Response({'error': 'UserProfile not found'}, status=404)
+#     def post(self, request):
+#         user = request.user
+#         try:
+#             user_profile = UserProfile.objects.get(user=user)
+#             user_profile.update_last_activity()  # Met à jour la dernière activité
+#             return Response({'status': 'Activity updated'})
+#         except UserProfile.DoesNotExist:
+#             return Response({'error': 'UserProfile not found'}, status=404)

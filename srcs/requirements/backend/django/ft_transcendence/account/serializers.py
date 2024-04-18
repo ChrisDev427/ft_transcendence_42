@@ -2,7 +2,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import UserProfile
-#from game.serializers import GameSerializer
+from game.serializers import GameSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,11 +13,13 @@ class UserSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
 
     user = UserSerializer()
-    #games_id = GameSerializer(many=True)
+    games_id = GameSerializer(many=True)
 
     class Meta:
         model = UserProfile
         fields = ['user', 'avatar', 'bio', 'games_id', 'win', 'lose', 'mobile_number', 'mobile_number_verified', 'is_connected', 'last_activity',  'is_ingame', 'friend', 'two_fa', ]
+
+    
 
 class PublicUserProfileSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()

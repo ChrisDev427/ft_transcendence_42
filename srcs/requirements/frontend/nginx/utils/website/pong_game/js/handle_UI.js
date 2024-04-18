@@ -1,3 +1,5 @@
+join = false;
+
 const btn = {
     easyBtn: document.getElementById("easyBtn"),
     mediumBtn: document.getElementById("mediumBtn"),
@@ -12,59 +14,119 @@ const btn = {
     onePlayerBtn: document.getElementById("onePlayerBtn"),
     twoPlayersBtn: document.getElementById("twoPlayersBtn"),
     tournamentBtn: document.getElementById("tournamentBtn"),
+
+    createRoomBtn: document.getElementById("createRoomBtn"),
 };
 
 //************************************************************************************
 
 btn.createBtn.addEventListener("click", function() {
-    
+
     btn.createBtn.classList.add("disabled");
     btn.createBtn.classList.remove("btn-outline-info");
     btn.createBtn.classList.add("btn-info");
     btn.joinBtn.classList.add("disabled");
-   
-    document.getElementById('gameModeMenu').classList.remove('hidden-element');
+
+    document.getElementById('createRoomMenu').classList.remove('hidden-element');
     document.getElementById('dificultyMenu').classList.remove('hidden-element');
-    
+
+    // // btn.createRoomBtn.addEventListener("click", createRoomButtonClickHandler);
+    // const createRoomBtn = document.getElementById("createRoomBtn");
+    // createRoomBtn.addEventListener('click', () => {
+
+    //     create_room();
+    // });
+
+    // createRoomBtn.removeEventListener("click", () => {});
+
+
 });
+
 btn.joinBtn.addEventListener("click", function() {
-    
+
+    join = true;
+
     btn.joinBtn.classList.add("disabled");
     btn.joinBtn.classList.remove("btn-outline-info");
     btn.joinBtn.classList.add("btn-info");
     btn.createBtn.classList.add("disabled");
-    
+    document.getElementById('gameModeMenu').classList.remove('hidden-element');
+    btn.onePlayerBtn.classList.add("hidden-element");
+    btn.twoPlayersBtn.classList.remove("disabled");
+    btn.tournamentBtn.classList.remove("disabled");
 
+    // showSection('sessions');
+    // reset_UI();
 });
 
 
 //************************************************************************************
 
 btn.localBtn.addEventListener("click", function() {
-    
+
     btn.localBtn.classList.add("disabled");
     btn.localBtn.classList.remove("btn-outline-info");
     btn.localBtn.classList.add("btn-info");
     btn.onLineBtn.classList.add("disabled");
-    
+    btn.onePlayerBtn.classList.remove("hidden-element");
+
     document.getElementById('dificultyMenu').classList.remove('hidden-element');
     document.getElementById('gameModeMenu').classList.remove('hidden-element');
-    
+
     playLocal = true;
     playOnline = false;
+    playTournament = false;
 });
 btn.onLineBtn.addEventListener("click", function() {
-    
-    btn.localBtn.classList.add("disabled");
-    
-    btn.onLineBtn.classList.add("disabled");
-    btn.onLineBtn.classList.remove("btn-outline-info");
-    btn.onLineBtn.classList.add("btn-info");
 
-    document.getElementById('onlineMenu').classList.remove('hidden-element');
+    if (connected) {
 
-    playLocal = false;
-    playOnline = true;
+        btn.localBtn.classList.add("disabled");
+        btn.onLineBtn.classList.add("disabled");
+        btn.onLineBtn.classList.remove("btn-outline-info");
+        btn.onLineBtn.classList.add("btn-info");
+        btn.createRoomBtn.classList.add("hidden-element");
+
+        document.getElementById('onlineMenu').classList.remove('hidden-element');
+        // document.getElementById('chat-container_session').classList.remove('hidden-element');
+        playLocal = false;
+        playOnline = true;
+
+
+        join = false;
+        playTournament = false;
+
+    } else {
+
+        navbarSwitch('off');
+        document.getElementById('containerGameMenu').querySelectorAll('button').forEach((element) => {
+            element.disabled = true;
+        });
+
+        const div = document.createElement('div');
+        div.classList = 'w-75 mx-auto alert alert-danger alert-dismissible fade show text-center text-danger shadow ';
+        div.style.maxWidth= '350px';
+        div.role = 'alert';
+        div.id = 'alert';
+        div.textContent = 'You must be logged to play online !';
+
+        const button = document.createElement('button');
+        button.classList = 'btn-close';
+        button.id = 'alertBtn';
+        button.setAttribute('data-bs-dismiss', 'alert');
+        button.setAttribute('aria-label', 'Close');
+        div.appendChild(button);
+
+        document.getElementById('containerGameMenu').appendChild(div);
+
+        button.addEventListener("click", function() {
+            div.remove();
+            navbarSwitch('on');
+            document.getElementById('containerGameMenu').querySelectorAll('button').forEach((element) => {
+                element.disabled = false;
+            });
+        });
+    }
 });
 
 //************************************************************************************
@@ -78,18 +140,26 @@ btn.easyBtn.addEventListener("click", function() {
 
     if (playLocal) {
         btn.onePlayerBtn.classList.remove("disabled");
+        btn.onePlayerBtn.classList.remove("hidden-element");
+        btn.twoPlayersBtn.classList.remove("disabled");
+        btn.tournamentBtn.classList.remove("disabled");
     }
-    btn.twoPlayersBtn.classList.remove("disabled");
-    btn.tournamentBtn.classList.remove("disabled");
+    if (playOnline) {
+        document.getElementById('gameModeMenu').classList.remove('hidden-element');
+        btn.onePlayerBtn.classList.add("hidden-element");
+        btn.twoPlayersBtn.classList.remove("disabled");
+        btn.tournamentBtn.classList.remove("disabled");
+        // btn.createRoomBtn.classList.remove('disabled');
+    }
     // btn.onLineBtn.classList.remove("disabled");
     // btn.localBtn.classList.remove("disabled");
-    
+
     level = 3;
     paddleHeight = 110;
 });
 
 btn.mediumBtn.addEventListener("click", function() {
-    
+
     btn.easyBtn.classList.add("disabled");
     btn.mediumBtn.classList.add("disabled");
     btn.mediumBtn.classList.remove("btn-outline-info");
@@ -98,18 +168,25 @@ btn.mediumBtn.addEventListener("click", function() {
 
     if (playLocal) {
         btn.onePlayerBtn.classList.remove("disabled");
+        btn.twoPlayersBtn.classList.remove("disabled");
+        btn.tournamentBtn.classList.remove("disabled");
     }
-    btn.twoPlayersBtn.classList.remove("disabled");
-    btn.tournamentBtn.classList.remove("disabled");
+    if (playOnline) {
+        document.getElementById('gameModeMenu').classList.remove('hidden-element');
+        btn.onePlayerBtn.classList.add("hidden-element");
+        btn.twoPlayersBtn.classList.remove("disabled");
+        btn.tournamentBtn.classList.remove("disabled");
+        // btn.createRoomBtn.classList.remove('disabled');
+    }
     // btn.onLineBtn.classList.remove("disabled");
     // btn.localBtn.classList.remove("disabled");
-    
+
     level = 5;
     paddleHeight = 80;
 });
 
 btn.hardBtn.addEventListener("click", function() {
-    
+
     btn.easyBtn.classList.add("disabled");
     btn.mediumBtn.classList.add("disabled");
     btn.hardBtn.classList.add("disabled");
@@ -118,12 +195,19 @@ btn.hardBtn.addEventListener("click", function() {
 
     if (playLocal) {
         btn.onePlayerBtn.classList.remove("disabled");
+        btn.twoPlayersBtn.classList.remove("disabled");
+        btn.tournamentBtn.classList.remove("disabled");
     }
-    btn.twoPlayersBtn.classList.remove("disabled");
-    btn.tournamentBtn.classList.remove("disabled");
+    if (playOnline) {
+        document.getElementById('gameModeMenu').classList.remove('hidden-element');
+        btn.onePlayerBtn.classList.add("hidden-element");
+        btn.twoPlayersBtn.classList.remove("disabled");
+        btn.tournamentBtn.classList.remove("disabled");
+        // btn.createRoomBtn.classList.remove('disabled');
+    }
     // btn.onLineBtn.classList.remove("disabled");
     // btn.localBtn.classList.remove("disabled");
-    
+
     level = 7;
     paddleHeight = 60;
 });
@@ -145,7 +229,7 @@ btn.onePlayerBtn.addEventListener("click", function() {
 });
 
 btn.twoPlayersBtn.addEventListener("click", function() {
-    
+
     btn.onePlayerBtn.classList.add("disabled");
     btn.twoPlayersBtn.classList.add("disabled");
     btn.twoPlayersBtn.classList.remove("btn-outline-info");
@@ -154,37 +238,67 @@ btn.twoPlayersBtn.addEventListener("click", function() {
 
     twoPlayers = true;
 
-    if(playLocal) {
+    if (playLocal) {
         create_TwoPlayers_input();
     }
-    if(playOnline) {
-
-
+    if (playOnline) {
+        btn.createRoomBtn.classList.remove("hidden-element");
+        btn.createRoomBtn.classList.remove('disabled');
+        if (join === true)
+            showSection('sessions');
     }
+    // if(playOnline) {
+
+    //     const message = JSON.stringify({
+    //         messageType: 'createSession',
+    //         level: level,
+    //         // paddleHeight: paddleHeight,
+
+    //         // id: 123,
+    //         // username: sessionUsername,
+    //     });
+    //     console.log("session user create ", sessionUsername);
+        // socket.send(message);
+
+    // }
 });
 
 btn.tournamentBtn.addEventListener("click", function() {
 
+    if (join === true)
+    {
+        showSection('tournament');
+        return;
+    }
     btn.onePlayerBtn.classList.add("disabled");
     btn.twoPlayersBtn.classList.add("disabled");
     btn.tournamentBtn.classList.add("disabled");
     btn.tournamentBtn.classList.remove("btn-outline-info");
     btn.tournamentBtn.classList.add("btn-info");
-
     tournament = true;
-
-    if(playLocal) {
+    if (playOnline) {
+        tournamentSize = 4;
+        create_tournament_room();
+    }
+    else {
         create_Tournament_mode();
     }
-    if(playOnline) {
-
-    }
 });
+
+btn.createRoomBtn.addEventListener("click", function() {
+
+    create_room();
+
+});
+
+
+
 
 function initPlayBtn() {
     const playBtn = document.getElementById("playBtn");
     playBtn.addEventListener("click", function() {
-        
+
+
         if(onePlayer) {
 
             const playerName = document.getElementById("name");
@@ -192,14 +306,14 @@ function initPlayBtn() {
                 alert_message('Player name missing !');
                 return;
             }
-            leftPlayerName = "cpu";
-            rightPlayerName = playerName.value;
+            leftPlayerName = playerName.value;
+            rightPlayerName = "cpu";
         }
 
         else if(twoPlayers) {
             const playerName_1 = document.getElementById("playerName_1");
             const playerName_2 = document.getElementById("playerName_2");
-           
+
             if(emptyInput(playerName_1) || emptyInput(playerName_2)) {
                 return;
             }
@@ -209,19 +323,21 @@ function initPlayBtn() {
             }
             leftPlayerName = playerName_1.value;
             rightPlayerName = playerName_2.value;
+
         }
+
         else if(tournament) {
-            console.log('tournament condition');
+            // console.log('tournament condition');
             for(let i = 0; i < tournamentSize; i++) {
-                
+
                 const playerNameInput = document.getElementById("playerName" + (i+1));
-               
+
                 if(emptyInput(playerNameInput)) {
                     return;
                 }
                 if(checkDblName(playerNameInput)) {
                     return;
-                } 
+                }
                 const playerName = shorteredName(playerNameInput);
                 tournamentPlayers.push({...playerObj, name: playerName});
             }
@@ -240,10 +356,16 @@ function initPlayBtn() {
         printConsoleInfos();
         hideCurrentSection();
         showSection('playPong');
-        document.getElementById('gameDiv').classList.remove('hidden-element'); 
+        document.getElementById('gameDiv').classList.remove('hidden-element');
         reset_UI();
         removeInput();
-        run();
+        navbarSwitch('off');
+        if (onePlayer) {
+            iaRun();
+        }
+        else
+            localRun();
+
     });
 }
 
@@ -270,10 +392,12 @@ function reset_UI() {
     document.getElementById('dificultyMenu').classList.add('hidden-element');
     document.getElementById('gameModeMenu').classList.add('hidden-element');
     document.getElementById('onlineMenu').classList.add('hidden-element');
+    // document.getElementById('chat-container_session').classList.add('hidden-element');
+
 }
 
 function removeInput() {
-    const deleteInput = document.getElementById('inputDiv');
+    const deleteInput = document.getElementById('input-div');
     if(deleteInput)
         deleteInput.remove();
     const deleteTournamentBtn = document.getElementById('tournamentModeBtn');
@@ -301,8 +425,73 @@ resetBtnUI.addEventListener('click', function() {
 
 const quitButton = document.getElementById("quitGameBtn");
 quitGameBtn.addEventListener("click", function() {
-    
-    resetGameValues();
-    showSection('main');
 
+    if (playLocal) {
+        resetGameValues();
+        navbarSwitch('on');
+        showSection('main');
+    }
+    if (playOnline) {
+
+        if (leftPlayerScore !== 10 && rightPlayerScore !== 10) {
+
+            document.getElementById('quitGameBtn-div').classList.add('hidden-element');
+
+            const div = document.createElement('div');
+            div.classList = 'col-12 p-3 bg-white rounded shadow';
+            const h5 = document.createElement('h5');
+            h5.classList = 'text-center text-danger';
+            h5.textContent = 'If you leave the game, you declare forfeit !';
+            div.appendChild(h5);
+
+            const divBtns = document.createElement('div');
+            divBtns.classList = 'col d-flex justify-content-center';
+
+            const confirmBtn = document.createElement('button');
+            confirmBtn.classList = 'btn btn-sm btn-outline-danger fw-bold mx-auto';
+            confirmBtn.type = 'button';
+            confirmBtn.textContent = 'Confirm';
+            divBtns.appendChild(confirmBtn);
+            const cancelBtn = document.createElement('button');
+            cancelBtn.classList = 'btn btn-sm btn-outline-success fw-bold mx-auto';
+            cancelBtn.type = 'button';
+            cancelBtn.textContent = 'Cancel';
+            divBtns.appendChild(cancelBtn);
+
+            div.appendChild(divBtns);
+
+            document.getElementById('pong-ui').appendChild(div);
+
+            confirmBtn.addEventListener('click', function() {
+                if (playTournament)
+                {
+                    const message = JSON.stringify({ messageType: 'surrenderTournamentSession' });
+                    socket.send(message);
+                }
+                else
+                {
+                    const message = JSON.stringify({ messageType: 'surrenderSession' });
+                    socket.send(message);
+                }
+                start = false;
+                div.remove();
+                document.getElementById('quitGameBtn-div').classList.remove('hidden-element');
+                // resetGameValues();
+                // navbarSwitch('on');
+                // showSection('main');
+                // location.reload();
+                window.location.href = domainPath;
+            });
+            cancelBtn.addEventListener('click', function() {
+                div.remove();
+                document.getElementById('quitGameBtn-div').classList.remove('hidden-element');
+            });
+        } else {
+            // resetGameValues();
+            // navbarSwitch('on');
+            // showSection('main');
+            // location.reload();
+            window.location.href = domainPath;
+        }
+    }
 });

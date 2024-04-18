@@ -9,6 +9,7 @@ function setPieChart(param1, param2) {
     document.getElementById('chartPieTextInfo').classList.remove('hidden-element');
   }
   else {
+    document.getElementById('chartPieTextInfo').classList.add('hidden-element');
     var ctxChartPie = document.getElementById("myPieChart");
     myPieChart = new Chart(ctxChartPie, {
       type: 'doughnut',

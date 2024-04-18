@@ -10,7 +10,7 @@ urlpatterns = [
 	path('register/', views.UserRegisterView.as_view(), name='register'),
 	path('profile/', views.ProfileView.as_view(), name='profile'),
 	path('profile/<str:username>/', views.getProfileView.as_view(), name='user-profile'),
-	path('', views.AllUserView.as_view(), name='account'),
+	# path('', views.AllUserView.as_view(), name='account'),
 	path('<int:pk>/', views.UserView.as_view(), name='account-numero'),
 	path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 	path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
@@ -21,5 +21,5 @@ urlpatterns = [
 	path('mobile/verify/', views.VerifyMobileView.as_view() , name='mobile_verify'),
 	path('o/token/', views.oauth_login.as_view() , name='oauth_callback'),
 	path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-	path('check_activity/', views.ActivityCheckView.as_view(), name='activity'),
+	# path('update_activity/', views.ActivityCheckView.as_view(), name='activity'),
 ]

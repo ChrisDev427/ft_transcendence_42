@@ -1,34 +1,36 @@
 function printConsoleInfos() {
-    console.log("------ Game logs ----------------------------------");
-    console.log("Left Player Name : " + leftPlayerName);
-    console.log("Right Player Name : " + rightPlayerName);
-    console.log("Paddles Height : " + paddleHeight);
-    console.log("Level : " + level);
-    console.log("Paddle Left Pos : " + leftPaddleY);
-    console.log("Paddle Right Pos : " + rightPaddleY);
+    // console.log("------ Game logs ----------------------------------");
+    // console.log("Left Player Name : " + leftPlayerName);
+    // console.log("Right Player Name : " + rightPlayerName);
+    // console.log("Paddles Height : " + paddleHeight);
+    // console.log("Level : " + level);
+    // console.log("Paddle Left Pos : " + leftPaddleY);
+    // console.log("Paddle Right Pos : " + rightPaddleY);
     if(leftPaddleHand) {
-        console.log("Hand : left");
+        // console.log("Hand : left");
     } else {
-        console.log("Hand : right");
+        // console.log("Hand : right");
     }
-    console.log("Left Player Score : " + leftPlayerScore);
-    console.log("Right Player Score : " + rightPlayerScore);
-    console.log("Ball Speed X : " + ballSpeedX);
-    console.log("Ball Speed Y : " + ballSpeedY);
-    console.log("Ball X : " + ballX);
-    console.log("Ball Y : " + ballY);
-    console.log("Ball Size : " + ballSize);
-    console.log("Start : " + start);
-    console.log("Ball Launched : " + ballLaunched);
-    console.log("Theme : " + theme);
-    console.log("One Player : " + onePlayer);
-    console.log("Two Player : " + twoPlayers);
-    console.log("Tournament : " + tournament);
-    console.log("Local : " + playLocal);
-    console.log("Online : " + playOnline);
+    // console.log("Left Player Score : " + leftPlayerScore);
+    // console.log("Right Player Score : " + rightPlayerScore);
+    // console.log("Ball Speed X : " + ballSpeedX);
+    // console.log("Ball Speed Y : " + ballSpeedY);
+    // console.log("Ball X : " + ballX);
+    // console.log("Ball Y : " + ballY);
+    // console.log("Ball Size : " + ballSize);
+    // console.log("Start : " + start);
+    // console.log("Ball Launched : " + ballLaunched);
+    // console.log("spaceBarPressed : " + spaceBarPressed);
+    // console.log("Theme : " + theme);
+    // console.log("One Player : " + onePlayer);
+    // console.log("Two Player : " + twoPlayers);
+    // console.log("Tournament : " + tournament);
+    // console.log("Local : " + playLocal);
+    // console.log("Online : " + playOnline);
 
 
-    console.log("\n");
+
+    // console.log("\n");
 }
 
 function printGame() {
@@ -58,19 +60,20 @@ function printGame() {
     ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2);
     ctx.fill();
     ctx.closePath();
-   
+
 }
 
 function printWinner() {
 
+    navbarSwitch('on');
     ctx.font = '130px "Bagel Fat One", sans-serif';
     ctx.fillStyle = themeColor[theme].winPrint;
     if(rightPlayerScore === 10) {
-       
+
         ctx.fillText("Win!",  680, 400);
     }
     if(leftPlayerScore === 10) {
-        
+
         ctx.fillText("Win!", 140, 400);
     }
     leftPlayerNamePrint = "";
@@ -80,67 +83,66 @@ function printWinner() {
         setTimeout(function () {
             ManageTournament();
           }, 2500);
-        
     }
 }
 
 function printInfos() {
-    
+
     // Print score
     ctx.font = '90px "Bagel Fat One", sans-serif';
     if( leftPlayerScore < 10) {
-        
+
         ctx.fillText(leftPlayerScore, 465, 85);
     } else {
         ctx.fillText(leftPlayerScore, 420, 85);
     }
     ctx.fillText(rightPlayerScore, 580, 85);
-    
+
     if (leftPlayerScore === 10 || rightPlayerScore === 10) {
         start = false;
         printWinner();
+
     }
-    
-    
-    
-    // Print Players Name 
-    ctx.fillStyle = themeColor[theme].playersName; 
+
+    // Print Players Name
+    ctx.fillStyle = themeColor[theme].playersName;
     ctx.globalAlpha = 0.2;
     ctx.fillText(leftPlayerNamePrint, 20, 85);
     ctx.fillText(rightPlayerNamePrint, 900, 85);
     ctx.globalAlpha = 1.0;
-    
+
     // Print Commands CTRL
     if(connectedFrom_desktop) {
 
-        
         ctx.globalAlpha = 0.2;
         ctx.font = '40px "Bagel Fat One", sans-serif';
         ctx.fillText('UP = Q', 20, 635);
         ctx.fillText('DN = A', 20, 680);
-        ctx.fillText('UP = P', 970, 635);
-        ctx.fillText('DN = L', 970, 680);
+        if (playLocal) {
+
+            ctx.fillText('UP = P', 970, 635);
+            ctx.fillText('DN = L', 970, 680);
+        }
         ctx.globalAlpha = 1.0;
-        if (!ballLaunched && leftPlayerScore === 0 && rightPlayerScore === 0) {
+        if ((!ballLaunched && leftPlayerScore === 0 && rightPlayerScore === 0 && playLocal === true)
+            || (!ballLaunched && leftPlayerScore === 0 && rightPlayerScore === 0 && playOnline === true && leftPlayerName == sessionUsername)) {
             // Print PRESS SPACE TO LAUNCH
             ctx.fillStyle = themeColor[theme].field;
-            ctx.fillRect(540, 297, 20, 80);    
-            ctx.fillStyle = themeColor[theme].playersName; 
+            ctx.fillRect(540, 297, 20, 80);
+            ctx.fillStyle = themeColor[theme].playersName;
             ctx.font = '35px "Bagel Fat One", sans-serif';
             ctx.fillText('PRESS SPACE TO LAUNCH', 335, 350);
         }
     }
-
-    
 }
 
 function serve() {
-    
+
     // Si la balle n'a pas été lancée et la barre d'espace est enfoncée, lancez la balle
-    
+
     if (!ballLaunched) {
-        
-        
+
+
         if(rightPaddleHand) {
             ballX = canvas.width - 25;
             ballY = rightPaddleY + paddleHeight / 2;
@@ -149,14 +151,82 @@ function serve() {
             ballX = 25;
             ballY = leftPaddleY + paddleHeight / 2;
         }
-        ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2); 
+        ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2);
         ctx.fill();
         if (spaceBarPressed) {
-            
+
             ballSpeedX = level + 2; // Choisissez la vitesse initiale en fonction de votre préférence
             ballSpeedY = level; // Choisissez la vitesse initiale en fonction de votre préférence
             ballLaunched = true;
             paddleFX.play();
+        }
+    }
+}
+
+function serveLeft() {
+
+    // Si la balle n'a pas été lancée et la barre d'espace est enfoncée, lancez la balle
+    if (!ballLaunched) {
+
+
+
+        if(rightPaddleHand) {
+
+            ballX = canvas.width - 25;
+            ballY = rightPaddleY + paddleHeight / 2;
+        }
+        else if(leftPaddleHand) {
+
+            ballX = 25;
+            ballY = leftPaddleY + paddleHeight / 2;
+            // console.log('ballX = ', ballX, ' ballY = ', ballY);
+        }
+        ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2);
+        ctx.fill();
+        if (spaceBarPressed && leftPaddleHand) {
+
+            ballSpeedX = level + 2; // Choisissez la vitesse initiale en fonction de votre préférence
+            ballSpeedY = level; // Choisissez la vitesse initiale en fonction de votre préférence
+            ballLaunched = true;
+            paddleFX.play();
+        }
+        else if (spaceRight && rightPaddleHand)
+        {
+            ballSpeedX = level + 2; // Choisissez la vitesse initiale en fonction de votre préférence
+            ballSpeedY = level; // Choisissez la vitesse initiale en fonction de votre préférence
+            ballLaunched = true;
+            paddleFX.play();
+            spaceRight = false;
+        }
+
+    }
+}
+
+
+function serveRight() {
+
+    // Si la balle n'a pas été lancée et la barre d'espace est enfoncée, lancez la balle
+
+    if (!ballLaunched) {
+
+        // console.log('serveRight')
+        if(rightPaddleHand) {
+            ballX = canvas.width - 25;
+            ballY = rightPaddleY + paddleHeight / 2;
+        }
+        else if(leftPaddleHand) {
+            ballX = 25;
+            ballY = leftPaddleY + paddleHeight / 2;
+        }
+        ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2);
+        ctx.fill();
+        if (spaceRight && rightPaddleHand) {
+
+            ballSpeedX = level + 2; // Choisissez la vitesse initiale en fonction de votre préférence
+            ballSpeedY = level; // Choisissez la vitesse initiale en fonction de votre préférence
+            ballLaunched = true;
+            paddleFX.play();
+            spaceRight = false;
         }
     }
 }
@@ -221,7 +291,7 @@ function resetGameValues() {
     level = 0;
     leftPaddleY = (canvas.height - paddleHeight) / 2;
     rightPaddleY = (canvas.height - paddleHeight) / 2;
-    
+
     ballX = 0;
     ballY = 0;
     printConsoleInfos();

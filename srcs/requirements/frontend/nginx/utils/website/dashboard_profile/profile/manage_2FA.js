@@ -2,7 +2,7 @@
 function getOTP_createForm(formData) {
 
     signIn_form_state('off');
-    
+
     const mainDiv = document.createElement('div');
     mainDiv.id = 'manage_two_fa-div';
     mainDiv.classList = 'col mx-auto p-3 mt-3 shadow rounded-3';
@@ -15,7 +15,7 @@ function getOTP_createForm(formData) {
     const mainBtnDiv = document.createElement('div');
     mainBtnDiv.id = 'mainBtnDiv';
     mainDiv.appendChild(mainBtnDiv);
-    
+
     const btnDiv = document.createElement('div');
     btnDiv.classList = 'col-12 d-flex justify-content-around mt-3';
     btnDiv.id = 'btnDiv';
@@ -28,9 +28,9 @@ function getOTP_createForm(formData) {
     emailBtn.name = 'two_fa_email';
     emailBtn.id = 'two_fa_emailBtn';
     emailBtn.autocomplete = 'off';
-    btnDiv.appendChild(emailBtn); 
+    btnDiv.appendChild(emailBtn);
     //-------------------------------------------------------------------
-    
+
     //-- 2FA by app btn -------------------------------------------------
     const appBtn = document.createElement('button');
     appBtn.type = 'button';
@@ -39,9 +39,9 @@ function getOTP_createForm(formData) {
     appBtn.name = 'two_fa_app';
     appBtn.id = 'two_fa_appBtn';
     appBtn.autocomplete = 'off';
-    btnDiv.appendChild(appBtn); 
+    btnDiv.appendChild(appBtn);
     //-------------------------------------------------------------------
-    
+
     //-- 2FA by sms btn -------------------------------------------------
     const smsBtn = document.createElement('button');
     smsBtn.type = 'button';
@@ -50,7 +50,7 @@ function getOTP_createForm(formData) {
     smsBtn.name = 'two_fa_app';
     smsBtn.id = 'two_fa_smsBtn';
     smsBtn.autocomplete = 'off';
-    btnDiv.appendChild(smsBtn); 
+    btnDiv.appendChild(smsBtn);
     //-------------------------------------------------------------------
 
     mainBtnDiv.appendChild(btnDiv);
@@ -59,9 +59,9 @@ function getOTP_createForm(formData) {
    //-- Cancel btn -------------------------------------------------------
     const line = document.createElement('hr');
     line.classList = 'px-5 mt-4 text-info border-2';
-    
+
     mainDiv.appendChild(line);
-  
+
     const quitDiv = document.createElement('div');
     quitDiv.classList = 'mx-auto mt-4'
     const quitBtn = document.createElement('button');
@@ -72,7 +72,7 @@ function getOTP_createForm(formData) {
     quitBtn.id = 'two_fa_cancelBtn';
     quitBtn.autocomplete = 'off';
     quitDiv.appendChild(quitBtn);
-    mainDiv.appendChild(quitDiv); 
+    mainDiv.appendChild(quitDiv);
     //-------------------------------------------------------------------
 
     targetDiv = document.getElementById('signin-form').appendChild(mainDiv);
@@ -120,7 +120,7 @@ function mobileInput_createForm() {
     option3.value = '+1';
     option3.textContent = '+1 (US)';
     select.appendChild(option3)
-    
+
     const option4 = document.createElement('option');
     option4.value = '+61';
     option4.textContent = '+61 (AUS)';
@@ -149,7 +149,7 @@ function mobileInput_createForm() {
     div2.appendChild(input);
     rowDiv.appendChild(div2);
     mobileForm.appendChild(rowDiv);
-    
+
     const sendBtn = document.createElement('button');
     sendBtn.id = 'sendBtn';
     sendBtn.type = 'submit';
@@ -157,16 +157,16 @@ function mobileInput_createForm() {
     sendBtn.textContent = 'Send';
     mobileForm.appendChild(sendBtn);
     mainDiv.appendChild(mobileForm);
-    
+
     const line = document.createElement('hr');
     line.classList = 'px-5 mt-4 text-info border-2';
     mainDiv.appendChild(line);
-    
+
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'cancelBtn';
     cancelBtn.classList = 'btn btn-sm btn-outline-danger fw-bold w-100 shadow';
     cancelBtn.textContent = 'Cancel';
-    
+
     mainDiv.appendChild(cancelBtn);
     document.getElementById('mobileDiv').appendChild(mainDiv);
 
@@ -178,7 +178,7 @@ function mobileInput_createForm() {
     })
 
     document.getElementById('sendBtn').addEventListener('click', function() {
-   
+
         setMobile_API();
     })
 
@@ -208,7 +208,7 @@ function verifyMobile_createForm(formData) {
     input.autocomplete = 'off';
 
     mobileForm.appendChild(input);
-    
+
     const sendBtn = document.createElement('button');
     sendBtn.id = 'verifyBtn';
     sendBtn.type = 'submit';
@@ -216,16 +216,16 @@ function verifyMobile_createForm(formData) {
     sendBtn.textContent = 'Verify mobile';
     mobileForm.appendChild(sendBtn);
     mainDiv.appendChild(mobileForm);
-    
+
     const line = document.createElement('hr');
     line.classList = 'px-5 mt-4 text-info border-2';
     mainDiv.appendChild(line);
-    
+
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'cancelBtn';
     cancelBtn.classList = 'btn btn-sm btn-outline-danger fw-bold w-100 shadow';
     cancelBtn.textContent = 'Cancel';
-    
+
     mainDiv.appendChild(cancelBtn);
     document.getElementById('mobileDiv').appendChild(mainDiv);
 
@@ -243,7 +243,7 @@ function verifyMobile_createForm(formData) {
 }
 
 function verifyMobile_API() {
-    console.log('VERIFY MOBILE FUNCTION');
+    // console.log('VERIFY MOBILE FUNCTION');
     verifyToken();
 
     document.getElementById('mobile-form').addEventListener('submit', function (e) {
@@ -252,7 +252,7 @@ function verifyMobile_API() {
         const inputOTP = form.querySelector('input[name="codeOTP"]');
         const OTPValue = inputOTP.value;
 
-        fetch('http://localhost:8000/api/account/mobile/verify/?otp=' + OTPValue, {
+        fetch ( domainPath + '/api/account/mobile/verify/?otp=' + OTPValue, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
@@ -260,9 +260,9 @@ function verifyMobile_API() {
         })
         .then(response => {
             if (response.ok) {
-                console.log('Mobile Verified Success :', response.status);
+                // console.log('Mobile Verified Success :', response.status);
                 alert_modify_success('mobileInfosDiv', 'Mobile verified !');
-                getProfileInfos(localStorage.getItem('accessToken'));  
+                getProfileInfos(localStorage.getItem('accessToken'));
             }
             else {
                 console.error('Error : Mobile Verifification : ', response.status);
@@ -277,25 +277,25 @@ function verifyMobile_API() {
 }
 
 function sendCode(formData, method) {
-    
+
     formData.append('send_method', method);
 
-    fetch('http://localhost:8000/api/account/otp/', {
+    fetch( domainPath + '/api/account/otp/', {
         method: 'POST',
         body: formData
     })
     .then(response => {
-      console.log('response = ' + response);
-    
+    //   console.log('response = ' + response);
+
       if (response.ok) { // 201 Created (ou le code approprié renvoyé par votre API en cas de succès)
-        console.log('Send ' + method + ' success ! ' + response.status);
+        // console.log('Send ' + method + ' success ! ' + response.status);
         if (method !== 'application') {
             inputCode_form('Enter the code sent by ' + method, formData, method);
         }
         else {
             response.json()
             .then(data => {
-                console.log('Response data:', data);
+                // console.log('Response data:', data);
                 inputCode_form('Enter the code sent by ' + method, formData, method, data);
             })
             .catch(error => {
@@ -359,7 +359,7 @@ function inputCode_form(message, formData, method, totpUrl) {
     document.getElementById('mainBtnDiv').appendChild(alertDiv);
     if(method === 'application') {
         displayQRcode(totpUrl);
-      
+
     }
     sendBtn.addEventListener('click', function() {
         if(inputDiv.value === "") {

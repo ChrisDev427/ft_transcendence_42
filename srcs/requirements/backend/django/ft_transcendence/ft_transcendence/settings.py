@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,16 +26,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY_DJANGO')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', 'django_container:8000']
+# Domain Name
+
+SITE_URL = os.environ.get('SITE_PROTOCOL') + os.environ.get('SITE_URL') + ":" + os.environ.get('SITE_PORT')
+
+ALLOWED_HOSTS = [os.environ.get('SITE_URL'), 'localhost']
+# ALLOWED_HOSTS = ['*']
+
 # Application definition
 
-OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
-OAUTH_CLIENT_SECRET = os.environ.get('OAUTH_CLIENT_SECRET')
-OAUTH_REDIRECT_URI = os.environ.get('OAUTH_REDIRECT_URI')
 
 INSTALLED_APPS = [
+	'websocket',
+	'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,6 +58,16 @@ INSTALLED_APPS = [
 	'background_task',
 ]
 
+ASGI_APPLICATION = "ft_transcendence.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis_container", 6379)],
+        },
+    },
+}
+
 MIDDLEWARE = [
     'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -68,10 +84,10 @@ MIDDLEWARE = [
  # CORS settings (Cross-Origin Resource Sharing)
 
 # CORS_ALLOW_ANY_ORIGIN = True
+CORS_ALLOW_PRIVATE_NETWORK : True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost',
-	'https://transcendence42.ddns.net',
+	SITE_URL,
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -81,9 +97,15 @@ CORS_ALLOW_HEADERS = [
 	'Content-Type',
 	'code',
 	'token',
+    'Access-Control-Allow-Origin',
+    'Referer',
+    'Sec-Ch-Ua',
+    'Sec-Ch-Ua-Mobile',
+    'Sec-Ch-Ua-Platform',
+    'User-Agent',
+    'Origin',
+    'Host',
 ]
-
-SITE_URL = 'http://localhost'
 
 ROOT_URLCONF = 'ft_transcendence.urls'
 
@@ -168,14 +190,13 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 	'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-		# 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     )
 }
 
  # JWT settings
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 	'UPDATE_LAST_LOGIN': True,
 }
@@ -191,18 +212,16 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_APPLICATION_PASSWORD')
 EMAIL_FROM = "Pong_Verfication"
 
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'postfix_container'  # Nom du service Postfix dans docker-compose
-# EMAIL_PORT = 25
-# EMAIL_USE_TLS = False
-# EMAIL_HOST_USER et EMAIL_HOST_PASSWORD si nécessaire
-
-
 HTTPSMS_KEY = os.environ.get('HTTPSMS_KEY')
+HTTPSMS_URL = os.environ.get('HTTPSMS_URL')
+HTTPSMS_PHONE = os.environ.get('HTTPSMS_PHONE')
 
-PASSWORD_42 = "i8F6X2h8PZ2kyd"
+# OAUTH 42 settings
+
+OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
+OAUTH_CLIENT_SECRET = os.environ.get('OAUTH_CLIENT_SECRET')
+OAUTH_REDIRECT_URI = os.environ.get('OAUTH_REDIRECT_URI')
+OAUTH_PASSWORD_42 = os.environ.get('OAUTH_PASSWORD_42')
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
 # SECURE_SSL_REDIRECT = True

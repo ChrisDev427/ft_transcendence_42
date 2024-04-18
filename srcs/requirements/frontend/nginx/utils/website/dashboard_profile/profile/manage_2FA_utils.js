@@ -31,7 +31,7 @@ function check2FA(e) {
         }
     })
     .then(data => {
-        console.log('data.two_fa = ' + data.two_fa);
+        // console.log('data.two_fa = ' + data.two_fa);
       return data.two_fa; // Renvoie la valeur pour que cela soit disponible dans la chaîne de promesses
     })
     .catch(error => {

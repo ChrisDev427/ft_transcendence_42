@@ -10,7 +10,7 @@ function hideCurrentSection() {
 
 function showSection(sectionId) {
     let targetSection = document.getElementById(sectionId);
-    
+
     hideCurrentSection();
     // Si sectionId est vide, affichez la section principale par défaut
     if (!sectionId) {
@@ -32,19 +32,19 @@ function showSection(sectionId) {
 // Écouter les changements d'état du navigateur (bouton de retour)
 window.addEventListener('popstate', function (event) {
     var sectionId = (location.hash) ? location.hash.slice(1) : null;
-    console.log('Popstate event:', sectionId);
-    
+    // console.log('Popstate event:', sectionId);
+
     showSection(sectionId);
-    
+
 });
 
 // Au chargement initial, vérifiez s'il y a un hash et affichez la section correspondante
 document.addEventListener('DOMContentLoaded', function () {
     var sectionId = location.hash.slice(1);
-    console.log('Initial hash:', sectionId);
+    // console.log('Initial hash:', sectionId);
 
     showSection(sectionId);
-    
+
 });
 
 // Navbar close auto

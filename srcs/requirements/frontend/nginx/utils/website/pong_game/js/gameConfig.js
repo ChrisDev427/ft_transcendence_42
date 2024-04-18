@@ -6,9 +6,15 @@ let     onePlayer = false, twoPlayers = false, tournament = false;
 let     level;
 let     playLocal = false;
 let     playOnline = false;
+let     playTournament = false;
 let     ballLaunched = false;
 let     leftPlayerScore = 0, rightPlayerScore = 0;
-let     ballSpeedX, ballSpeedY;
+let     ballSpeedX = 0, ballSpeedY = 0;
+
+let     spaceRight = false;
+
+
+
 
 // Initialisation des raquettes
 let     paddleWidth = 9, paddleHeight = 100;
@@ -58,7 +64,7 @@ window.addEventListener("keydown", (event) => {
             l_keyPressed = true;
             break;
     }
-   
+
 });
 
 window.addEventListener("keyup", (event) => {
@@ -80,13 +86,106 @@ window.addEventListener("keyup", (event) => {
     }
 });
 
+let upLeftBtnPressed = false;
+let dnLeftBtnPressed = false;
+
+document.getElementById("upLeftBtn").addEventListener("touchstart", () => {
+    upLeftBtnPressed = true;
+    q_keyPressed = true;
+});
+
+document.getElementById("upLeftBtn").addEventListener("touchend", () => {
+    upLeftBtnPressed = false;
+    q_keyPressed = false;
+});
+
+document.getElementById("upLeftBtn").addEventListener("touchcancel", () => {
+    upLeftBtnPressed = false;
+    q_keyPressed = false;
+});
+
+document.getElementById("dnLeftBtn").addEventListener("touchstart", () => {
+    dnLeftBtnPressed = true;
+    a_keyPressed = true;
+});
+
+document.getElementById("dnLeftBtn").addEventListener("touchend", () => {
+    dnLeftBtnPressed = false;
+    a_keyPressed = false;
+});
+
+document.getElementById("dnLeftBtn").addEventListener("touchcancel", () => {
+    dnLeftBtnPressed = false;
+    a_keyPressed = false;
+});
+
+document.addEventListener("mouseup", () => {
+    upLeftBtnPressed = false;
+    dnLeftBtnPressed = false;
+    q_keyPressed = false;
+    a_keyPressed = false;
+});
+
+let upRightBtnPressed = false;
+let dnRightBtnPressed = false;
+
+document.getElementById("upRightBtn").addEventListener("touchstart", () => {
+    upRightBtnPressed = true;
+    p_keyPressed = true;
+});
+
+document.getElementById("upRightBtn").addEventListener("touchend", () => {
+    upRightBtnPressed = false;
+    p_keyPressed = false;
+});
+
+document.getElementById("upRightBtn").addEventListener("touchcancel", () => {
+    upRightBtnPressed = false;
+    p_keyPressed = false;
+});
+
+document.getElementById("dnRightBtn").addEventListener("touchstart", () => {
+    dnRightBtnPressed = true;
+    l_keyPressed = true;
+});
+
+document.getElementById("dnRightBtn").addEventListener("touchend", () => {
+    dnRightBtnPressed = false;
+    l_keyPressed = false;
+});
+
+document.getElementById("dnRightBtn").addEventListener("touchcancel", () => {
+    dnRightBtnPressed = false;
+    l_keyPressed = false;
+});
+
+document.addEventListener("mouseup", () => {
+    upRightBtnPressed = false;
+    dnRightBtnPressed = false;
+    p_keyPressed = false;
+    l_keyPressed = false;
+});
+
+// Écouteur d'événement pour le toucher initial sur le cadre de jeu
+document.getElementById("pongCanvas").addEventListener("touchstart", () => {
+    spaceBarPressed = true;
+});
+
+
+
 // Space bar
 window.addEventListener("keydown", (event) => {
     if (event.key === " ") {
-        
+
         spaceBarPressed = true;
     }
 });
+// window.addEventListener("keyup", (event) => {
+//     if (event.key === " ") {
+
+//         spaceBarPressed = false;
+//     }
+// });
 
 
 // Theme changing 1, 2, 3

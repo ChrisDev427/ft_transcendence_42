@@ -1,5 +1,5 @@
 function checkDblName(input) {
-    console.log(input.value);
+    // console.log(input.value);
     for(let i = 0; i < tournamentPlayers.length; i++) {
         if (tournamentPlayers[i].name === input.value) {
             tournamentPlayers = [];
@@ -43,7 +43,7 @@ function alert_message(message) {
     button.setAttribute('data-bs-dismiss', 'alert');
     button.setAttribute('aria-label', 'Close');
     div.appendChild(button);
-   
+
 
     let targetDiv = document.getElementById('divBtn');
     targetDiv.appendChild(div);

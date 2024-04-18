@@ -8,11 +8,8 @@ h5 {
   font-family: 'Bagel Fat One', sans-serif;
 
 }
-h3 {
-  font-family: Cambria;
-}
-h4 {
-  font-family: Cambria;
+.bagelFatOne {
+  font-family: 'Bagel Fat One', sans-serif;
 }
 section {
   margin-bottom: 100px;
@@ -21,17 +18,11 @@ input[type="text password"]::placeholder {
 
   color: rgba(0, 179, 255, 0.351);
 }
-
-/* #friendShipList-dashboard, #main, #gameMenu, #playPong, #aboutTheTeam, #signIn, #signUp, #dashboard, #gameHistory, #profile, #alert-bg-blur, #alert-bg-blur {
-  opacity: 0;
-  animation: fadeIn 0.3s ease-in-out forwards;
-  animation-delay: 0s;
+.rotate-180 {
+  display: inline-block;
+  transform: rotate(180deg) !important;
 }
-@keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
 
-} */
 
 .fade-in {
   opacity: 0;
@@ -69,14 +60,14 @@ input[type="text password"]::placeholder {
   height: 100%;
   background-color: rgba(210, 210, 210, 0.5); /* Fond semi-transparent noir pour le flou */
   backdrop-filter: blur(6px); /* Flou appliqué à l'arrière-plan */
-  z-index: 1100; /* Placez l'arrière-plan au-dessus de tout sauf la boîte de dialogue */
+  z-index: 1300; /* Placez l'arrière-plan au-dessus de tout sauf la boîte de dialogue */
 
 }
 .cursor-pointer {
   cursor: pointer;
 }
 .icon-disabled {
-  opacity: 0.5; /* Vous pouvez ajuster cette valeur selon vos préférences */
+  opacity: 0.5 !important; /* Vous pouvez ajuster cette valeur selon vos préférences */
   pointer-events: none; /* Désactive les interactions avec l'icône */
 }
 .hidden-element {
@@ -109,26 +100,38 @@ input[type="text password"]::placeholder {
   transition: color 0.4s ease; /* Transition de couleur sur 0.3 secondes avec une fonction d'accélération */
 }
 .custom-icon:hover {
-    color: #004ac0;
+    color: #7a7a7a;
 }
-.custom-icon-footer {
+.custom-icon-headerFooter {
   color: #ffffff; /* Couleur par défaut */
   transition: color 0.4s ease; /* Transition de couleur sur 0.3 secondes avec une fonction d'accélération */
 }
-.custom-icon-footer:hover {
-    color: #004ac0;
+.custom-icon-headerFooter:hover {
+    color: #7a7a7a;
 }
 
 .hover-logo {
   display: none;
 }
 .image-container:hover .normal-logo {
-  display: none;
+  display: none; 
 }
 .image-container:hover .hover-logo {
   display: inline-block; /* ou display: block; selon le besoin */
 }
 
+.chat-container {
+  z-index: 1200;
+  position: fixed;
+  bottom: 55px;
+  right: 10px;
+  width: 290px;
+  height: 390px;
+  box-shadow: 0 0 15px 5px #848484b1;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.448); /* Couleur de fond avec opacité */
+  backdrop-filter: blur(5px); /* Effet de flou */
+}
 
 .chart-pie {
   position: relative;

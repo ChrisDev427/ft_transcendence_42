@@ -32,7 +32,7 @@ function showSection(sectionId) {
 // Écouter les changements d'état du navigateur (bouton de retour)
 window.addEventListener('popstate', function (event) {
     var sectionId = (location.hash) ? location.hash.slice(1) : null;
-    console.log('Popstate event:', sectionId);
+    // console.log('Popstate event:', sectionId);
 
     showSection(sectionId);
 
@@ -41,7 +41,7 @@ window.addEventListener('popstate', function (event) {
 // Au chargement initial, vérifiez s'il y a un hash et affichez la section correspondante
 document.addEventListener('DOMContentLoaded', function () {
     var sectionId = location.hash.slice(1);
-    console.log('Initial hash:', sectionId);
+    // console.log('Initial hash:', sectionId);
 
     showSection(sectionId);
 
@@ -62,9 +62,28 @@ document.addEventListener('DOMContentLoaded', function () {
 //     });
 // });
 
+function navbarSwitch(state) {
+    if (state === 'off') {
+        const headerLinksAndButtons = document.querySelectorAll('header a, header button');
+        headerLinksAndButtons.forEach(element => {
+            if (!element.classList.contains('disabled')) {
+                element.classList.add('disabled'); // Ajoutez une classe pour indiquer visuellement qu'il est désactivé
+            }
+        });
+    }
+    if (state === 'on') {
+        const headerLinksAndButtons = document.querySelectorAll('header a, header button');
+        headerLinksAndButtons.forEach(element => {
+            if (element.classList.contains('disabled')) {
+                element.classList.remove('disabled'); // Ajoutez une classe pour indiquer visuellement qu'il est désactivé
+            }
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    console.log('Check accessToken & refreshToken');
+    // console.log('Check accessToken & refreshToken');
     // Récupérez les tokens du localStorage
     const storedAccessToken = localStorage.getItem('accessToken');
     const storedRefreshToken = localStorage.getItem('refreshToken');
@@ -75,14 +94,9 @@ document.addEventListener('DOMContentLoaded', function () {
         getDashboardInfos()
         profileAccess(localStorage.getItem('connectType'));
         itemsVisibility_logged_in();
-        profileAccess(localStorage.getItem('connectType'));
-
-
-        console.log('AccessToken:', storedAccessToken);
-        console.log('RefreshToken:', storedRefreshToken);
-
-        // Par exemple, vous pourriez renvoyer ces tokens au serveur pour vérification
-        // ou effectuer toute autre opération nécessaire pour restaurer la session.
+        connected = true;
+        // console.log('AccessToken:', storedAccessToken);
+        // console.log('RefreshToken:', storedRefreshToken);
     }
 });
 

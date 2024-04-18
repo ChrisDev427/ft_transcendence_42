@@ -1,7 +1,7 @@
 // Update User Infos
 
 function modifyAvatar_API() {
-    console.log('in modifyAvatar_API()');
+    // console.log('in modifyAvatar_API()');
     verifyToken();
 
     document.getElementById('modifyAvatar-form').addEventListener('submit', function (e) {
@@ -22,10 +22,10 @@ function modifyAvatar_API() {
                 }
             })
             .then(response => {
-                console.log('response status:', response.status);
+                // console.log('response status:', response.status);
 
                 if (response.ok) {
-                    console.log('Modify Avatar Success!');
+                    // console.log('Modify Avatar Success!');
                     getProfileInfos();
                     alert_modify_success('avatarProfile', 'Success');
                 } else {
@@ -41,7 +41,7 @@ function modifyAvatar_API() {
 }
 
 function modifyBio_API() {
-    console.log('in modifyInfos_API()');
+    // console.log('in modifyInfos_API()');
     verifyToken();
 
     document.getElementById('modifyBio-form').addEventListener('submit', function (e) {
@@ -62,10 +62,10 @@ function modifyBio_API() {
                 }
             })
             .then(response => {
-                console.log('response status:', response.status);
+                // console.log('response status:', response.status);
 
                 if (response.ok) {
-                    console.log('Modify Bio Success!');
+                    // console.log('Modify Bio Success!');
                     getProfileInfos();
                     alert_modify_success('bioProfileDiv', 'Success');
                 } else {
@@ -87,7 +87,7 @@ function modifyBio_API() {
 }
 
 function setMobile_API() {
-    console.log('in modifyMobile_API()');
+    // console.log('in modifyMobile_API()');
     verifyToken();
 
     document.getElementById('mobile-form').addEventListener('submit', function (e) {
@@ -107,7 +107,7 @@ function setMobile_API() {
             }
             const tmp = countryCode.value + mobile.value;
             mobile.value = tmp;
-           
+
             // fetch('http://localhost:8000/api/account/profile/', {
                 fetch(domainPath + '/api/account/profile/', {
                 method: 'PATCH',
@@ -117,10 +117,10 @@ function setMobile_API() {
                 }
             })
             .then(response => {
-                console.log('response status:', response.status);
+                // console.log('response status:', response.status);
 
                 if (response.ok) {
-                    console.log('Input Mobile Success!');
+                    // console.log('Input Mobile Success!');
                 alert_modify_success('mobileInfosDiv', 'A verification code is sent on your mobile');
                 getProfileInfos();
                     setTimeout(function () {
@@ -145,20 +145,13 @@ function setMobile_API() {
 }
 
 function modifyInfos_API() {
-    console.log('in modifyInfos_API()');
+    // console.log('in modifyInfos_API()');
     verifyToken();
 
     document.getElementById('modifyProfileInfos-form').addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const firstName = document.getElementById('first_nameModifyProfile');
-        const lastName = document.getElementById('last_nameModifyProfile');
-        const userName = document.getElementById('usernameModifyProfile');
-
-        if (firstName.value === '' || lastName.value === '' || userName.value === '') {
-            alert_modify_error('infosProfile', 'Empty field(s) !');
-        }
-        else {
+        if (checkInput_modifyInfos()) {
 
             // fetch('http://localhost:8000/api/account/profile/', {
             fetch(domainPath + '/api/account/profile/', {
@@ -169,10 +162,10 @@ function modifyInfos_API() {
                 }
             })
             .then(response => {
-                console.log('response status:', response.status);
+                // console.log('response status:', response.status);
 
                 if (response.ok) {
-                    console.log('Modify Infos Success!');
+                    // console.log('Modify Infos Success!');
                 getProfileInfos();
                 alert_modify_success('infosProfile', 'Success');
                 } else {
@@ -194,7 +187,7 @@ function modifyInfos_API() {
 }
 
 function modifyEmail_API() {
-    console.log('in modifyEmail_API()');
+    // console.log('in modifyEmail_API()');
     verifyToken();
 
     document.getElementById('modifyEmail-form').addEventListener('submit', function (e) {
@@ -216,10 +209,10 @@ function modifyEmail_API() {
                 }
             })
             .then(response => {
-                console.log('response status:', response.status);
+                // console.log('response status:', response.status);
 
                 if (response.ok) {
-                    console.log('Modify Email Success!');
+                    // console.log('Modify Email Success!');
                     alert_modify_success('emailProfileDiv', 'Success');
                     setTimeout(function () {
                         userLogout_API();
@@ -247,7 +240,7 @@ function modifyEmail_API() {
 }
 
 function modifyPassword_API() {
-    console.log('in modifyPassword_API()');
+    // console.log('in modifyPassword_API()');
     verifyToken();
 
     document.getElementById('modifyPassword-form').addEventListener('submit', function (e) {
@@ -271,8 +264,8 @@ function modifyPassword_API() {
             })
             .then(response => {
 
-                if (response.ok) { 
-                    console.log('Modify Password Success!');
+                if (response.ok) {
+                    // console.log('Modify Password Success!');
                     alert_modify_success('changeEraseBtn', 'Success');
                 } else {
                     console.error('Error : Modify Password : ', response.status);
@@ -280,7 +273,7 @@ function modifyPassword_API() {
                 }
             })
             .then(errorData => {
-                
+
                 if (errorData) {
                     alert_modify_error('changeEraseBtn', Object.values(errorData));
                     console.error('Error Data:', errorData);
@@ -294,7 +287,7 @@ function modifyPassword_API() {
 }
 
 function modify2FA_API() {
-    console.log('in modify2FA_API()');
+    // console.log('in modify2FA_API()');
     verifyToken();
 
     document.getElementById('twofa-form').addEventListener('submit', function (e) {
@@ -309,11 +302,11 @@ function modify2FA_API() {
             }
         })
         .then(response => {
-            console.log('response status:', response.status);
+            // console.log('response status:', response.status);
 
             if (response.ok) {
-                
-                console.log('Modify 2FA Success!');
+
+                // console.log('Modify 2FA Success!');
                 getProfileInfos();
                 alert_modify_success('authProfile', 'Success');
             } else {
@@ -334,7 +327,7 @@ function modify2FA_API() {
 }
 
 function userLogout_API() {
-    console.log('USER LOGOUT FUNCTION');
+    // console.log('USER LOGOUT FUNCTION');
     verifyToken();
     // fetch('http://localhost:8000/api/account/logout/', {
     fetch(domainPath + '/api/account/logout/', {
@@ -345,7 +338,7 @@ function userLogout_API() {
     })
     .then(response => {
         if (response.ok) {
-          console.log('Logout Success :', response.status);
+          // console.log('Logout Success :', response.status);
         }
         else {
           console.error('Error : logout :', response.status);
@@ -358,7 +351,7 @@ function userLogout_API() {
 }
 
 function eraseAccount_API() {
-    console.log('in eraseAccount_API()');
+    // console.log('in eraseAccount_API()');
     verifyToken();
 
     document.getElementById('eraseAccount-form').addEventListener('submit', function (e) {
@@ -373,10 +366,10 @@ function eraseAccount_API() {
             }
         })
         .then(response => {
-            console.log('response status:', response.status);
+            // console.log('response status:', response.status);
 
             if (response.ok) {
-                console.log('Erase Account Success!');
+                // console.log('Erase Account Success!');
 
                 alert_modify_success('authProfile', 'Erasing...');
                 setTimeout(function () {
@@ -407,7 +400,7 @@ function alert_modify_success(targetDiv, message) {
 
     const modifyForm = document.getElementById('modifyForm');
     modifyForm.querySelectorAll('input, button').forEach((element) => {
-        element.disabled = true; 
+        element.disabled = true;
     });
 
     const div = document.createElement('div');
@@ -472,29 +465,48 @@ function alert_modify_error(targetDiv, message) {
     });
 }
 
-function sendHeartbeat_API() {
-    // Effectuer une requête au serveur pour indiquer que l'utilisateur est connecté
-    fetch('url_du_serveur', {
-        method: 'POST', // ou 'GET' selon vos besoins
-        headers: {
-            'Content-Type': 'application/json',
-            // Autres en-têtes nécessaires
-        },
-        // Le corps de la requête peut contenir des informations supplémentaires si nécessaire
-        // body: JSON.stringify({ key: 'value' }),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erreur lors de la requête au serveur');
-        }
-        // Traiter la réponse du serveur si nécessaire
-        return response.json();
-    })
-    .catch(error => {
-        console.error('Erreur :', error);
-        // Gérer l'erreur comme vous le souhaitez
-    });
+function checkInput_modifyInfos() {
+    const userName = document.getElementById('usernameModifyProfile');
+    const firstName = document.getElementById('first_nameModifyProfile');
+    const lastName = document.getElementById('last_nameModifyProfile');
+
+    if (firstName.value === '' || lastName.value === '' || userName.value === '') {
+        alert_modify_error('infosProfile', 'Empty field(s) !');
+        return false;
+    }
+    if (firstName.value.length > 11) {
+        alert_modify_error('infosProfile', 'Firstname is too long, 11 characters max !');
+        return false;
+    }
+    if (lastName.value.length > 11) {
+        alert_modify_error('infosProfile', 'Lastname is too long, 11 characters max !');
+        return false;
+    }
+    if (userName.value.length > 11) {
+        alert_modify_error('infosProfile', 'Username is too long, 11 characters max !');
+        return false;
+    }
+    return true;
 }
 
-// Appeler la fonction toutes les 5 secondes (5000 millisecondes)
-// setInterval(sendHeartbeat_API, 5000);
+// function sendHeartbeat_API() {
+//     fetch(domainPath + '/api/account/update_activity/', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+//         },
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('Erreur lors de la requête au serveur');
+//         }
+//         return response.json();
+//     })
+//     .catch(error => {
+//         console.error('Erreur :', error);
+//     });
+// }
+
+// // Appeler la fonction toutes les 20 secondes
+// setInterval(sendHeartbeat_API, 20000);

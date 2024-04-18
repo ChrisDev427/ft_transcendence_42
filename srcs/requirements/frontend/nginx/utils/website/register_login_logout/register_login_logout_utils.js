@@ -1,6 +1,6 @@
 function alert_register_fail(message) {
-    
-    document.getElementById('spinner').remove();
+
+    // document.getElementById('spinner').remove();
 
     let div = document.createElement('div');
     div.classList = 'w-75 mx-auto alert alert-danger alert-dismissible fade show text-center text-danger shadow ';
@@ -15,11 +15,11 @@ function alert_register_fail(message) {
     button.setAttribute('data-bs-dismiss', 'alert');
     button.setAttribute('aria-label', 'Close');
     div.appendChild(button);
-   
+
     document.getElementById('signUpDiv').appendChild(div);
 
     document.getElementById('alertBtn').addEventListener("click", function() {
-    const signUpSection = document.getElementById('signUp');    
+    const signUpSection = document.getElementById('signUp');
 
         signUpSection.querySelectorAll('input, button').forEach((element) => {
             element.disabled = false;  // Rendre l'élément actif
@@ -28,8 +28,8 @@ function alert_register_fail(message) {
 }
 
 function alert_register_success() {
-    
-    document.getElementById('spinner').remove();
+
+    // document.getElementById('spinner').remove();
 
     let div = document.createElement('div');
     div.classList = 'w-75 mx-auto alert alert-success text-center text-success shadow';
@@ -52,12 +52,12 @@ function alert_register_success() {
     }, 3000);
 }
 
-function alert_login_fail(errorMessage) {
+function alert_login_fail() {
     // Disable form
     const signInSection = document.getElementById('signIn');
     // Parcourez tous les éléments descendants de la section
     signInSection.querySelectorAll('input, button').forEach((element) => {
-    element.disabled = true;  // Rendre l'élément inactif
+        element.disabled = true;  // Rendre l'élément inactif
     });
 
 
@@ -66,7 +66,7 @@ function alert_login_fail(errorMessage) {
     div.style.maxWidth= '350px';
     div.role = 'alert';
     div.id = 'alert';
-    div.textContent = errorMessage;
+    div.textContent = 'Error';
 
     let button = document.createElement('button');
     button.classList = 'btn-close';
@@ -74,18 +74,18 @@ function alert_login_fail(errorMessage) {
     button.setAttribute('data-bs-dismiss', 'alert');
     button.setAttribute('aria-label', 'Close');
     div.appendChild(button);
-   
+
     document.getElementById('signInDiv').appendChild(div);
 
     document.getElementById('alertBtn').addEventListener("click", function() {
-        
+
         signInSection.querySelectorAll('input, button').forEach((element) => {
             element.disabled = false;  // Rendre l'élément actif
         });
         document.getElementById('signin-form').reset();
         document.getElementById('signin-form').addEventListener('submit', formSubmitHandler_login);
     });
-    
+
 }
 
 function alert_login_success() {
@@ -104,13 +104,13 @@ function alert_login_success() {
     div.role = 'alert';
     div.id = 'alertSuccess';
     div.textContent = 'You are successfully logged !';
-    
+
     document.getElementById('signInDiv').appendChild(div);
-    
+
     const div1 = document.createElement('div');
     div1.id = 'spinner';
     div1.classList = 'd-flex justify-content-center';
-    
+
     const div2 = document.createElement('div');
     div2.classList = 'spinner-border text-success';
     div2.role = 'status';
@@ -119,7 +119,7 @@ function alert_login_success() {
     document.getElementById('signInDiv').appendChild(div1);
     document.getElementById('signin-form').addEventListener('submit', formSubmitHandler_login);
     setTimeout(function () {
-        
+
         document.getElementById('alertSuccess').remove();
         document.getElementById('spinner').remove();
         itemsVisibility_logged_in();
@@ -138,7 +138,8 @@ function itemsVisibility_logged_in() {
                             'profile',
                             'dashboard',
                             'dropDownProfile',
-                            'gameHistory'];
+                            'gameHistory',
+                            'displayChatBtn'];
 
     elementsToShow.forEach((elementId) => {
         const element = document.getElementById(elementId);
@@ -163,29 +164,31 @@ function itemsVisibility_logged_in() {
 
 function itemsVisibility_logged_out() {
 
-    const elementsToShow = ['friends-gameHistory-btn',
-                            'profile',
-                            'friends',
-                            'dropDownProfile',
-                            'gameHistory'];
-
-    elementsToShow.forEach((elementId) => {
-        const element = document.getElementById(elementId);
-        if (element) {
-            element.classList.add('unvisible');
-        }
-    });
-//----------------------------------------------------------------
-    const elementsToHide = ['nav-signIn',
+    const elementsToShow = ['nav-signIn',
                             'nav-signUp',
                             'signIn-signUp-btn',
                             'signIn',
                             'signUp'];
 
-    elementsToHide.forEach((elementId) => {
+    elementsToShow.forEach((elementId) => {
         const element = document.getElementById(elementId);
         if (element) {
             element.classList.remove('unvisible');
+        }
+    });
+//----------------------------------------------------------------
+    const elementsToHide = ['friends-gameHistory-btn',
+                            'profile',
+                            'dashboard',
+                            'dropDownProfile',
+                            'gameHistory',
+                            'displayChatBtn',
+                            'mainChat'];
+
+    elementsToHide.forEach((elementId) => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.classList.add('unvisible');
         }
     });
 }
@@ -193,18 +196,16 @@ function itemsVisibility_logged_out() {
 function refreshAccessToken() {
     // Récupérez le refresh token de votre système de stockage (par exemple, localStorage)
     const refreshToken = localStorage.getItem('refreshToken');
-    console.error(refreshToken);
     console.error(JSON.stringify({
         refresh: refreshToken,
     }));
-  
+
     if (!refreshToken) {
         console.error('No refresh token available');
         return;
     }
     // Effectuez une requête au point de terminaison de rafraîchissement du token côté serveur
-    // fetch('http://localhost:8000/api/account/token/refresh/', {
-        fetch(domainPath + '/api/account/token/refresh/', {
+    fetch( domainPath + '/api/account/token/refresh/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -217,20 +218,20 @@ function refreshAccessToken() {
         if (response.ok) {
             return response.json();
         } else {
-            console.log('access token expired, auto logout redirect to signIn');
+            // console.log('access token expired, auto logout redirect to signIn');
             userLogout();
             showSection('signIn');
         }
     })
     .then(data => {
         localStorage.setItem('accessToken', data.access);
-        console.log('Token refreshed successfully');
+        location.reload();
+        // console.log('Token refreshed successfully');
     })
 }
 
 function verifyToken() {
-    // fetch('http://localhost:8000/api/account/token/verify/', {
-        fetch(domainPath + '/api/account/token/verify/', {
+    fetch( domainPath + '/api/account/token/verify/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -241,11 +242,12 @@ function verifyToken() {
     })
     .then(response => {
         if (response.ok) {
-            console.log('acces token verified');
-            
+            // console.log('acces token verified');
+
         } else {
-            refreshAccessToken()
-            console.log('refreshAccessToken() called');
+            refreshAccessToken();
+
+            // console.log('refreshAccessToken() called');
         }
     })
 }
@@ -263,4 +265,35 @@ function profileAccess(connectWith) {
         document.getElementById('changePasswordBtn').classList.remove('unvisible');
         document.getElementById('setInfoIc').classList.remove('unvisible');
     }
+}
+
+function usernameLength(input) {
+    if(input.length > 11) {
+        alert_register('Username is too long, 11 characters max !');
+        return true;
+    }
+    return false;
+}
+
+function alert_register(message) {
+
+    let div = document.createElement('div');
+    div.classList = 'mt-3 mb-0 alert alert-danger alert-dismissible fade show text-center text-danger shadow ';
+    div.role = 'alert';
+    div.id = 'alert';
+    div.textContent = message;
+
+    let button = document.createElement('button');
+    button.classList = 'btn-close';
+    button.id = 'alertButton';
+    button.setAttribute('data-bs-dismiss', 'alert');
+    button.setAttribute('aria-label', 'Close');
+    div.appendChild(button);
+
+    let targetDiv = document.getElementById('signup-form');
+    targetDiv.appendChild(div);
+
+    button.addEventListener("click", function() {
+        button.remove();
+    });
 }

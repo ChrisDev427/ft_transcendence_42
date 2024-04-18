@@ -11,28 +11,28 @@ function handleAvatar_createForm() {
     formDiv.id = 'modifyAvatar-form';
     formDiv.method = 'post';
     mainDiv.appendChild(formDiv);
-    
-    
+
+
     const input = document.createElement('input');
     input.accept = 'image/*';
     input.name = 'avatar';
     input.id = 'avatarInput';
-    
+
     input.type = 'file';
     input.classList = 'form-control form-control-sm my-4 border-info text-secondary text-center';
-    
+
     formDiv.appendChild(input);
-    
+
 
     const rowDiv = document.createElement('div');
     rowDiv.classList = 'row mt-2';
-    
+
     const col1Div = document.createElement('div');
     col1Div.classList = 'col-6';
-    
+
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'cancelBtn';
-    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow';
+    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow bagelFatOne';
     cancelBtn.type = 'submit';
     cancelBtn.textContent = 'Cancel';
     col1Div.appendChild(cancelBtn);
@@ -40,10 +40,10 @@ function handleAvatar_createForm() {
 
     const col2Div = document.createElement('div');
     col2Div.classList = 'col-6';
-    
+
     const applyBtn = document.createElement('button');
     applyBtn.id = 'applyBtn';
-    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow';
+    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow bagelFatOne';
     applyBtn.type = 'submit';
     applyBtn.textContent = 'Apply';
     col2Div.appendChild(applyBtn);
@@ -59,7 +59,7 @@ function handleAvatar_createForm() {
     });
 
     document.getElementById('applyBtn').addEventListener('click', function () {
-        console.log('apply btn pushed');
+        // console.log('apply btn pushed');
         modifyAvatar_API();
     });
 
@@ -106,7 +106,7 @@ function handleBio_createForm() {
 
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'cancelBtn';
-    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow';
+    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow bagelFatOne';
     cancelBtn.type = 'submit';
     cancelBtn.textContent = 'Cancel';
     col1Div.appendChild(cancelBtn);
@@ -117,7 +117,7 @@ function handleBio_createForm() {
 
     const applyBtn = document.createElement('button');
     applyBtn.id = 'applyBtn';
-    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow';
+    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow bagelFatOne';
     applyBtn.type = 'submit';
     applyBtn.textContent = 'Apply';
     col2Div.appendChild(applyBtn);
@@ -126,7 +126,7 @@ function handleBio_createForm() {
     formDiv.appendChild(rowDiv);
     document.getElementById('bioDiv').appendChild(mainDiv);
 
-    
+
     document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyForm').remove();
         document.getElementById('bioProfileDiv').classList.remove('hidden-element');
@@ -153,7 +153,7 @@ function handleInfos_createForm() {
     formDiv.method = 'patch';
     mainDiv.appendChild(formDiv);
 
-    const inputsName = ["first_name", "last_name", "username"];
+    const inputsName = ["username", "first_name", "last_name"];
     for (let i = 0; i < 3; i++) {
         const input = document.createElement('input');
 
@@ -162,7 +162,7 @@ function handleInfos_createForm() {
         input.placeholder = inputsName[i];
         input.type = 'text';
         input.classList = 'form-control mb-2 border-info text-secondary text-center';
-       
+
         formDiv.appendChild(input);
     }
 
@@ -174,7 +174,7 @@ function handleInfos_createForm() {
 
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'cancelBtn';
-    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow';
+    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow bagelFatOne';
     cancelBtn.type = 'submit';
     cancelBtn.textContent = 'Cancel';
     col1Div.appendChild(cancelBtn);
@@ -185,7 +185,7 @@ function handleInfos_createForm() {
 
     const applyBtn = document.createElement('button');
     applyBtn.id = 'applyBtn';
-    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow';
+    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow bagelFatOne';
     applyBtn.type = 'submit';
     applyBtn.textContent = 'Apply';
     col2Div.appendChild(applyBtn);
@@ -201,7 +201,7 @@ function handleInfos_createForm() {
     });
 
     document.getElementById('applyBtn').addEventListener('click', function () {
-        console.log('apply btn pushed');
+        // console.log('apply btn pushed');
 
         modifyInfos_API();
     });
@@ -220,8 +220,8 @@ function handleEmail_createForm() {
     mainDiv.classList = 'col-sm-8 mx-auto shadow p-3 rounded-4 bg-info bg-opacity-10';
 
     const text = document.createElement('h6');
+    text.classList = 'text-secondary text-danger text-secondary text-center fst-italic fw-light bagelFatOne';
     text.textContent = "You'll be disconnected to verify the new address";
-    text.classList = 'text-secondary text-danger text-secondary text-center fst-italic fw-light';
     mainDiv.appendChild(text);
 
     const formDiv = document.createElement('form');
@@ -237,15 +237,6 @@ function handleEmail_createForm() {
     input.placeholder = 'new email';
     formDiv.appendChild(input);
 
-    // input = document.createElement('input');
-    // input.id = 'password';
-    // input.type = 'password';
-    // input.name = 'password';
-    // input.classList = 'form-control form-control-sm mb-1 mt-3 border-success text-center shadow w-50 mx-auto';
-    // input.placeholder = 'password';
-    // formDiv.appendChild(input);
-
-
     const rowDiv = document.createElement('div');
     rowDiv.classList = 'row mt-2';
 
@@ -254,7 +245,7 @@ function handleEmail_createForm() {
 
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'cancelBtn';
-    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow';
+    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow bagelFatOne';
     cancelBtn.type = 'submit';
     cancelBtn.textContent = 'Cancel';
     col1Div.appendChild(cancelBtn);
@@ -265,7 +256,7 @@ function handleEmail_createForm() {
 
     const applyBtn = document.createElement('button');
     applyBtn.id = 'applyBtn';
-    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow';
+    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow bagelFatOne';
     applyBtn.type = 'submit';
     applyBtn.textContent = 'Apply';
     col2Div.appendChild(applyBtn);
@@ -298,7 +289,7 @@ function handlePassword_createForm() {
     const formDiv = document.createElement('form');
     formDiv.id = 'modifyPassword-form';
     formDiv.method = 'patch';
-    
+
 
     let input = document.createElement('input');
     input.id = 'currentPassword';
@@ -325,7 +316,7 @@ function handlePassword_createForm() {
 
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'cancelBtn';
-    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow';
+    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow bagelFatOne';
     cancelBtn.type = 'submit';
     cancelBtn.textContent = 'Cancel';
     col1Div.appendChild(cancelBtn);
@@ -336,7 +327,7 @@ function handlePassword_createForm() {
 
     const applyBtn = document.createElement('button');
     applyBtn.id = 'applyBtn';
-    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow';
+    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow bagelFatOne';
     applyBtn.type = 'submit';
     applyBtn.textContent = 'Apply';
     col2Div.appendChild(applyBtn);
@@ -360,7 +351,7 @@ function handlePassword_createForm() {
 }
 
 function handle2FA_createForm() {
-    
+
     document.getElementById('authProfile').classList.add('hidden-element');
     disableProfileBtn();
     const mainDiv = document.createElement('div');
@@ -368,7 +359,7 @@ function handle2FA_createForm() {
     mainDiv.classList = 'col-sm-6 mx-auto shadow p-3 mt-3 rounded-4 bg-info bg-opacity-10';
 
     const title = document.createElement('h6');
-    title.classList = 'col text-center text-secondary fw-bold';
+    title.classList = 'col text-center text-secondary fw-bold bagelFatOne';
     title.textContent = '2FA Authentication';
     mainDiv.appendChild(title);
 
@@ -395,9 +386,9 @@ function handle2FA_createForm() {
     btnDiv.appendChild(input);
 
     let label = document.createElement('label');
-    label.classList = 'btn btn-sm btn-outline-info py-0 px-2 me-1';
+    label.classList = 'btn btn-sm btn-outline-info py-0 px-2 me-1 bagelFatOne';
     label.htmlFor = 'two_fa_on';
-    label.textContent = 'On';
+    label.textContent = 'ON';
     btnDiv.appendChild(label);
 
 
@@ -415,20 +406,20 @@ function handle2FA_createForm() {
     btnDiv.appendChild(input);
 
     label = document.createElement('label');
-    label.classList = 'btn btn-sm btn-outline-info py-0 px-2 me-1';
+    label.classList = 'btn btn-sm btn-outline-info py-0 px-2 me-1 bagelFatOne';
     label.htmlFor = 'two_fa_off';
-    label.textContent = 'Off';
+    label.textContent = 'OFF';
     btnDiv.appendChild(label);
 
     const rowDiv = document.createElement('div');
     rowDiv.classList = 'row mt-2';
-  
+
 
     const col1Div = document.createElement('div');
     col1Div.classList = 'col-6';
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'cancelBtn';
-    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow';
+    cancelBtn.classList = 'btn btn-sm btn-outline-danger w-100 shadow bagelFatOne';
     cancelBtn.type = 'submit';
     cancelBtn.textContent = 'Cancel';
     col1Div.appendChild(cancelBtn);
@@ -438,7 +429,7 @@ function handle2FA_createForm() {
     col2Div.classList = 'col-6';
     const applyBtn = document.createElement('button');
     applyBtn.id = 'applyBtn';
-    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow';
+    applyBtn.classList = 'btn btn-sm btn-outline-success w-100 shadow bagelFatOne';
     applyBtn.type = 'submit';
     applyBtn.textContent = 'Apply';
     col2Div.appendChild(applyBtn);
@@ -447,13 +438,13 @@ function handle2FA_createForm() {
     formDiv.appendChild(rowDiv);
     document.getElementById('authDiv').appendChild(mainDiv);
 
-    
+
     document.getElementById('cancelBtn').addEventListener('click', function () {
         document.getElementById('modifyForm').remove();
         document.getElementById('authProfile').classList.remove('hidden-element');
         enableProfileBtn();
     });
-    
+
     document.getElementById('applyBtn').addEventListener('click', function () {
         // if(document.getElementById('2FA-btn-on').checked = true) {
         //     document.getElementById('mobileDiv').classList.remove('hidden-element');
@@ -461,19 +452,19 @@ function handle2FA_createForm() {
         //     document.getElementById('mobileDiv').classList.add('hidden-element');
         // }
         modify2FA_API();
-       
+
     });
 
-    
+
     document.getElementById('two_fa_on').addEventListener('click', function (element) {
-        
+
         element.checked = true;
         document.getElementById('two_fa_off').checked = false;
         document.getElementById('authTitle').classList.add('text-success');
     });
 
     document.getElementById('two_fa_off').addEventListener('click', function (element) {
-       
+
         element.checked = true;
         document.getElementById('two_fa_on').checked = false;
         document.getElementById('authTitle').classList.remove('text-success');
@@ -492,7 +483,7 @@ function handle2FA_createForm() {
 //     textBtn.textContent = 'authenticate with mobile';
 
 //     mainDiv.appendChild(textBtn);
-    
+
 //     if (two_fa === true) {
 //         document.getElementById('authTitleDiv').appendChild(mainDiv);
 //         document.getElementById('authTitle').classList.add('text-success');
@@ -513,13 +504,13 @@ function eraseAccount_createForm() {
     mainDiv.classList = 'col-sm-6 mx-auto shadow p-4 mt-3 rounded-4 ';
 
     const textLine1 = document.createElement('p');
-    textLine1.classList = 'text-danger text-center fw-bold mb-0';
+    textLine1.classList = 'text-danger text-center fw-bold mb-0 bagelFatOne';
     textLine1.textContent = 'Your account will be erased'
     mainDiv.appendChild(textLine1);
 
     const textLine2 = document.createElement('p');
-    textLine2.classList = 'text-danger text-center fw-bold';
-    textLine2.textContent = '<<< This action is irreversible >>>'
+    textLine2.classList = 'text-danger text-center fw-bold bagelFatOne';
+    textLine2.textContent = '! This action is irreversible !'
     mainDiv.appendChild(textLine2);
 
     const formDiv = document.createElement('form');
@@ -537,7 +528,7 @@ function eraseAccount_createForm() {
 
     const applyBtn = document.createElement('button');
     applyBtn.id = 'applyBtn';
-    applyBtn.classList = 'btn btn-sm btn-outline-danger py-2 fw-bold w-100 shadow-lg';
+    applyBtn.classList = 'btn btn-sm btn-outline-danger py-2 fw-bold w-100 shadow-lg bagelFatOne';
     applyBtn.type = 'submit';
     applyBtn.textContent = 'ERASE';
     col1Div.appendChild(applyBtn);
@@ -548,7 +539,7 @@ function eraseAccount_createForm() {
 
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'cancelBtn';
-    cancelBtn.classList = 'btn btn-sm btn-success py-2 fw-bold w-100 shadow-lg';
+    cancelBtn.classList = 'btn btn-sm btn-success py-2 fw-bold w-100 shadow-lg bagelFatOne';
     cancelBtn.type = 'submit';
     cancelBtn.textContent = 'Cancel';
     col2Div.appendChild(cancelBtn);

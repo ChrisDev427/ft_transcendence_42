@@ -1,6 +1,5 @@
 Django==3.2.4
 djangorestframework
-# sudo dnf install postgresql-devel
 psycopg2 # for postgres
 djangorestframework-simplejwt==4.6
 Pillow # for image upload
@@ -11,3 +10,5 @@ pyotp # for otp application authenticator
 requests-oauthlib # for oauth2
 django-prometheus # for prometheus - monitoring
 django-background-tasks # for background tasks
+channels==3.0.3 # for websockets
+channels-redis # for websockets
